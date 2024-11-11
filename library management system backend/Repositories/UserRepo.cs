@@ -1,22 +1,24 @@
-﻿using library_management_system.Database.Entiy;
+﻿using library_management_system.Database;
+using library_management_system.Database.Entiy;
 
 namespace library_management_system.Repositories
 {
     public class UserRepo
     {
-        ICollection<User> users = new List<User>();
+       private readonly LibraryDbContext _context;
 
-
-
-        public User Add(User user)
+        public UserRepo(LibraryDbContext context)
         {
-            users.Add(user);
-            return user;
+            _context = context;
         }
-        public User get(string nic)
+
+        public async Task<User> CreateUser(User user)
         {
-            var user = users.FirstOrDefault(u => u.NIC == nic);
-            return user;
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+            return await _context.Users.FindAsync(user.Id);
         }
+
+
     }
 }

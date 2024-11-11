@@ -23,23 +23,36 @@ namespace library_management_system.Utilities
             _expiresInMinutes = int.Parse(configuration["JwtSettings:ExpiresInMinutes"]);
         }
 
+
         public string GenerateToken(User user)
         {
-            var claimsList = new List<Claim>();
-            claimsList.Add(new Claim("NIC", user.NIC));
-            claimsList.Add(new Claim("Name", user.Name));
-            claimsList.Add(new Claim("Email", user.Email));
+            var claimsList = new List<Claim>
+    {
+        new Claim("FullName", user.FullName),
+        new Claim("Email", user.Email)
+    };
 
+            if (!string.IsNullOrEmpty(user.UserNic))
+            {
+                claimsList.Add(new Claim("UserNic", user.UserNic));
+            }
+
+            // Optional claims based on user properties
+            claimsList.Add(new Claim("IsActive", user.IsActive.ToString()));
+            claimsList.Add(new Claim("IsSubscribed", user.IsSubscribed.ToString()));
+
+            // Create security key and signing credentials
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_secretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            // Generate token with specified properties
             var token = new JwtSecurityToken(
-              issuer: _issuer,
-              audience: _audience,
-              claims: claimsList,
-              expires: DateTime.Now.AddMinutes(_expiresInMinutes),
-              signingCredentials: credentials
-             );
+                issuer: _issuer,
+                audience: _audience,
+                claims: claimsList,
+                expires: DateTime.UtcNow.AddMinutes(_expiresInMinutes),
+                signingCredentials: credentials
+            );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

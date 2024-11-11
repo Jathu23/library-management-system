@@ -1,10 +1,17 @@
+using library_management_system.Database;
 using library_management_system.Repositories;
 using library_management_system.Services;
 using library_management_system.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<LibraryDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddControllers();

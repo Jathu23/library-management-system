@@ -14,23 +14,34 @@ namespace library_management_system.Services
             _userRepo = userRepo;
         }
 
-        public User Add(UserRequstModel user)
+        public async Task<User> CreateUser(UserRequstModel userRequestDto)
         {
-            var newUser = new User()
-            { 
-                NIC = user.NIC,
-                Name = user.Name,
-                Email = user.Email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password)
-
+            
+            var user = new User
+            {
+                UserNic = userRequestDto.UserNic,
+                FirstName = userRequestDto.FirstName,
+                LastName = userRequestDto.LastName,
+                FullName = $"{userRequestDto.FirstName} {userRequestDto.LastName}",
+                Email = userRequestDto.Email,
+                PhoneNumber = userRequestDto.PhoneNumber,
+                Address = userRequestDto.Address,
+                PasswordHash = HashPassword(userRequestDto.Password), 
+                ProfileImage = userRequestDto.ProfileImage,
+                IsActive = userRequestDto.IsActive,
+                IsSubscribed = userRequestDto.IsSubscribed,
+                RegistrationDate = DateTime.Now  
             };
+            Console.WriteLine(user.Id);
 
-          return  _userRepo.Add(newUser);
-           
+            return await _userRepo.CreateUser(user);
         }
-        public User get(string nic)
+
+        private string HashPassword(string password)
         {
-            return _userRepo.get(nic);
+           
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
+
     }
 }
