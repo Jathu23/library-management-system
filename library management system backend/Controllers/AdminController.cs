@@ -19,7 +19,7 @@ namespace library_management_system.Controllers
         }
 
 
-        [HttpPost("Admincreate")]
+        [HttpPost("CreateAdmin")]
         public async Task<IActionResult> CreateAdmin(AdminRequstModel AdminRequstDto)
         {
             if (!ModelState.IsValid)

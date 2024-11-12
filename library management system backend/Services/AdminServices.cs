@@ -29,11 +29,11 @@ namespace library_management_system.Services
         public async Task<ApiResponse<string>> CreateAdmin(AdminRequstModel AdminRequstDto)
         {
             var response = new ApiResponse<string>();
-            var exuser = await _adminRepo.GetAdminByEmailOrNic(AdminRequstDto.Email);
+            var exadmin = await _adminRepo.GetAdminByEmailOrNic(AdminRequstDto.Email);
 
           try
             {
-                if (exuser == null)
+                if (exadmin != null)
                     throw new Exception("An Admin with this email already exists.");
 
                 var profileImagePath = await SaveProfileImage(AdminRequstDto.ProfileImage);
@@ -45,11 +45,12 @@ namespace library_management_system.Services
                     LastName = AdminRequstDto.LastName,
                     FullName = $"{AdminRequstDto.FirstName} {AdminRequstDto.LastName}",
                     Email = AdminRequstDto.Email,
-                    ProfileImage = AdminRequstDto.ProfileImage,
+                    ProfileImage = profileImagePath,
                     PasswordHash = _bcryptService.HashPassword(AdminRequstDto.Password)
 
                 };
                 await _adminRepo.CreateAdmin(admin);
+
                 response.Success = true;
                 response.Message = "Admin created successfully.";
                 response.Data = _jwtService.GenerateAdminToken(admin);

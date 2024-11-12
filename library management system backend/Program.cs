@@ -41,6 +41,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<UserRepo>();
 
+builder.Services.AddScoped<AdminServices>();
+builder.Services.AddScoped<AdminRepo>();
+
 builder.Services.AddScoped<JwtService>();
 
 builder.Services.AddScoped<ImageService>();
