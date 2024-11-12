@@ -1,5 +1,6 @@
 ﻿using library_management_system.Database;
 using library_management_system.Database.Entiy;
+using Microsoft.EntityFrameworkCore;
 
 namespace library_management_system.Repositories
 {
@@ -17,6 +18,12 @@ namespace library_management_system.Repositories
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
             return await _context.Users.FindAsync(user.Id);
+        }
+
+        public async Task<User?> GetUserByEmailOrNic(string emailOrNic)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == emailOrNic || u.UserNic == emailOrNic);
         }
 
 

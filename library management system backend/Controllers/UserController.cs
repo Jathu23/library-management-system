@@ -14,61 +14,63 @@ namespace library_management_system.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserServices _userService;
-        private readonly JwtService _jwtService;
+       
 
-        public UserController(UserServices userServices, JwtService jwtService)
+        public UserController(UserServices userServices)
         {
             _userService = userServices;
-            _jwtService = jwtService;
+          
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateUser([FromBody] UserRequstModel userRequestDto)
+        public async Task<IActionResult> CreateUser(UserRequstModel userRequestDto)
         {
-            var response = new ApiResponse<string>();
-
             if (!ModelState.IsValid)
             {
-                response.Success = false;
-                response.Message = "Validation failed.";
-                response.Errors = ModelState.Values
-                    .SelectMany(v => v.Errors)
-                    .Select(e => e.ErrorMessage)
-                    .ToList();
-                return BadRequest(response);
-            }
-
-            try
-            {
-              
-                var createdUser = await  _userService.CreateUser(userRequestDto);
-
-                if (createdUser == null)
+                var response1 = new ApiResponse<string>
                 {
-                    response.Success = false;
-                    response.Message = "Failed to create user.";
-                    return BadRequest(response);
-                }
-
-              
-                var token = _jwtService.GenerateToken(createdUser);
-
-           
-                response.Success = true;
-                response.Message = "User created successfully.";
-                response.Data = token;
-
-                return Ok(response);
+                    Success = false,
+                    Message = "Validation failed.",
+                    Errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList()
+                };
+                return BadRequest(response1);
             }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Message = "An error occurred while creating the user.";
-                response.Errors.Add(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, response);
-            }
+              var response = await _userService.CreateUser(userRequestDto);
+
+        if (!response.Success)
+            return BadRequest(response);
+
+        return Ok(response);
+
         }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginUser([FromBody] LoginRequest loginRequest)
+        {
+            if (!ModelState.IsValid)
+            {
+                var response1 = new ApiResponse<string>
+                {
+                    Success = false,
+                    Message = "Validation failed.",
+                    Errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList()
+                };
+                return BadRequest(response1);
+            }
+
+            var response = await _userService.LoginUser(loginRequest);
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
 
 
 

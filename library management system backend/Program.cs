@@ -43,6 +43,9 @@ builder.Services.AddScoped<UserRepo>();
 
 builder.Services.AddScoped<JwtService>();
 
+builder.Services.AddScoped<ImageService>();
+builder.Services.AddScoped<BCryptService>();
+
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
