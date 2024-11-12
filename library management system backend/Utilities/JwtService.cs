@@ -56,6 +56,36 @@ namespace library_management_system.Utilities
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+
+        public string GenerateAdminToken(Admin admin)
+        {
+            var claimsList = new List<Claim>
+    {
+        new Claim("FullName", admin.FullName),
+        new Claim("Email", admin.Email),
+        
+    };
+
+            if (!string.IsNullOrEmpty(admin.AdminNic))
+            {
+                claimsList.Add(new Claim("AdminNic", admin.AdminNic));
+            }
+
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_secretKey));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+
+            var token = new JwtSecurityToken(
+                issuer: _issuer,
+                audience: _audience,
+                claims: claimsList,
+                expires: DateTime.UtcNow.AddMinutes(_expiresInMinutes),
+                signingCredentials: credentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
     }
 
 }
