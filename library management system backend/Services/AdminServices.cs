@@ -34,7 +34,7 @@ namespace library_management_system.Services
           try
             {
                 if (exuser == null)
-                    throw new Exception("A Admin with this email already exists.");
+                    throw new Exception("An Admin with this email already exists.");
 
                 var profileImagePath = await SaveProfileImage(AdminRequstDto.ProfileImage);
 
@@ -91,7 +91,7 @@ namespace library_management_system.Services
                 return "default1img.jpg";
 
             var image = new List<IFormFile> { profileImage };
-            var imagePath = await _imageService.SaveImages(image, "AdminImages");
+            var imagePath = await _imageService.SaveImages(image, "adminImages");
             return imagePath.First();
         }
 
