@@ -31,6 +31,28 @@ namespace library_management_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "NormalBooks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ISBN = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Author = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Genre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PublishYear = table.Column<int>(type: "int", nullable: false),
+                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ShelfLocation = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RentCount = table.Column<int>(type: "int", nullable: false),
+                    TotalCopies = table.Column<int>(type: "int", nullable: false),
+                    CoverImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NormalBooks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -53,6 +75,34 @@ namespace library_management_system.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "BookCopies",
+                columns: table => new
+                {
+                    CopyId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookId = table.Column<int>(type: "int", nullable: false),
+                    IsAvailable = table.Column<bool>(type: "bit", nullable: false),
+                    Condition = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastBorrowedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BookCopies", x => x.CopyId);
+                    table.ForeignKey(
+                        name: "FK_BookCopies_NormalBooks_BookId",
+                        column: x => x.BookId,
+                        principalTable: "NormalBooks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookCopies_BookId",
+                table: "BookCopies",
+                column: "BookId");
         }
 
         /// <inheritdoc />
@@ -62,7 +112,13 @@ namespace library_management_system.Migrations
                 name: "Admins");
 
             migrationBuilder.DropTable(
+                name: "BookCopies");
+
+            migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "NormalBooks");
         }
     }
 }

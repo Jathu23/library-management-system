@@ -56,6 +56,9 @@ builder.Services.AddScoped<UserRepo>();
 builder.Services.AddScoped<AdminServices>();
 builder.Services.AddScoped<AdminRepo>();
 
+builder.Services.AddScoped<BookService>();
+builder.Services.AddScoped<BookRepository>();
+
 builder.Services.AddScoped<JwtService>();
 
 builder.Services.AddScoped<ImageService>();

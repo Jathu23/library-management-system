@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="wwwRoot\AdminImages\" />
+    <Folder Include="wwwRoot\BookCoverImages\" />
     <Folder Include="wwwRoot\userimages\" />
   </ItemGroup>
 

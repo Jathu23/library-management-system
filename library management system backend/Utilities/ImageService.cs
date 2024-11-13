@@ -11,6 +11,10 @@
 
         public async Task<List<string>> SaveImages(List<IFormFile> imageFiles, string folderName)
         {
+            Console.Write("lenght");
+            Console.Write(imageFiles.Count);
+           
+
             if (imageFiles == null || imageFiles.Count == 0)
             {
                 throw new ArgumentException("No files uploaded.");
