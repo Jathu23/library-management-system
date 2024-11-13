@@ -67,5 +67,43 @@ namespace library_management_system.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteAllBookCopiesByBookId(int bookId)
+        {
+            var bookCopies = await _context.BookCopies.Where(bc => bc.BookId == bookId).ToListAsync();
+            _context.BookCopies.RemoveRange(bookCopies);
+            await _context.SaveChangesAsync();
+        }
+
+      
+        public async Task DeleteNormalBook(NormalBook book)
+        {
+            _context.NormalBooks.Remove(book);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<NormalBook>> GetAllNormalBooksWithAvailableCopies()
+        {
+            // Include the BookCopies and filter the ones that are available
+            return await _context.NormalBooks
+                                 .Include(b => b.BookCopies) // Include associated book copies
+                                 .ToListAsync();
+        }
+
+        public async Task<NormalBook> GetBookWithCopies(int bookId)
+        {
+            // Include the BookCopies and filter for only available ones
+            return await _context.NormalBooks
+                                 .Include(b => b.BookCopies)
+                                 .FirstOrDefaultAsync(b => b.Id == bookId);
+        }
+        public async Task<List<NormalBook>> GetAllBooksWithCopies()
+        {
+            // Include the BookCopies navigation property to load related copies for each book
+            return await _context.NormalBooks
+                                 .Include(b => b.BookCopies)
+                                 .ToListAsync();
+        }
+
+
     }
 }

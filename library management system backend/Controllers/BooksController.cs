@@ -88,6 +88,63 @@ namespace library_management_system.Controllers
             return Ok(response);
         }
 
+        [HttpDelete("delete-book")]
+        public async Task<IActionResult> DeleteNormalBookWithCopies(int bookId)
+        {
+            if (bookId <= 0)
+            {
+
+                return BadRequest(new ApiResponse<string>
+                {
+                    Success = false,
+                    Message = "An error occurred while deleting the book ",
+                    Errors = new List<string> { "bookId must be greater than zero." }
+                });
+            }
+                
+
+            var response = await _bookService.DeleteNormalBook(bookId);
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
+
+        [HttpGet("get-all-books")]
+        public async Task<IActionResult> GetAllNormalBooksWithAvailableCopies()
+        {
+            var response = await _bookService.GetAllNormalBooksWithAvailableCopies();
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpGet("get-book")]
+        public async Task<IActionResult> GetBookWithAvailableCopies(int bookId)
+        {
+            var response = await _bookService.GetBookWithAvailableCopies(bookId);
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
+        [HttpGet("get-all-books-with-copies")]
+        public async Task<IActionResult> GetAllBooksWithCopies()
+        {
+            var response = await _bookService.GetAllBooksWithCopies();
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
 
     }
 }

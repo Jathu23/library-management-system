@@ -228,6 +228,191 @@ namespace library_management_system.Services
         }
 
 
+        public async Task<ApiResponse<int>> DeleteNormalBook(int bookId)
+        {
+            try
+            {
+                
+                var book = await _bookRepository.GetBookById(bookId);
+                if (book == null)
+                {
+                    return new ApiResponse<int>
+                    {
+                        Success = false,
+                        Message = "Book not found",
+                        Errors = new List<string> { "No book with the provided ID exists." }
+                    };
+                }
+
+               
+                await _bookRepository.DeleteAllBookCopiesByBookId(bookId);
+
+                
+                await _bookRepository.DeleteNormalBook(book);
+
+                return new ApiResponse<int>
+                {
+                    Success = true,
+                    Message = "Book and its associated copies deleted successfully",
+                    Data = book.Id
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<int>
+                {
+                    Success = false,
+                    Message = "An error occurred while deleting the book and its copies",
+                    Errors = new List<string> { ex.Message }
+                };
+            }
+        }
+
+        public async Task<ApiResponse<List<NormalBookDto>>> GetAllNormalBooksWithAvailableCopies()
+        {
+            try
+            {
+                // Retrieve all normal books along with their copies
+                var books = await _bookRepository.GetAllNormalBooksWithAvailableCopies();
+
+                // Map the retrieved books to DTOs for API response
+                var bookDtos = books.Select(book => new NormalBookDto
+                {
+                    Id = book.Id,
+                    ISBN = book.ISBN,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Genre = book.Genre,
+                    PublishYear = book.PublishYear,
+                    ShelfLocation = book.ShelfLocation,
+                    TotalCopies = book.TotalCopies,
+                    AvailableCopies = book.BookCopies.Count(bc => bc.IsAvailable),
+                    CoverImagePath = book.CoverImagePath
+                }).ToList();
+
+                return new ApiResponse<List<NormalBookDto>>
+                {
+                    Success = true,
+                    Message = "Normal books retrieved successfully.",
+                    Data = bookDtos
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<NormalBookDto>>
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving normal books.",
+                    Errors = new List<string> { ex.Message }
+                };
+            }
+        }
+
+        public async Task<ApiResponse<NormalBookDetailsDto>> GetBookWithAvailableCopies(int bookId)
+        {
+            try
+            {
+               
+                var book = await _bookRepository.GetBookWithCopies(bookId);
+
+                if (book == null)
+                {
+                    return new ApiResponse<NormalBookDetailsDto>
+                    {
+                        Success = false,
+                        Message = "Book not found.",
+                        Errors = new List<string> { "No book with the provided ID exists." }
+                    };
+                }
+
+               
+                var bookDetailsDto = new NormalBookDetailsDto
+                {
+                    Id = book.Id,
+                    ISBN = book.ISBN,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Genre = book.Genre,
+                    PublishYear = book.PublishYear,
+                    ShelfLocation = book.ShelfLocation,
+                    AvailableCopies = book.BookCopies.Count(bc => bc.IsAvailable),
+                    CoverImagePath = book.CoverImagePath,
+                    BookCopies = book.BookCopies.Select(bc => new BookCopyDto
+                    {
+                        CopyId = bc.CopyId,
+                        Condition = bc.Condition,
+                        IsAvailable = bc.IsAvailable,
+                        LastBorrowedDate = bc.LastBorrowedDate
+                    }).ToList()
+                };
+
+                return new ApiResponse<NormalBookDetailsDto>
+                {
+                    Success = true,
+                    Message = "Book details retrieved successfully.",
+                    Data = bookDetailsDto
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<NormalBookDetailsDto>
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the book details.",
+                    Errors = new List<string> { ex.Message }
+                };
+            }
+        }
+
+        public async Task<ApiResponse<List<NormalBookDetailsDto>>> GetAllBooksWithCopies()
+        {
+            try
+            {
+               
+                var books = await _bookRepository.GetAllBooksWithCopies();
+
+               
+                var bookDtos = books.Select(book => new NormalBookDetailsDto
+                {
+                    Id = book.Id,
+                    ISBN = book.ISBN,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Genre = book.Genre,
+                    PublishYear = book.PublishYear,
+                    ShelfLocation = book.ShelfLocation,
+                    TotalCopies = book.TotalCopies,
+                    AvailableCopies = book.BookCopies.Count(bc => bc.IsAvailable),
+                    CoverImagePath = book.CoverImagePath,
+                    BookCopies = book.BookCopies.Select(bc => new BookCopyDto
+                    {
+                        CopyId = bc.CopyId,
+                        Condition = bc.Condition,
+                        IsAvailable = bc.IsAvailable,
+                        LastBorrowedDate = bc.LastBorrowedDate
+                    }).ToList()
+                }).ToList();
+
+                return new ApiResponse<List<NormalBookDetailsDto>>
+                {
+                    Success = true,
+                    Message = "All books with copies retrieved successfully.",
+                    Data = bookDtos
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<NormalBookDetailsDto>>
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the books.",
+                    Errors = new List<string> { ex.Message }
+                };
+            }
+        }
+
+
+
 
 
         private async Task<List<string>> SaveCoverImages(List<IFormFile> coverImages)
