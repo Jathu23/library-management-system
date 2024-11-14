@@ -26,5 +26,15 @@ namespace library_management_system.Controllers
 
             return Ok(response);
         }
+
+        [HttpDelete("DeleteEbook")]
+        public async Task<IActionResult> DeleteEbook(int id)
+        {
+            var response = await _ebookService.DeleteEbookAsync(id);
+            if (!response.Success)
+                return NotFound(response);
+
+            return Ok(response);
+        }
     }
 }

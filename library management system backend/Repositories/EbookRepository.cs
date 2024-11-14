@@ -24,5 +24,28 @@ namespace library_management_system.Repositories
 
             return ebook.Id;
         }
+
+        public async Task<Ebook> GetEbookByIdAsync(int ebookId)
+        {
+            return await _context.Ebooks.FirstOrDefaultAsync(e => e.Id == ebookId);
+        }
+
+
+        public async Task<bool> DeleteEbookAsync(int ebookId)
+        {
+            var ebook = await _context.Ebooks.FindAsync(ebookId);
+            if (ebook == null)
+                return false;
+
+        
+            var metadata = await _context.EbookMetadatas.FindAsync(ebookId);
+            if (metadata != null)
+                _context.EbookMetadatas.Remove(metadata);
+
+            _context.Ebooks.Remove(ebook);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

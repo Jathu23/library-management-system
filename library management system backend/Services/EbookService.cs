@@ -88,6 +88,32 @@ namespace library_management_system.Services
             }
         }
 
+        public async Task<ApiResponse<string>> DeleteEbookAsync(int ebookId)
+        {
+            var ebook = await _ebookRepository.GetEbookByIdAsync(ebookId);
+            if (ebook == null)
+            {
+                return new ApiResponse<string>
+                {
+                    Success = false,
+                    Message = "Ebook not found.",
+                    Errors = new List<string> { "The specified ebook does not exist." }
+                };
+            }
+
+            
+
+            // Delete the ebook from the repository
+            var success = await _ebookRepository.DeleteEbookAsync(ebookId);
+
+            return new ApiResponse<string>
+            {
+                Success = success,
+                Message = success ? "Ebook deleted successfully." : "Failed to delete ebook."
+            };
+        }
+
+
 
         private async Task<string> SaveCoverImage(IFormFile? profileImage)
         {
