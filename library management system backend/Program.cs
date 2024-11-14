@@ -62,10 +62,14 @@ builder.Services.AddScoped<BookRepository>();
 builder.Services.AddScoped<EbookService>();
 builder.Services.AddScoped<EbookRepository>();
 
+builder.Services.AddScoped<AudioBookService>();
+builder.Services.AddScoped<AudioBookRepository>();
+
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<ImageService>();
 builder.Services.AddScoped<BCryptService>();
 builder.Services.AddScoped<EbookFileService>();
+builder.Services.AddScoped<AudioBookFileService>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();

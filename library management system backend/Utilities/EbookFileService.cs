@@ -5,44 +5,51 @@ namespace library_management_system.Utilities
 {
     public class EbookFileService
     {
+        private readonly IWebHostEnvironment _environment;
 
-        private readonly string _fileStoragePath = "EbookFiles"; // Set your file storage path here
 
-        public async Task<string> SaveEbookFile(IFormFile ebookFile)
+        public EbookFileService(IWebHostEnvironment hostEnvironment)
         {
-          
-            Directory.CreateDirectory(_fileStoragePath);
+            _environment = hostEnvironment;
+        }
 
-          
-            var filePath = Path.Combine(_fileStoragePath, ebookFile.FileName);
+        public async Task<string> SaveEbookFile(IFormFile file, string folderName)
+        {
+            var folderPath = Path.Combine(_environment.WebRootPath, folderName);
+            Directory.CreateDirectory(folderPath);
+
+            var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(folderPath, fileName);
+
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
-                await ebookFile.CopyToAsync(stream);
+                await file.CopyToAsync(stream);
             }
-            return filePath;
-        }
-       
 
-        public double GetFileSize(IFormFile file)
+            return Path.Combine(folderName, fileName);
+        }
+
+
+        public  async Task<double> GetFileSize(IFormFile file)
         {
             // Calculate file size in MB
             return file.Length / (1024.0 * 1024.0);
         }
 
-        public int GetPageCount(IFormFile file)
+        public async Task<int> GetPageCount(IFormFile file)
         {
             if (Path.GetExtension(file.FileName).Equals(".pdf", StringComparison.OrdinalIgnoreCase))
             {
-                return GetPdfPageCount(file);
+                return await GetPdfPageCount(file);
             }
             else if (Path.GetExtension(file.FileName).Equals(".epub", StringComparison.OrdinalIgnoreCase))
             {
-                return GetEpubPageCount(file);
+                return await GetEpubPageCount(file);
             }
             return 0;
         }
 
-        private int GetPdfPageCount(IFormFile file)
+        private async Task<int> GetPdfPageCount(IFormFile file)
         {
             int pageCount = 0;
             using (var stream = file.OpenReadStream())
@@ -53,7 +60,7 @@ namespace library_management_system.Utilities
             return pageCount;
         }
 
-        private int GetEpubPageCount(IFormFile file)
+        private async Task<int> GetEpubPageCount(IFormFile file)
         {
             int pageCount = 0;
             using (var stream = file.OpenReadStream())

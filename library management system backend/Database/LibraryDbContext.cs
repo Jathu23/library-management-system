@@ -17,6 +17,8 @@
         public DbSet<BookCopy> BookCopies { get; set; }
         public DbSet<Ebook> Ebooks { get; set; }
         public DbSet<EbookMetadata> EbookMetadatas { get; set; }
+        public DbSet<Audiobook> Audiobooks { get; set; }
+        public DbSet<AudiobookMetadata> AudiobookMetadatas { get; set; }
 
 
 

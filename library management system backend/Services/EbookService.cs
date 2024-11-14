@@ -3,6 +3,7 @@ using library_management_system.DTOs.Ebook;
 using library_management_system.DTOs;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
+using static library_management_system.DTOs.Ebook.UpdateEbookDto;
 
 namespace library_management_system.Services
 {
@@ -19,7 +20,7 @@ namespace library_management_system.Services
             _imageService = imageService;
         }
 
-        public async Task<ApiResponse<int>> AddNewEbookAsync(AddEbookDto ebookDto)
+        public async Task<ApiResponse<int>> AddNewEbook(AddEbookDto ebookDto)
         {
             try
             {
@@ -34,10 +35,10 @@ namespace library_management_system.Services
                 }
 
                 // Save the ebook file
-                string ebookFilePath = await _ebookFileService.SaveEbookFile(ebookDto.EbookFile);
+                string ebookFilePath = await _ebookFileService.SaveEbookFile(ebookDto.EbookFile,"Ebooks");
                 var coverImagesPath = await SaveCoverImage(ebookDto.CoverImages);
-                double fileSizeInMB = _ebookFileService.GetFileSize(ebookDto.EbookFile);
-                int? pageCount = _ebookFileService.GetPageCount(ebookDto.EbookFile);
+                double fileSizeInMB = await _ebookFileService.GetFileSize(ebookDto.EbookFile);
+                int? pageCount = await _ebookFileService.GetPageCount(ebookDto.EbookFile);
 
 
                 // Create Ebook and Metadata instances
@@ -67,7 +68,7 @@ namespace library_management_system.Services
                 };
 
                 // Save Ebook and metadata to database
-                int ebookId = await _ebookRepository.AddEbookWithMetadataAsync(ebook, metadata);
+                int ebookId = await _ebookRepository.AddEbook(ebook, metadata);
 
                 return new ApiResponse<int> { Success = true, Message = "Ebook added successfully", Data = ebookId };
 
@@ -88,9 +89,9 @@ namespace library_management_system.Services
             }
         }
 
-        public async Task<ApiResponse<string>> DeleteEbookAsync(int ebookId)
+        public async Task<ApiResponse<string>> DeleteEbook(int ebookId)
         {
-            var ebook = await _ebookRepository.GetEbookByIdAsync(ebookId);
+            var ebook = await _ebookRepository.GetEbookById(ebookId);
             if (ebook == null)
             {
                 return new ApiResponse<string>
@@ -101,10 +102,7 @@ namespace library_management_system.Services
                 };
             }
 
-            
-
-            // Delete the ebook from the repository
-            var success = await _ebookRepository.DeleteEbookAsync(ebookId);
+            var success = await _ebookRepository.DeleteEbook(ebookId);
 
             return new ApiResponse<string>
             {
@@ -113,9 +111,66 @@ namespace library_management_system.Services
             };
         }
 
+        public async Task<ApiResponse<bool>> UpdateEbook(EbookUpdateDto ebookDto)
+        {
+            var existingEbook = await _ebookRepository.GetEbookById(ebookDto.Id);
+
+            if (existingEbook == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Ebook not found",
+                    Data = false
+                };
+            }
+
+            var existingMetadata = await _ebookRepository.GetEbookMetadataByEbookId(ebookDto.Id);
+
+            
+            existingEbook.Title = ebookDto.Title ?? existingEbook.Title;
+            existingEbook.Author = ebookDto.Author ?? existingEbook.Author;
+            existingEbook.Genre = ebookDto.Genre ?? existingEbook.Genre;
+            existingEbook.PublishYear = ebookDto.PublishYear ?? existingEbook.PublishYear;
+
+           
+            if (ebookDto.EbookFile != null)
+            {
+                existingEbook.FilePath = await _ebookFileService.SaveEbookFile(ebookDto.EbookFile, "Ebooks");
+     
+                existingMetadata.FileSize = await _ebookFileService.GetFileSize(ebookDto.EbookFile);
+                existingMetadata.PageCount = await _ebookFileService.GetPageCount(ebookDto.EbookFile);
+            }
+                
+                if (ebookDto.CoverImages != null)
+                {
+                   existingEbook.CoverImagePath = await SaveCoverImage(ebookDto.CoverImages);
+
+                 }
+
+           
+            existingMetadata.Language = ebookDto.Language ?? existingMetadata.Language;
+                existingMetadata.Publisher = ebookDto.Publisher ?? existingMetadata.Publisher;
+                existingMetadata.Description = ebookDto.Description ?? existingMetadata.Description;
+                existingMetadata.DigitalRights = ebookDto.DigitalRights ?? existingMetadata.DigitalRights;
+
+                
+                await _ebookRepository.UpdateEbook(existingEbook, existingMetadata);
+
+                return new ApiResponse<bool>
+                {
+                    Success = true,
+                    Message = "Ebook updated successfully",
+                    Data = true
+                };
+            
+
+        }
 
 
-        private async Task<string> SaveCoverImage(IFormFile? profileImage)
+
+
+        public async Task<string> SaveCoverImage(IFormFile? profileImage)
         {
             if (profileImage == null)
                 return "EbookCoverImages/defaultimg.jpg";

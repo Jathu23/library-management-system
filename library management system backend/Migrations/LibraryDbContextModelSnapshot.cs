@@ -62,6 +62,104 @@ namespace library_management_system.Migrations
                     b.ToTable("Admins");
                 });
 
+            modelBuilder.Entity("library_management_system.Database.Entiy.Audiobook", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AddedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CoverImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Genre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ISBN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PublishYear")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Audiobooks");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.AudiobookMetadata", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AudiobookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DigitalRights")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DownloadCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DurationInSeconds")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileFormat")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("FileSize")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Language")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Narrator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlayCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Publisher")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AudiobookId")
+                        .IsUnique();
+
+                    b.ToTable("AudiobookMetadatas");
+                });
+
             modelBuilder.Entity("library_management_system.Database.Entiy.BookCopy", b =>
                 {
                     b.Property<int>("CopyId")
@@ -287,6 +385,17 @@ namespace library_management_system.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("library_management_system.Database.Entiy.AudiobookMetadata", b =>
+                {
+                    b.HasOne("library_management_system.Database.Entiy.Audiobook", "Audiobook")
+                        .WithOne("Metadata")
+                        .HasForeignKey("library_management_system.Database.Entiy.AudiobookMetadata", "AudiobookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Audiobook");
+                });
+
             modelBuilder.Entity("library_management_system.Database.Entiy.BookCopy", b =>
                 {
                     b.HasOne("library_management_system.Database.Entiy.NormalBook", "Book")
@@ -307,6 +416,12 @@ namespace library_management_system.Migrations
                         .IsRequired();
 
                     b.Navigation("Ebook");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.Audiobook", b =>
+                {
+                    b.Navigation("Metadata")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("library_management_system.Database.Entiy.Ebook", b =>
