@@ -59,16 +59,21 @@ builder.Services.AddScoped<AdminRepo>();
 builder.Services.AddScoped<BookService>();
 builder.Services.AddScoped<BookRepository>();
 
-builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<EbookService>();
+builder.Services.AddScoped<EbookRepository>();
 
+builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<ImageService>();
 builder.Services.AddScoped<BCryptService>();
+builder.Services.AddScoped<EbookFileService>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

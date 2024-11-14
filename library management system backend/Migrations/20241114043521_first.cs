@@ -31,6 +31,26 @@ namespace library_management_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Ebooks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ISBN = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Author = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Genre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PublishYear = table.Column<int>(type: "int", nullable: false),
+                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CoverImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ebooks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "NormalBooks",
                 columns: table => new
                 {
@@ -77,6 +97,34 @@ namespace library_management_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EbookMetadatas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EbookId = table.Column<int>(type: "int", nullable: false),
+                    FileFormat = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileSize = table.Column<double>(type: "float", nullable: true),
+                    PageCount = table.Column<int>(type: "int", nullable: true),
+                    Language = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DownloadCount = table.Column<int>(type: "int", nullable: true),
+                    ViewCount = table.Column<int>(type: "int", nullable: true),
+                    Publisher = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DigitalRights = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EbookMetadatas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EbookMetadatas_Ebooks_EbookId",
+                        column: x => x.EbookId,
+                        principalTable: "Ebooks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BookCopies",
                 columns: table => new
                 {
@@ -103,6 +151,12 @@ namespace library_management_system.Migrations
                 name: "IX_BookCopies_BookId",
                 table: "BookCopies",
                 column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EbookMetadatas_EbookId",
+                table: "EbookMetadatas",
+                column: "EbookId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -115,10 +169,16 @@ namespace library_management_system.Migrations
                 name: "BookCopies");
 
             migrationBuilder.DropTable(
+                name: "EbookMetadatas");
+
+            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
                 name: "NormalBooks");
+
+            migrationBuilder.DropTable(
+                name: "Ebooks");
         }
     }
 }

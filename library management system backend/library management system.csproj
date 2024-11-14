@@ -16,12 +16,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="PDFsharp" Version="6.1.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="VersOne.Epub" Version="3.3.2" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwRoot\AdminImages\" />
     <Folder Include="wwwRoot\BookCoverImages\" />
+    <Folder Include="wwwRoot\EbookCoverImages\" />
+    <Folder Include="wwwRoot\EbookFiles\" />
     <Folder Include="wwwRoot\userimages\" />
   </ItemGroup>
 

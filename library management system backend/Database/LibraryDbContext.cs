@@ -15,6 +15,8 @@
         public DbSet<Admin> Admins { get; set; }
         public DbSet<NormalBook> NormalBooks { get; set; }
         public DbSet<BookCopy> BookCopies { get; set; }
+        public DbSet<Ebook> Ebooks { get; set; }
+        public DbSet<EbookMetadata> EbookMetadatas { get; set; }
 
 
 

@@ -12,7 +12,7 @@ using library_management_system.Database;
 namespace library_management_system.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20241113141456_first")]
+    [Migration("20241114043521_first")]
     partial class first
     {
         /// <inheritdoc />
@@ -94,6 +94,95 @@ namespace library_management_system.Migrations
                     b.HasIndex("BookId");
 
                     b.ToTable("BookCopies");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.Ebook", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AddedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CoverImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Genre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ISBN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PublishYear")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Ebooks");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.EbookMetadata", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DigitalRights")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DownloadCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EbookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FileFormat")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("FileSize")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Language")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PageCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Publisher")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ViewCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EbookId")
+                        .IsUnique();
+
+                    b.ToTable("EbookMetadatas");
                 });
 
             modelBuilder.Entity("library_management_system.Database.Entiy.NormalBook", b =>
@@ -210,6 +299,23 @@ namespace library_management_system.Migrations
                         .IsRequired();
 
                     b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.EbookMetadata", b =>
+                {
+                    b.HasOne("library_management_system.Database.Entiy.Ebook", "Ebook")
+                        .WithOne("Metadata")
+                        .HasForeignKey("library_management_system.Database.Entiy.EbookMetadata", "EbookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ebook");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.Ebook", b =>
+                {
+                    b.Navigation("Metadata")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("library_management_system.Database.Entiy.NormalBook", b =>
