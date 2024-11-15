@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/admin-services/auth.service';
+import { AdminLoginRequest } from '../../models/interfaces/admin-login-request.interface';
+import { ApiResponse } from '../../models/interfaces/api-response.interface';
 
 @Component({
   selector: 'app-landing',
@@ -11,21 +14,45 @@ export class LandingComponent {
   password: string = '';
   errorMessage: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
+
+
+
+   userCredentials = { username: '2', password: '2' };
+
 
   onLogin(userType?: string) {
-    // Hardcoded login credentials
-    const adminCredentials = { username: '1', password: '1' };
-    const userCredentials = { username: '2', password: '2' };
-
+   
+    let adminCredentials: AdminLoginRequest = {
+      emailOrNic:this.username ,
+      password: this.password
+    };
     if (userType === 'admin') {
-      if (this.username === adminCredentials.username && this.password === adminCredentials.password) {
-        this.router.navigate(['/admin']);
-      } else {
-        this.errorMessage = 'Invalid admin credentials. Please try again.';
-      }
-    } else if (userType === 'user') {
-      if (this.username === userCredentials.username && this.password === userCredentials.password) {
+
+      console.log(adminCredentials);
+    
+       this.authService.login(adminCredentials).subscribe(
+        (response: ApiResponse<string>) => {
+          if (response.success) {
+            console.log(response.message, response);
+            this.router.navigate(['/admin']);
+          } else {
+            console.log(response.message, response.errors);
+          }
+        },
+        (error) => {
+          this.errorMessage = error.error.message+" "+error.error.errors;
+          if (error.status === 400) {
+            console.log(error.error.message, error.error);  
+          } else {
+            console.error('An error occurred:', error); 
+          }
+        }
+      );
+
+    }
+     else if (userType === 'user') {
+      if (this.username === this.userCredentials.username && this.password === this.userCredentials.password) {
         this.router.navigate(['/user']);
       } else {
         this.errorMessage = 'Invalid user credentials. Please try again.';
