@@ -1,0 +1,20 @@
+<div class="admin-layout">
+    <header>
+      <h2>Admin Panel</h2>
+      <nav>
+        <a routerLink="/admin">Dashboard</a>
+        <a routerLink="/admin/manage-books">Manage Books</a>
+        <a routerLink="/admin/manage-users">Manage Users</a>
+      </nav>
+    </header>
+
+    <div class="admin-page">
+      <h2>Admin Dashboard</h2>
+      <button (click)="onLogout()">Logout</button>
+    
+      <!-- Admin actions here, such as view dashboard, manage books, etc. -->
+    </div>
+    
+    <router-outlet></router-outlet>
+  </div>
+  

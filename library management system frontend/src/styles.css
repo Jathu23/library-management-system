@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+.landing-page {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .admin-layout, .user-layout {
+    padding: 20px;
+  }
+  
+  header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  nav a {
+    margin: 0 15px;
+    color: white;
+    text-decoration: none;
+  }
+  

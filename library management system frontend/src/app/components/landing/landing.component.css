@@ -1,0 +1,24 @@
+.landing-page {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  form {
+    display: inline-block;
+    text-align: left;
+    margin-top: 20px;
+  }
+  
+  form div {
+    margin-bottom: 10px;
+  }
+  
+  button {
+    margin-right: 10px;
+  }
+  
+  .error-message {
+    color: red;
+    margin-top: 10px;
+  }
+  

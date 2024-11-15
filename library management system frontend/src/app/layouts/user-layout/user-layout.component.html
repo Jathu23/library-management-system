@@ -1,0 +1,20 @@
+<div class="user-layout">
+    <header>
+      <h2>User Dashboard</h2>
+      <nav>
+        <a routerLink="/user">Dashboard</a>
+        <a routerLink="/user/view-books">View Books</a>
+        <a routerLink="/user/view-overdue-books">View Overdue Books</a>
+      </nav>
+    </header>
+
+    <div class="user-page">
+      <h2>User Dashboard</h2>
+      <button (click)="onLogout()">Logout</button>
+    
+      <!-- User actions here, such as view books, manage borrowed books, etc. -->
+    </div>
+    
+    <router-outlet></router-outlet>
+  </div>
+  

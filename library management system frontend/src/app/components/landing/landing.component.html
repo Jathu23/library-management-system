@@ -1,0 +1,19 @@
+<div class="landing-page">
+  <h1>Welcome to the Library Management System</h1>
+  <p>Explore books, manage your account, and more!</p>
+  
+  <form (ngSubmit)="onLogin()">
+    <div>
+      <label for="username">Username:</label>
+      <input type="text" id="username" [(ngModel)]="username" name="username" required>
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" id="password" [(ngModel)]="password" name="password" required>
+    </div>
+    <button type="button" (click)="onLogin('admin')">Admin Login</button>
+    <button type="button" (click)="onLogin('user')">User Login</button>
+  </form>
+
+  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+</div>
