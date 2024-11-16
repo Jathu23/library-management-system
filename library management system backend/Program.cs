@@ -73,6 +73,9 @@ builder.Services.AddScoped<GlobalSubscriptionRepository>();
 builder.Services.AddScoped<LentService>();
 builder.Services.AddScoped<LentRepository>();
 
+builder.Services.AddScoped<ReturnService>();
+builder.Services.AddScoped<ReturnRepository>();
+
 
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<ImageService>();
