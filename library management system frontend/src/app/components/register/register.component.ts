@@ -10,26 +10,51 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
   form: FormGroup;
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
   ) {
-    this.form = this.fb.group({
-      FirstName: new FormControl('', [Validators.required]),
-      LastName: new FormControl('', [Validators.required]),
-      Password: new FormControl('', [Validators.required]),
-      Email: new FormControl('', [Validators.required]),
-      PhoneNumber: new FormControl('', [Validators.required]),
-      confirmpassword: new FormControl('', [Validators.required]),
-      UserNic:new FormControl(''),
-      IsActive:true,
-      IsSubscribed:false
-    });
+    this.form = this.fb.group(
+      {
+        FirstName: new FormControl('', [Validators.required]),
+        LastName: new FormControl('', [Validators.required]),
+        Email: new FormControl('', [Validators.required, Validators.email]),
+        UserNic: new FormControl('', [Validators.required]),
+        PhoneNumber: new FormControl('', [Validators.required]),
+        Password: new FormControl('', [Validators.required]),
+        ConfirmPassword: new FormControl('', [Validators.required]),
+        IsActive: new FormControl(true),  
+        IsSubscribed: new FormControl(false),  
+      },
+      { validators: this.passwordMatchValidator }
+    );
   }
+
+  passwordMatchValidator(form: FormGroup) {
+    const password = form.get('Password')?.value;
+    const confirmPassword = form.get('ConfirmPassword')?.value;
+    return password === confirmPassword ? null : { mismatch: true };
+  }
+
   onSubmit() {
-    console.log(this.form.value);
-    const postdata = { ...this.form.value };
+    if (this.form.invalid) {
+      return;
+    }
+
+    const userData = { ...this.form.value };
+
+    this.authService.createUser(userData).subscribe(
+      (response) => {
+        console.log('User created successfully', response);
+        this.router.navigate(['/login']);
+      },
+      (error) => {
+        console.error('Error creating user', error);
+      }
+    );
+    console.log(userData);
     
   }
 // username: string = '';
