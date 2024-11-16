@@ -162,8 +162,73 @@ namespace library_management_system.Services
                 return response;
             }
         }
+        public async Task<ApiResponse<User>> GetUserByNICorEmail(string emailOrNic)
+        {
+            var response = new ApiResponse<User>();
+
+            try
+            {
+               
+                var user = await _userRepo.GetUserByNICorEmail(emailOrNic);
+
+               
+                if (user == null)
+                {
+                    response.Success = false;
+                    response.Message = "User not found or user is not active.";
+                }
+                else
+                {
+                    response.Success = true;
+                    response.Message = "User retrieved successfully.";
+                    response.Data = user;  
+                }
+            }
+            catch (Exception ex)
+            {
+               
+                response.Success = false;
+                response.Message = "An error occurred while fetching the user.";
+                response.Errors.Add(ex.Message); 
+            }
+
+            return response; 
+        }
+        public async Task<ApiResponse<List<User>>> GetAllDisabledUsers()
+        {
+            var response = new ApiResponse<List<User>>();
+
+            try
+            {
+               
+                var users = await _userRepo.GetAllDisabeledUsers();
+
+                if (users == null || users.Count == 0)
+                {
+                    response.Success = false;
+                    response.Message = "No disabled users found.";
+                }
+                else
+                {
+                    response.Success = true;
+                    response.Message = "Disabled users retrieved successfully.";
+                    response.Data = users;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "An error occurred while fetching the disabled users.";
+                response.Errors.Add(ex.Message);
+            }
+
+            return response;
+        }
+
+
     }
 }
+
 
     
 

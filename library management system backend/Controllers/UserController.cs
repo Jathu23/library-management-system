@@ -85,7 +85,7 @@ namespace library_management_system.Controllers
                 return BadRequest(response);  
             }
         }
-        [HttpDelete("soft-delete-user/{id}")]
+        [HttpDelete("soft-delete-user")]
         public async Task<IActionResult> SoftDeleteUser(int id)
         {
             var response = await _userService.SoftDelete(id);
@@ -98,6 +98,32 @@ namespace library_management_system.Controllers
                 return BadRequest(response);
             }
         }
+        [HttpGet("getSingleUserByNICorEmail")]
+        public async Task< IActionResult> GetUser(string emailorNic)
+        {
+            var data =await _userService.GetUserByNICorEmail(emailorNic);
+            if (data == null)
+            {
+                return BadRequest(Response);
+            }
+            else
+            {
+                return Ok(data);
+            }
 
+        }
+        [HttpGet("GetAllDisabledUsers")]
+        public async Task<IActionResult> GetDisabledUsers()
+        {
+            var data = await _userService.GetAllDisabledUsers();
+            if (data == null)
+            {
+                return BadRequest(Response);
+            }
+            else
+            {
+                return Ok(data);
+            }
+        }
     }
 }

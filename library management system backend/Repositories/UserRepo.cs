@@ -47,6 +47,16 @@ namespace library_management_system.Repositories
             await _context.SaveChangesAsync();
             return user;
         }
+        public async Task<User> GetUserByNICorEmail(string  emailorNic)
+        {
+            return await _context.Users
+         .FirstOrDefaultAsync(u => (u.Email == emailorNic || u.UserNic == emailorNic) && u.IsActive);
+        }
+        public async Task<List<User>> GetAllDisabeledUsers()
+        {
+            var users=await _context.Users.Where(u => u.IsActive==false).ToListAsync();
+            return users;
+        }
       
 
     }
