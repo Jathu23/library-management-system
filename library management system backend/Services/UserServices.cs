@@ -5,6 +5,7 @@ using library_management_system.DTOs;
 using library_management_system.DTOs.User;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace library_management_system.Services
 {
@@ -166,41 +167,58 @@ namespace library_management_system.Services
         {
             var response = new ApiResponse<User>();
 
+            if (string.IsNullOrWhiteSpace(emailOrNic))
+            {
+                response.Success = false;
+                response.Message = "Email or NIC must be provided.";
+                return response;
+            }
+
             try
             {
-               
+
                 var user = await _userRepo.GetUserByNICorEmail(emailOrNic);
 
-               
                 if (user == null)
                 {
                     response.Success = false;
-                    response.Message = "User not found or user is not active.";
+                    response.Message = "User not found.";
+                    return response;
                 }
-                else
+
+                if (user.IsActive)
                 {
                     response.Success = true;
                     response.Message = "User retrieved successfully.";
-                    response.Data = user;  
+                    response.Data = user;
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "User is not active.";
                 }
             }
             catch (Exception ex)
             {
-               
                 response.Success = false;
                 response.Message = "An error occurred while fetching the user.";
-                response.Errors.Add(ex.Message); 
+                response.Errors.Add(ex.Message);
             }
 
-            return response; 
+            return response;
         }
+
+
+
+
+
         public async Task<ApiResponse<List<User>>> GetAllDisabledUsers()
         {
             var response = new ApiResponse<List<User>>();
 
             try
             {
-               
+
                 var users = await _userRepo.GetAllDisabeledUsers();
 
                 if (users == null || users.Count == 0)
@@ -225,10 +243,89 @@ namespace library_management_system.Services
             return response;
         }
 
+        public async Task<ApiResponse<User>> DeleteUserPermanently(int id)
+        {
+            var response = new ApiResponse<User>();
+
+            if (id <= 0)
+            {
+                response.Success = false;
+                response.Message = "Invalid user ID.";
+                return response;
+            }
+
+            var user = await _userRepo.DeleteUserPermanently(id);
+
+            if (user == null)
+            {
+                response.Success = false;
+                response.Message = "User not found.";
+            }
+            else
+            {
+                response.Success = true;
+                response.Message = "User deleted permanently.";
+                response.Data = user; // Return deleted user details if needed
+            }
+
+            return response;
+        }
+        // Service
+        // Service
+        public async Task<ApiResponse<User>> UpdateUser(int id, UserRequstModel userRequestModel)
+        {
+            var response = new ApiResponse<User>();
+
+            try
+            {
+                // Retrieve the existing user from the repository
+                var existingUser = await _userRepo.Getuserid(id);
+
+                if (existingUser == null)
+                {
+                    response.Success = false;
+                    response.Message = "User not found.";
+                    return response;
+                }
+
+                // Handle profile image update if provided
+                var profileImagePath = existingUser.ProfileImage;
+                if (userRequestModel.ProfileImage != null)
+                {
+                    profileImagePath = await SaveProfileImage(userRequestModel.ProfileImage);
+                }
+
+                // Map the updated details to the user object
+
+                existingUser.FirstName = userRequestModel.FirstName;
+                existingUser.LastName = userRequestModel.LastName;
+                existingUser.FullName = $"{userRequestModel.FirstName} {userRequestModel.LastName}";
+
+                existingUser.PhoneNumber = userRequestModel.PhoneNumber;
+                existingUser.Address = userRequestModel.Address;
+                existingUser.ProfileImage = profileImagePath;
+
+                // Save changes via the repository
+                var updatedUser = await _userRepo.UpdateUser(id, existingUser);
+
+                response.Success = true;
+                response.Message = "User updated successfully.";
+                response.Data = updatedUser;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "An error occurred while updating the user.";
+                response.Errors.Add(ex.Message);
+            }
+
+            return response;
+        }
 
     }
+
 }
 
 
-    
+
 

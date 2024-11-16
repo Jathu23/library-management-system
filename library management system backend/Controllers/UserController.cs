@@ -125,5 +125,40 @@ namespace library_management_system.Controllers
                 return Ok(data);
             }
         }
+        [HttpDelete("DeletePermanantly")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var response = await _userService.DeleteUserPermanently(id);
+
+            if (!response.Success)
+                return NotFound(new { message = response.Message });
+
+            return Ok(new { message = response.Message, user = response.Data });
+        }
+       
+        [HttpPut("UpdateUser")]
+        public async Task<IActionResult> UpdateUser(int id, UserRequstModel userRequestModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new ApiResponse<string>
+                {
+                    Success = false,
+                    Message = "Validation failed.",
+                    Errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList()
+                });
+            }
+
+            var response = await _userService.UpdateUser(id, userRequestModel);
+
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+
     }
 }
