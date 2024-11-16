@@ -14,10 +14,10 @@ namespace library_management_system.Services
             _bookRepository = bookRepository;
         }
 
-        public async Task<ApiResponse<bool>> LendNormalBookAsync(LentRecordDto lentRecordDto)
+        public async Task<ApiResponse<bool>> LendNormalBook(LentRecordDto lentRecordDto)
         {
-           
-            var book = await _bookRepository.GetNormalBookWithCopiesAsync(lentRecordDto.BookId);
+      
+            var book = await _bookRepository.GetNormalBookWithCopies(lentRecordDto.BookId);
             var user = await _bookRepository.GetUserById(lentRecordDto.UserId); 
             var admin = await _bookRepository.GetAdminById(lentRecordDto.AdminId); 
 
@@ -100,7 +100,7 @@ namespace library_management_system.Services
             };
 
         
-            await _bookRepository.LendNormalBookAsync(lentRecord, rentHistory, availableCopy, book);
+            await _bookRepository.LendNormalBook(lentRecord, rentHistory, availableCopy, book);
 
             return new ApiResponse<bool>
             {

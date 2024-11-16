@@ -19,12 +19,12 @@
         public DbSet<EbookMetadata> EbookMetadatas { get; set; }
         public DbSet<Audiobook> Audiobooks { get; set; }
         public DbSet<AudiobookMetadata> AudiobookMetadatas { get; set; }
-<<<<<<< HEAD
+
         public DbSet<GlobalSubscription> globalSubscriptions { get; set; }
-=======
+
         public DbSet<LentRecord> LentRecords { get; set; }
         public DbSet<RentHistory> RentHistory { get; set; }
->>>>>>> febdac594fdc483b511e9c56854af250d24f10c0
+
 
 
 

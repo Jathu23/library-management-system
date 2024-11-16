@@ -22,7 +22,7 @@ namespace library_management_system.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Invalid request data.");
 
-            var response = await _lentService.LendNormalBookAsync(lentRecordDto);
+            var response = await _lentService.LendNormalBook(lentRecordDto);
 
             if (!response.Success)
                 return BadRequest(response);
