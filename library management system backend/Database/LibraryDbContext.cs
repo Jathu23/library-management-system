@@ -19,6 +19,7 @@
         public DbSet<EbookMetadata> EbookMetadatas { get; set; }
         public DbSet<Audiobook> Audiobooks { get; set; }
         public DbSet<AudiobookMetadata> AudiobookMetadatas { get; set; }
+        public DbSet<GlobalSubscription> globalSubscriptions { get; set; }
 
 
 
