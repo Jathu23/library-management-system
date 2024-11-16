@@ -280,7 +280,11 @@ namespace library_management_system.Migrations
                     b.ToTable("EbookMetadatas");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("library_management_system.Database.Entiy.GlobalSubscription", b =>
+=======
+            modelBuilder.Entity("library_management_system.Database.Entiy.LentRecord", b =>
+>>>>>>> febdac594fdc483b511e9c56854af250d24f10c0
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -288,6 +292,7 @@ namespace library_management_system.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+<<<<<<< HEAD
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
@@ -301,14 +306,32 @@ namespace library_management_system.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+=======
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BookCopyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LendDate")
+                        .HasColumnType("datetime2");
+
+>>>>>>> febdac594fdc483b511e9c56854af250d24f10c0
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+<<<<<<< HEAD
                     b.HasIndex("UserId");
 
                     b.ToTable("globalSubscriptions");
+=======
+                    b.ToTable("LentRecords");
+>>>>>>> febdac594fdc483b511e9c56854af250d24f10c0
                 });
 
             modelBuilder.Entity("library_management_system.Database.Entiy.NormalBook", b =>
@@ -358,6 +381,37 @@ namespace library_management_system.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("NormalBooks");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.RentHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BookCopyId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LendDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RentHistory");
                 });
 
             modelBuilder.Entity("library_management_system.Database.Entiy.User", b =>

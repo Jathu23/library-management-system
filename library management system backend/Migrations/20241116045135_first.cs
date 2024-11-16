@@ -31,6 +31,26 @@ namespace library_management_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Audiobooks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ISBN = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Author = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Genre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PublishYear = table.Column<int>(type: "int", nullable: false),
+                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CoverImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Audiobooks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Ebooks",
                 columns: table => new
                 {
@@ -48,6 +68,23 @@ namespace library_management_system.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ebooks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LentRecords",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookCopyId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    AdminId = table.Column<int>(type: "int", nullable: false),
+                    LendDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LentRecords", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -73,6 +110,24 @@ namespace library_management_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RentHistory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookCopyId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    AdminId = table.Column<int>(type: "int", nullable: false),
+                    LendDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RentHistory", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -94,6 +149,35 @@ namespace library_management_system.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AudiobookMetadatas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FileFormat = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileSize = table.Column<double>(type: "float", nullable: false),
+                    DurationInSeconds = table.Column<int>(type: "int", nullable: false),
+                    Language = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DownloadCount = table.Column<int>(type: "int", nullable: false),
+                    PlayCount = table.Column<int>(type: "int", nullable: false),
+                    Narrator = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Publisher = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DigitalRights = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AudiobookId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AudiobookMetadatas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AudiobookMetadatas_Audiobooks_AudiobookId",
+                        column: x => x.AudiobookId,
+                        principalTable: "Audiobooks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -148,6 +232,12 @@ namespace library_management_system.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AudiobookMetadatas_AudiobookId",
+                table: "AudiobookMetadatas",
+                column: "AudiobookId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BookCopies_BookId",
                 table: "BookCopies",
                 column: "BookId");
@@ -166,13 +256,25 @@ namespace library_management_system.Migrations
                 name: "Admins");
 
             migrationBuilder.DropTable(
+                name: "AudiobookMetadatas");
+
+            migrationBuilder.DropTable(
                 name: "BookCopies");
 
             migrationBuilder.DropTable(
                 name: "EbookMetadatas");
 
             migrationBuilder.DropTable(
+                name: "LentRecords");
+
+            migrationBuilder.DropTable(
+                name: "RentHistory");
+
+            migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Audiobooks");
 
             migrationBuilder.DropTable(
                 name: "NormalBooks");
