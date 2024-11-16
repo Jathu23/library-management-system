@@ -13,12 +13,12 @@ namespace library_management_system.Repositories
             _context = context;
         }
 
-        public async Task LendNormalBookAsync( LentRecord lentRecord,RentHistory rentHistory,BookCopy bookCopy,NormalBook book)
+        public async Task LendNormalBook( LentRecord lentRecord,RentHistory rentHistory,BookCopy bookCopy,NormalBook book)
         {
            
             _context.LentRecords.Add(lentRecord);
 
-          
+     
             _context.RentHistory.Add(rentHistory);
 
           
@@ -31,7 +31,7 @@ namespace library_management_system.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<NormalBook> GetNormalBookWithCopiesAsync(int bookId)
+        public async Task<NormalBook> GetNormalBookWithCopies(int bookId)
         {
             return await _context.NormalBooks.Include(b => b.BookCopies).FirstOrDefaultAsync(b => b.Id == bookId);
         }

@@ -73,6 +73,12 @@ builder.Services.AddScoped<GlobalSubscriptionRepository>();
 builder.Services.AddScoped<LentService>();
 builder.Services.AddScoped<LentRepository>();
 
+<<<<<<< HEAD
+=======
+builder.Services.AddScoped<ReturnService>();
+builder.Services.AddScoped<ReturnRepository>();
+
+>>>>>>> 823ac67657ca651045ab6d146487367b1aea4fb4
 
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<ImageService>();
