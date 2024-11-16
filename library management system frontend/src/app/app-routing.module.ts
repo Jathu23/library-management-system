@@ -10,13 +10,18 @@ import { ViewOverdueBooksComponent } from './components/user/view-overdue-books/
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LandingLayoutComponent } from './layouts/landing-layout/landing-layout.component';
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
+import { RegisterComponent } from './components/register/register.component';
+import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
   {
     path: '',
     component: LandingLayoutComponent,
     children: [
-      { path: '', component: LandingComponent }
+      { path: 'login', component: LandingComponent },
+      {path:'register',component:RegisterComponent},
+      {path:'home',component:HomeComponent}
+      
     ]
   },
   {

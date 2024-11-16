@@ -1,62 +1,38 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/admin-services/auth.service';
-import { AdminLoginRequest } from '../../models/interfaces/admin-login-request.interface';
-import { ApiResponse } from '../../models/interfaces/api-response.interface';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../services/admin-services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-landing',
-  templateUrl: './landing.component.html',
-  styleUrls: ['./landing.component.css']
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.css'
 })
-export class LandingComponent {
+export class RegisterComponent {
   form: FormGroup;
-
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
   ) {
     this.form = this.fb.group({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required])
+      FirstName: new FormControl('', [Validators.required]),
+      LastName: new FormControl('', [Validators.required]),
+      Password: new FormControl('', [Validators.required]),
+      Email: new FormControl('', [Validators.required]),
+      PhoneNumber: new FormControl('', [Validators.required]),
+      confirmpassword: new FormControl('', [Validators.required]),
+      UserNic:new FormControl(''),
+      IsActive:true,
+      IsSubscribed:false
     });
   }
-
   onSubmit() {
-    if (this.form.valid) {
-      const loginRequest: AdminLoginRequest = {
-        emailOrNic: this.form.value.email,
-        password: this.form.value.password
-       
-      };
-console.log(loginRequest);
-
-
-      this.authService.login(loginRequest).subscribe(
-        (response: ApiResponse<string>) => {
-          if (response.success) {
-            this.router.navigate(['/admin']); // Redirect to admin dashboard
-            alert('success')
-          } else {
-            // Handle unsuccessful login, show error message
-            console.error('Login failed:', response.message);
-          }
-        },
-        (error) => {
-          console.error('Error occurred during login:', error);
-          alert('An error occurred during login. Please try again later.');
-        }
-      );
-    }
+    console.log(this.form.value);
+    const postdata = { ...this.form.value };
+    
   }
-}
-
-
-
- 
-  // username: string = '';
+// username: string = '';
   // password: string = '';
   // errorMessage: string = '';
 
@@ -105,4 +81,4 @@ console.log(loginRequest);
   //     }
   //   }
   // }
-
+}

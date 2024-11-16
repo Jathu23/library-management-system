@@ -15,7 +15,9 @@ import { ManageUsersComponent } from './components/admin/manage-users/manage-use
 import { UserDashboardComponent } from './components/user/user-dashboard/user-dashboard.component';
 import { ViewBooksComponent } from './components/user/view-books/view-books.component';
 import { ViewOverdueBooksComponent } from './components/user/view-overdue-books/view-overdue-books.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RegisterComponent } from './components/register/register.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -30,13 +32,16 @@ import { FormsModule } from '@angular/forms';
     UserDashboardComponent,
     ViewBooksComponent,
     ViewOverdueBooksComponent,
+    RegisterComponent,
+    HomeComponent,
    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
