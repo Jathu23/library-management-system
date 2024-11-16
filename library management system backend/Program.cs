@@ -65,8 +65,14 @@ builder.Services.AddScoped<EbookRepository>();
 builder.Services.AddScoped<AudioBookService>();
 builder.Services.AddScoped<AudioBookRepository>();
 
+
+builder.Services.AddScoped<GlobalSubscriptionService>();
+builder.Services.AddScoped<GlobalSubscriptionRepository>();
+
+
 builder.Services.AddScoped<LentService>();
 builder.Services.AddScoped<LentRepository>();
+
 
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<ImageService>();

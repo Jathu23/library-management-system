@@ -71,12 +71,33 @@ namespace library_management_system.Controllers
 
             return Ok(response);
         }
+        [HttpGet("GetAllUsers")]
+        public async Task<IActionResult> GetUsers()
+        {
+            var response = await _userService.GetAllUsers();
 
-
-
-
-
-
+            if (response.Success)
+            {
+                return Ok(response); 
+            }
+            else
+            {
+                return BadRequest(response);  
+            }
+        }
+        [HttpDelete("soft-delete-user/{id}")]
+        public async Task<IActionResult> SoftDeleteUser(int id)
+        {
+            var response = await _userService.SoftDelete(id);
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest(response);
+            }
+        }
 
     }
 }

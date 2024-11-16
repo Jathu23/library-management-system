@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace library_management_system.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class ini : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -120,7 +120,7 @@ namespace library_management_system.Migrations
                     AdminId = table.Column<int>(type: "int", nullable: false),
                     LendDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -231,6 +231,29 @@ namespace library_management_system.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "globalSubscriptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SubscriptionType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_globalSubscriptions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_globalSubscriptions_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AudiobookMetadatas_AudiobookId",
                 table: "AudiobookMetadatas",
@@ -247,6 +270,11 @@ namespace library_management_system.Migrations
                 table: "EbookMetadatas",
                 column: "EbookId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_globalSubscriptions_UserId",
+                table: "globalSubscriptions",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -265,13 +293,13 @@ namespace library_management_system.Migrations
                 name: "EbookMetadatas");
 
             migrationBuilder.DropTable(
+                name: "globalSubscriptions");
+
+            migrationBuilder.DropTable(
                 name: "LentRecords");
 
             migrationBuilder.DropTable(
                 name: "RentHistory");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Audiobooks");
@@ -281,6 +309,9 @@ namespace library_management_system.Migrations
 
             migrationBuilder.DropTable(
                 name: "Ebooks");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

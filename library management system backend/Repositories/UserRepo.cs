@@ -25,7 +25,29 @@ namespace library_management_system.Repositories
             return await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == emailOrNic || u.UserNic == emailOrNic);
         }
+        public async Task<List<User>> GetAllUsers()
+        {
 
+            var data = await _context.Users
+                               .Where(u => u.IsActive)  
+                               .ToListAsync();
+            return data;
+        }
+        public async Task<User> SoftDelete(int id)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (user == null)
+            {
+               
+                throw new Exception("User not found.");
+            }          
+            user.IsActive = false;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
+      
 
     }
 }

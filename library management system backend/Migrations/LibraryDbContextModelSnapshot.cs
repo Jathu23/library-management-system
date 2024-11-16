@@ -280,6 +280,37 @@ namespace library_management_system.Migrations
                     b.ToTable("EbookMetadatas");
                 });
 
+            modelBuilder.Entity("library_management_system.Database.Entiy.GlobalSubscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SubscriptionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("globalSubscriptions");
+                });
+
             modelBuilder.Entity("library_management_system.Database.Entiy.LentRecord", b =>
                 {
                     b.Property<int>("Id")
@@ -377,7 +408,7 @@ namespace library_management_system.Migrations
                     b.Property<DateTime>("LendDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("ReturnDate")
+                    b.Property<DateTime?>("ReturnDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")
@@ -475,6 +506,17 @@ namespace library_management_system.Migrations
                         .IsRequired();
 
                     b.Navigation("Ebook");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.GlobalSubscription", b =>
+                {
+                    b.HasOne("library_management_system.Database.Entiy.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("library_management_system.Database.Entiy.Audiobook", b =>

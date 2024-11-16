@@ -20,7 +20,8 @@ const routes: Routes = [
     children: [
       { path: 'login', component: LandingComponent },
       {path:'register',component:RegisterComponent},
-      {path:'home',component:HomeComponent}
+      {path:'home',component:HomeComponent},
+      {path:'',component:HomeComponent}
       
     ]
   },

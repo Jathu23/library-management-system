@@ -30,15 +30,15 @@ namespace library_management_system.Services
         {
             var response = new ApiResponse<string>();
             var exuser = await _userRepo.GetUserByEmailOrNic(userRequestDto.Email);
-           
+
 
             try
             {
-                if (exuser != null)            
-                 throw new Exception("A user with this email already exists.");
-                
+                if (exuser != null)
+                    throw new Exception("A user with this email already exists.");
+
                 var profileImagePath = await SaveProfileImage(userRequestDto.ProfileImage);
-       
+
                 var user = new User
                 {
                     UserNic = userRequestDto.UserNic,
@@ -101,5 +101,69 @@ namespace library_management_system.Services
         }
 
 
+        public async Task<ApiResponse<List<User>>> GetAllUsers()
+        {
+            var response = new ApiResponse<List<User>>();
+
+            try
+            {
+
+                var users = await _userRepo.GetAllUsers();
+
+
+                if (users == null || users.Count == 0)
+                {
+                    response.Success = false;
+                    response.Message = "No users found.";
+                }
+                else
+                {
+                    response.Success = true;
+                    response.Message = "Users retrieved successfully.";
+                    response.Data = users;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "An error occurred while fetching users.";
+                response.Errors.Add(ex.Message);
+            }
+
+            return response;
+        }
+        public async Task<ApiResponse<string>> SoftDelete(int id)
+        {
+            var response = new ApiResponse<string>();
+
+            try
+            {
+                var user = await _userRepo.SoftDelete(id);
+
+                if (user == null)
+                {
+                    response.Success = false;
+                    response.Message = "User not found.";
+                    return response;
+                }
+
+                user.IsActive = false;
+
+
+                response.Success = true;
+                response.Message = "User soft deleted successfully.";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "An error occurred during the soft delete operation.";
+                response.Errors.Add(ex.Message);
+                return response;
+            }
+        }
     }
 }
+
+    
+
