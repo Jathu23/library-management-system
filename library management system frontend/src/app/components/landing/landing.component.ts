@@ -37,10 +37,9 @@ console.log(loginRequest);
       this.authService.login(loginRequest).subscribe(
         (response: ApiResponse<string>) => {
           if (response.success) {
-            this.router.navigate(['/admin']); // Redirect to admin dashboard
+            this.router.navigate(['/user']); 
             alert('success')
           } else {
-            // Handle unsuccessful login, show error message
             console.error('Login failed:', response.message);
           }
         },

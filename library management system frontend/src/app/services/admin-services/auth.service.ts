@@ -8,15 +8,23 @@ import { ApiResponse } from '../../models/interfaces/api-response.interface';
   providedIn: 'root'
 })
 export class AuthService {
-  // private readonly adminUrl = 'http://localhost:5149/api/Admin/Aminlogin';
-  private readonly userUrl='http://localhost:5149/api/User/login';
+ 
+  private readonly userUrl = 'https://localhost:7261/api/User/login';
+  private readonly adminUrl = 'https://localhost:7261/api/Admin/Aminlogin';
   private readonly userCreationUrl = 'http://localhost:5149/api/User/create';
+  
   constructor(private http: HttpClient) {}
-
-  login(adminLoginRequest: AdminLoginRequest): Observable<ApiResponse<string>> {
-    return this.http.post<ApiResponse<string>>(this.userUrl, adminLoginRequest);
+  
+  // User login method
+  login(userLoginRequest: AdminLoginRequest): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>(this.userUrl, userLoginRequest);
   }
-
+  
+  // Admin login method
+  adminLogin(adminLoginRequest: AdminLoginRequest): Observable<ApiResponse<string>> {
+    return this.http.post<ApiResponse<string>>(this.adminUrl, adminLoginRequest);
+  }
+  
 
   createUser(user: UserRequestModel): Observable<ApiResponse<string>> {
     const formData: FormData = new FormData();

@@ -1,0 +1,30 @@
+/* Set the background image for the landing page */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.landing-page {
+  background-image: url('https://mir-s3-cdn-cf.behance.net/project_modules/fs/a0bc7346576771.6551d80a7c694.png'); /* Path to your image */
+  background-size: cover; /* Ensures the image covers the entire area */
+  background-repeat: no-repeat;
+  background-position: center center;
+  min-height: 100vh; /* Makes sure it covers the full viewport height */
+  color: #ffffff; /* Text color to contrast with the background */
+}
+
+.navbar {
+  background: rgba(255, 255, 255, 0.8); /* Slightly transparent navbar */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link {
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #007bff; /* Blue hover effect */
+}
+
+

@@ -18,6 +18,7 @@ import { ViewOverdueBooksComponent } from './components/user/view-overdue-books/
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
+import { AdminloginComponent } from './components/admin/adminlogin/adminlogin.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { HomeComponent } from './components/home/home.component';
     ViewOverdueBooksComponent,
     RegisterComponent,
     HomeComponent,
+    AdminloginComponent,
    
   ],
   imports: [

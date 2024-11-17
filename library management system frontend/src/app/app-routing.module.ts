@@ -12,13 +12,15 @@ import { LandingLayoutComponent } from './layouts/landing-layout/landing-layout.
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
+import { AdminloginComponent } from './components/admin/adminlogin/adminlogin.component';
 
 const routes: Routes = [
   {
     path: '',
     component: LandingLayoutComponent,
     children: [
-      { path: 'login', component: LandingComponent },
+      { path: 'user-login', component: LandingComponent },
+      { path: 'admin-login', component: AdminloginComponent },
       {path:'register',component:RegisterComponent},
       {path:'home',component:HomeComponent},
       {path:'',component:HomeComponent}
