@@ -1,4 +1,4 @@
-<div class="admin-layout">
+<!-- <div class="admin-layout">
     <header>
       <h2>Admin Panel</h2>
       <nav>
@@ -12,9 +12,108 @@
       <h2>Admin Dashboard</h2>
       <button (click)="onLogout()">Logout</button>
     
-      <!-- Admin actions here, such as view dashboard, manage books, etc. -->
+      
     </div>
-    
-    <router-outlet></router-outlet>
+ 
+  </div> -->
+  
+
+  <div class="d-flex flex-column flex-md-row">
+    <!-- Sidebar -->
+    <nav class="nav flex-column bg-dark vh-100 text-white p-3 sidebar">
+      <div class="navbar-brand text-center mb-4">
+        <i class="fas fa-book-reader fa-2x"></i>
+        <h4 class="mt-2">SKY BLUE Library</h4>
+      </div>
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link text-white" [routerLink]="['/admin']">
+            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" [routerLink]="['/admin/manage-books']">
+            <i class="fas fa-book me-2"></i> Manage Books
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" [routerLink]="['/admin/manage-users']">
+            <i class="fas fa-users me-2"></i> Manage Users
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" [routerLink]="['/admin/add-book']">
+            <i class="fas fa-plus-circle me-2"></i> Add Book
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" [routerLink]="['/profile']">
+            <i class="fas fa-user-circle me-2"></i> Profile
+          </a>
+        </li>
+        <li class="nav-item mt-auto">
+          <a class="nav-link text-white" (click)="logout()">
+            <i class="fas fa-sign-out-alt me-2"></i> Logout
+          </a>
+        </li>
+      </ul>
+    </nav>
+  
+    <!-- Topbar (for mobile screens) -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark d-md-none">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="fas fa-book-reader"></i> Library
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/admin-dashboard']">
+                Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/books']">
+                Manage Books
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/users']">
+                Manage Users
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/add-book']">
+                Add Book
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/profile']">
+                Profile
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" (click)="logout()">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  
+    <!-- Content Area -->
+    <div class="content flex-grow-1 p-4">
+      <router-outlet></router-outlet>
+    </div>
   </div>
   

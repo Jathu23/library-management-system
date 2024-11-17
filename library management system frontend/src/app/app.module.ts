@@ -19,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { AdminloginComponent } from './components/admin/adminlogin/adminlogin.component';
+import { AddbookComponent } from './components/admin/addbook/addbook.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { AdminloginComponent } from './components/admin/adminlogin/adminlogin.co
     RegisterComponent,
     HomeComponent,
     AdminloginComponent,
+    AddbookComponent,
    
   ],
   imports: [

@@ -13,6 +13,7 @@ import { UserLayoutComponent } from './layouts/user-layout/user-layout.component
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { AdminloginComponent } from './components/admin/adminlogin/adminlogin.component';
+import { AddbookComponent } from './components/admin/addbook/addbook.component';
 
 const routes: Routes = [
   {
@@ -33,7 +34,8 @@ const routes: Routes = [
     children: [
       { path: '', component: AdminDashboardComponent },
       { path: 'manage-books', component: ManageBooksComponent },
-      { path: 'manage-users', component: ManageUsersComponent }
+      { path: 'manage-users', component: ManageUsersComponent },
+      { path: 'add-book', component: AddbookComponent },
     ]
   },
   {

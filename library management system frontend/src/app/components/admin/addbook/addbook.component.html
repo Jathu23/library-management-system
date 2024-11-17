@@ -1,0 +1,190 @@
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-3">
+      <div class="card-header bg-primary text-white text-center">
+        <h3>Add New Book</h3>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="addBookForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <!-- ISBN -->
+            <div class="col-md-6 mb-4">
+              <label for="isbn" class="form-label">ISBN</label>
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">
+                  <i class="bi bi-upc-scan"></i>
+                </span>
+                <input
+                  type="text"
+                  id="isbn"
+                  class="form-control"
+                  formControlName="ISBN"
+                  placeholder="Enter ISBN"
+                />
+              </div>
+              <div *ngIf="addBookForm.controls['ISBN'].invalid && addBookForm.controls['ISBN'].touched" class="text-danger mt-1">
+                ISBN is required.
+              </div>
+            </div>
+  
+            <!-- Title -->
+            <div class="col-md-6 mb-4">
+              <label for="title" class="form-label">Title</label>
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">
+                  <i class="bi bi-book"></i>
+                </span>
+                <input
+                  type="text"
+                  id="title"
+                  class="form-control"
+                  formControlName="Title"
+                  placeholder="Enter Book Title"
+                />
+              </div>
+              <div *ngIf="addBookForm.controls['Title'].invalid && addBookForm.controls['Title'].touched" class="text-danger mt-1">
+                Title is required.
+              </div>
+            </div>
+          </div>
+  
+          <div class="row">
+            <!-- Author -->
+            <div class="col-md-6 mb-4">
+              <label for="author" class="form-label">Author</label>
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">
+                  <i class="bi bi-person"></i>
+                </span>
+                <input
+                  type="text"
+                  id="author"
+                  class="form-control"
+                  formControlName="Author"
+                  placeholder="Enter Author Name"
+                />
+              </div>
+              <div *ngIf="addBookForm.controls['Author'].invalid && addBookForm.controls['Author'].touched" class="text-danger mt-1">
+                Author is required.
+              </div>
+            </div>
+  
+            <!-- Genre -->
+            <div class="col-md-6 mb-4">
+              <label for="genre" class="form-label">Genre</label>
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">
+                  <i class="bi bi-tags"></i>
+                </span>
+                <select
+                  id="genre"
+                  class="form-select"
+                  formControlName="Genre"
+                  multiple
+                >
+                  <option *ngFor="let genre of genresList" [value]="genre">
+                    {{ genre }}
+                  </option>
+                </select>
+              </div>
+              <div *ngIf="addBookForm.controls['Genre'].invalid && addBookForm.controls['Genre'].touched" class="text-danger mt-1">
+                At least one genre is required.
+              </div>
+            </div>
+          </div>
+  
+          <div class="row">
+            <!-- Publish Year -->
+            <div class="col-md-6 mb-4">
+              <label for="publishYear" class="form-label">Publish Year</label>
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">
+                  <i class="bi bi-calendar"></i>
+                </span>
+                <input
+                  type="number"
+                  id="publishYear"
+                  class="form-control"
+                  formControlName="PublishYear"
+                  placeholder="Enter Publish Year"
+                />
+              </div>
+              <div *ngIf="addBookForm.controls['PublishYear'].invalid && addBookForm.controls['PublishYear'].touched" class="text-danger mt-1">
+                Publish Year is required and must be valid.
+              </div>
+            </div>
+  
+            <!-- Shelf Location -->
+            <div class="col-md-6 mb-4">
+              <label for="shelfLocation" class="form-label">Shelf Location</label>
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">
+                  <i class="bi bi-box"></i>
+                </span>
+                <input
+                  type="text"
+                  id="shelfLocation"
+                  class="form-control"
+                  formControlName="ShelfLocation"
+                  placeholder="Enter Shelf Location"
+                />
+              </div>
+              <div *ngIf="addBookForm.controls['ShelfLocation'].invalid && addBookForm.controls['ShelfLocation'].touched" class="text-danger mt-1">
+                Shelf Location is required.
+              </div>
+            </div>
+          </div>
+  
+          <div class="row">
+            <!-- Total Copies -->
+            <div class="col-md-6 mb-4">
+              <label for="totalCopies" class="form-label">Total Copies</label>
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">
+                  <i class="bi bi-stack"></i>
+                </span>
+                <input
+                  type="number"
+                  id="totalCopies"
+                  class="form-control"
+                  formControlName="TotalCopies"
+                  placeholder="Enter Total Copies"
+                />
+              </div>
+              <div *ngIf="addBookForm.controls['TotalCopies'].invalid && addBookForm.controls['TotalCopies'].touched" class="text-danger mt-1">
+                Total Copies is required.
+              </div>
+            </div>
+  
+            <!-- Cover Images -->
+            <div class="col-md-6 mb-4">
+              <label for="coverImages" class="form-label">Cover Images</label>
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">
+                  <i class="bi bi-image"></i>
+                </span>
+                <input
+                type="file"
+                id="coverImages"
+                class="form-control"
+                (change)="onFileSelect($event)"
+                multiple
+              />
+              
+              </div>
+            </div>
+          </div>
+  
+          <div class="text-center">
+            <button
+              type="submit"
+              class="btn btn-success px-4 py-2"
+              [disabled]="addBookForm.invalid"
+            >
+              <i class="bi bi-check-circle"></i> Add Book
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

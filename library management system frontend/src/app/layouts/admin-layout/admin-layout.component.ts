@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 export class AdminLayoutComponent {
   constructor(private router: Router) {}
 
-  onLogout() {
+  logout() {
     this.router.navigate(['']);
   }
 }

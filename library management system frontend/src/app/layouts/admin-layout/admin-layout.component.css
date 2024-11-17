@@ -1,0 +1,51 @@
+.sidebar {
+    width: 250px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: none;
+  }
+  
+  .sidebar .nav-link {
+    font-size: 1rem;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+  }
+  
+  .sidebar .navbar-brand {
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  .sidebar .fas {
+    font-size: 1.2rem;
+  }
+  
+  .content {
+    padding: 20px;
+  }
+  
+  /* Show sidebar for medium and larger screens */
+  @media (min-width: 768px) {
+    .sidebar {
+      display: block;
+    }
+  
+    .navbar {
+      display: none;
+    }
+  }
+  
+  /* Adjust topbar content for smaller screens */
+  .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .navbar-dark .navbar-toggler-icon {
+    color: #fff;
+  }
+  

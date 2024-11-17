@@ -1,0 +1,24 @@
+.card {
+    background: linear-gradient(to right, #ffffff, #f8f9fa);
+  }
+  
+  .card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  select,
+  input[type="file"] {
+    border-radius: 5px;
+  }
+  
+  button {
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  button:hover {
+    transform: scale(1.05);
+  }
+  
