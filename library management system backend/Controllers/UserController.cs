@@ -137,7 +137,7 @@ namespace library_management_system.Controllers
         }
        
         [HttpPut("UpdateUser")]
-        public async Task<IActionResult> UpdateUser(int id, UserRequstModel userRequestModel)
+        public async Task<IActionResult> UpdateUser(UserInfoUpdateDto userInfoUpdateDto)
         {
             if (!ModelState.IsValid)
             {
@@ -152,7 +152,7 @@ namespace library_management_system.Controllers
                 });
             }
 
-            var response = await _userService.UpdateUser(id, userRequestModel);
+            var response = await _userService.UpdateUser(userInfoUpdateDto);
 
             if (!response.Success)
                 return BadRequest(response);

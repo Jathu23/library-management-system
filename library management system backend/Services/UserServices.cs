@@ -270,16 +270,15 @@ namespace library_management_system.Services
 
             return response;
         }
-        // Service
-        // Service
-        public async Task<ApiResponse<User>> UpdateUser(int id, UserRequstModel userRequestModel)
+     
+        public async Task<ApiResponse<bool>> UpdateUser(UserInfoUpdateDto userInfoUpdate)
         {
-            var response = new ApiResponse<User>();
+            var response = new ApiResponse<bool>();
 
             try
             {
-                // Retrieve the existing user from the repository
-                var existingUser = await _userRepo.Getuserid(id);
+             
+                var existingUser = await _userRepo.Getuserid(userInfoUpdate.Id);
 
                 if (existingUser == null)
                 {
@@ -288,25 +287,23 @@ namespace library_management_system.Services
                     return response;
                 }
 
-                // Handle profile image update if provided
-                var profileImagePath = existingUser.ProfileImage;
-                if (userRequestModel.ProfileImage != null)
+               
+              
+                if (userInfoUpdate.ProfileImage != null)
                 {
-                    profileImagePath = await SaveProfileImage(userRequestModel.ProfileImage);
+                    existingUser.ProfileImage = await SaveProfileImage(userInfoUpdate.ProfileImage);
                 }
 
-                // Map the updated details to the user object
+              
 
-                existingUser.FirstName = userRequestModel.FirstName;
-                existingUser.LastName = userRequestModel.LastName;
-                existingUser.FullName = $"{userRequestModel.FirstName} {userRequestModel.LastName}";
+                existingUser.FirstName = userInfoUpdate.FirstName ?? existingUser.FirstName;
+                existingUser.LastName = userInfoUpdate.LastName ?? existingUser.FirstName;
+                existingUser.Email = userInfoUpdate.Email ?? existingUser.LastName;
+                existingUser.PhoneNumber = userInfoUpdate.PhoneNumber ?? existingUser.PhoneNumber;
+                existingUser.Address = userInfoUpdate.Address ?? existingUser.Address;
+                existingUser.FullName = $"{existingUser.FirstName} {existingUser.LastName}";
 
-                existingUser.PhoneNumber = userRequestModel.PhoneNumber;
-                existingUser.Address = userRequestModel.Address;
-                existingUser.ProfileImage = profileImagePath;
-
-                // Save changes via the repository
-                var updatedUser = await _userRepo.UpdateUser(id, existingUser);
+                var updatedUser = await _userRepo.UpdateUser(existingUser);
 
                 response.Success = true;
                 response.Message = "User updated successfully.";

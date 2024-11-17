@@ -13,7 +13,7 @@ namespace library_management_system.Repositories
             _context = context;
         }
 
-        public async Task<User> CreateUser(User user)
+        public async Task<User?> CreateUser(User user)
         {
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
@@ -26,7 +26,7 @@ namespace library_management_system.Repositories
                 .FirstOrDefaultAsync(u => u.Email == emailOrNic || u.UserNic == emailOrNic);
         }
 
-        public async Task<User>Getuserid(int id)
+        public async Task<User?>Getuserid(int id)
         {
             return await _context.Users
                .FirstOrDefaultAsync(u => u.Id == id );
@@ -53,7 +53,7 @@ namespace library_management_system.Repositories
             await _context.SaveChangesAsync();
             return user;
         }
-        public async Task<User> GetUserByNICorEmail(string  emailorNic)
+        public async Task<User?> GetUserByNICorEmail(string  emailorNic)
         {
             return await _context.Users
          .FirstOrDefaultAsync(u => u.Email == emailorNic || u.UserNic == emailorNic) ;
@@ -77,29 +77,11 @@ namespace library_management_system.Repositories
 
             return user;
         }
-        public async Task<User> UpdateUser(int id, User updatedUserData)
+        public async Task<bool> UpdateUser( User updatedUserData)
         {
-            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-
-            if (existingUser == null)
-                return null;
-
-            // Update only the necessary fields
-           
-            existingUser.FirstName = updatedUserData.FirstName;
-            existingUser.LastName = updatedUserData.LastName;
-            existingUser.FullName = updatedUserData.FullName;
-            
-            existingUser.PhoneNumber = updatedUserData.PhoneNumber;
-            existingUser.Address = updatedUserData.Address;
-            existingUser.ProfileImage = updatedUserData.ProfileImage;
-           
-
-            // Save changes to the database
-            _context.Users.Update(existingUser);
-            await _context.SaveChangesAsync();
-
-            return existingUser;
+          _context.Users.Update(updatedUserData);
+            _context.SaveChanges();
+            return true;
         }
 
     }
