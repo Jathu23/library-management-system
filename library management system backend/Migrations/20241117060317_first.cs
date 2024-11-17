@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace library_management_system.Migrations
 {
     /// <inheritdoc />
-    public partial class second : Migration
+    public partial class first : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -68,23 +68,6 @@ namespace library_management_system.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ebooks", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LentRecords",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BookCopyId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    AdminId = table.Column<int>(type: "int", nullable: false),
-                    LendDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LentRecords", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -254,6 +237,41 @@ namespace library_management_system.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "LentRecords",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    BookCopyId = table.Column<int>(type: "int", nullable: false),
+                    AdminId = table.Column<int>(type: "int", nullable: false),
+                    LentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LentRecords", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LentRecords_Admins_AdminId",
+                        column: x => x.AdminId,
+                        principalTable: "Admins",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LentRecords_BookCopies_BookCopyId",
+                        column: x => x.BookCopyId,
+                        principalTable: "BookCopies",
+                        principalColumn: "CopyId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LentRecords_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AudiobookMetadatas_AudiobookId",
                 table: "AudiobookMetadatas",
@@ -275,19 +293,28 @@ namespace library_management_system.Migrations
                 name: "IX_globalSubscriptions_UserId",
                 table: "globalSubscriptions",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LentRecords_AdminId",
+                table: "LentRecords",
+                column: "AdminId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LentRecords_BookCopyId",
+                table: "LentRecords",
+                column: "BookCopyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LentRecords_UserId",
+                table: "LentRecords",
+                column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Admins");
-
-            migrationBuilder.DropTable(
                 name: "AudiobookMetadatas");
-
-            migrationBuilder.DropTable(
-                name: "BookCopies");
 
             migrationBuilder.DropTable(
                 name: "EbookMetadatas");
@@ -305,13 +332,19 @@ namespace library_management_system.Migrations
                 name: "Audiobooks");
 
             migrationBuilder.DropTable(
-                name: "NormalBooks");
-
-            migrationBuilder.DropTable(
                 name: "Ebooks");
 
             migrationBuilder.DropTable(
+                name: "Admins");
+
+            migrationBuilder.DropTable(
+                name: "BookCopies");
+
+            migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "NormalBooks");
         }
     }
 }

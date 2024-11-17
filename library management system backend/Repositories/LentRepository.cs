@@ -31,7 +31,7 @@ namespace library_management_system.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<NormalBook> GetNormalBookWithCopies(int bookId)
+        public async Task<NormalBook?> GetNormalBookWithCopies(int bookId)
         {
             return await _context.NormalBooks.Include(b => b.BookCopies).FirstOrDefaultAsync(b => b.Id == bookId);
         }
@@ -39,13 +39,29 @@ namespace library_management_system.Repositories
         public async Task<User?> GetUserById(int id)
         {
             return await _context.Users.FindAsync(id);
-               
+
         }
         public async Task<Admin?> GetAdminById(int id)
         {
             return await _context.Admins.FindAsync(id);
 
         }
+        public async Task<NormalBook?> GetBookById(int id)
+        {
+            return await _context.NormalBooks.FindAsync(id);
+
+        }
+
+        public async Task<LentRecord?> GetLentRecordWithDetailsAsync(int lentRecordId)
+        {
+            return await _context.LentRecords
+                .Include(lr => lr.BookCopy) // Include the BookCopy related to the LentRecord
+      
+                .Include(lr => lr.User) // Include the User related to the LentRecord
+                .Include(lr => lr.Admin) // Include the Admin related to the LentRecord
+                .FirstOrDefaultAsync(lr => lr.Id == lentRecordId);
+        }
+
 
 
     }

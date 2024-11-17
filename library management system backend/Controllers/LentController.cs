@@ -30,5 +30,16 @@ namespace library_management_system.Controllers
             return Ok(response);
         }
 
+        [HttpGet("lent-records/{id}/admin")]
+        public async Task<IActionResult> GetLentRecordForAdmin(int id)
+        {
+            var response = await _lentService.GetLentRecordForAdminAsync(id);
+
+            if (!response.Success)
+                return NotFound(response);
+
+            return Ok(response);
+        }
+
     }
 }

@@ -17,6 +17,8 @@
 
         // Navigation property for book copies
         public List<BookCopy> BookCopies { get; set; } 
+
+        //public List<LentRecord> lentRecords { get; set; }
     }
 
 
