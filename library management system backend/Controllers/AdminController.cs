@@ -69,5 +69,51 @@ namespace library_management_system.Controllers
 
             return Ok(response);
         }
+
+
+        [HttpGet("GetAllAdmins")]
+        public async Task<IActionResult> GetAllAdmins()
+        {
+            var response = await _adminServices.GetAllAdmins();
+
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest(response);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAdminById(int id)
+        {
+            var response = await _adminServices.GetAdminById(id);
+
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return NotFound(response);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAdminById(int id)
+        {
+            var response = await _adminServices.DeleteAdminById(id);
+
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest(response);
+            }
+        }
     }
 }

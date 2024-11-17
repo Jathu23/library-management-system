@@ -96,5 +96,98 @@ namespace library_management_system.Services
             return imagePath.First();
         }
 
+
+
+        public async Task<ApiResponse<List<Admin>>> GetAllAdmins()
+        {
+            var response = new ApiResponse<List<Admin>>();
+
+            try
+            {
+                var admins = await _adminRepo.GetAllAdmins();
+
+                if (admins == null || !admins.Any())
+                {
+                    response.Success = false;
+                    response.Message = "No admins found.";
+                }
+                else
+                {
+                    response.Success = true;
+                    response.Message = "Admins retrieved successfully.";
+                    response.Data = admins;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "An error occurred while fetching admins.";
+                response.Errors.Add(ex.Message);
+            }
+
+            return response;
+        }
+
+        public async Task<ApiResponse<Admin?>> GetAdminById(int adminId)
+        {
+            var response = new ApiResponse<Admin?>();
+
+            try
+            {
+                var admin = await _adminRepo.GetAdminById(adminId);
+
+                if (admin == null)
+                {
+                    response.Success = false;
+                    response.Message = "Admin not found.";
+                }
+                else
+                {
+                    response.Success = true;
+                    response.Message = "Admin retrieved successfully.";
+                    response.Data = admin;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "An error occurred while fetching the admin.";
+                response.Errors.Add(ex.Message);
+            }
+
+            return response;
+        }
+
+        public async Task<ApiResponse<string>> DeleteAdminById(int adminId)
+        {
+            var response = new ApiResponse<string>();
+
+            try
+            {
+                var deleted = await _adminRepo.DeleteAdminById(adminId);
+
+                if (!deleted)
+                {
+                    response.Success = false;
+                    response.Message = "Admin not found or could not be deleted.";
+                }
+                else
+                {
+                    response.Success = true;
+                    response.Message = "Admin deleted successfully.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "An error occurred while deleting the admin.";
+                response.Errors.Add(ex.Message);
+            }
+
+            return response;
+        }
+
+
+
     }
 }
