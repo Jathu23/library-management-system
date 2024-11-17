@@ -29,16 +29,14 @@ namespace library_management_system.Controllers
                     Errors = new List<string> { "Subscription type is required." }
                 });
 
-            var subscription = await _service.CreateOrRenewSubscriptionAsync(subscriptionDto);
-            var response = new ApiResponse<GlobalSubscriptionDto>
-            {
-                Success = true,
-                Message = "Subscription successful.",
-                Data = subscriptionDto
-            };
+            var subscriptionResponse = await _service.CreateOrRenewSubscriptionAsync(subscriptionDto);
 
-            return Ok(response);
+            if (!subscriptionResponse.Success)
+                return BadRequest(subscriptionResponse);
+
+            return Ok(subscriptionResponse);
         }
+
 
 
         // Check Subscription Status

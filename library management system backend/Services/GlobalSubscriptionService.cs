@@ -29,15 +29,36 @@ namespace library_management_system.Services
                 };
             }
 
+            // Validate the payment amount based on the subscription type
+            if (subscriptionDto.SubscriptionType == "Monthly" && subscriptionDto.Amount != 3)
+            {
+                return new ApiResponse<string>
+                {
+                    Success = false,
+                    Message = "Invalid payment amount for Monthly subscription.",
+                    Data = null
+                };
+            }
+
+            if (subscriptionDto.SubscriptionType == "Yearly" && subscriptionDto.Amount != 20)
+            {
+                return new ApiResponse<string>
+                {
+                    Success = false,
+                    Message = "Invalid payment amount for Yearly subscription.",
+                    Data = null
+                };
+            }
+
             if (existingSubscription != null && existingSubscription.EndDate >= DateTime.UtcNow)
             {
+                // Renew the existing subscription
                 existingSubscription.EndDate = subscriptionDto.SubscriptionType == "Monthly"
                     ? existingSubscription.EndDate.AddMonths(1)
                     : existingSubscription.EndDate.AddYears(1);
 
-                user.IsSubscribed = true; 
+                user.IsSubscribed = true;
                 await _repository.UpdateUserAsync(user);
-              
 
                 return new ApiResponse<string>
                 {
@@ -48,11 +69,13 @@ namespace library_management_system.Services
             }
             else
             {
+                // Create a new subscription
                 var newSubscription = new GlobalSubscription
                 {
                     UserId = subscriptionDto.UserId,
                     SubscriptionType = subscriptionDto.SubscriptionType,
                     StartDate = DateTime.UtcNow,
+                    Amount = subscriptionDto.Amount,
                     EndDate = subscriptionDto.SubscriptionType == "Monthly"
                         ? DateTime.UtcNow.AddMonths(1)
                         : DateTime.UtcNow.AddYears(1),
@@ -63,7 +86,6 @@ namespace library_management_system.Services
 
                 user.IsSubscribed = true;
                 await _repository.UpdateUserAsync(user);
-              
 
                 return new ApiResponse<string>
                 {
@@ -74,10 +96,11 @@ namespace library_management_system.Services
             }
         }
 
- 
 
 
-    public async Task<object> CheckSubscriptionStatusAsync(int userId)
+
+
+        public async Task<object> CheckSubscriptionStatusAsync(int userId)
         {
             var subscription = await _repository.GetByUserIdAsync(userId);
 
@@ -87,11 +110,13 @@ namespace library_management_system.Services
             return new
             {
                 isActive = true,
+                amount = subscription.Amount,
                 subscriptionType = subscription.SubscriptionType,
                 startDate = subscription.StartDate,
                 endDate = subscription.EndDate
             };
         }
+
     }
 
 }
