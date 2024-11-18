@@ -61,3 +61,28 @@ button{
   margin-top: 30px;
   display: flex;
 }
+
+
+
+.admin-login-container {
+    position: relative;
+    padding: 20px;
+    background-color: #f9f9f9; /* Adjust as needed */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .btn-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+  }
+  

@@ -20,6 +20,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import { AdminloginComponent } from './components/admin/adminlogin/adminlogin.component';
 import { AddbookComponent } from './components/admin/addbook/addbook.component';
+import { AboutusComponent } from './layouts/landing-layout/aboutus/aboutus.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { AddbookComponent } from './components/admin/addbook/addbook.component';
     HomeComponent,
     AdminloginComponent,
     AddbookComponent,
+    AboutusComponent,
    
   ],
   imports: [

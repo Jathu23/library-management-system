@@ -1,6 +1,12 @@
-<form (ngSubmit)="onAdminLogin()" #adminLoginForm="ngForm">
-    <h3>Admin Login</h3>
-  
+<!-- Admin Login Form -->
+<div class="admin-login-container">
+  <form (ngSubmit)="onAdminLogin()" #adminLoginForm="ngForm">
+    <div class="form-header">
+      <h3>Admin Login</h3>
+      <!-- Close button -->
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeForm()">Close</button>
+    </div>
+
     <div>
       <label for="username">Username</label>
       <input 
@@ -11,7 +17,7 @@
         [(ngModel)]="adminLoginRequest.emailOrNic" 
         required>
     </div>
-  
+
     <div>
       <label for="password">Password</label>
       <input 
@@ -22,11 +28,11 @@
         [(ngModel)]="adminLoginRequest.password" 
         required>
     </div>
-  
+
     <button type="submit" class="abc" [disabled]="adminLoginForm.invalid">Log In</button>
   </form>
-  
+
   <div *ngIf="errorMessage" class="error">
     {{ errorMessage }}
   </div>
-  
+</div>

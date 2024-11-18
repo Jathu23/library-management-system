@@ -29,11 +29,12 @@
 </div> -->
 
 
+
 <div class="container-fluid p-0">
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+  <nav class="navbar navbar-expand-lg fixed-top" style="background: rgba(255, 255, 255, 0.058); backdrop-filter: blur(10px);">
     <div class="container">
-      <a class="navbar-brand" routerLink="/">
+      <a class="navbar-brand text-light" routerLink="/">
         <i class="bi bi-book-half me-2"></i>Premium Library
       </a>
       <button
@@ -50,87 +51,48 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link active" routerLink="/explore">Explore</a>
+            <a class="nav-link text-light" routerLink="/explore">Explore</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/about">About</a>
+            <a class="nav-link text-light" routerLink="/about">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/contact">Contact</a>
+            <a class="nav-link text-light" routerLink="/contact">Contact</a>
           </li>
           <li class="nav-item">
-            <a class="btn btn-primary btn-sm ms-2" routerLink="/admin-login">Login</a>
+            <a class="btn btn-outline-light btn-sm ms-2" routerLink="/admin-login">Login</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <div
-    class="hero-section text-white text-center d-flex align-items-center justify-content-center"
-  >
-    <div class="container">
-      <h1 class="display-4 fw-bold">Welcome to the Premium Library</h1>
-      <p class="lead">
-        Dive into a treasure trove of books, eBooks, and audiobooks!
-      </p>
-      <a
-        class="btn btn-light btn-lg px-5 py-2 shadow"
-        routerLink="/explore"
-        >Explore Now</a
-      >
-    </div>
+
+ <!-- Hero Section -->
+<div class="card text-bg-dark">
+  <img src="banner.jpg" class="card-img img-fluid" alt="Banner">
+  <div class="card-img-overlay d-flex flex-column justify-content-center" style="padding-left: 10%; padding-top: 5%;">
+    <h1 style="font-size: 53px; color: white;">The Best Libraries That<br> Every Book Lover Must<br> Visit!</h1>
+    <p class="card-text text-light">A library outranks any other one thing a community can do to<br> benefit its people. It is a never failing spring in the desert.</p>
+    <p class="card-text"><small class="text-light">Join With Us</small></p>
   </div>
+</div>
+
+<div>
+  <app-aboutus></app-aboutus>
+</div>
+
+
+
+
+
+
+
+
 
   <!-- Features Section -->
-  <div class="features-section py-5">
-    <div class="container">
-      <h2 class="text-center mb-4">Why Choose Us?</h2>
-      <div class="row text-center">
-        <div class="col-md-4 mb-4">
-          <i class="bi bi-book display-3 text-primary mb-3"></i>
-          <h4>Vast Collection</h4>
-          <p>
-            Access thousands of books across various genres, including eBooks
-            and audiobooks.
-          </p>
-        </div>
-        <div class="col-md-4 mb-4">
-          <i class="bi bi-laptop display-3 text-primary mb-3"></i>
-          <h4>Digital Library</h4>
-          <p>
-            Read and listen to books online with our state-of-the-art digital
-            library system.
-          </p>
-        </div>
-        <div class="col-md-4 mb-4">
-          <i class="bi bi-person-check display-3 text-primary mb-3"></i>
-          <h4>Personalized Experience</h4>
-          <p>
-            Create your own account to manage your books, favorites, and
-            reading history.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Book Gallery Section -->
-  <div
-    class="book-gallery-section text-center text-white d-flex align-items-center justify-content-center"
-  >
-    <div class="container">
-      <h2 class="display-5">Explore Our Exclusive Collections</h2>
-      <p>
-        Browse through our carefully curated collections of bestsellers,
-        classics, and more.
-      </p>
-      <a class="btn btn-primary btn-lg px-4" routerLink="/collections"
-        >View Collections</a
-      >
-    </div>
-  </div>
+
 
   <!-- Testimonials Section -->
   <div class="testimonials-section py-5 bg-light">
@@ -174,8 +136,12 @@
     </div>
   </div>
 
+
+
+
+  
   <!-- Call-to-Action Section -->
-  <div class="cta-section bg-primary text-white text-center py-5">
+  <div class="  text-white text-center py-5" style="background-color:  #81256c;">
     <div class="container">
       <h2 class="mb-4">Start Your Reading Adventure Today</h2>
       <a
@@ -186,5 +152,4 @@
     </div>
   </div>
   <router-outlet></router-outlet>
-</div>
 

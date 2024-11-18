@@ -22,7 +22,11 @@ export class AdminloginComponent {
       (response) => {
         if (response.success) {
           console.log('Admin logged in successfully:', response.data);
-          // Navigate to the admin dashboard
+          
+          
+          sessionStorage.setItem('loggedinUser', JSON.stringify(response.data));
+  
+          
           this.router.navigate(['/admin']); 
         } else {
           console.error('Login failed:', response.errors);
@@ -34,5 +38,11 @@ export class AdminloginComponent {
         this.errorMessage = 'Server error. Please try again later.';
       }
     );
+  }
+  closeForm() {
+    
+    this.adminLoginRequest = { emailOrNic: '', password: '' };
+    this.errorMessage = ''; 
+    this.router.navigate(['']); 
   }
 }
