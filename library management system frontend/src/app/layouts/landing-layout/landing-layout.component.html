@@ -1,4 +1,4 @@
-<div class="landing-page">
+<!-- <div class="landing-page">
   <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
     <div class="container">
       <a class="navbar-brand">SKY BLUE Library</a>
@@ -26,4 +26,165 @@
   </nav>
 
   <router-outlet></router-outlet>
+</div> -->
+
+
+<div class="container-fluid p-0">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+    <div class="container">
+      <a class="navbar-brand" routerLink="/">
+        <i class="bi bi-book-half me-2"></i>Premium Library
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" routerLink="/explore">Explore</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/contact">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-primary btn-sm ms-2" routerLink="/user-login">Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div
+    class="hero-section text-white text-center d-flex align-items-center justify-content-center"
+  >
+    <div class="container">
+      <h1 class="display-4 fw-bold">Welcome to the Premium Library</h1>
+      <p class="lead">
+        Dive into a treasure trove of books, eBooks, and audiobooks!
+      </p>
+      <a
+        class="btn btn-light btn-lg px-5 py-2 shadow"
+        routerLink="/explore"
+        >Explore Now</a
+      >
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="features-section py-5">
+    <div class="container">
+      <h2 class="text-center mb-4">Why Choose Us?</h2>
+      <div class="row text-center">
+        <div class="col-md-4 mb-4">
+          <i class="bi bi-book display-3 text-primary mb-3"></i>
+          <h4>Vast Collection</h4>
+          <p>
+            Access thousands of books across various genres, including eBooks
+            and audiobooks.
+          </p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <i class="bi bi-laptop display-3 text-primary mb-3"></i>
+          <h4>Digital Library</h4>
+          <p>
+            Read and listen to books online with our state-of-the-art digital
+            library system.
+          </p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <i class="bi bi-person-check display-3 text-primary mb-3"></i>
+          <h4>Personalized Experience</h4>
+          <p>
+            Create your own account to manage your books, favorites, and
+            reading history.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Book Gallery Section -->
+  <div
+    class="book-gallery-section text-center text-white d-flex align-items-center justify-content-center"
+  >
+    <div class="container">
+      <h2 class="display-5">Explore Our Exclusive Collections</h2>
+      <p>
+        Browse through our carefully curated collections of bestsellers,
+        classics, and more.
+      </p>
+      <a class="btn btn-primary btn-lg px-4" routerLink="/collections"
+        >View Collections</a
+      >
+    </div>
+  </div>
+
+  <!-- Testimonials Section -->
+  <div class="testimonials-section py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center mb-4">What Our Readers Say</h2>
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="card shadow border-0">
+            <div class="card-body">
+              <p class="card-text">
+                "Premium Library has completely changed how I read. I can access
+                all my favorite books anytime, anywhere!"
+              </p>
+              <h5 class="card-title">- Sarah M.</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card shadow border-0">
+            <div class="card-body">
+              <p class="card-text">
+                "I love the audiobook feature. It keeps me connected to
+                literature even during my busy workdays!"
+              </p>
+              <h5 class="card-title">- John D.</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card shadow border-0">
+            <div class="card-body">
+              <p class="card-text">
+                "The personalized account feature is brilliant! I can track all
+                my reading activities in one place."
+              </p>
+              <h5 class="card-title">- Emily R.</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Call-to-Action Section -->
+  <div class="cta-section bg-primary text-white text-center py-5">
+    <div class="container">
+      <h2 class="mb-4">Start Your Reading Adventure Today</h2>
+      <a
+        class="btn btn-light btn-lg px-5 py-2 shadow"
+        routerLink="/signup"
+        >Join Now</a
+      >
+    </div>
+  </div>
+  <router-outlet></router-outlet>
 </div>
+

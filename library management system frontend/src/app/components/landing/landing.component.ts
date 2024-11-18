@@ -10,47 +10,47 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.css']
 })
-export class LandingComponent {
-  form: FormGroup;
+// export class LandingComponent {
+//   form: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {
-    this.form = this.fb.group({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required])
-    });
-  }
+//   constructor(
+//     private fb: FormBuilder,
+//     private authService: AuthService,
+//     private router: Router
+//   ) {
+//     this.form = this.fb.group({
+//       email: new FormControl('', [Validators.required, Validators.email]),
+//       password: new FormControl('', [Validators.required])
+//     });
+//   }
 
-  onSubmit() {
-    if (this.form.valid) {
-      const loginRequest: AdminLoginRequest = {
-        emailOrNic: this.form.value.email,
-        password: this.form.value.password
+//   onSubmit() {
+//     if (this.form.valid) {
+//       const loginRequest: AdminLoginRequest = {
+//         emailOrNic: this.form.value.email,
+//         password: this.form.value.password
        
-      };
-console.log(loginRequest);
+//       };
+// console.log(loginRequest);
 
 
-      this.authService.login(loginRequest).subscribe(
-        (response: ApiResponse<string>) => {
-          if (response.success) {
-            this.router.navigate(['/user']); 
-            alert('success')
-          } else {
-            console.error('Login failed:', response.message);
-          }
-        },
-        (error) => {
-          console.error('Error occurred during login:', error);
-          alert('An error occurred during login. Please try again later.');
-        }
-      );
-    }
-  }
-}
+//       this.authService.login(loginRequest).subscribe(
+//         (response: ApiResponse<string>) => {
+//           if (response.success) {
+//             this.router.navigate(['/user']); 
+//             alert('success')
+//           } else {
+//             console.error('Login failed:', response.message);
+//           }
+//         },
+//         (error) => {
+//           console.error('Error occurred during login:', error);
+//           alert('An error occurred during login. Please try again later.');
+//         }
+//       );
+//     }
+//   }
+// }
 
 
 
@@ -105,3 +105,14 @@ console.log(loginRequest);
   //   }
   // }
 
+  export class LandingComponent {
+
+    constructor(private router: Router) {}
+  
+    // Handle login submission
+    onLoginSubmit() {
+      // Add your login logic here (e.g., validate form, call API)
+      alert('Login successful');
+      this.router.navigate(['/explore']); // Redirect to explore page on successful login
+    }
+  }

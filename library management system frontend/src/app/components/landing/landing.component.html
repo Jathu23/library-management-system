@@ -1,48 +1,21 @@
-<section class="vh-100" style="background-color: #eee;">
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-12 col-xl-11">
-        <div class="card text-black" style="border-radius: 25px;">
-          <div class="card-body p-md-5">
-            <div class="row justify-content-center">
-              <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-
-                <h5 class="card-title mb-3">Log In</h5>
-                <form  [formGroup]="form" (ngSubmit)="onSubmit()">
-                  <div class="mb-3">
-                    <label for="email" class="form-label">Email OR NIC</label>
-                    <input type="text" class="form-control" id="email" formControlName="email"
-                      placeholder="Email Address or NIC Number">
-                    <div *ngIf="form.get('email')?.touched && form.get('email')?.hasError('required')"
-                      class="text-danger">
-                      Email or NIC is required.
-                    </div>
-                    <div *ngIf="form.get('email')?.touched && form.get('email')?.hasError('email')" class="text-danger">
-                      Please enter a valid email address.
-                    </div>
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" formControlName="password"
-                      placeholder="Password">
-                    <div *ngIf="form.get('password')?.touched && form.get('password')?.hasError('required')"
-                      class="text-danger">
-                      Password is required.
-                    </div>
-                  </div>
-
-                  <button type="submit" class="btn btn-primary">Log In</button>
-                  <p><a [routerLink]="(['/register'])">Create Account</a></p>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+<div class="modal-header">
+  <h5 class="modal-title" id="loginModalLabel">Login</h5>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+  <form (ngSubmit)="onLoginSubmit()">
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input type="text" class="form-control" id="username" required>
     </div>
-  </div>
-</section>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" id="password" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+</div>
+
 
 
 

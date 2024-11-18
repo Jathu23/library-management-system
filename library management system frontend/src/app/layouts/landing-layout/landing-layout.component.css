@@ -1,20 +1,20 @@
-/* Set the background image for the landing page */
+/* 
 body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
 
 .landing-page {
-  background-image: url('https://mir-s3-cdn-cf.behance.net/project_modules/fs/a0bc7346576771.6551d80a7c694.png'); /* Path to your image */
-  background-size: cover; /* Ensures the image covers the entire area */
+  background-image: url('https://mir-s3-cdn-cf.behance.net/project_modules/fs/a0bc7346576771.6551d80a7c694.png');
+  background-size: cover; 
   background-repeat: no-repeat;
   background-position: center center;
-  min-height: 100vh; /* Makes sure it covers the full viewport height */
-  color: #ffffff; /* Text color to contrast with the background */
+  min-height: 100vh;
+  color: #ffffff; 
 }
 
 .navbar {
-  background: rgba(255, 255, 255, 0.8); /* Slightly transparent navbar */
+  background: rgba(255, 255, 255, 0.8); 
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -24,7 +24,96 @@ body {
 }
 
 .nav-link:hover {
-  color: #007bff; /* Blue hover effect */
+  color: #007bff; 
 }
 
+ */
 
+
+
+/* Navbar Styling */
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar-nav .nav-link {
+  margin: 0 10px;
+  font-size: 1rem;
+}
+
+.navbar-nav .btn {
+  font-size: 0.9rem;
+  border-radius: 20px;
+}
+
+/* Hero Section */
+.hero-section {
+  background: url('https://images.unsplash.com/photo-1512820790803-83ca734da794?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1920')
+    center center/cover;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-section h1 {
+  font-size: 3rem;
+}
+
+.hero-section p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.hero-section .btn {
+  font-size: 1rem;
+  border-radius: 30px;
+}
+
+/* Features Section */
+.features-section {
+  background-color: #f8f9fa;
+}
+
+.features-section h4 {
+  font-size: 1.5rem;
+  margin-top: 10px;
+}
+
+.features-section p {
+  color: #6c757d;
+}
+
+/* Book Gallery Section */
+.book-gallery-section {
+  background: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1920')
+    center center/cover;
+  height: 70vh;
+  color: white;
+  text-align: center;
+}
+
+/* Testimonials Section */
+.testimonials-section .card {
+  border-radius: 10px;
+}
+
+.testimonials-section .card-title {
+  font-size: 1.2rem;
+  color: #007bff;
+}
+
+/* CTA Section */
+.cta-section {
+  background: linear-gradient(90deg, #0056b3, #003f7f);
+}
+
+.cta-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.cta-section .btn {
+  font-size: 1rem;
+  border-radius: 30px;
+}
