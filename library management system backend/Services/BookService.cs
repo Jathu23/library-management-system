@@ -417,6 +417,9 @@ namespace library_management_system.Services
 
         private async Task<List<string>> SaveCoverImages(List<IFormFile> coverImages)
         {
+            //Console.Write("coverImages count is ");
+            //Console.Write(coverImages.Count);
+
             if (coverImages == null || !coverImages.Any())
                 return new List<string> { "defaultcover.jpg" };
 

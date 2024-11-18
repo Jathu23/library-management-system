@@ -12,11 +12,6 @@ export class BookService {
 
   constructor(private http: HttpClient) {}
 
-  /**
-   * Add a new book to the library
-   * @param book - The book details to add
-   * @returns Observable of the API response
-   */
   addBook(book: AddBookDto): Observable<any> {
     const formData = new FormData();
 
@@ -35,12 +30,18 @@ export class BookService {
 
     // Append cover images (if any)
     if (book.CoverImages) {
-      book.CoverImages.forEach((file, index) => {
+      Array.from(book.CoverImages).forEach((file: File, index: number) => {
         formData.append(`CoverImages[${index}]`, file, file.name);
       });
     }
+    // if (book.CoverImages && book.CoverImages.length > 0) {
+    //   Array.from(book.CoverImages).forEach((file: File, index: number) => {
+    //     formData.append(`CoverImages[${index}]`, file, file.name);
+    //   });
+    // }
+    
 
-    // Send a POST request with the FormData
+    
     return this.http.post(this.apiUrl, formData, {
       headers: new HttpHeaders({
         // Optionally, add additional headers if required
