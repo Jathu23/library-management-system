@@ -35,7 +35,7 @@ const routes: Routes = [
       { path: '', component: AdminDashboardComponent },
       { path: 'manage-books', component: ManageBooksComponent },
       { path: 'manage-users', component: ManageUsersComponent },
-      { path: 'add-book', component: AddbookComponent },
+      { path: 'add-normal-book', component: AddbookComponent },
     ]
   },
   {
