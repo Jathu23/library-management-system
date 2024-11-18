@@ -1,22 +1,39 @@
-<!-- Login Modal -->
-<div class="modal-header">
-  <h5 class="modal-title" id="loginModalLabel">Login</h5>
-  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-</div>
-<div class="modal-body" style="background: rgba(255, 255, 255, 0.7);">
-  <form (ngSubmit)="onLoginSubmit()">
-    <div class="mb-3">
-      <label for="username" class="form-label">Username</label>
-      <input type="text" class="form-control" id="username" required>
+<!-- User Login Form -->
+<div class="user-login-container">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-header">
+      <h3>User Login</h3>
+      <!-- Close button -->
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeForm()">Close</button>
     </div>
-    <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
-      <input type="password" class="form-control" id="password" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-  </form>
-</div>
 
+    <div>
+      <label for="email">Email</label>
+      <input 
+        type="email" 
+        id="email" 
+        formControlName="email" 
+        placeholder="Enter your email" 
+        required>
+    </div>
+
+    <div>
+      <label for="password">Password</label>
+      <input 
+        type="password" 
+        id="password" 
+        formControlName="password" 
+        placeholder="Enter your password" 
+        required>
+    </div>
+
+    <button type="submit" class="abc" [disabled]="form.invalid">Log In</button>
+  </form>
+
+  <div *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </div>
+</div>
 
 
 <!-- <div class="landing-page">

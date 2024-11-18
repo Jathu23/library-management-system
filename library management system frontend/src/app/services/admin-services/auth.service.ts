@@ -16,7 +16,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
   
   // User login method
-  login(userLoginRequest: AdminLoginRequest): Observable<ApiResponse<string>> {
+  login(userLoginRequest: any): Observable<ApiResponse<string>> {
     return this.http.post<ApiResponse<string>>(this.userUrl, userLoginRequest);
   }
   
