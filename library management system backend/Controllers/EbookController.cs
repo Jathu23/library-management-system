@@ -52,5 +52,16 @@ namespace library_management_system.Controllers
             return Ok(response);  
         }
 
+        [HttpGet("GetEbooks")]
+        public async Task<IActionResult> GetPaginatedEbooks(int pageNumber = 1, int pageSize = 10)
+        {
+            var response = await _ebookService.GetEbooksWithPagination(pageNumber, pageSize);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
     }
 }

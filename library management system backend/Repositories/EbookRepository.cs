@@ -67,5 +67,19 @@ namespace library_management_system.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<(List<Ebook>, int)> GetPaginatedEbooks(int pageNumber, int pageSize)
+        {
+            int totalCount = await _context.Ebooks.Include(e => e.Metadata).CountAsync();
+
+            var ebooks = await _context.Ebooks.Include(e => e.Metadata)
+                .OrderBy(e => e.Id) 
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (ebooks, totalCount);
+        }
+
+
     }
 }
