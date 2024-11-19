@@ -78,6 +78,9 @@ builder.Services.AddScoped<LentRepository>();
 builder.Services.AddScoped<ReturnService>();
 builder.Services.AddScoped<ReturnRepository>();
 
+builder.Services.AddScoped<LoginService>();
+builder.Services.AddScoped<LoginRepository>();
+
 
 
 builder.Services.AddScoped<JwtService>();

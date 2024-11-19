@@ -45,30 +45,30 @@ namespace library_management_system.Controllers
         }
 
 
-        [HttpPost("Aminlogin")]
-        public async Task<IActionResult> LoginUser([FromBody] AdminLoginRequset adminLoginRequset)
-        {
-            if (!ModelState.IsValid)
-            {
-                var response1 = new ApiResponse<string>
-                {
-                    Success = false,
-                    Message = "Validation failed.",
-                    Errors = ModelState.Values
-                        .SelectMany(v => v.Errors)
-                        .Select(e => e.ErrorMessage)
-                        .ToList()
-                };
-                return BadRequest(response1);
-            }
+        //[HttpPost("Aminlogin")]
+        //public async Task<IActionResult> LoginUser([FromBody] AdminLoginRequset adminLoginRequset)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        var response1 = new ApiResponse<string>
+        //        {
+        //            Success = false,
+        //            Message = "Validation failed.",
+        //            Errors = ModelState.Values
+        //                .SelectMany(v => v.Errors)
+        //                .Select(e => e.ErrorMessage)
+        //                .ToList()
+        //        };
+        //        return BadRequest(response1);
+        //    }
 
-            var response = await _adminServices.LoginAdmin(adminLoginRequset);
+        //    var response = await _adminServices.LoginAdmin(adminLoginRequset);
 
-            if (!response.Success)
-                return BadRequest(response);
+        //    if (!response.Success)
+        //        return BadRequest(response);
 
-            return Ok(response);
-        }
+        //    return Ok(response);
+        //}
 
 
         [HttpGet("GetAllAdmins")]

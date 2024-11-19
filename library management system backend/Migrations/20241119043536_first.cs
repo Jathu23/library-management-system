@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace library_management_system.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class first : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,8 +22,7 @@ namespace library_management_system.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProfileImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ProfileImage = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,6 +67,23 @@ namespace library_management_system.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ebooks", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LoginPort",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NIC = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MemberId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LoginPort", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -325,6 +341,9 @@ namespace library_management_system.Migrations
 
             migrationBuilder.DropTable(
                 name: "LentRecords");
+
+            migrationBuilder.DropTable(
+                name: "LoginPort");
 
             migrationBuilder.DropTable(
                 name: "RentHistory");
