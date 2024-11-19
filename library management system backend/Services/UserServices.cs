@@ -6,6 +6,8 @@ using library_management_system.DTOs.User;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Text.Json;
 
 namespace library_management_system.Services
 {
@@ -15,27 +17,30 @@ namespace library_management_system.Services
         private readonly ImageService _imageService;
         private readonly BCryptService _bCryptService;
         private readonly JwtService _jwtService;
+        private readonly LoginRepository _loginRepository;
 
         public UserServices(UserRepo userRepo,
                             ImageService imageService,
                             BCryptService bCryptService,
-                            JwtService jwtService)
+                            JwtService jwtService,
+                            LoginRepository loginRepository)
         {
             _userRepo = userRepo;
             _imageService = imageService;
             _bCryptService = bCryptService;
             _jwtService = jwtService;
+            _loginRepository = loginRepository;
         }
 
         public async Task<ApiResponse<string>> CreateUser(UserRequstModel userRequestDto)
         {
             var response = new ApiResponse<string>();
-            var exuser = await _userRepo.GetUserByEmailOrNic(userRequestDto.Email);
+            var exLoginData = await _loginRepository.GetByEmailOrNic(userRequestDto.Email);
 
 
             try
             {
-                if (exuser != null)
+                if (exLoginData != null)
                     throw new Exception("A user with this email already exists.");
 
                 var profileImagePath = await SaveProfileImage(userRequestDto.ProfileImage);
@@ -56,10 +61,43 @@ namespace library_management_system.Services
                     RegistrationDate = DateTime.Now
                 };
 
-                await _userRepo.CreateUser(user);
-                response.Success = true;
-                response.Message = "User created successfully.";
-                response.Data = _jwtService.GenerateToken(user);
+              var Createduser = await _userRepo.CreateUser(user);
+               
+             
+
+                var logindata = new LoginT
+                {
+                    Email = userRequestDto.Email,
+                    PasswordHash = _bCryptService.HashPassword(userRequestDto.Password),
+                    NIC = Createduser.UserNic,
+                    MemberId = Createduser.Id,
+                    Role = "user"
+
+                };
+
+                var state = await _loginRepository.Addlogdata(logindata);
+
+                if (Createduser != null && state == true)
+                {
+                    response.Success = true;
+                    response.Message = "User created successfully.";
+                    response.Data = JsonSerializer.Serialize(new
+                    {
+                        Token = _jwtService.GenerateToken(user),
+                        Role = "user"
+                    });
+
+
+                }
+                else
+                {
+                    throw new Exception("error");
+
+                }
+
+
+
+
             }
             catch (Exception ex)
             {

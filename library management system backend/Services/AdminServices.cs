@@ -5,6 +5,7 @@ using library_management_system.Repositories;
 using library_management_system.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using System.Text.Json;
 
 namespace library_management_system.Services
 {
@@ -71,7 +72,11 @@ namespace library_management_system.Services
                 {
                     response.Success = true;
                     response.Message = "Admin created successfully.";
-                    response.Data = _jwtService.GenerateAdminToken(admin);
+                    response.Data = JsonSerializer.Serialize(new
+                    {
+                        Token = _jwtService.GenerateAdminToken(admin),
+                        Role = "admin"
+                    });
                 }
                 else
                 {
