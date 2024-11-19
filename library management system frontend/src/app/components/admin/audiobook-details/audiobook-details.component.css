@@ -1,0 +1,21 @@
+/* Ensures that the image is responsive and has a nice border radius */
+.card-img-top {
+    max-height: 40px; /* Limit the image height */
+    object-fit: cover; /* Ensure the image covers the area without distortion */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow around the image */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effect */
+  }
+  
+  /* On hover, increase the size and shadow of the image */
+  .card-img-top:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Enhance the shadow on hover */
+  }
+  
+  /* Optional: Add a hover effect to the card itself */
+  .card:hover .card-img-top {
+    transform: scale(1.05);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  }
+  

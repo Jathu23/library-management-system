@@ -19,6 +19,8 @@ import { AboutusComponent } from './layouts/landing-layout/aboutus/aboutus.compo
 import { AdmincreateComponent } from './components/landing/admincreate/admincreate.component';
 import { UsersignupComponent } from './components/landing/usersignup/usersignup.component';
 import { LoginComponent } from './components/landing/login/login.component';
+import { AudiobooksComponent } from './components/admin/audiobooks/audiobooks.component';
+import { AudiobookDetailsComponent } from './components/admin/audiobook-details/audiobook-details.component';
 
 
 
@@ -39,7 +41,9 @@ import { LoginComponent } from './components/landing/login/login.component';
     UserLayoutComponent,
     AdmincreateComponent,
     UsersignupComponent,
-    LoginComponent
+    LoginComponent,
+    AudiobooksComponent,
+    AudiobookDetailsComponent
    
   ],
   imports: [
