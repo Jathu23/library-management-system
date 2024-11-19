@@ -1,6 +1,7 @@
 ﻿using library_management_system.Database;
 using library_management_system.Database.Entiy;
 using Microsoft.EntityFrameworkCore;
+using PdfSharp;
 
 namespace library_management_system.Repositories
 {
@@ -81,27 +82,30 @@ namespace library_management_system.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<NormalBook>> GetAllNormalBooksWithAvailableCopies()
+        public async Task<List<NormalBook>> GetAllNormalBooksWithAvailableCopies(int page, int pageSize)
         {
-            // Include the BookCopies and filter the ones that are available
             return await _context.NormalBooks
-                                 .Include(b => b.BookCopies) // Include associated book copies
-                                 .ToListAsync();
+                                  .Include(b => b.BookCopies) 
+                                  .Skip((page - 1) * pageSize) 
+                                  .Take(pageSize) 
+                                  .ToListAsync();
         }
 
-        public async Task<NormalBook> GetBookWithCopies(int bookId)
+
+        public async Task<NormalBook?> GetBookWithCopies(int bookId)
         {
             // Include the BookCopies and filter for only available ones
             return await _context.NormalBooks
                                  .Include(b => b.BookCopies)
                                  .FirstOrDefaultAsync(b => b.Id == bookId);
         }
-        public async Task<List<NormalBook>> GetAllBooksWithCopies()
+        public async Task<List<NormalBook>> GetAllBooksWithCopies(int page, int pageSize)
         {
-            // Include the BookCopies navigation property to load related copies for each book
             return await _context.NormalBooks
                                  .Include(b => b.BookCopies)
-                                 .ToListAsync();
+                                  .Skip((page - 1) * pageSize)
+                                  .Take(pageSize)
+                                  .ToListAsync();
         }
 
 

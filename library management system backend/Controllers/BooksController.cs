@@ -113,9 +113,9 @@ namespace library_management_system.Controllers
 
 
         [HttpGet("get-all-books")]
-        public async Task<IActionResult> GetAllNormalBooksWithAvailableCopies()
+        public async Task<IActionResult> GetAllNormalBooksWithAvailableCopies(int page, int pageSize)
         {
-            var response = await _bookService.GetAllNormalBooksWithAvailableCopies();
+            var response = await _bookService.GetAllNormalBooksWithAvailableCopies(page,pageSize);
 
             if (!response.Success)
                 return BadRequest(response);
@@ -135,15 +135,17 @@ namespace library_management_system.Controllers
         }
 
         [HttpGet("get-all-books-with-copies")]
-        public async Task<IActionResult> GetAllBooksWithCopies()
+        public async Task<IActionResult> GetAllBooksWithCopies(int page, int pageSize)
         {
-            var response = await _bookService.GetAllBooksWithCopies();
+            var response = await _bookService.GetAllBooksWithCopies(page, pageSize);
 
             if (!response.Success)
                 return BadRequest(response);
 
             return Ok(response);
         }
+
+      
 
 
     }

@@ -23,8 +23,6 @@ const routes: Routes = [
     component: LandingLayoutComponent,
     children: [
       { path: 'login', component: LoginComponent },
-      
-      
     ]
   },
   {

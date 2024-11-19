@@ -268,12 +268,12 @@ namespace library_management_system.Services
             }
         }
 
-        public async Task<ApiResponse<List<NormalBookDto>>> GetAllNormalBooksWithAvailableCopies()
+        public async Task<ApiResponse<List<NormalBookDto>>> GetAllNormalBooksWithAvailableCopies(int page, int pageSize)
         {
             try
             {
                 // Retrieve all normal books along with their copies
-                var books = await _bookRepository.GetAllNormalBooksWithAvailableCopies();
+                var books = await _bookRepository.GetAllNormalBooksWithAvailableCopies(page, pageSize);
 
                 // Map the retrieved books to DTOs for API response
                 var bookDtos = books.Select(book => new NormalBookDto
@@ -364,12 +364,12 @@ namespace library_management_system.Services
             }
         }
 
-        public async Task<ApiResponse<List<NormalBookDetailsDto>>> GetAllBooksWithCopies()
+        public async Task<ApiResponse<List<NormalBookDetailsDto>>> GetAllBooksWithCopies(int page, int pageSize)
         {
             try
             {
                
-                var books = await _bookRepository.GetAllBooksWithCopies();
+                var books = await _bookRepository.GetAllBooksWithCopies(page, pageSize);
 
                
                 var bookDtos = books.Select(book => new NormalBookDetailsDto
