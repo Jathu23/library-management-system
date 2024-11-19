@@ -47,30 +47,32 @@ namespace library_management_system.Controllers
 
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> LoginUser([FromBody] LoginRequest loginRequest)
-        {
-            if (!ModelState.IsValid)
-            {
-                var response1 = new ApiResponse<string>
-                {
-                    Success = false,
-                    Message = "Validation failed.",
-                    Errors = ModelState.Values
-                        .SelectMany(v => v.Errors)
-                        .Select(e => e.ErrorMessage)
-                        .ToList()
-                };
-                return BadRequest(response1);
-            }
+        //[HttpPost("login")]
+        //public async Task<IActionResult> LoginUser([FromBody] LoginRequest loginRequest)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        var response1 = new ApiResponse<string>
+        //        {
+        //            Success = false,
+        //            Message = "Validation failed.",
+        //            Errors = ModelState.Values
+        //                .SelectMany(v => v.Errors)
+        //                .Select(e => e.ErrorMessage)
+        //                .ToList()
+        //        };
+        //        return BadRequest(response1);
+        //    }
 
-            var response = await _userService.LoginUser(loginRequest);
+        //    var response = await _userService.LoginUser(loginRequest);
 
-            if (!response.Success)
-                return BadRequest(response);
+        //    if (!response.Success)
+        //        return BadRequest(response);
 
-            return Ok(response);
-        }
+        //    return Ok(response);
+        //}
+
+
         [HttpGet("GetAllUsers")]
         public async Task<IActionResult> GetUsers()
         {

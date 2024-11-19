@@ -15,7 +15,6 @@ namespace library_management_system.Database.Entiy
         public required string Email { get; set; }
         public required string PhoneNumber { get; set; }
         public required string Address { get; set; }
-        public required string PasswordHash { get; set; }
         public required string? ProfileImage { get; set; }
         public required DateTime RegistrationDate { get; set; }
         public required bool IsActive { get; set; }

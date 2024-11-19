@@ -32,9 +32,9 @@ namespace library_management_system.Services
             _loginRepository = loginRepository;
         }
 
-        public async Task<ApiResponse<string>> CreateUser(UserRequstModel userRequestDto)
+        public async Task<ApiResponse<AuthResponse>> CreateUser(UserRequstModel userRequestDto)
         {
-            var response = new ApiResponse<string>();
+            var response = new ApiResponse<AuthResponse>();
             var exLoginData = await _loginRepository.GetByEmailOrNic(userRequestDto.Email);
 
 
@@ -54,7 +54,6 @@ namespace library_management_system.Services
                     Email = userRequestDto.Email,
                     PhoneNumber = userRequestDto.PhoneNumber,
                     Address = userRequestDto.Address,
-                    PasswordHash = _bCryptService.HashPassword(userRequestDto.Password),
                     ProfileImage = profileImagePath,
                     IsActive = userRequestDto.IsActive,
                     IsSubscribed = userRequestDto.IsSubscribed,
@@ -81,11 +80,12 @@ namespace library_management_system.Services
                 {
                     response.Success = true;
                     response.Message = "User created successfully.";
-                    response.Data = JsonSerializer.Serialize(new
+                    response.Data = new AuthResponse
                     {
                         Token = _jwtService.GenerateToken(user),
                         Role = "user"
-                    });
+                    };
+
 
 
                 }
@@ -109,25 +109,25 @@ namespace library_management_system.Services
             return response;
         }
 
-        public async Task<ApiResponse<string>> LoginUser(LoginRequest loginRequest)
-        {
-            var response = new ApiResponse<string>();
+        //public async Task<ApiResponse<string>> LoginUser(LoginRequest loginRequest)
+        //{
+        //    var response = new ApiResponse<string>();
 
-            var user = await _userRepo.GetUserByEmailOrNic(loginRequest.EmailOrNic);
-            if (user == null || !_bCryptService.VerifyPassword(loginRequest.Password, user.PasswordHash))
-            {
-                response.Success = false;
-                response.Message = "Login failed";
-                response.Errors.Add("Invalid email or password.");
-                return response;
-            }
+        //    var user = await _userRepo.GetUserByEmailOrNic(loginRequest.EmailOrNic);
+        //    if (user == null || !_bCryptService.VerifyPassword(loginRequest.Password, user.PasswordHash))
+        //    {
+        //        response.Success = false;
+        //        response.Message = "Login failed";
+        //        response.Errors.Add("Invalid email or password.");
+        //        return response;
+        //    }
 
-            response.Success = true;
-            response.Message = "Login successful";
-            response.Data = _jwtService.GenerateToken(user);
+        //    response.Success = true;
+        //    response.Message = "Login successful";
+        //    response.Data = _jwtService.GenerateToken(user);
 
-            return response;
-        }
+        //    return response;
+        //}
 
         private async Task<string> SaveProfileImage(IFormFile? profileImage)
         {

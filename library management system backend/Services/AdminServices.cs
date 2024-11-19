@@ -30,9 +30,9 @@ namespace library_management_system.Services
             _loginRepo = loginRepository;
         }
 
-        public async Task<ApiResponse<string>> CreateAdmin(AdminRequstModel AdminRequstDto)
+        public async Task<ApiResponse<AuthResponse>> CreateAdmin(AdminRequstModel AdminRequstDto)
         {
-            var response = new ApiResponse<string>();
+            var response = new ApiResponse<AuthResponse>();
             var exLoginData = await _loginRepo.GetByEmailOrNic(AdminRequstDto.Email);
 
           try
@@ -72,11 +72,11 @@ namespace library_management_system.Services
                 {
                     response.Success = true;
                     response.Message = "Admin created successfully.";
-                    response.Data = JsonSerializer.Serialize(new
+                    response.Data = new AuthResponse
                     {
                         Token = _jwtService.GenerateAdminToken(admin),
                         Role = "admin"
-                    });
+                    };
                 }
                 else
                 {
