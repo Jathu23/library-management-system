@@ -28,7 +28,7 @@ namespace library_management_system.Repositories
         }
 
 
-        public async Task<Audiobook> GetAudiobookById(int audiobookId)
+        public async Task<Audiobook?> GetAudiobookById(int audiobookId)
         {
             return await _context.Audiobooks
                 .Include(a => a.Metadata)
@@ -68,6 +68,20 @@ namespace library_management_system.Repositories
 
             return true;
         }
+
+        public async Task<(List<Audiobook>, int)> GetPaginatedAudiobooksAsync(int page, int pageSize)
+        {
+            var audiobooks = await _context.Audiobooks.Include(a => a.Metadata)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Total count for pagination metadata
+            int totalCount = await _context.Audiobooks.Include(a => a.Metadata).CountAsync();
+
+            return (audiobooks, totalCount);
+        }
+
 
 
 

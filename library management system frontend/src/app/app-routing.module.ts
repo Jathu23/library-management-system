@@ -12,6 +12,7 @@ import { LandingLayoutComponent } from './layouts/landing-layout/landing-layout.
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 
 import { AddbookComponent } from './components/admin/addbook/addbook.component';
+import { LoginComponent } from './components/landing/login/login.component';
 
 
 const routes: Routes = [
@@ -19,7 +20,7 @@ const routes: Routes = [
     path: '',
     component: LandingLayoutComponent,
     children: [
-      // { path: 'login', component: LoginComponent },
+      { path: 'login', component: LoginComponent },
       
       
     ]

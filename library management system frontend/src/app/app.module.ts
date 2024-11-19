@@ -15,9 +15,10 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { LandingLayoutComponent } from './layouts/landing-layout/landing-layout.component';
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 import { AboutusComponent } from './layouts/landing-layout/aboutus/aboutus.component';
-import { LoginComponent } from './components/landing/login/login.component';
+
 import { AdmincreateComponent } from './components/landing/admincreate/admincreate.component';
 import { UsersignupComponent } from './components/landing/usersignup/usersignup.component';
+import { LoginComponent } from './components/landing/login/login.component';
 
 
 
@@ -36,9 +37,9 @@ import { UsersignupComponent } from './components/landing/usersignup/usersignup.
     AdminLayoutComponent,
     LandingLayoutComponent,
     UserLayoutComponent,
-    LoginComponent,
     AdmincreateComponent,
-    UsersignupComponent
+    UsersignupComponent,
+    LoginComponent
    
   ],
   imports: [
