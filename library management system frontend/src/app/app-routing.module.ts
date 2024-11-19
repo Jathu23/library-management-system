@@ -12,7 +12,7 @@ import { LandingLayoutComponent } from './layouts/landing-layout/landing-layout.
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
-import { AdminloginComponent } from './components/admin/adminlogin/adminlogin.component';
+
 import { AddbookComponent } from './components/admin/addbook/addbook.component';
 
 const routes: Routes = [
@@ -21,7 +21,7 @@ const routes: Routes = [
     component: LandingLayoutComponent,
     children: [
       { path: 'user-login', component: LandingComponent },
-      { path: 'admin-login', component: AdminloginComponent },
+      
       {path:'register',component:RegisterComponent},
       {path:'home',component:HomeComponent},
       {path:'',component:HomeComponent}

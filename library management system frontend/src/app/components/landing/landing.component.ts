@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/admin-services/auth.service';
-import { AdminLoginRequest } from '../../models/interfaces/admin-login-request.interface';
-import { ApiResponse } from '../../models/interfaces/api-response.interface';
+
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -31,12 +30,33 @@ export class LandingComponent {
         emailOrNic: this.form.value.email,
         password: this.form.value.password
       };
-      console.log(loginRequest);
+      console.log('Login request:', loginRequest);
 
       this.authService.login(loginRequest).subscribe(
         (response) => {
           if (response.success) {
-            this.router.navigate(['/user']); 
+            
+            sessionStorage.setItem('LoggedInUser', JSON.stringify(response.data));
+            console.log('User data saved in sessionStorage:', response.data);
+            const userDataString = sessionStorage.getItem('LoggedInUser') || '{}'; 
+            const userData = JSON.parse(userDataString);
+            console.log(userData);
+
+            if (userData) {
+              
+              if (userData.role === 'admin') { 
+                this.router.navigate(['/admin']);
+              } else if (userData.role === 'user') {
+                this.router.navigate(['/user']);
+              } else {
+                console.error('Unknown role:', userData.role);
+                alert('Unknown user role. Please contact support.');
+              }
+            } else {
+              console.error('User data not found in sessionStorage');
+              alert('An error occurred during login. Please try again.');
+            }
+
             alert('Login successful!');
           } else {
             console.error('Login failed:', response.message);
@@ -51,13 +71,14 @@ export class LandingComponent {
     }
   }
 
+
+
   closeForm() {
     this.form.reset();
-    this.errorMessage = ''; 
-    this.router.navigate(['']); 
+    this.errorMessage = '';
+    this.router.navigate(['']);
   }
-  
+
 
 }
- 
- 
+

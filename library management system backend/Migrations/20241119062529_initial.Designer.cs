@@ -12,7 +12,7 @@ using library_management_system.Database;
 namespace library_management_system.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20241119045445_initial")]
+    [Migration("20241119062529_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -489,10 +489,6 @@ namespace library_management_system.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

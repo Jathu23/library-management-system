@@ -1,30 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AdminLoginRequest, UserRequestModel,  } from '../../models/interfaces/admin-login-request.interface';
+import { AdminLoginRequest, UserRequestModel, } from '../../models/interfaces/admin-login-request.interface';
 import { ApiResponse } from '../../models/interfaces/api-response.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
- 
-  private readonly userUrl = 'http://localhost:5149/api/User/login';
-  private readonly adminUrl = 'http://localhost:5149/api/Admin/Aminlogin';
+
+  private readonly userUrl = 'http://localhost:5149/api/Login/login';
+
   private readonly userCreationUrl = 'http://localhost:5149/api/User/create';
-  
-  constructor(private http: HttpClient) {}
-  
+
+  constructor(private http: HttpClient) { }
+
   // User login method
   login(userLoginRequest: any): Observable<ApiResponse<string>> {
     return this.http.post<ApiResponse<string>>(this.userUrl, userLoginRequest);
   }
-  
-  // Admin login method
-  adminLogin(adminLoginRequest: AdminLoginRequest): Observable<ApiResponse<string>> {
-    return this.http.post<ApiResponse<string>>(this.adminUrl, adminLoginRequest);
-  }
-  
+
 
   createUser(user: UserRequestModel): Observable<ApiResponse<string>> {
     const formData: FormData = new FormData();
@@ -48,6 +43,6 @@ export class AuthService {
     return this.http.post<ApiResponse<string>>(this.userCreationUrl, formData);
   }
 
-  
+
 
 }

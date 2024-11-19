@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import { HttpClientModule } from '@angular/common/http';
 import { LandingLayoutComponent } from './layouts/landing-layout/landing-layout.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
@@ -18,7 +16,6 @@ import { ViewOverdueBooksComponent } from './components/user/view-overdue-books/
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
-import { AdminloginComponent } from './components/admin/adminlogin/adminlogin.component';
 import { AddbookComponent } from './components/admin/addbook/addbook.component';
 import { AboutusComponent } from './layouts/landing-layout/aboutus/aboutus.component';
 
@@ -37,7 +34,6 @@ import { AboutusComponent } from './layouts/landing-layout/aboutus/aboutus.compo
     ViewOverdueBooksComponent,
     RegisterComponent,
     HomeComponent,
-    AdminloginComponent,
     AddbookComponent,
     AboutusComponent,
    
