@@ -2,15 +2,14 @@
 <div class="user-login-container">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-header">
-      <h3>User Login</h3>
+      <h3 >User Login</h3>
       <!-- Close button -->
-      <button type="button" class="btn-close" aria-label="Close" (click)="closeForm()">Close</button>
     </div>
 
     <div>
       <label for="email">Email</label>
       <input 
-        type="email" 
+        type="text" 
         id="email" 
         formControlName="email" 
         placeholder="Enter your email" 
@@ -28,6 +27,7 @@
     </div>
 
     <button type="submit" class="abc" [disabled]="form.invalid">Log In</button>
+    <button type="button" style="padding: 0;" class="btn-close" aria-label="Close" (click)="closeForm()">Close</button>
   </form>
 
   <div *ngIf="errorMessage" class="error">
@@ -36,22 +36,3 @@
 </div>
 
 
-<!-- <div class="landing-page">
-  <h1>Welcome to the Library Management System</h1>
-  <p>Explore books, manage your account, and more!</p>
-  
-  <form (ngSubmit)="onLogin()">
-    <div>
-      <label for="username">Username:</label>
-      <input type="text" id="username" [(ngModel)]="username" name="username" required>
-    </div>
-    <div>
-      <label for="password">Password:</label>
-      <input type="password" id="password" [(ngModel)]="password" name="password" required>
-    </div>
-    <button type="button" (click)="onLogin('admin')">Admin Login</button>
-    <button type="button" (click)="onLogin('user')">User Login</button>
-  </form>
-
-  <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
-</div> -->

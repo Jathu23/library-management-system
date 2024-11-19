@@ -27,6 +27,8 @@
   width: 400px;
   background-color: rgba(255, 255, 255, 0.13);
   position: absolute;
+  
+  
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
@@ -39,12 +41,13 @@
   color: #ffffff;
   letter-spacing: 0.5px;
   outline: none;
+  z-index: 99;
 }
 
 form h3 {
   font-size: 32px;
   font-weight: 500;
-  line-height: 42px;
+  line-height: 10px;
   text-align: center;
 }
 
@@ -114,5 +117,5 @@ button:disabled {
   border: none;
   font-size: 20px;
   cursor: pointer;
-  color: #333;
+  color: #fd0a0a;
 }

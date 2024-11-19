@@ -4,7 +4,7 @@
     <div class="form-header">
       <h3>Admin Login</h3>
       <!-- Close button -->
-      <button type="button" class="btn-close" aria-label="Close" (click)="closeForm()">Close</button>
+     
     </div>
 
     <div>
@@ -30,6 +30,7 @@
     </div>
 
     <button type="submit" class="abc" [disabled]="adminLoginForm.invalid">Log In</button>
+    <button type="button" style="padding: 0;" class="btn-close" aria-label="Close" (click)="closeForm()">Close</button>
   </form>
 
   <div *ngIf="errorMessage" class="error">
