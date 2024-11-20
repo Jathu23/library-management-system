@@ -21,6 +21,8 @@ import { UsersignupComponent } from './components/landing/usersignup/usersignup.
 import { LoginComponent } from './components/landing/login/login.component';
 import { AudiobooksComponent } from './components/admin/audiobooks/audiobooks.component';
 import { AudiobookDetailsComponent } from './components/admin/audiobook-details/audiobook-details.component';
+import { AddebookComponent } from './components/admin/addebook/addebook.component';
+import { AddAudiobookComponent } from './components/admin/add-audiobook/add-audiobook.component';
 
 
 
@@ -43,7 +45,9 @@ import { AudiobookDetailsComponent } from './components/admin/audiobook-details/
     UsersignupComponent,
     LoginComponent,
     AudiobooksComponent,
-    AudiobookDetailsComponent
+    AudiobookDetailsComponent,
+    AddebookComponent,
+    AddAudiobookComponent
    
   ],
   imports: [

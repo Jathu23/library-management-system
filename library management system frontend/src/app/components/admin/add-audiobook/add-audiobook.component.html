@@ -1,0 +1,93 @@
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-3">
+      <div class="card-header bg-primary text-white text-center">
+        <h3>Add Audiobook</h3>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="addAudiobookForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <!-- ISBN -->
+            <div class="col-md-6 mb-4">
+              <label for="isbn" class="form-label">ISBN</label>
+              <input type="text" id="isbn" class="form-control" formControlName="ISBN" placeholder="Enter ISBN" />
+            </div>
+  
+            <!-- Title -->
+            <div class="col-md-6 mb-4">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" id="title" class="form-control" formControlName="Title" placeholder="Enter Title" />
+            </div>
+          </div>
+  
+          <div class="row">
+            <!-- Author -->
+            <div class="col-md-6 mb-4">
+              <label for="author" class="form-label">Author</label>
+              <input type="text" id="author" class="form-control" formControlName="Author" placeholder="Enter Author" />
+            </div>
+  
+            <!-- Genre -->
+            <div class="col-md-6 mb-4">
+              <label for="genre" class="form-label">Genre</label>
+              <input type="text" id="genre" class="form-control" formControlName="Genre" placeholder="Enter Genre" />
+            </div>
+          </div>
+  
+          <div class="row">
+            <!-- Publish Year -->
+            <div class="col-md-6 mb-4">
+              <label for="publishYear" class="form-label">Publish Year</label>
+              <input type="number" id="publishYear" class="form-control" formControlName="PublishYear" placeholder="Year" />
+            </div>
+  
+            <!-- Language -->
+            <div class="col-md-6 mb-4">
+              <label for="language" class="form-label">Language</label>
+              <input type="text" id="language" class="form-control" formControlName="Language" placeholder="Enter Language" />
+            </div>
+          </div>
+  
+          <div class="row">
+            <!-- Audio File -->
+            <div class="col-md-6 mb-4">
+              <label for="audioFile" class="form-label">Audio File</label>
+              <input type="file" id="audioFile" class="form-control" (change)="onFileSelect($event, 'AudioFile')" />
+            </div>
+  
+            <!-- Cover Image -->
+            <div class="col-md-6 mb-4">
+              <label for="coverImage" class="form-label">Cover Image</label>
+              <input type="file" id="coverImage" class="form-control" (change)="onFileSelect($event, 'CoverImage')" />
+            </div>
+          </div>
+  
+          <div class="row">
+            <!-- Narrator -->
+            <div class="col-md-6 mb-4">
+              <label for="narrator" class="form-label">Narrator</label>
+              <input type="text" id="narrator" class="form-control" formControlName="Narrator" placeholder="Enter Narrator" />
+            </div>
+  
+            <!-- Publisher -->
+            <div class="col-md-6 mb-4">
+              <label for="publisher" class="form-label">Publisher</label>
+              <input type="text" id="publisher" class="form-control" formControlName="Publisher" placeholder="Enter Publisher" />
+            </div>
+          </div>
+  
+          <div class="row">
+            <!-- Description -->
+            <div class="col-md-12 mb-4">
+              <label for="description" class="form-label">Description</label>
+              <textarea id="description" class="form-control" formControlName="Description" rows="3"></textarea>
+            </div>
+          </div>
+  
+          <div class="text-center">
+            <button type="submit" class="btn btn-success" [disabled]="addAudiobookForm.invalid">Add Audiobook</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

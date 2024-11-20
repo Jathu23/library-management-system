@@ -1,0 +1,132 @@
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-3">
+      <div class="card-header bg-primary text-white text-center">
+        <h3>Add New eBook</h3>
+      </div>
+  
+      <div class="card-body">
+        <form [formGroup]="addEbookForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <!-- ISBN -->
+            <div class="col-md-6 mb-4">
+              <label for="isbn" class="form-label">ISBN</label>
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">
+                  <i class="bi bi-upc-scan"></i>
+                </span>
+                <input type="text" id="isbn" class="form-control" formControlName="ISBN" placeholder="Enter ISBN" />
+              </div>
+              <div *ngIf="addEbookForm.controls['ISBN'].invalid && addEbookForm.controls['ISBN'].touched"
+                class="text-danger mt-1">
+                ISBN is required.
+              </div>
+            </div>
+  
+            <!-- Title -->
+            <div class="col-md-6 mb-4">
+              <label for="title" class="form-label">Title</label>
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">
+                  <i class="bi bi-book"></i>
+                </span>
+                <input type="text" id="title" class="form-control" formControlName="Title"
+                  placeholder="Enter Book Title" />
+              </div>
+              <div *ngIf="addEbookForm.controls['Title'].invalid && addEbookForm.controls['Title'].touched"
+                class="text-danger mt-1">
+                Title is required.
+              </div>
+            </div>
+          </div>
+  
+          <div class="row">
+            <!-- Author -->
+            <div class="col-md-6 mb-4">
+              <label for="author" class="form-label">Author</label>
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">
+                  <i class="bi bi-person"></i>
+                </span>
+                <input type="text" id="author" class="form-control" formControlName="Author"
+                  placeholder="Enter Author Name" />
+              </div>
+              <div *ngIf="addEbookForm.controls['Author'].invalid && addEbookForm.controls['Author'].touched"
+                class="text-danger mt-1">
+                Author is required.
+              </div>
+            </div>
+  
+            <!-- Genre -->
+            <div class="col-md-6 mb-4">
+              <label for="genre" class="form-label">Genre</label>
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">
+                  <i class="bi bi-tags"></i>
+                </span>
+                <input type="text" id="genre" class="form-control" formControlName="Genre" placeholder="Enter Genre" />
+              </div>
+              <div *ngIf="addEbookForm.controls['Genre'].invalid && addEbookForm.controls['Genre'].touched"
+                class="text-danger mt-1">
+                Genre is required.
+              </div>
+            </div>
+          </div>
+  
+          <div class="row">
+            <!-- Publish Year -->
+            <div class="col-md-6 mb-4">
+              <label for="publishYear" class="form-label">Publish Year</label>
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">
+                  <i class="bi bi-calendar"></i>
+                </span>
+                <input type="number" id="publishYear" class="form-control" formControlName="PublishYear"
+                  placeholder="Enter Publish Year" />
+              </div>
+              <div *ngIf="addEbookForm.controls['PublishYear'].invalid && addEbookForm.controls['PublishYear'].touched"
+                class="text-danger mt-1">
+                Publish Year is required.
+              </div>
+            </div>
+  
+            <!-- eBook File -->
+            <div class="col-md-6 mb-4">
+              <label for="ebookFile" class="form-label">eBook File</label>
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">
+                  <i class="bi bi-file-earmark"></i>
+                </span>
+                <input type="file" id="ebookFile" class="form-control" (change)="onFileSelect($event, 'EbookFile')" />
+              </div>
+            </div>
+          </div>
+  
+          <div class="row">
+            <!-- Cover Images -->
+            <div class="col-md-6 mb-4">
+              <label for="coverImages" class="form-label">Cover Images</label>
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">
+                  <i class="bi bi-image"></i>
+                </span>
+                <input type="file" id="coverImages" class="form-control" (change)="onFileSelect($event, 'CoverImages')"
+                  multiple />
+              </div>
+              <div class="row mt-3">
+                <div *ngFor="let preview of imagePreviews" class="me-2 mb-2">
+                  <img [src]="preview" alt="Preview" style="max-width: 100px; max-height: 100px;" />
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success px-4 py-2" [disabled]="addEbookForm.invalid">
+              <i class="bi bi-check-circle"></i> Add eBook
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
