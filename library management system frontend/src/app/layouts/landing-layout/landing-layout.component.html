@@ -1,21 +1,13 @@
-
-
 <div class="container-fluid p-0">
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg fixed-top" style="background: rgba(255, 255, 255, 0.058); backdrop-filter: blur(10px);">
+  <nav class="navbar navbar-expand-lg fixed-top"
+    style="background: rgba(255, 255, 255, 0.058); backdrop-filter: blur(10px);">
     <div class="container">
       <a class="navbar-brand text-light" routerLink="/">
         <i class="bi bi-book-half me-2"></i>Premium Library
       </a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -24,11 +16,13 @@
             <a class="nav-link text-dark" routerLink="/explore">Explore</a>
           </li>
           <li class="nav-item">
-            <button class="btn btn-outline-dark btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up</button>
+            <button class="btn btn-outline-dark btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#signupModal">Sign
+              Up</button>
           </li>
-          
+
           <li class="nav-item">
-            <a class="btn btn-outline-dark btn-sm ms-2" routerLink="/user-login" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+            <a class="btn btn-outline-dark btn-sm ms-2" routerLink="/user-login" data-bs-toggle="modal"
+              data-bs-target="#loginModal">Login</a>
           </li>
 
         </ul>
@@ -36,157 +30,176 @@
     </div>
   </nav>
 
-<!-- login modal -->
-<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title" id="loginModalLabel" style="align-items: center;">Login</h3>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="d-flex align-items-center justify-content-center" style="min-height: 70vh;">
-          <section class="container">
-            <div class="row d-flex align-items-center justify-content-center">
-              <div class="col-md-6 d-none d-md-block">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-                  class="img-fluid" alt="Phone image">
-              </div>
-              <div class="col-md-6">
-                <form>
-                  <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="email" id="form1Example13" class="form-control form-control-lg" />
-                    <label class="form-label" for="form1Example13">Email address</label>
-                  </div>
-
-                  <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="password" id="form1Example23" class="form-control form-control-lg" />
-                    <label class="form-label" for="form1Example23">Password</label>
-                  </div>
-                  <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
-                      <label class="form-check-label" for="form1Example3"> Remember me </label>
-                    </div>
-                    <a href="#!" class="text-decoration-none">Forgot password?</a>
-                  </div>
-                  <button type="submit" class="btn btn-primary btn-lg btn-block w-100">Login</button>
-                </form>
-              </div>
-            </div>
-          </section>
+  <!-- login modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="loginModalLabel" style="align-items: center;">Login</h3>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
+        <div class="modal-body">
+          <div class="d-flex align-items-center justify-content-center" style="min-height: 70vh;">
+            <section class="container">
+              <div class="row d-flex align-items-center justify-content-center">
+                <div class="col-md-6 d-none d-md-block">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+                    class="img-fluid" alt="Phone image">
+                </div>
+                <div class="col-md-6">
+                  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <input type="email" id="form1Example13" class="form-control form-control-lg"
+                        formControlName="emailOrNic"
+                        [ngClass]="{ 'is-invalid': loginForm.get('emailOrNic')?.invalid && loginForm.get('emailOrNic')?.touched }" />
+                      <label class="form-label" for="form1Example13">Email address</label>
+                      <div class="invalid-feedback">
+                        Please enter your email or NIC.
+                      </div>
+                    </div>
 
-<!-- sinup modal -->
-<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title" id="signupModalLabel" style="align-items: center;">Sign Up</h3>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="d-flex align-items-center justify-content-center" style="min-height: 70vh;">
-          <section class="container">
-            <div class="row d-flex align-items-center justify-content-center">
-              <div class="col-md-6 d-none d-md-block">
-                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" class="img-fluid" alt="SignUp image">
-              </div>
-              <div class="col-md-6">
-                <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-                  <!-- Form fields for user details -->
-                  <div class="form-outline mb-4">
-                    <input type="text" id="firstName" formControlName="firstName" class="form-control form-control-lg" />
-                    <label class="form-label" for="firstName">First Name</label>
-                  </div>
-
-                  <div class="form-outline mb-4">
-                    <input type="text" id="lastName" formControlName="lastName" class="form-control form-control-lg" />
-                    <label class="form-label" for="lastName">Last Name</label>
-                  </div>
-
-                  <div class="form-outline mb-4">
-                    <input type="text" id="fullName" formControlName="fullName" class="form-control form-control-lg" />
-                    <label class="form-label" for="fullName">Full Name</label>
-                  </div>
-
-                  <div class="form-outline mb-4">
-                    <input type="email" id="email" formControlName="email" class="form-control form-control-lg" />
-                    <label class="form-label" for="email">Email address</label>
-                  </div>
-
-                  <div class="form-outline mb-4">
-                    <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control form-control-lg" />
-                    <label class="form-label" for="phoneNumber">Phone Number</label>
-                  </div>
-
-                  <div class="form-outline mb-4">
-                    <input type="text" id="address" formControlName="address" class="form-control form-control-lg" />
-                    <label class="form-label" for="address">Address</label>
-                  </div>
-
-                  <div class="form-outline mb-4">
-                    <input type="file" id="profileImage" formControlName="profileImage" class="form-control form-control-lg" />
-                    <label class="form-label" for="profileImage">Profile Image</label>
-                  </div>
-
-                  <input type="hidden" id="registrationDate" formControlName="registrationDate" />
-
-                  <!-- Terms of Service Checkbox -->
-                  <div class="form-check mb-4">
-                    <input class="form-check-input" type="checkbox" formControlName="terms" id="terms" />
-                    <label class="form-check-label" for="terms">
-                      I agree to all statements in <a href="/terms-of-service" target="_blank">Terms of Service</a>
-                    </label>
-                  </div>
-
-                  <button type="submit" class="btn btn-primary btn-lg btn-block w-100" [disabled]="!signupForm.valid">Sign Up</button>
-
-                </form>
-
-                <!-- Link to Login Modal -->
-                <div class="mt-3 text-center">
-                  <span class="text-muted">Have already an account?</span>
-                  <a class="btn btn-outline-dark btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <input type="password" id="form1Example23" class="form-control form-control-lg"
+                      formControlName="password" 
+                      [ngClass]="{ 'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched }" />
+                      <label class="form-label" for="form1Example23">Password</label>
+                      <div class="invalid-feedback">
+                        Password is required.
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
+                        <label class="form-check-label" for="form1Example3"> Remember me </label>
+                      </div>
+                      <a href="#!" class="text-decoration-none">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block w-100">Login</button>
+                  </form>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
+  <!-- sinup modal -->
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="signupModalLabel" style="align-items: center;">Sign Up</h3>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex align-items-center justify-content-center" style="min-height: 70vh;">
+            <section class="container">
+              <div class="row d-flex align-items-center justify-content-center">
+                <div class="col-md-6 d-none d-md-block">
+                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+                    class="img-fluid" alt="SignUp image">
+                </div>
+                <div class="col-md-6">
+                  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+                    <!-- Form fields for user details -->
+                    <div class="form-outline mb-4">
+                      <input type="text" id="firstName" formControlName="firstName"
+                        class="form-control form-control-lg" />
+                      <label class="form-label" for="firstName">First Name</label>
+                    </div>
 
+                    <div class="form-outline mb-4">
+                      <input type="text" id="lastName" formControlName="lastName"
+                        class="form-control form-control-lg" />
+                      <label class="form-label" for="lastName">Last Name</label>
+                    </div>
 
+                    <div class="form-outline mb-4">
+                      <input type="text" id="fullName" formControlName="fullName"
+                        class="form-control form-control-lg" />
+                      <label class="form-label" for="fullName">Full Name</label>
+                    </div>
 
+                    <div class="form-outline mb-4">
+                      <input type="email" id="email" formControlName="email" class="form-control form-control-lg" />
+                      <label class="form-label" for="email">Email address</label>
+                    </div>
 
+                    <div class="form-outline mb-4">
+                      <input type="text" id="phoneNumber" formControlName="phoneNumber"
+                        class="form-control form-control-lg" />
+                      <label class="form-label" for="phoneNumber">Phone Number</label>
+                    </div>
 
+                    <div class="form-outline mb-4">
+                      <input type="text" id="address" formControlName="address" class="form-control form-control-lg" />
+                      <label class="form-label" for="address">Address</label>
+                    </div>
 
+                    <div class="form-outline mb-4">
+                      <input type="file" id="profileImage" formControlName="profileImage"
+                        class="form-control form-control-lg" />
+                      <label class="form-label" for="profileImage">Profile Image</label>
+                    </div>
 
+                    <input type="hidden" id="registrationDate" formControlName="registrationDate" />
 
+                    <!-- Terms of Service Checkbox -->
+                    <div class="form-check mb-4">
+                      <input class="form-check-input" type="checkbox" formControlName="terms" id="terms" />
+                      <label class="form-check-label" for="terms">
+                        I agree to all statements in <a href="/terms-of-service" target="_blank">Terms of Service</a>
+                      </label>
+                    </div>
 
+                    <button type="submit" class="btn btn-primary btn-lg btn-block w-100"
+                      [disabled]="!signupForm.valid">Sign Up</button>
 
+                  </form>
 
-
- <!-- Hero Section -->
-<div class="card text-bg-dark">
-  <img src="banner.jpg" class="card-img img-fluid" alt="Banner">
-  <div class="card-img-overlay d-flex flex-column justify-content-center" style="padding-left: 10%; padding-top: 5%;">
-    <h1 style="font-size: 53px; color: white;">The Best Libraries That<br> Every Book Lover Must<br> Visit!</h1>
-    <p class="card-text text-light">A library outranks any other one thing a community can do to<br> benefit its people. It is a never failing spring in the desert.</p>
-    <p class="card-text"><small class="text-light">Join With Us</small></p>
+                  <!-- Link to Login Modal -->
+                  <div class="mt-3 text-center">
+                    <span class="text-muted">Have already an account?</span>
+                    <a class="btn btn-outline-dark btn-sm ms-2" data-bs-toggle="modal"
+                      data-bs-target="#loginModal">Login</a>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 
-<div>
-  <app-aboutus></app-aboutus>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Hero Section -->
+  <div class="card text-bg-dark">
+    <img src="banner.jpg" class="card-img img-fluid" alt="Banner">
+    <div class="card-img-overlay d-flex flex-column justify-content-center" style="padding-left: 10%; padding-top: 5%;">
+      <h1 style="font-size: 53px; color: white;">The Best Libraries That<br> Every Book Lover Must<br> Visit!</h1>
+      <p class="card-text text-light">A library outranks any other one thing a community can do to<br> benefit its
+        people. It is a never failing spring in the desert.</p>
+      <p class="card-text"><small class="text-light">Join With Us</small></p>
+    </div>
+  </div>
+
+  <div>
+    <app-aboutus></app-aboutus>
+  </div>
 
 
 
@@ -245,17 +258,11 @@
 
 
 
-  
+
   <!-- Call-to-Action Section -->
   <div class="  text-white text-center py-5" style="background-color:  #81256c;">
     <div class="container">
       <h2 class="mb-4">Start Your Reading Adventure Today</h2>
-      <a
-        class="btn btn-light btn-lg px-5 py-2 shadow"
-        routerLink="/signup"
-        >Join Now</a
-      >
+      <a class="btn btn-light btn-lg px-5 py-2 shadow" routerLink="/signup">Join Now</a>
     </div>
   </div>
-
-
