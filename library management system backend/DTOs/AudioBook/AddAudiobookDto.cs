@@ -8,7 +8,7 @@
         public string Genre { get; set; }
         public int PublishYear { get; set; }
         public IFormFile AudioFile { get; set; }
-        public IFormFile CoverImage { get; set; }
+        public IFormFile? CoverImage { get; set; }
 
       
         public string FileFormat { get; set; }

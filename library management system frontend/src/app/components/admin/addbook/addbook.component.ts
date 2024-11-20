@@ -85,7 +85,7 @@ export class AddbookComponent {
       PublishYear: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
       ShelfLocation: ['', Validators.required],
       TotalCopies: ['', [Validators.required, Validators.min(1)]],
-      CoverImages: [null]
+      CoverImages: ['']
     });
   }
 
