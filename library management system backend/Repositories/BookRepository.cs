@@ -108,6 +108,34 @@ namespace library_management_system.Repositories
                                   .ToListAsync();
         }
 
+        public async Task<(List<NormalBook>, int)> Categorization(string? genre, string? author, int? publishYear, int pageNumber, int pageSize)
+        {
+            var query = _context.NormalBooks.Include(b => b.BookCopies).AsQueryable();
+
+            if (!string.IsNullOrEmpty(genre))
+            {
+                query = query.Where(b => b.Genre.Any(g => g.Contains(genre)));
+            }
+            if (!string.IsNullOrEmpty(author))
+            {
+                query = query.Where(b => b.Author.Contains(author));
+            }
+            if (publishYear.HasValue)
+            {
+                query = query.Where(b => b.PublishYear == publishYear.Value);
+            }
+
+            int totalRecords = await query.CountAsync();
+
+            var books = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (books, totalRecords);
+        }
+
+
 
     }
 }

@@ -57,11 +57,256 @@ namespace library_management_system.Controllers
 
             return Ok(response);
         }
-        //[HttpPost ("addsamle")]
-        //public async Task<int> addsample()
-        //{
+//        [HttpPost("addsamle")]
+//        public async Task<int> addsample()
+//        {
+//            var audiobooks = new List<AddAudiobookDto>
+//{
+//    new AddAudiobookDto
+//    {
+//        ISBN = "978-1-234567-01-0",
+//        Title = "The Silent World",
+//        Author = "Jane Doe",
+//        Genre = "Science Fiction",
+//        PublishYear = 2021,
+//        AudioFile = null,  // Replace with actual IFormFile during runtime
+//        CoverImage = null, // Replace with actual IFormFile during runtime
+//        FileFormat = "MP3",
+//        Language = "English",
+//        Narrator = "John Smith",
+//        Publisher = "Future Press",
+//        Description = "A thrilling journey into a silent world.",
+//        DigitalRights = "DRM Protected"
+//    },
+//    new AddAudiobookDto
+//    {
+//        ISBN = "978-1-234567-02-0",
+//        Title = "Whispers in the Dark",
+//        Author = "Emily Carter",
+//        Genre = "Mystery",
+//        PublishYear = 2020,
+//        AudioFile = null,
+//        CoverImage = null,
+//        FileFormat = "MP3",
+//        Language = "English",
+//        Narrator = "Samantha Lee",
+//        Publisher = "Mystery House",
+//        Description = "A suspenseful tale of whispers and shadows.",
+//        DigitalRights = "Open Access"
+//    },
+//    new AddAudiobookDto
+//    {
+//        ISBN = "978-1-234567-03-0",
+//        Title = "The Art of Mindfulness",
+//        Author = "Robert Kim",
+//        Genre = "Self-Help",
+//        PublishYear = 2019,
+//        AudioFile = null,
+//        CoverImage = null,
+//        FileFormat = "AAC",
+//        Language = "English",
+//        Narrator = "Karen Moore",
+//        Publisher = "Mindful Reads",
+//        Description = "Practical techniques to improve mindfulness.",
+//        DigitalRights = "DRM Protected"
+//    },
+//    new AddAudiobookDto
+//    {
+//        ISBN = "978-1-234567-04-0",
+//        Title = "The Cosmic Voyage",
+//        Author = "Chris Nolan",
+//        Genre = "Science",
+//        PublishYear = 2018,
+//        AudioFile = null,
+//        CoverImage = null,
+//        FileFormat = "WAV",
+//        Language = "English",
+//        Narrator = "James Taylor",
+//        Publisher = "Astro Books",
+//        Description = "Explore the cosmos with this engaging audiobook.",
+//        DigitalRights = "Open Access"
+//    },
+//    new AddAudiobookDto
+//    {
+//        ISBN = "978-1-234567-05-0",
+//        Title = "Adventures in Wonderland",
+//        Author = "Lewis Carroll",
+//        Genre = "Fantasy",
+//        PublishYear = 2017,
+//        AudioFile = null,
+//        CoverImage = null,
+//        FileFormat = "MP3",
+//        Language = "English",
+//        Narrator = "Mary Collins",
+//        Publisher = "Classic Tales",
+//        Description = "A classic tale of curiosity and adventure.",
+//        DigitalRights = "Public Domain"
+//    },
+//     new AddAudiobookDto
+//    {
+//        ISBN = "978-1-234567-06-0",
+//        Title = "Echoes of Eternity",
+//        Author = "Rachel Adams",
+//        Genre = "Historical Fiction",
+//        PublishYear = 2022,
+//        AudioFile = null,
+//        CoverImage = null,
+//        FileFormat = "MP3",
+//        Language = "English",
+//        Narrator = "Evelyn Harper",
+//        Publisher = "Timeless Tales",
+//        Description = "A journey through time and love.",
+//        DigitalRights = "DRM Protected"
+//    },
+//    new AddAudiobookDto
+//    {
+//        ISBN = "978-1-234567-07-0",
+//        Title = "The Quantum Detective",
+//        Author = "Harrison Ford",
+//        Genre = "Science Fiction",
+//        PublishYear = 2020,
+//        AudioFile = null,
+//        CoverImage = null,
+//        FileFormat = "AAC",
+//        Language = "English",
+//        Narrator = "Liam Watson",
+//        Publisher = "Futuristic Reads",
+//        Description = "A detective story set in a quantum universe.",
+//        DigitalRights = "Open Access"
+//    },
+//    new AddAudiobookDto
+//    {
+//        ISBN = "978-1-234567-08-0",
+//        Title = "The Mindful Leader",
+//        Author = "Sophia Bennett",
+//        Genre = "Business",
+//        PublishYear = 2019,
+//        AudioFile = null,
+//        CoverImage = null,
+//        FileFormat = "WAV",
+//        Language = "English",
+//        Narrator = "Michael Davis",
+//        Publisher = "Leadership Insights",
+//        Description = "Transform your leadership with mindfulness techniques.",
+//        DigitalRights = "DRM Protected"
+//    },
+//    new AddAudiobookDto
+//    {
+//        ISBN = "978-1-234567-09-0",
+//        Title = "Lost in the Stars",
+//        Author = "Olivia Carter",
+//        Genre = "Adventure",
+//        PublishYear = 2018,
+//        AudioFile = null,
+//        CoverImage = null,
+//        FileFormat = "MP3",
+//        Language = "English",
+//        Narrator = "Emma Wilson",
+//        Publisher = "Starry Nights",
+//        Description = "A space adventure like no other.",
+//        DigitalRights = "Open Access"
+//    },
+//    new AddAudiobookDto
+//    {
+//        ISBN = "978-1-234567-10-0",
+//        Title = "Tales of the Ancient Woods",
+//        Author = "Liam Brown",
+//        Genre = "Fantasy",
+//        PublishYear = 2017,
+//        AudioFile = null,
+//        CoverImage = null,
+//        FileFormat = "MP3",
+//        Language = "English",
+//        Narrator = "Sophia Green",
+//        Publisher = "Nature Chronicles",
+//        Description = "Legends and myths from the ancient forests.",
+//        DigitalRights = "Public Domain"
+//    },
+//    new AddAudiobookDto
+//    {
+//        ISBN = "978-1-234567-11-0",
+//        Title = "The Art of Negotiation",
+//        Author = "John Maxwell",
+//        Genre = "Self-Help",
+//        PublishYear = 2021,
+//        AudioFile = null,
+//        CoverImage = null,
+//        FileFormat = "MP3",
+//        Language = "English",
+//        Narrator = "David Ross",
+//        Publisher = "Success Stories",
+//        Description = "Master negotiation skills to excel in any field.",
+//        DigitalRights = "DRM Protected"
+//    },
+//    new AddAudiobookDto
+//    {
+//        ISBN = "978-1-234567-12-0",
+//        Title = "Beyond the Horizon",
+//        Author = "Charlotte Lewis",
+//        Genre = "Adventure",
+//        PublishYear = 2020,
+//        AudioFile = null,
+//        CoverImage = null,
+//        FileFormat = "WAV",
+//        Language = "English",
+//        Narrator = "Daniel Martinez",
+//        Publisher = "Wanderlust Books",
+//        Description = "An epic tale of exploration and discovery.",
+//        DigitalRights = "Open Access"
+//    },
+//    new AddAudiobookDto
+//    {
+//        ISBN = "978-1-234567-13-0",
+//        Title = "The Hidden Truth",
+//        Author = "Emma Thompson",
+//        Genre = "Thriller",
+//        PublishYear = 2019,
+//        AudioFile = null,
+//        CoverImage = null,
+//        FileFormat = "MP3",
+//        Language = "English",
+//        Narrator = "James Evans",
+//        Publisher = "Mystery House",
+//        Description = "Unravel the secrets hidden within.",
+//        DigitalRights = "DRM Protected"
+//    },
+//    new AddAudiobookDto
+//    {
+//        ISBN = "978-1-234567-14-0",
+//        Title = "Legends of the Unknown",
+//        Author = "Thomas Walker",
+//        Genre = "Fantasy",
+//        PublishYear = 2018,
+//        AudioFile = null,
+//        CoverImage = null,
+//        FileFormat = "AAC",
+//        Language = "English",
+//        Narrator = "Sophia Miller",
+//        Publisher = "Fictional World",
+//        Description = "Ancient legends brought to life in an enchanting tale.",
+//        DigitalRights = "Public Domain"
+//    },
+//    new AddAudiobookDto
+//    {
+//        ISBN = "978-1-234567-15-0",
+//        Title = "Winds of Change",
+//        Author = "Isabella Clarke",
+//        Genre = "Drama",
+//        PublishYear = 2022,
+//        AudioFile = null,
+//        CoverImage = null,
+//        FileFormat = "MP3",
+//        Language = "English",
+//        Narrator = "Olivia Martinez",
+//        Publisher = "Drama Hub",
+//        Description = "A gripping tale of love and resilience.",
+//        DigitalRights = "Open Access"
+//    }
+//};
 
-        //}
+//        }
+
+
 
     }
 }

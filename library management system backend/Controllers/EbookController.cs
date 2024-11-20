@@ -18,7 +18,7 @@ namespace library_management_system.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IActionResult> AddEbook([FromForm] AddEbookDto ebookDto)
+        public async Task<IActionResult> AddEbook( AddEbookDto ebookDto)
         {
             var response = await _ebookService.AddNewEbook(ebookDto);
 
@@ -63,5 +63,124 @@ namespace library_management_system.Controllers
             return Ok(response);
         }
 
+//        [HttpPost ("sample")]
+//        public async Task<int> addsample()
+//        {
+//            var ebooks = new List<AddEbookDto>
+//{
+//    new AddEbookDto
+//    {
+//        ISBN = "978-1-234567-01-1",
+//        Title = "The Digital Frontier",
+//        Author = "Sophia Adams",
+//        Genre = "Technology",
+//        PublishYear = 2021,
+//        EbookFile = null,
+//        CoverImages = null,
+//        Metadata = new EbookMetadataDto
+//        {
+//            Language = "English",
+//            Publisher = "TechPioneers",
+//            Description = "Exploring the cutting edge of technology.",
+//            DigitalRights = "DRM Protected"
+//        }
+//    },
+//    new AddEbookDto
+//    {
+//        ISBN = "978-1-234567-02-1",
+//        Title = "Mysteries of the Mind",
+//        Author = "Ethan Johnson",
+//        Genre = "Psychology",
+//        PublishYear = 2019,
+//        EbookFile = null,
+//        CoverImages = null,
+//        Metadata = new EbookMetadataDto
+//        {
+//            Language = "English",
+//            Publisher = "Mind Matters",
+//            Description = "A deep dive into the human mind.",
+//            DigitalRights = "Open Access"
+//        }
+//    },
+//    new AddEbookDto
+//    {
+//        ISBN = "978-1-234567-03-1",
+//        Title = "Chronicles of the Cosmos",
+//        Author = "Liam Brown",
+//        Genre = "Science Fiction",
+//        PublishYear = 2020,
+//        EbookFile = null,
+//        CoverImages = null,
+//        Metadata = new EbookMetadataDto
+//        {
+//            Language = "English",
+//            Publisher = "Galaxy Tales",
+//            Description = "An interstellar journey through time and space.",
+//            DigitalRights = "DRM Protected"
+//        }
+//    },
+//    new AddEbookDto
+//    {
+//        ISBN = "978-1-234567-04-1",
+//        Title = "The Art of Resilience",
+//        Author = "Olivia Taylor",
+//        Genre = "Self-Help",
+//        PublishYear = 2022,
+//        EbookFile = null,
+//        CoverImages = null,
+//        Metadata = new EbookMetadataDto
+//        {
+//            Language = "English",
+//            Publisher = "Wellness Press",
+//            Description = "Empowering strategies for personal growth.",
+//            DigitalRights = "Open Access"
+//        }
+//    },
+//    new AddEbookDto
+//    {
+//        ISBN = "978-1-234567-05-1",
+//        Title = "Legends of the Wild",
+//        Author = "Charlotte Lee",
+//        Genre = "Adventure",
+//        PublishYear = 2018,
+//        EbookFile = null,
+//        CoverImages = null,
+//        Metadata = new EbookMetadataDto
+//        {
+//            Language = "English",
+//            Publisher = "Nature Chronicles",
+//            Description = "A tale of survival and courage.",
+//            DigitalRights = "Public Domain"
+//        }
+//    },
+   
+//};
+
+
+
+
+          
+//            for (int i = 6; i <= 30; i++)
+//            {
+//                ebooks.Add(new AddEbookDto
+//                {
+//                    ISBN = $"978-1-234567-{i:02}-1",
+//                    Title = $"Ebook Title {i}",
+//                    Author = $"Author {i}",
+//                    Genre = (i % 2 == 0) ? "Fiction" : "Non-Fiction",
+//                    PublishYear = 2015 + i % 10,
+//                    EbookFile = null,
+//                    CoverImages = null,
+//                    Metadata = new EbookMetadataDto
+//                    {
+//                        Language = "English",
+//                        Publisher = $"Publisher {i}",
+//                        Description = $"A description for Ebook Title {i}.",
+//                        DigitalRights = (i % 2 == 0) ? "DRM Protected" : "Open Access"
+//                    }
+//                });
+//            }
+
+//        }
     }
 }

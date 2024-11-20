@@ -1,6 +1,7 @@
 ﻿using library_management_system.Database.Entiy;
 using library_management_system.DTOs;
 using library_management_system.DTOs.Book;
+using library_management_system.DTOs.Ebook;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
 
@@ -286,7 +287,8 @@ namespace library_management_system.Services
                     PublishYear = book.PublishYear,
                     ShelfLocation = book.ShelfLocation,
                     TotalCopies = book.TotalCopies,
-                    AvailableCopies = book.BookCopies.Count(bc => bc.IsAvailable),
+                    AviableCopies = book.BookCopies.Count(bc => bc.IsAvailable),
+                
                     CoverImagePath = book.CoverImagePath
                 }).ToList();
 
@@ -411,9 +413,54 @@ namespace library_management_system.Services
             }
         }
 
+        public async Task<ApiResponse<PaginatedResult<NormalBookDto>>> GetCategorizedBooks(string? genre,string? author,int? publishYear,int pageNumber,int pageSize)
+        {
+            try
+            {
+                var (books, totalRecords) = await _bookRepository.Categorization(genre, author, publishYear, pageNumber, pageSize);
 
+                var bookDtos = books.Select(b => new NormalBookDto
+                {
+                    Id = b.Id,
+                    ISBN = b.ISBN,
+                    Title = b.Title,
+                    Author = b.Author,
+                    Genre = b.Genre,
+                    PublishYear = b.PublishYear,
+                    AddedDate = b.AddedDate,
+                    ShelfLocation = b.ShelfLocation,
+                    RentCount = b.RentCount,
+                    TotalCopies = b.TotalCopies,
+                    AviableCopies = b.BookCopies.Count(bc => bc.IsAvailable),
+                    CoverImagePath = b.CoverImagePath
+                }).ToList();
 
+                var paginatedResult = new PaginatedResult<NormalBookDto>
+                {
+                    Items = bookDtos,
+                    TotalCount = totalRecords,
+                    CurrentPage = pageNumber,
+                    PageSize = pageSize
+                };
 
+                return new ApiResponse<PaginatedResult<NormalBookDto>>
+                {
+                    Success = true,
+                    Message = "All books with copies retrieved successfully.",
+                    Data = paginatedResult
+                };
+            }
+            catch (Exception ex)
+            {
+                
+                return new ApiResponse<PaginatedResult<NormalBookDto>>
+                {
+                    Success = false,
+                    Message = $"An error occurred: {ex.Message}",
+                    Errors = new List<string> { ex.Message }
+                };
+            }
+        }
 
         private async Task<List<string>> SaveCoverImages(List<IFormFile> coverImages)
         {
@@ -427,5 +474,9 @@ namespace library_management_system.Services
             return imagePaths;
         }
 
+
     }
+
+
 }
+

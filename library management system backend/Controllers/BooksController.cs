@@ -3,6 +3,7 @@ using library_management_system.DTOs;
 using library_management_system.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Azure;
 
 namespace library_management_system.Controllers
 {
@@ -144,6 +145,30 @@ namespace library_management_system.Controllers
 
             return Ok(response);
         }
+
+
+        [HttpGet("Categorize")]
+        public async Task<IActionResult> Categorize(
+            [FromQuery] string? genre,
+            [FromQuery] string? author,
+            [FromQuery] int? publishYear,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            var response = await _bookService.GetCategorizedBooks(genre, author, publishYear, pageNumber, pageSize);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+
+
+
+
+
 
         [HttpPost ("sample")]
         public async Task<int> addsample()
