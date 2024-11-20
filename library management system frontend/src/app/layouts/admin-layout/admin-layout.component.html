@@ -18,8 +18,8 @@
   </div> -->
 
 
-  <div class="d-flex flex-column flex-md-row">
-    <!-- Sidebar -->
+  <!-- <div class="d-flex flex-column flex-md-row">
+  
     <nav class="nav flex-column bg-dark vh-100 text-white p-3 sidebar">
       <div class="navbar-brand text-center mb-4">
         <i class="fas fa-book-reader fa-2x"></i>
@@ -42,7 +42,7 @@
           </a>
         </li>
   
-        <!-- Add Book with Submenu -->
+        
         <li class="nav-item">
           <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#addBookSubmenu" role="button"
             aria-expanded="false" aria-controls="addBookSubmenu">
@@ -80,7 +80,7 @@
       </ul>
     </nav>
   
-    <!-- Topbar (for mobile screens) -->
+    
     <nav class="navbar navbar-expand-md navbar-dark bg-dark d-md-none">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -102,7 +102,7 @@
               <a class="nav-link" [routerLink]="['/admin/manage-users']">Manage Users</a>
             </li>
   
-            <!-- Add Book Submenu -->
+           
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" id="addBookDropdown" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
@@ -126,8 +126,90 @@
       </div>
     </nav>
   
-    <!-- Content Area -->
+ 
     <div class="content flex-grow-1 p-4">
       <router-outlet></router-outlet>
     </div>
-  </div>
+  </div> -->
+
+
+
+  <div class="container">
+    <div class="sidebar">
+        <div class="menu-btn">
+            <i class="bi bi-arrow-bar-left"></i>
+        </div>
+        <div class="head">
+            <div class="user-img">
+                <img src="user.img" alt="User">
+            </div>
+            <div class="user-details">
+                <p class="title">WelCome</p>
+                
+            </div>
+        </div>
+        <div class="nav">
+            <div class="menu">
+                <p class="title" style="font-size: larger;">Admin</p>
+                <ul>
+                    <li class="active">
+                        <a [routerLink]="['/admin']">
+                            <i class="icon bi bi-speedometer2"></i>
+                            <span class="text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="icon bi bi-people"></i>
+                            <span class="text">Members</span>
+                            <i class="arrow bi bi-arrow-bar-down"></i>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="#"><i class="icon bi bi-person-check-fill"></i><span class="text">Active Users</span></a></li>
+                            <li><a href="#"><i class="icon bi bi-ban"></i><span class="text">Non-ActoveUsers</span></a></li>
+                            <li><a href="#"><i class="icon bi bi-coin"></i><span class="text">Subscribers</span></a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="icon bi bi-book"></i>
+                            <span class="text">Books</span>
+                            <i class="arrow bi bi-arrow-bar-down"></i>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a [routerLink]="['/admin/manage-books']"><i class="icon bi bi-file-earmark-pdf-fill"></i><span class="text">EBooks</span></a></li>
+                            <li><a [routerLink]="['/admin/audio/books']"><i class="icon bi bi-file-earmark-music-fill"></i><span class="text">AudioBooks</span></a></li>
+                            <li><a [routerLink]="['/admin/E-books']"><i class="icon bi bi-book-half"></i><span class="text">Physical Books</span></a></li>
+                        </ul>
+                    </li>
+                    <li>
+                      <a href="#">
+                          <i class="icon bi bi-book"></i>
+                          <span class="text">Books-Inventory</span>
+                          <i class="arrow bi bi-arrow-bar-down"></i>
+                      </a>
+                      <ul class="sub-menu">
+                          <li><a [routerLink]="['/admin/add-ebook']"><i class="icon bi bi-file-earmark-pdf-fill"></i><span class="text">EBooks</span></a></li>
+                          <li><a [routerLink]="['/admin/add-normal-book']"><i class="icon bi bi-file-earmark-music-fill"></i><span class="text">AudioBooks</span></a></li>
+                          <li><a [routerLink]="['/admin/add-normal-book']"[routerLink]="['/admin/add-audiobook']"><i class="icon bi bi-book-half"></i><span class="text">Physical Books</span></a></li>
+                      </ul>
+                  </li>
+                  <li><a href="#"><i class="icon bi bi-arrow-return-left"></i><span class="text">Lend</span></a></li>
+                  <li><a href="#"><i class="icon bi bi-arrow-return-right"></i><span class="text">Return</span></a></li>
+                </ul>
+            </div>
+            
+            <div class="menu">
+                <p class="title">Account</p>
+                <ul>
+                  <li><a href="#"><i class="icon bi bi-question-circle"></i><span class="text">Profile</span></a></li>
+                   
+                    <li><a href="#"><i class="icon bi bi-box-arrow-right"></i><span class="text">Logout</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="content flex-grow-1 p-4">
+      <router-outlet></router-outlet>
+    </div>
+</div>

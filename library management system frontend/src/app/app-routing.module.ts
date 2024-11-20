@@ -34,6 +34,8 @@ const routes: Routes = [
       { path: 'manage-users', component: ManageUsersComponent },
       { path: 'add-normal-book', component: AddbookComponent },
       { path: 'audio-books', component: AudiobooksComponent },
+       { path: 'audio-books', component: AudiobooksComponent },
+      { path: 'E-books', component: AudiobooksComponent },
       { path: 'audiobook/:id', component: AudiobookDetailsComponent }
     ]
   },
