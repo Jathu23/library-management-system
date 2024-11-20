@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AdminLoginRequest, UserRequestModel, } from '../../models/interfaces/admin-login-request.interface';
 import { ApiResponse } from '../../models/interfaces/api-response.interface';
+import { adminRequestModel } from '../../models/interfaces/add-admin.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,9 @@ import { ApiResponse } from '../../models/interfaces/api-response.interface';
 export class AuthService {
 
   
-
-  private readonly userCreationUrl = 'http://localhost:5149/api/User/create';
-
-
+  
+}
+  
 
 
   // createUser(user: UserRequestModel): Observable<ApiResponse<string>> {
@@ -40,4 +40,4 @@ export class AuthService {
 
 
 
-}
+
