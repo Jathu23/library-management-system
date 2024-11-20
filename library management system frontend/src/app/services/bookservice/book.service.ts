@@ -12,6 +12,7 @@ import { AddAudiobookDto } from '../../models/interfaces/add-newaudiobook.interf
 export class BookService {
   private readonly apiUrl = 'https://localhost:7261/api/Books/add';
   private ebookUrl = 'https://localhost:7261/api/Ebook/add'; 
+  private audiobookUrl = 'https://localhost:7261/api/Audiobook/add-audiobook'; 
 
   constructor(private http: HttpClient) {}
 
@@ -79,7 +80,7 @@ export class BookService {
     }
 
     // Send POST request
-    return this.http.post<any>(this.apiUrl, formData);
+    return this.http.post<any>(this.ebookUrl, formData);
   }
 
 
@@ -100,20 +101,27 @@ export class BookService {
     formData.append('DigitalRights', audiobook.DigitalRights);
 
     // Append files
-    if (audiobook.AudioFile instanceof File) {
-      formData.append('AudioFile', audiobook.AudioFile, audiobook.AudioFile.name);
-    } else {
-      console.error('AudioFile is not a valid File object');
-    }
+    // if (audiobook.AudioFile instanceof File) {
+    //   formData.append('AudioFile', audiobook.AudioFile, audiobook.AudioFile.name);
+    // } else {
+    //   console.error('AudioFile is not a valid File object');
+    // }
 
-    if (audiobook.CoverImage instanceof File) {
+
+    if (audiobook.AudioFile) {
+      formData.append('AudioFile', audiobook.AudioFile, audiobook.AudioFile.name);
+    }
+    
+
+    if (audiobook.CoverImage) {
       formData.append('CoverImage', audiobook.CoverImage, audiobook.CoverImage.name);
     } else {
       console.error('CoverImage is not a valid File object');
     }
+    
 
     // Send POST request
-    return this.http.post<any>(this.apiUrl, formData);
+    return this.http.post<any>(this.audiobookUrl, formData);
   }
 
 }

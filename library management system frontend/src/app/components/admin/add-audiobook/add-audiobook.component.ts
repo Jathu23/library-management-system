@@ -9,23 +9,23 @@ import { AddAudiobookDto } from '../../../models/interfaces/add-newaudiobook.int
   styleUrl: './add-audiobook.component.css'
 })
 export class AddAudiobookComponent {
-  addAudiobookForm: FormGroup;
+  addAudiobookForm!: FormGroup;
 
   constructor(private fb: FormBuilder,private bookService: BookService) {
     this.addAudiobookForm = this.fb.group({
-      ISBN: ['', Validators.required],
-      Title: ['', Validators.required],
-      Author: ['', Validators.required],
-      Genre: ['', Validators.required],
-      PublishYear: [null, [Validators.required, Validators.min(1900)]],
-      AudioFile: [null, Validators.required],
-      CoverImage: [null],
-      FileFormat: ['', Validators.required],
-      Language: ['', Validators.required],
-      Narrator: ['', Validators.required],
-      Publisher: ['', Validators.required],
-      Description: ['', Validators.required],
-      DigitalRights: ['', Validators.required],
+      ISBN: ['fw', Validators.required],
+      Title: ['fwf', Validators.required],
+      Author: ['fdwf', Validators.required],
+      Genre: ['ddf', Validators.required],
+      PublishYear: ['111', Validators.required],
+      AudioFile: ['', Validators.required],
+      CoverImage: [''],
+      FileFormat: ['mp3', Validators.required],
+      Language: ['eng', Validators.required],
+      Narrator: ['ds', Validators.required],
+      Publisher: ['ew', Validators.required],
+      Description: ['df', Validators.required],
+      DigitalRights: ['ds'],
     });
   }
 
@@ -39,16 +39,19 @@ export class AddAudiobookComponent {
         AudioFile: formValue.AudioFile[0],
         CoverImage: formValue.CoverImage ? formValue.CoverImage[0] : null,
       };
+      
 console.log(audiobookDto);
 
-      // this.bookService.addAudiobook(audiobookDto).subscribe({
-      //   next: (response) => {
-      //     console.log('Audiobook added successfully', response);
-      //   },
-      //   error: (error) => {
-      //     console.error('Error adding audiobook', error);
-      //   },
-      // });
+      this.bookService.addAudiobook(audiobookDto).subscribe({
+        next: (response) => {
+          console.log('Audiobook added successfully', response);
+        },
+        error: (error) => {
+          console.log('Error adding audiobook', error.error.errors);
+        },
+      });
+    }else{
+      console.log("formValue invalid ");
     }
   }
 

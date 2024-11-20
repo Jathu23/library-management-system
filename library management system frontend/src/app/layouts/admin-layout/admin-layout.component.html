@@ -1,3 +1,137 @@
+<!-- <div class="admin-layout">
+    <header>
+      <h2>Admin Panel</h2>
+      <nav>
+        <a routerLink="/admin">Dashboard</a>
+        <a routerLink="/admin/manage-books">Manage Books</a>
+        <a routerLink="/admin/manage-users">Manage Users</a>
+      </nav>
+    </header>
+
+    <div class="admin-page">
+      <h2>Admin Dashboard</h2>
+      <button (click)="onLogout()">Logout</button>
+    
+      
+    </div>
+ 
+  </div> -->
+
+
+  <!-- <div class="d-flex flex-column flex-md-row">
+  
+    <nav class="nav flex-column bg-dark vh-100 text-white p-3 sidebar">
+      <div class="navbar-brand text-center mb-4">
+        <i class="fas fa-book-reader fa-2x"></i>
+        <h4 class="mt-2">SKY BLUE Library</h4>
+      </div>
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link text-white" [routerLink]="['/admin']">
+            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" [routerLink]="['/admin/audio-books']">
+            <i class="fas fa-book me-2"></i> Manage Books
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" [routerLink]="['/admin/manage-users']">
+            <i class="fas fa-users me-2"></i> Manage Users
+          </a>
+        </li>
+  
+        
+        <li class="nav-item">
+          <a class="nav-link text-white dropdown-toggle" data-bs-toggle="collapse" href="#addBookSubmenu" role="button"
+            aria-expanded="false" aria-controls="addBookSubmenu">
+            <i class="fas fa-plus-circle me-2"></i> Add Book
+          </a>
+          <ul class="collapse list-unstyled ms-3" id="addBookSubmenu">
+            <li class="nav-item">
+              <a class="nav-link text-white" [routerLink]="['/admin/add-normal-book']">
+                <i class="fas fa-book-open me-2"></i>Normal Book
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" [routerLink]="['/admin/add-e-book']">
+                <i class="fas fa-tablet-alt me-2"></i>eBook
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" [routerLink]="['/admin/add-audio-book']">
+                <i class="fas fa-headphones me-2"></i>Audiobook
+              </a>
+            </li>
+          </ul>
+        </li>
+  
+        <li class="nav-item">
+          <a class="nav-link text-white" [routerLink]="['/profile']">
+            <i class="fas fa-user-circle me-2"></i> Profile
+          </a>
+        </li>
+        <li class="nav-item mt-auto">
+          <a class="nav-link text-white" >
+            <i class="fas fa-sign-out-alt me-2"></i> Logout
+          </a>
+        </li>
+      </ul>
+    </nav>
+  
+    
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark d-md-none">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="fas fa-book-reader"></i> Library
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/admin']">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/admin/manage-books']">Manage Books</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/admin/manage-users']">Manage Users</a>
+            </li>
+  
+           
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" id="addBookDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Add Book
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="addBookDropdown">
+                <li><a class="dropdown-item" [routerLink]="['/admin/add-ebook']">Add eBook</a></li>
+                <li><a class="dropdown-item" [routerLink]="['/admin/add-normal-book']">Add Normal Book</a></li>
+                <li><a class="dropdown-item" [routerLink]="['/admin/add-audiobook']">Add Audiobook</a></li>
+              </ul>
+            </li>
+  
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="['/profile']">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" >Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  
+ 
+    <div class="content flex-grow-1 p-4">
+      <router-outlet></router-outlet>
+    </div>
+  </div> -->
+
 
 
   <div class="container">
@@ -16,7 +150,7 @@
         </div>
         <div class="nav">
             <div class="menu">
-                <p class="title" style="font-size: larger; color: white;">Admin</p>
+                <p class="title" style="font-size: larger;">Admin</p>
                 <ul>
                     <li class="active">
                         <a [routerLink]="['/admin']">
@@ -39,13 +173,13 @@
                     <li>
                         <a href="">
                             <i class="icon bi bi-book"></i>
-                            <span class="text">Books</span>
+                            <span class="text">Add-Books</span>
                             <i class="arrow bi bi-arrow-bar-down"></i>
                         </a>
                         <ul class="sub-menu">
-                            <li><a [routerLink]="['/admin/manage-books']"><i class="icon bi bi-file-earmark-pdf-fill"></i><span class="text">EBooks</span></a></li>
-                            <li><a [routerLink]="['/admin/audio/books']"><i class="icon bi bi-file-earmark-music-fill"></i><span class="text">AudioBooks</span></a></li>
-                            <li><a [routerLink]="['/admin/E-books']"><i class="icon bi bi-book-half"></i><span class="text">Physical Books</span></a></li>
+                            <li><a [routerLink]="['/admin/add-e-book']"><i class="icon bi bi-file-earmark-pdf-fill"></i><span class="text">EBooks</span></a></li>
+                            <li><a [routerLink]="['/admin/add-audio-book']"><i class="icon bi bi-file-earmark-music-fill"></i><span class="text">AudioBooks</span></a></li>
+                            <li><a [routerLink]="['/admin/add-normal-book']"><i class="icon bi bi-book-half"></i><span class="text">Physical Books</span></a></li>
                         </ul>
                     </li>
                     <li>
@@ -71,7 +205,7 @@
                 <ul>
                   <li><a href=""><i class="icon bi bi-person-badge-fill"></i><span class="text">Profile</span></a></li>
                    
-                  <li><a href=""><i class="icon bi bi-box-arrow-right"></i><span class="text" style="padding-right: 112px;">Logout</span></a></li>
+                    <li><a href=""><i class="icon bi bi-box-arrow-right"></i><span class="text">Logout</span></a></li>
                 </ul>
             </div>
         </div>
