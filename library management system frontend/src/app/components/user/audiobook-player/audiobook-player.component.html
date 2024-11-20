@@ -1,0 +1,33 @@
+<div class="audiobook-player">
+    <div class="player-header">
+      <img src="assets/cover.jpg" alt="Book Cover" class="cover-image" />
+      <div class="episode-info">
+        <h4>Episode 1/22</h4>
+        <p>Chapter 1 - Why Intraday Trading...</p>
+      </div>
+    </div>
+  
+    <div class="progress-container">
+      <span class="time">{{ currentTime | date: 'mm:ss' }}</span>
+      <input
+        type="range"
+        class="progress-bar"
+        [(ngModel)]="currentProgress"
+        (input)="onSeek($event)"
+      />
+      <span class="time">{{ duration | date: 'mm:ss' }}</span>
+    </div>
+  
+    <div class="player-controls">
+      <button (click)="seek(-10)" class="control-button">
+        <i class="fa fa-rotate-left"></i> <span>10s</span>
+      </button>
+      <button (click)="togglePlay()" class="control-button play-button">
+        <i [ngClass]="isPlaying ? 'fa fa-pause' : 'fa fa-play'"></i>
+      </button>
+      <button (click)="seek(10)" class="control-button">
+        <span>10s</span> <i class="fa fa-rotate-right"></i>
+      </button>
+    </div>
+  </div>
+  
