@@ -149,6 +149,42 @@ namespace library_management_system.Services
             }
         }
 
+        public async Task<ApiResponse<PaginatedResult<AudiobookDto>>> GetAudiobooksAsync(int page, int pageSize)
+        {
+            // Fetch data and total count from repository
+            var (audiobooks, totalCount) = await _audioBookRepository.GetPaginatedAudiobooksAsync(page, pageSize);
+
+            // Map entities to DTOs
+            var audiobookDtos = audiobooks.Select(a => new AudiobookDto
+            {
+                Id = a.Id,
+                Title = a.Title,
+                Author = a.Author,
+                Genre = a.Genre,
+                FilePath = a.FilePath,
+                CoverImagePath = a.CoverImagePath,
+                PublishYear = a.PublishYear,
+                Language = a.Metadata.Language,
+                Narrator = a.Metadata.Narrator,
+                Publisher = a.Metadata.Publisher
+            }).ToList();
+
+            // Prepare paginated result
+            var result = new PaginatedResult<AudiobookDto>
+            {
+                Items = audiobookDtos,
+                TotalCount = totalCount,
+                CurrentPage = page,
+                PageSize = pageSize
+            };
+
+            return new ApiResponse<PaginatedResult<AudiobookDto>>
+            {
+                Success = true,
+                Message = "Audiobooks retrieved successfully.",
+                Data = result
+            };
+        }
 
     }
 }

@@ -28,8 +28,8 @@ namespace library_management_system.Repositories
 
         public async Task<User?>Getuserid(int id)
         {
-            return await _context.Users
-               .FirstOrDefaultAsync(u => u.Id == id );
+            return await _context.Users.FindAsync(id);
+
         }
         public async Task<List<User>> GetAllUsers()
         {

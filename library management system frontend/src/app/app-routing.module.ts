@@ -3,29 +3,26 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
 import { ManageBooksComponent } from './components/admin/manage-books/manage-books.component';
 import { ManageUsersComponent } from './components/admin/manage-users/manage-users.component';
-import { LandingComponent } from './components/landing/landing.component';
+
 import { UserDashboardComponent } from './components/user/user-dashboard/user-dashboard.component';
-import { ViewBooksComponent } from './components/user/view-books/view-books.component';
-import { ViewOverdueBooksComponent } from './components/user/view-overdue-books/view-overdue-books.component';
+
+
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LandingLayoutComponent } from './layouts/landing-layout/landing-layout.component';
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
-import { RegisterComponent } from './components/register/register.component';
-import { HomeComponent } from './components/home/home.component';
-import { AdminloginComponent } from './components/admin/adminlogin/adminlogin.component';
+
 import { AddbookComponent } from './components/admin/addbook/addbook.component';
+import { LoginComponent } from './components/landing/login/login.component';
+import { AudiobooksComponent } from './components/admin/audiobooks/audiobooks.component';
+import { AudiobookDetailsComponent } from './components/admin/audiobook-details/audiobook-details.component';
+
 
 const routes: Routes = [
   {
     path: '',
     component: LandingLayoutComponent,
     children: [
-      { path: 'user-login', component: LandingComponent },
-      { path: 'admin-login', component: AdminloginComponent },
-      {path:'register',component:RegisterComponent},
-      {path:'home',component:HomeComponent},
-      {path:'',component:HomeComponent}
-      
+      { path: 'login', component: LoginComponent },
     ]
   },
   {
@@ -36,15 +33,16 @@ const routes: Routes = [
       { path: 'manage-books', component: ManageBooksComponent },
       { path: 'manage-users', component: ManageUsersComponent },
       { path: 'add-normal-book', component: AddbookComponent },
+      { path: 'audio-books', component: AudiobooksComponent },
+      { path: 'audiobook/:id', component: AudiobookDetailsComponent }
     ]
   },
   {
     path: 'user',
     component: UserLayoutComponent,
     children: [
-      { path: '', component: UserDashboardComponent },
-      { path: 'view-books', component: ViewBooksComponent },
-      { path: 'view-overdue-books', component: ViewOverdueBooksComponent }
+      { path: '', component: UserDashboardComponent }
+   
     ]
   }
 ];

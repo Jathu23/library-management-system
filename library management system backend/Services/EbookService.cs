@@ -170,6 +170,62 @@ namespace library_management_system.Services
 
 
 
+        public async Task<ApiResponse<PaginatedResult<EbookDto>>> GetEbooksWithPagination(int pageNumber, int pageSize)
+        {
+            // Fetch paginated data from the repository
+            var (ebooks, totalCount) = await _ebookRepository.GetPaginatedEbooks(pageNumber, pageSize);
+
+            // Map to DTO
+            var ebookDtos = ebooks.Select(e => new EbookDto
+            {
+                Id = e.Id,
+                ISBN = e.ISBN,
+                Title = e.Title,
+                Author = e.Author,
+                Genre = e.Genre,
+                PublishYear = e.PublishYear,
+                AddedDate = e.AddedDate,
+                FilePath = e.FilePath,
+                CoverImagePath = e.CoverImagePath,
+                Metadata = new EbookMetadataDtoRes
+                 {
+                    FileFormat = e.Metadata.FileFormat,
+                    FileSize = e.Metadata.FileSize,
+                    PageCount = e.Metadata.PageCount,
+                    Language = e.Metadata.Language,
+                    DownloadCount = e.Metadata.DownloadCount,
+                    ViewCount = e.Metadata.ViewCount,
+                    Publisher = e.Metadata.Publisher,
+                    Description = e.Metadata.Description,
+                    DigitalRights = e.Metadata.DigitalRights
+                }
+               
+            }).ToList();
+
+            // Return API response with paginated results
+            var paginatedResult = new PaginatedResult<EbookDto>
+            {
+                Items = ebookDtos,
+                TotalCount = totalCount,
+                CurrentPage = pageNumber,
+                PageSize = pageSize
+            };
+
+            return new ApiResponse<PaginatedResult<EbookDto>>
+            {
+                Success = true,
+                Message = "Ebooks fetched successfully.",
+                Data = paginatedResult
+            };
+        }
+
+
+
+
+
+
+
+
         public async Task<string> SaveCoverImage(IFormFile? profileImage)
         {
             if (profileImage == null)
@@ -179,5 +235,8 @@ namespace library_management_system.Services
             var imagePath = await _imageService.SaveImages(image, "EbookCoverImages");
             return imagePath.First();
         }
+
+
+
     }
 }

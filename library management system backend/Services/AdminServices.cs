@@ -5,6 +5,7 @@ using library_management_system.Repositories;
 using library_management_system.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using System.Text.Json;
 
 namespace library_management_system.Services
 {
@@ -14,27 +15,30 @@ namespace library_management_system.Services
         private readonly ImageService _imageService;
         private readonly BCryptService _bcryptService;
         private readonly JwtService _jwtService;
+        private readonly LoginRepository _loginRepo;
 
         public AdminServices(AdminRepo adminRepo,
                             ImageService imageService,
                             BCryptService bCryptService,
-                            JwtService jwtService)
+                            JwtService jwtService,
+                            LoginRepository loginRepository)
         {
             _adminRepo = adminRepo;
             _imageService = imageService;
             _bcryptService = bCryptService;
             _jwtService = jwtService;
+            _loginRepo = loginRepository;
         }
 
-        public async Task<ApiResponse<string>> CreateAdmin(AdminRequstModel AdminRequstDto)
+        public async Task<ApiResponse<AuthResponse>> CreateAdmin(AdminRequstModel AdminRequstDto)
         {
-            var response = new ApiResponse<string>();
-            var exadmin = await _adminRepo.GetAdminByEmailOrNic(AdminRequstDto.Email);
+            var response = new ApiResponse<AuthResponse>();
+            var exLoginData = await _loginRepo.GetByEmailOrNic(AdminRequstDto.Email);
 
           try
             {
-                if (exadmin != null)
-                    throw new Exception("An Admin with this email already exists.");
+                if (exLoginData != null)
+                    throw new Exception("An User with this email  already exists.");
 
                 var profileImagePath = await SaveProfileImage(AdminRequstDto.ProfileImage);
 
@@ -45,15 +49,43 @@ namespace library_management_system.Services
                     LastName = AdminRequstDto.LastName,
                     FullName = $"{AdminRequstDto.FirstName} {AdminRequstDto.LastName}",
                     Email = AdminRequstDto.Email,
-                    ProfileImage = profileImagePath,
-                    PasswordHash = _bcryptService.HashPassword(AdminRequstDto.Password)
+                    ProfileImage = profileImagePath
+                  
 
                 };
-                await _adminRepo.CreateAdmin(admin);
 
-                response.Success = true;
-                response.Message = "Admin created successfully.";
-                response.Data = _jwtService.GenerateAdminToken(admin);
+            var Createdadmin   =  await _adminRepo.CreateAdmin(admin);
+
+                var logindata = new LoginT
+                {
+                    Email = AdminRequstDto.Email,
+                    PasswordHash = _bcryptService.HashPassword(AdminRequstDto.Password),
+                    NIC = Createdadmin.AdminNic,
+                    MemberId = Createdadmin.id,
+                    Role = "admin"
+
+                };
+
+              var state =  await _loginRepo.Addlogdata(logindata);
+
+                if (Createdadmin != null && state == true)
+                {
+                    response.Success = true;
+                    response.Message = "Admin created successfully.";
+                    response.Data = new AuthResponse
+                    {
+                        Token = _jwtService.GenerateAdminToken(admin),
+                        Role = "admin"
+                    };
+                }
+                else
+                {
+                    throw new Exception("error");
+
+                }
+
+            
+
             }
             catch (Exception ex)
             {
@@ -65,25 +97,25 @@ namespace library_management_system.Services
         }
 
 
-        public async Task<ApiResponse<string>> LoginAdmin(AdminLoginRequset adminLoginRequset)
-        {
-            var response = new ApiResponse<string>();
+        //public async Task<ApiResponse<string>> LoginAdmin(AdminLoginRequset adminLoginRequset)
+        //{
+        //    var response = new ApiResponse<string>();
 
-            var admin = await _adminRepo.GetAdminByEmailOrNic(adminLoginRequset.EmailOrNic);
-            if (admin == null || !_bcryptService.VerifyPassword(adminLoginRequset.Password, admin.PasswordHash))
-            {
-                response.Success = false;
-                response.Message = "Login failed";
-                response.Errors.Add("Invalid email or password.");
-                return response;
-            }
+        //    var admin = await _adminRepo.GetAdminByEmailOrNic(adminLoginRequset.EmailOrNic);
+        //    if (admin == null || !_bcryptService.VerifyPassword(adminLoginRequset.Password, admin.PasswordHash))
+        //    {
+        //        response.Success = false;
+        //        response.Message = "Login failed";
+        //        response.Errors.Add("Invalid email or password.");
+        //        return response;
+        //    }
 
-            response.Success = true;
-            response.Message = "Login successful";
-            response.Data = _jwtService.GenerateAdminToken(admin);
+        //    response.Success = true;
+        //    response.Message = "Login successful";
+        //    response.Data = _jwtService.GenerateAdminToken(admin);
 
-            return response;
-        }
+        //    return response;
+        //}
 
 
         private async Task<string> SaveProfileImage(IFormFile? profileImage)

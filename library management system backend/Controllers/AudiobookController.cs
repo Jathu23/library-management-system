@@ -17,7 +17,7 @@ namespace library_management_system.Controllers
         }
 
         [HttpPost("add-audiobook")]
-        public async Task<IActionResult> AddAudiobook([FromForm] AddAudiobookDto audiobookDto)
+        public async Task<IActionResult> AddAudiobook( AddAudiobookDto audiobookDto)
         {
             var response = await _audioBookService.AddAudiobook(audiobookDto);
             if (!response.Success)
@@ -27,7 +27,7 @@ namespace library_management_system.Controllers
         }
 
         [HttpPut("update-audiobook")]
-        public async Task<IActionResult> UpdateAudiobook([FromForm] UpdateAudiobookDto audiobookDto)
+        public async Task<IActionResult> UpdateAudiobook( UpdateAudiobookDto audiobookDto)
         {
             var response = await _audioBookService.UpdateAudiobookAsync(audiobookDto);
 
@@ -47,7 +47,21 @@ namespace library_management_system.Controllers
             return Ok(response); 
         }
 
+        [HttpGet("GetAudiobooks")]
+        public async Task<IActionResult> GetAudiobooks(int page = 1, int pageSize = 10)
+        {
+            var response = await _audioBookService.GetAudiobooksAsync(page, pageSize);
 
+            if (!response.Success)
+                return BadRequest(response);
+
+            return Ok(response);
+        }
+        //[HttpPost ("addsamle")]
+        //public async Task<int> addsample()
+        //{
+
+        //}
 
     }
 }

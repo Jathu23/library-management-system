@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-admin-layout',
@@ -7,9 +7,5 @@ import { Router } from '@angular/router';
   styleUrl: './admin-layout.component.css'
 })
 export class AdminLayoutComponent {
-  constructor(private router: Router) {}
 
-  logout() {
-    this.router.navigate(['']);
-  }
 }

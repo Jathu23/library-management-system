@@ -13,6 +13,7 @@
         public DbSet<User> Users { get; set; }
 
         public DbSet<Admin> Admins { get; set; }
+        public DbSet<LoginT> LoginPort { get; set; }
         public DbSet<NormalBook> NormalBooks { get; set; }
         public DbSet<BookCopy> BookCopies { get; set; }
         public DbSet<Ebook> Ebooks { get; set; }

@@ -13,7 +13,7 @@ namespace library_management_system.Repositories
             _context = context;
         }
 
-        public async Task<Admin> CreateAdmin(Admin admin)
+        public async Task<Admin?> CreateAdmin(Admin admin)
         {
             await _context.Admins.AddAsync(admin);
             await _context.SaveChangesAsync();

@@ -6,6 +6,8 @@ using library_management_system.DTOs.User;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Text.Json;
 
 namespace library_management_system.Services
 {
@@ -15,27 +17,30 @@ namespace library_management_system.Services
         private readonly ImageService _imageService;
         private readonly BCryptService _bCryptService;
         private readonly JwtService _jwtService;
+        private readonly LoginRepository _loginRepository;
 
         public UserServices(UserRepo userRepo,
                             ImageService imageService,
                             BCryptService bCryptService,
-                            JwtService jwtService)
+                            JwtService jwtService,
+                            LoginRepository loginRepository)
         {
             _userRepo = userRepo;
             _imageService = imageService;
             _bCryptService = bCryptService;
             _jwtService = jwtService;
+            _loginRepository = loginRepository;
         }
 
-        public async Task<ApiResponse<string>> CreateUser(UserRequstModel userRequestDto)
+        public async Task<ApiResponse<AuthResponse>> CreateUser(UserRequstModel userRequestDto)
         {
-            var response = new ApiResponse<string>();
-            var exuser = await _userRepo.GetUserByEmailOrNic(userRequestDto.Email);
+            var response = new ApiResponse<AuthResponse>();
+            var exLoginData = await _loginRepository.GetByEmailOrNic(userRequestDto.Email);
 
 
             try
             {
-                if (exuser != null)
+                if (exLoginData != null)
                     throw new Exception("A user with this email already exists.");
 
                 var profileImagePath = await SaveProfileImage(userRequestDto.ProfileImage);
@@ -49,17 +54,50 @@ namespace library_management_system.Services
                     Email = userRequestDto.Email,
                     PhoneNumber = userRequestDto.PhoneNumber,
                     Address = userRequestDto.Address,
-                    PasswordHash = _bCryptService.HashPassword(userRequestDto.Password),
                     ProfileImage = profileImagePath,
                     IsActive = userRequestDto.IsActive,
                     IsSubscribed = userRequestDto.IsSubscribed,
                     RegistrationDate = DateTime.Now
                 };
 
-                await _userRepo.CreateUser(user);
-                response.Success = true;
-                response.Message = "User created successfully.";
-                response.Data = _jwtService.GenerateToken(user);
+              var Createduser = await _userRepo.CreateUser(user);
+               
+             
+
+                var logindata = new LoginT
+                {
+                    Email = userRequestDto.Email,
+                    PasswordHash = _bCryptService.HashPassword(userRequestDto.Password),
+                    NIC = Createduser.UserNic,
+                    MemberId = Createduser.Id,
+                    Role = "user"
+
+                };
+
+                var state = await _loginRepository.Addlogdata(logindata);
+
+                if (Createduser != null && state == true)
+                {
+                    response.Success = true;
+                    response.Message = "User created successfully.";
+                    response.Data = new AuthResponse
+                    {
+                        Token = _jwtService.GenerateToken(user),
+                        Role = "user"
+                    };
+
+
+
+                }
+                else
+                {
+                    throw new Exception("error");
+
+                }
+
+
+
+
             }
             catch (Exception ex)
             {
@@ -71,25 +109,25 @@ namespace library_management_system.Services
             return response;
         }
 
-        public async Task<ApiResponse<string>> LoginUser(LoginRequest loginRequest)
-        {
-            var response = new ApiResponse<string>();
+        //public async Task<ApiResponse<string>> LoginUser(LoginRequest loginRequest)
+        //{
+        //    var response = new ApiResponse<string>();
 
-            var user = await _userRepo.GetUserByEmailOrNic(loginRequest.EmailOrNic);
-            if (user == null || !_bCryptService.VerifyPassword(loginRequest.Password, user.PasswordHash))
-            {
-                response.Success = false;
-                response.Message = "Login failed";
-                response.Errors.Add("Invalid email or password.");
-                return response;
-            }
+        //    var user = await _userRepo.GetUserByEmailOrNic(loginRequest.EmailOrNic);
+        //    if (user == null || !_bCryptService.VerifyPassword(loginRequest.Password, user.PasswordHash))
+        //    {
+        //        response.Success = false;
+        //        response.Message = "Login failed";
+        //        response.Errors.Add("Invalid email or password.");
+        //        return response;
+        //    }
 
-            response.Success = true;
-            response.Message = "Login successful";
-            response.Data = _jwtService.GenerateToken(user);
+        //    response.Success = true;
+        //    response.Message = "Login successful";
+        //    response.Data = _jwtService.GenerateToken(user);
 
-            return response;
-        }
+        //    return response;
+        //}
 
         private async Task<string> SaveProfileImage(IFormFile? profileImage)
         {
