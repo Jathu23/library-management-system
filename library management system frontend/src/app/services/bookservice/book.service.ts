@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AddBookDto } from '../../models/interfaces/add-newbook.interface';
+import { AddEbookDto } from '../../models/interfaces/add-newebook.interface';
+import { AddAudiobookDto } from '../../models/interfaces/add-newaudiobook.interface';
 
 
 @Injectable({
@@ -9,6 +11,7 @@ import { AddBookDto } from '../../models/interfaces/add-newbook.interface';
 })
 export class BookService {
   private readonly apiUrl = 'https://localhost:7261/api/Books/add';
+  private ebookUrl = 'https://localhost:7261/api/Ebook/add'; 
 
   constructor(private http: HttpClient) {}
 
@@ -49,4 +52,68 @@ export class BookService {
       }),
     });
   }
+
+  
+  addEbook(ebook: AddEbookDto): Observable<any> {
+    const formData = new FormData();
+
+    
+    formData.append('ISBN', ebook.ISBN);
+    formData.append('Title', ebook.Title);
+    formData.append('Author', ebook.Author);
+    formData.append('Genre', ebook.Genre);
+    formData.append('PublishYear', ebook.PublishYear.toString());
+    // Handle EbookFile
+    if (ebook.EbookFile instanceof File) {
+      formData.append('EbookFile', ebook.EbookFile, ebook.EbookFile.name);
+    } else {
+      console.error('EbookFile is not a valid File object');
+    }
+    if (ebook.CoverImages) {
+      formData.append('CoverImages', ebook.CoverImages, ebook.CoverImages.name);
+    }
+
+    // Append metadata fields
+    for (const [key, value] of Object.entries(ebook.Metadata)) {
+      formData.append(`Metadata.${key}`, value as string);
+    }
+
+    // Send POST request
+    return this.http.post<any>(this.apiUrl, formData);
+  }
+
+
+  addAudiobook(audiobook: AddAudiobookDto): Observable<any> {
+    const formData = new FormData();
+
+    // Append form data fields
+    formData.append('ISBN', audiobook.ISBN);
+    formData.append('Title', audiobook.Title);
+    formData.append('Author', audiobook.Author);
+    formData.append('Genre', audiobook.Genre);
+    formData.append('PublishYear', audiobook.PublishYear.toString());
+    formData.append('FileFormat', audiobook.FileFormat);
+    formData.append('Language', audiobook.Language);
+    formData.append('Narrator', audiobook.Narrator);
+    formData.append('Publisher', audiobook.Publisher);
+    formData.append('Description', audiobook.Description);
+    formData.append('DigitalRights', audiobook.DigitalRights);
+
+    // Append files
+    if (audiobook.AudioFile instanceof File) {
+      formData.append('AudioFile', audiobook.AudioFile, audiobook.AudioFile.name);
+    } else {
+      console.error('AudioFile is not a valid File object');
+    }
+
+    if (audiobook.CoverImage instanceof File) {
+      formData.append('CoverImage', audiobook.CoverImage, audiobook.CoverImage.name);
+    } else {
+      console.error('CoverImage is not a valid File object');
+    }
+
+    // Send POST request
+    return this.http.post<any>(this.apiUrl, formData);
+  }
+
 }

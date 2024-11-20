@@ -15,6 +15,8 @@ import { AddbookComponent } from './components/admin/addbook/addbook.component';
 import { LoginComponent } from './components/landing/login/login.component';
 import { AudiobooksComponent } from './components/admin/audiobooks/audiobooks.component';
 import { AudiobookDetailsComponent } from './components/admin/audiobook-details/audiobook-details.component';
+import { AddebookComponent } from './components/admin/addebook/addebook.component';
+import { AddAudiobookComponent } from './components/admin/add-audiobook/add-audiobook.component';
 
 
 const routes: Routes = [
@@ -33,6 +35,8 @@ const routes: Routes = [
       { path: 'manage-books', component: ManageBooksComponent },
       { path: 'manage-users', component: ManageUsersComponent },
       { path: 'add-normal-book', component: AddbookComponent },
+      { path: 'add-e-book', component: AddebookComponent },
+      { path: 'add-audio-book', component: AddAudiobookComponent },
       { path: 'audio-books', component: AudiobooksComponent },
       { path: 'audiobook/:id', component: AudiobookDetailsComponent }
     ]
