@@ -57,16 +57,9 @@ import { ShowebooksComponent } from './components/user/showebooks/showebooks.com
     AddAudiobookComponent,
     ShowbooksComponent,
     ShowaudiobooksComponent,
-<<<<<<< HEAD
 
     NewAdminComponent
 
-=======
-    NewAdminComponent
-
-   
-
->>>>>>> 6c07e896b4dcc4aaced6f1e1d08ee8628d1e2c78
    
   ],
   imports: [
