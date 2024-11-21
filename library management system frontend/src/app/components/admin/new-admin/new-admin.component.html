@@ -1,0 +1,54 @@
+
+<div class="container mt-5 ">
+    <div class="card shadow-lg border-0 rounded-2">
+      <div class="card-header text-white text-center" style="background-color: #81256c;">
+        <h3>Add New Admin</h3>
+      </div>
+        <form [formGroup]="adminForm" (ngSubmit)="onSubmit()" class="p-3 border rounded">
+          <div class="form-group mb-3">
+            <label for="nic">NIC Number</label>
+            <input type="text" id="nic" class="form-control" formControlName="nic" placeholder="Enter NIC number">
+            <div *ngIf="adminForm.get('nic')?.invalid && adminForm.get('nic')?.touched" class="text-danger">
+              NIC number is required.
+            </div>
+          </div>
+      
+          <div class="form-group mb-3">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" class="form-control" formControlName="firstName" placeholder="Enter first name">
+            <div *ngIf="adminForm.get('firstName')?.invalid && adminForm.get('firstName')?.touched" class="text-danger">
+              First name is required.
+            </div>
+          </div>
+      
+          <div class="form-group mb-3">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" class="form-control" formControlName="lastName" placeholder="Enter last name">
+            <div *ngIf="adminForm.get('lastName')?.invalid && adminForm.get('lastName')?.touched" class="text-danger">
+              Last name is required.
+            </div>
+          </div>
+      
+          <div class="form-group mb-3">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control" formControlName="email" placeholder="Enter email">
+            <div *ngIf="adminForm.get('email')?.invalid && adminForm.get('email')?.touched" class="text-danger">
+              Please enter a valid email.
+            </div>
+          </div>
+      
+          <div class="form-group mb-3">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="form-control" formControlName="password" placeholder="Enter password">
+            <div *ngIf="adminForm.get('password')?.invalid && adminForm.get('password')?.touched" class="text-danger">
+              Password must be at least 6 characters.
+            </div>
+          </div>
+      
+          <button type="submit" class="btn btn-primary w-100" [disabled]="adminForm.invalid"  style="background-color: #81256c;">Submit</button>
+        </form>
+      
+      
+</div>
+ </div>
+
