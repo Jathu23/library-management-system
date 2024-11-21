@@ -21,6 +21,18 @@
   </div>
 </div> -->
 
+  
+<div class="mt-2">
+  <label>
+    <input
+      type="checkbox"
+      [(ngModel)]="backgroundPlay"
+      (change)="toggleBackgroundPlay()"
+    />
+  Background Playback
+  </label>
+</div>
+
 
 
 <div class="grid-container scroll-container" (scroll)="onScroll()">
@@ -30,7 +42,13 @@
     <h3>{{ audiobook.title }}</h3>
     <p>Author: {{ audiobook.author }}</p>
   </div>
+
+
 </div>
+
+
+
+
 
 <!-- Modal with Audio Player -->
 <div class="modal" [class.show]="isModalOpen">
