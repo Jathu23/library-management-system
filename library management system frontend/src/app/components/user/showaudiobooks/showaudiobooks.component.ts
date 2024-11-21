@@ -11,10 +11,12 @@ export class ShowaudiobooksComponent implements OnInit {
   audiobooks: any[] = []; // Store the fetched audiobooks
   isLoading = false; // Loading flag for API calls
   currentPage = 1; // Tracks the current page being fetched
-  pageSize = 3; // Number of items per page
+  pageSize = 10; // Number of items per page
   totalItems = 0; // Total number of audiobooks on the server
+  isModalOpen = false; // Tracks if the modal is open
+  selectedAudiobook: any = null; // Holds the selected audiobook details
 
-  constructor(private getbookservice:GetbooksService) {} // Inject service via constructor
+  constructor(private getbookservice: GetbooksService) {}
 
   ngOnInit() {
     this.loadAudiobooks(); // Fetch the initial data
@@ -54,5 +56,15 @@ export class ShowaudiobooksComponent implements OnInit {
     if (scrollTop + clientHeight >= scrollHeight - 10 && this.audiobooks.length < this.totalItems) {
       this.loadAudiobooks(); // Load the next page of audiobooks
     }
+  }
+
+  openModal(audiobook: any) {
+    this.selectedAudiobook = audiobook; // Set the selected audiobook
+    this.isModalOpen = true; // Open the modal
+  }
+
+  closeModal() {
+    this.isModalOpen = false; // Close the modal
+    this.selectedAudiobook = null; // Clear the selected audiobook
   }
 }

@@ -17,12 +17,12 @@ import { AudiobooksComponent } from './components/admin/audiobooks/audiobooks.co
 import { AudiobookDetailsComponent } from './components/admin/audiobook-details/audiobook-details.component';
 import { AddebookComponent } from './components/admin/addebook/addebook.component';
 import { AddAudiobookComponent } from './components/admin/add-audiobook/add-audiobook.component';
-<<<<<<< HEAD
+
 import { ShowbooksComponent } from './components/user/showbooks/showbooks.component';
 import { ShowaudiobooksComponent } from './components/user/showaudiobooks/showaudiobooks.component';
-=======
+
 import { NewAdminComponent } from './components/admin/new-admin/new-admin.component';
->>>>>>> 2f5ed92ec24dc1c1c6e784b7b99ae6433f110d29
+
 
 
 const routes: Routes = [
