@@ -1,8 +1,144 @@
-.scroll-container {
-    height: 300px; 
-    overflow-y: auto; 
-    border: 1px solid #ddd; 
-    padding: 10px;
-    margin: 30px;
-  }
-  
+/* Grid Container with Scroll */
+/* .grid-container.scroll-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 16px;
+  max-height: 80vh; 
+  overflow-y: auto;
+} */
+
+/* Grid Item */
+
+/* .grid-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  padding: 16px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.grid-item:hover {
+  transform: scale(1.05);
+} */
+
+/* Modal Window */
+/* 
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+}
+
+.modal-content .close {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  font-size: 24px;
+  cursor: pointer;
+} */
+
+
+
+/* Grid Container with Scroll */
+.grid-container.scroll-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 16px;
+  max-height: 80vh; /* Set a fixed height for the scroll container */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Grid Item */
+.grid-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-align: center;
+  padding: 16px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.grid-item:hover {
+  transform: scale(1.05);
+}
+
+/* Modal Window */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+}
+
+.modal-content .close {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+audio {
+  width: 100%;
+  margin-top: 16px;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 16px;
+  background-color: burlywood;
+}
+
+input[type='checkbox'] {
+  margin-right: 8px;
+  transform: scale(1.2);
+ 
+}

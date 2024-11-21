@@ -1,12 +1,72 @@
-<div class="scroll-container" (scroll)="onScroll()">
-    <!-- Display Audiobook Items -->
-    <div *ngFor="let audiobook of audiobooks">
-      <h3>{{ audiobook.title }}</h3>
-      <p>Author: {{ audiobook.author }}</p>
-      <img [src]="audiobook.coverImagePath" alt="{{ audiobook.title }}" />
-    </div>
-  
-    <!-- Show a loading spinner if data is being fetched -->
-    <div *ngIf="isLoading">Loading...</div>
+<!-- <div class="grid-container scroll-container" (scroll)="onScroll()">
+ 
+  <div class="grid-item" *ngFor="let audiobook of audiobooks" (click)="openModal(audiobook)">
+    <img [src]="audiobook.coverImagePath" alt="{{ audiobook.title }}" />
+    <h3>{{ audiobook.title }}</h3>
+    <p>Author: {{ audiobook.author }}</p>
   </div>
+</div>
+
+
+<div class="modal" [class.show]="isModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>{{ selectedAudiobook?.title }}</h2>
+    <p><strong>Author:</strong> {{ selectedAudiobook?.author }}</p>
+    <p><strong>Genre:</strong> {{ selectedAudiobook?.genre }}</p>
+    <p><strong>Language:</strong> {{ selectedAudiobook?.language }}</p>
+    <p><strong>Narrator:</strong> {{ selectedAudiobook?.narrator }}</p>
+    <p><strong>Publisher:</strong> {{ selectedAudiobook?.publisher }}</p>
+    <p><strong>Publish Year:</strong> {{ selectedAudiobook?.publishYear }}</p>
+  </div>
+</div> -->
+
   
+<div class="mt-2">
+  <label>
+    <input
+      type="checkbox"
+      [(ngModel)]="backgroundPlay"
+      (change)="toggleBackgroundPlay()"
+    />
+  Background Playback
+  </label>
+</div>
+
+
+
+<div class="grid-container scroll-container" (scroll)="onScroll()">
+  <!-- Display Audiobooks in Grid -->
+  <div class="grid-item" *ngFor="let audiobook of audiobooks" (click)="openAudioPlayer(audiobook)">
+    <img [src]="audiobook.coverImagePath" alt="{{ audiobook.title }}" />
+    <h3>{{ audiobook.title }}</h3>
+    <p>Author: {{ audiobook.author }}</p>
+  </div>
+
+
+</div>
+
+
+
+
+
+<!-- Modal with Audio Player -->
+<div class="modal" [class.show]="isModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>{{ selectedAudiobook?.title }}</h2>
+
+   <!-- Audio Player -->
+   <audio controls [src]="">
+    Your browser does not support the audio element.
+  </audio>
+  
+
+    <p><strong>Author:</strong> {{ selectedAudiobook?.author }}</p>
+    <p><strong>Genre:</strong> {{ selectedAudiobook?.genre }}</p>
+    <p><strong>Publisher:</strong> {{ selectedAudiobook?.publisher }}</p>
+    <p><strong>Publish Year:</strong> {{ selectedAudiobook?.publishYear }}</p>
+
+ 
+  </div>
+</div>
