@@ -38,7 +38,7 @@
 <div class="grid-container scroll-container" (scroll)="onScroll()">
   <!-- Display Audiobooks in Grid -->
   <div class="grid-item" *ngFor="let audiobook of audiobooks" (click)="openAudioPlayer(audiobook)">
-    <img [src]="audiobook.coverImagePath" alt="{{ audiobook.title }}" />
+    <img [src]="'audiobook.coverImagePath'" alt="{{ audiobook.title }}" />
     <h3>{{ audiobook.title }}</h3>
     <p>Author: {{ audiobook.author }}</p>
   </div>

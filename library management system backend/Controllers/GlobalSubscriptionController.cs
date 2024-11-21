@@ -38,8 +38,6 @@ namespace library_management_system.Controllers
         }
 
 
-
-        // Check Subscription Status
         [HttpGet("status/{userId}")]
         public async Task<IActionResult> CheckSubscriptionStatus(int userId)
         {

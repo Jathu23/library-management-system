@@ -16,7 +16,7 @@ namespace library_management_system.Services
 
         public async Task<ApiResponse<string>> CreateOrRenewSubscriptionAsync(GlobalSubscriptionDto subscriptionDto)
         {
-            var existingSubscription = await _repository.GetByUserIdAsync(subscriptionDto.UserId);
+            var existingSubscription = await _repository.GetByUserId(subscriptionDto.UserId);
             var user = await _repository.GetUserById(subscriptionDto.UserId);
 
             if (user == null)
@@ -58,7 +58,7 @@ namespace library_management_system.Services
                     : existingSubscription.EndDate.AddYears(1);
 
                 user.IsSubscribed = true;
-                await _repository.UpdateUserAsync(user);
+                await _repository.UpdateUser(user);
 
                 return new ApiResponse<string>
                 {
@@ -82,10 +82,10 @@ namespace library_management_system.Services
                     IsActive = true,
                 };
 
-                await _repository.AddSubscriptionAsync(newSubscription);
+                await _repository.AddSubscription(newSubscription);
 
                 user.IsSubscribed = true;
-                await _repository.UpdateUserAsync(user);
+                await _repository.UpdateUser(user);
 
                 return new ApiResponse<string>
                 {
@@ -102,7 +102,7 @@ namespace library_management_system.Services
 
         public async Task<object> CheckSubscriptionStatusAsync(int userId)
         {
-            var subscription = await _repository.GetByUserIdAsync(userId);
+            var subscription = await _repository.GetByUserId(userId);
 
             if (subscription == null || subscription.EndDate < DateTime.UtcNow)
                 return new { isActive = false, message = "No active subscription." };

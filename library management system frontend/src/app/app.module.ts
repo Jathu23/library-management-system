@@ -28,6 +28,7 @@ import { ShowbooksComponent } from './components/user/showbooks/showbooks.compon
 import { ShowaudiobooksComponent } from './components/user/showaudiobooks/showaudiobooks.component';
 
 import { NewAdminComponent } from './components/admin/new-admin/new-admin.component';
+import { ShowebooksComponent } from './components/user/showebooks/showebooks.component';
 
 
 
@@ -54,20 +55,11 @@ import { NewAdminComponent } from './components/admin/new-admin/new-admin.compon
     AudiobookDetailsComponent,
     AddebookComponent,
     AddAudiobookComponent,
-
     ShowbooksComponent,
     ShowaudiobooksComponent,
-<<<<<<< HEAD
-
-    NewAdminComponent
-
-=======
-    NewAdminComponent
-
-   
-
->>>>>>> 6c07e896b4dcc4aaced6f1e1d08ee8628d1e2c78
-   
+    NewAdminComponent,
+    NewAdminComponent,
+    ShowebooksComponent,
   ],
   imports: [
     BrowserModule,
