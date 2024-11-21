@@ -1,1 +1,117 @@
-<p>admin-dashboard works!</p>
+<div class="container-fluid vh-100 d-flex p-0">
+    <!-- Sidebar -->
+    <nav class="sidebar bg-dark text-light d-flex flex-column">
+      <h4 class="py-3 text-center bg-primary text-white">Library Dashboard</h4>
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link text-light active" routerLink="/dashboard">
+            <i class="bi bi-house me-2"></i>Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" routerLink="/books">
+            <i class="bi bi-book me-2"></i>Books
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" routerLink="/audiobooks">
+            <i class="bi bi-headphones me-2"></i>Audiobooks
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" routerLink="/users">
+            <i class="bi bi-people me-2"></i>Users
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" routerLink="/reports">
+            <i class="bi bi-bar-chart me-2"></i>Reports
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" routerLink="/settings">
+            <i class="bi bi-gear me-2"></i>Settings
+          </a>
+        </li>
+      </ul>
+    </nav>
+  
+    <!-- Main Content -->
+    <div class="main-content flex-grow-1 p-4">
+      <!-- Header -->
+      <header class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Welcome, Admin</h2>
+        <div class="d-flex align-items-center">
+          <button class="btn btn-light me-3">
+            <i class="bi bi-bell"></i>
+          </button>
+          <div class="dropdown">
+            <button
+              class="btn btn-light dropdown-toggle"
+              id="userMenu"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="bi bi-person-circle"></i> Profile
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+              <li><a class="dropdown-item" href="#">Settings</a></li>
+              <li><a class="dropdown-item" href="#">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+  
+      <!-- Stats Cards -->
+      <div class="row mb-4">
+        <div class="col-md-3">
+          <div class="card text-white bg-primary">
+            <div class="card-body">
+              <h5 class="card-title">Total Books</h5>
+              <p class="card-text display-4">500</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-white bg-success">
+            <div class="card-body">
+              <h5 class="card-title">Audiobooks</h5>
+              <p class="card-text display-4">120</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-white bg-warning">
+            <div class="card-body">
+              <h5 class="card-title">Users</h5>
+              <p class="card-text display-4">200</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="card text-white bg-danger">
+            <div class="card-body">
+              <h5 class="card-title">Overdue Books</h5>
+              <p class="card-text display-4">30</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Recent Activity -->
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          Recent Activity
+        </div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item">User John borrowed "Book Title 1".</li>
+            <li class="list-group-item">"Book Title 2" was returned by Sarah.</li>
+            <li class="list-group-item">New audiobook "Title 7" added.</li>
+            <li class="list-group-item">User registration: Emma.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -59,7 +59,7 @@ namespace library_management_system.Repositories
       
                 .Include(lr => lr.User) // Include the User related to the LentRecord
                 .Include(lr => lr.Admin) // Include the Admin related to the LentRecord
-                .FirstOrDefaultAsync(lr => lr.Id == lentRecordId);
+                .FirstOrDefaultAsync(lr => lr.UserId == lentRecordId);
         }
 
 

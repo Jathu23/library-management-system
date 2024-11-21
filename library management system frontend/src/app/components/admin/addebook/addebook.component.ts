@@ -49,7 +49,7 @@ export class AddebookComponent implements OnInit {
         },
         error: (error) => {
           alert('Failed to add book. Please try again.');
-          console.log(error);
+          console.log(error.error.errors);
         },
       });
 

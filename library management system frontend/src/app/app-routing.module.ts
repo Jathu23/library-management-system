@@ -17,6 +17,8 @@ import { AudiobooksComponent } from './components/admin/audiobooks/audiobooks.co
 import { AudiobookDetailsComponent } from './components/admin/audiobook-details/audiobook-details.component';
 import { AddebookComponent } from './components/admin/addebook/addebook.component';
 import { AddAudiobookComponent } from './components/admin/add-audiobook/add-audiobook.component';
+import { ShowbooksComponent } from './components/user/showbooks/showbooks.component';
+import { ShowaudiobooksComponent } from './components/user/showaudiobooks/showaudiobooks.component';
 
 
 const routes: Routes = [
@@ -47,7 +49,9 @@ const routes: Routes = [
     path: 'user',
     component: UserLayoutComponent,
     children: [
-      { path: '', component: UserDashboardComponent }
+      { path: '', component: UserDashboardComponent },
+      { path: 'view-normal-books', component: ShowbooksComponent },
+      { path: 'view-audio-books', component: ShowaudiobooksComponent }
    
     ]
   }

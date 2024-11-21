@@ -23,6 +23,8 @@ import { AudiobooksComponent } from './components/admin/audiobooks/audiobooks.co
 import { AudiobookDetailsComponent } from './components/admin/audiobook-details/audiobook-details.component';
 import { AddebookComponent } from './components/admin/addebook/addebook.component';
 import { AddAudiobookComponent } from './components/admin/add-audiobook/add-audiobook.component';
+import { ShowbooksComponent } from './components/user/showbooks/showbooks.component';
+import { ShowaudiobooksComponent } from './components/user/showaudiobooks/showaudiobooks.component';
 
 
 
@@ -47,7 +49,9 @@ import { AddAudiobookComponent } from './components/admin/add-audiobook/add-audi
     AudiobooksComponent,
     AudiobookDetailsComponent,
     AddebookComponent,
-    AddAudiobookComponent
+    AddAudiobookComponent,
+    ShowbooksComponent,
+    ShowaudiobooksComponent
    
   ],
   imports: [
