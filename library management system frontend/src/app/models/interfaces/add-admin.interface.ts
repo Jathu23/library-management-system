@@ -1,5 +1,5 @@
 export interface adminRequestModel {
-    UserNic?: string;            
+    AdminNic: string;            
     FirstName: string;           
     LastName: string;            
     Email: string;                         

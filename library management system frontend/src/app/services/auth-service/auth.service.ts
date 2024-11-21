@@ -25,7 +25,7 @@ export class AuthService {
     const formData: FormData = new FormData();
 
     // Append form data for all admin fields
-    formData.append('UserNic', adminData.UserNic || '');
+    formData.append('UserNic', adminData.AdminNic || '');
     formData.append('FirstName', adminData.FirstName);
     formData.append('LastName', adminData.LastName);
     formData.append('Email', adminData.Email);

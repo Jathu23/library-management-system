@@ -24,4 +24,7 @@ export class AdminLayoutComponent implements AfterViewInit {
       $(".sidebar").toggleClass("active");
     });
   }
+
+
+  
 }

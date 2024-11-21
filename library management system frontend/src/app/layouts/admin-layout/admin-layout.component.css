@@ -10,25 +10,42 @@
        font-family: Arial, sans-serif;
    }
    .container {
-       width: 100%;
+       width: auto;
        min-height: 100vh;
        display: flex;
-       position: absolute;
+       position: relative;
       
    }
    .sidebar {
+    
        position: relative;
        width: 250px;
        height: 100%;
       min-height: 100vh;
        display: flex;
        flex-direction: column;
-       gap: 10px;
+       gap: 8px;
        background-color: #81256c;
        padding: 20px;
        border-radius: 0 30px 30px 0;
        transition: all 0.3s;
    }
+   .content {
+    width: 100%;
+    flex-grow: 1;
+    height: 100vh;
+    overflow-y: auto; /* Enables vertical scrolling */
+    padding: 20px;
+    background-color: #ffffff;
+  }
+  
+  .content::-webkit-scrollbar {
+    width: 0.1px;
+  }
+  .sidebar::-webkit-scrollbar {
+    width: 0.1px;
+  }
+  
    .menu-btn {
        position: absolute;
        right: -14px;
@@ -78,7 +95,7 @@
        content: "";
        position: absolute;
        left: -5px;
-       top: 50%;
+       top: 70%;
        transform: translateY(-50%) rotate(45deg);
        width: 10px;
        height: 10px;
@@ -120,14 +137,14 @@
    }
    .menu ul li {
        list-style: none;
-       margin-bottom: 5px;
+       margin-bottom: 3px;
    }
    .menu ul li a {
        display: flex;
        align-items: center;
-       gap: 10px;
-       font-size: 16px;
-       font-weight: 800;
+       gap: 1px;
+       font-size: 14px;
+       font-weight: 600;
        color: #d7c4c4;
        text-decoration: none;
        padding: 12px 8px;
@@ -165,3 +182,4 @@
    .nav {
        flex: 1;
    }
+   
