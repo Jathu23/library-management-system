@@ -58,8 +58,12 @@ import { ShowebooksComponent } from './components/user/showebooks/showebooks.com
     ShowbooksComponent,
     ShowaudiobooksComponent,
     NewAdminComponent,
+<<<<<<< HEAD
     NewAdminComponent,
     ShowebooksComponent,
+=======
+    NewAdminComponent
+>>>>>>> e7529f4c9a3daee5af8b581235a280178559f6e2
   ],
   imports: [
     BrowserModule,
