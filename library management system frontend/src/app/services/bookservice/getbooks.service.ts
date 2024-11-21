@@ -20,5 +20,11 @@ searchAudiobooks(searchString: string,currentPage: number,pageSize: number): Obs
   return this.http.get<any>( this.audiobookUrld +`Search?searchString=${searchString}&page=${currentPage}&pageSize=${pageSize}`);
 }
 
+private ebookUrl = `https://localhost:7261/api/Ebook/GetEbooks`;
+
+getebooks(currentPage: number, pageSize: number): Observable<any> {
+  return this.http.get<any>(this.ebookUrl + `?page=${currentPage}&pageSize=${pageSize}`);
+}
+
 
 }

@@ -20,6 +20,7 @@ import { AddAudiobookComponent } from './components/admin/add-audiobook/add-audi
 
 import { ShowbooksComponent } from './components/user/showbooks/showbooks.component';
 import { ShowaudiobooksComponent } from './components/user/showaudiobooks/showaudiobooks.component';
+import { ShowebooksComponent } from './components/user/showebooks/showebooks.component';
 
 import { NewAdminComponent } from './components/admin/new-admin/new-admin.component';
 
@@ -56,7 +57,8 @@ const routes: Routes = [
     children: [
       { path: '', component: UserDashboardComponent },
       { path: 'view-normal-books', component: ShowbooksComponent },
-      { path: 'view-audio-books', component: ShowaudiobooksComponent }
+      { path: 'view-audio-books', component: ShowaudiobooksComponent },
+      {path: 'view-e-books' , component:ShowebooksComponent }
    
     ]
   }

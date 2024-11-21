@@ -13,14 +13,14 @@ namespace library_management_system.Repositories
             _context = context;
         }
 
-        public async Task AddSubscriptionAsync(GlobalSubscription subscription)
+        public async Task AddSubscription(GlobalSubscription subscription)
         {
              _context.globalSubscriptions.AddAsync(subscription);
             await  _context.SaveChangesAsync();
         }
 
 
-        public async Task<GlobalSubscription> GetByUserIdAsync(int userId)
+        public async Task<GlobalSubscription> GetByUserId(int userId)
         {
             return await _context.globalSubscriptions.FirstOrDefaultAsync(s => s.UserId == userId && s.IsActive);
 
@@ -32,7 +32,7 @@ namespace library_management_system.Repositories
 
         }
 
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateUser(User user)
         {
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
