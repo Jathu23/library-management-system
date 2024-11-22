@@ -13,6 +13,7 @@ export class AudiobookDetailsComponent implements OnInit {
   audio: HTMLAudioElement = new Audio();
   currentTime: number = 0;
   duration: number = 0;
+  isPlaying = false;
   timer: any;
 
   constructor(private audiobookService: AudiobookService) {}
@@ -29,8 +30,14 @@ export class AudiobookDetailsComponent implements OnInit {
 
   openPopup(audiobook: any): void {
     this.selectedAudiobook = audiobook;
-    this.audio.src = audiobook.filePath;
+    const audioFilePath = `http://localhost:5149/${audiobook.filePath}`; // Full URL to the audio file
+    this.audio.src = audioFilePath;  // Set the audio source to the full URL
     this.audio.load();
+
+    // Handle errors when loading the audio
+    this.audio.onerror = (error) => {
+      console.error("Error loading audio file: ", error);
+    };
 
     this.audio.onloadedmetadata = () => {
       this.duration = this.audio.duration;
@@ -47,10 +54,12 @@ export class AudiobookDetailsComponent implements OnInit {
 
   playAudio(): void {
     this.audio.play();
+    this.isPlaying = true;
   }
 
   pauseAudio(): void {
     this.audio.pause();
+    this.isPlaying = false;
   }
 
   skipForward(): void {

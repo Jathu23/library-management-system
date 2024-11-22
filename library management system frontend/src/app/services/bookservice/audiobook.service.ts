@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AudiobookService {
-  private audioBookGetUrl = 'http://localhost:5149/api/Audiobook/GetAudiobooks?page=1&pageSize=09';
+  private audioBookGetUrl = 'http://localhost:5149/api/Audiobook/GetAudiobooks?page=1&pageSize=32';
 
   constructor(private http: HttpClient) {}
 
