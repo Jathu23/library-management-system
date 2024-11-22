@@ -29,6 +29,7 @@ import { ShowaudiobooksComponent } from './components/user/showaudiobooks/showau
 
 import { NewAdminComponent } from './components/admin/new-admin/new-admin.component';
 import { ShowebooksComponent } from './components/user/showebooks/showebooks.component';
+import { ShowNormalbookComponent } from './components/admin/show-normalbook/show-normalbook.component';
 
 
 
@@ -58,7 +59,8 @@ import { ShowebooksComponent } from './components/user/showebooks/showebooks.com
     ShowbooksComponent,
     ShowaudiobooksComponent,
 
-    NewAdminComponent
+    NewAdminComponent,
+      ShowNormalbookComponent
 
    
   ],
