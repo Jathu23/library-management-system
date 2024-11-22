@@ -1,4 +1,5 @@
 <div class="container mt-5">
+  <!-- Audiobook List -->
   <div class="row">
     <div *ngFor="let audiobook of audiobooks" class="col-md-4 mb-4">
       <div class="card" (click)="openPopup(audiobook)" style="cursor: pointer;">
@@ -21,13 +22,17 @@
         <button type="button" class="btn-close" (click)="closePopup()">X</button>
       </div>
       <div class="modal-body text-center">
-        <img src="Library-.jpg" alt="Cover" class="img-fluid mb-3" style="max-height: 300px;">
-        <div>
-          <button class="btn btn-success" (click)="playAudio()">Play</button>
-          <button class="btn btn-warning" (click)="pauseAudio()">Pause</button>
-          <button class="btn btn-primary" (click)="skipBackward()">-5s</button>
-          <button class="btn btn-primary" (click)="skipForward()">+5s</button>
+        <img [src]="selectedAudiobook.coverImage || 'Library-.jpg'" alt="Cover" class="img-fluid mb-3" style="max-height: 300px;">
+        
+        <!-- Music Player Controls with Icons -->
+        <div class="d-flex justify-content-center align-items-center">
+          <i class="bi bi-skip-backward-fill mx-3" (click)="skipBackward()"></i>
+          <i *ngIf="!isPlaying" class="bi bi-play-fill mx-3" (click)="playAudio()"></i>
+          <i *ngIf="isPlaying" class="bi bi-pause-fill mx-3" (click)="pauseAudio()"></i>
+          <i class="bi bi-skip-forward-fill mx-3" (click)="skipForward()"></i>
         </div>
+        
+        <!-- Display Time -->
         <p class="mt-3">
           <strong>Elapsed:</strong> {{ formatTime(currentTime) }} / 
           <strong>Total:</strong> {{ formatTime(duration) }}

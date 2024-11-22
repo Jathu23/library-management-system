@@ -56,7 +56,11 @@ import { CommonModule } from '@angular/common';
     ShowaudiobooksComponent,
    NewAdminComponent,
    ShowNormalbookComponent,
-   ShowebooksComponent
+   ShowebooksComponent,
+    ShowebooksComponent,
+    ShowNormalbookComponent
+
+   
 
   ],
 
