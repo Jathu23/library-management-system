@@ -1,0 +1,11 @@
+thead th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa; /* Optional: match your header's background */
+    z-index: 1;
+  }
+  
+
+  .thead-light tr{
+    padding: 30px;
+  }

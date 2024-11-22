@@ -1,19 +1,32 @@
 <div class="grid-container scroll-container">
-    <div class="grid-item" *ngFor="let ebook of ebooks" (click)="openEbookModal(ebook)">
-      <img [src]="ebook.coverImagePath" alt="{{ ebook.title }}" />
-      <h3>{{ ebook.title }}</h3>
-      <p>Author: {{ ebook.author }}</p>
-    </div>
+  <div 
+    class="grid-item" 
+    *ngFor="let ebook of ebooks" 
+    (click)="openEbookModal(ebook)"
+  >
+  <img 
+  [src]="ebook.coverImagePath || 'assets/default-cover.jpg'" 
+  alt="{{ ebook.title }}" 
+  (error)="onImageError($event)" 
+/>
+
+    <h3>{{ ebook.title }}</h3>
+    <p>Author: {{ ebook.author }}</p>
   </div>
-  
-  <div class="modal" [class.show]="isModalOpen">
-    <div class="modal-content">
-      <span class="close" (click)="closeModal()">&times;</span>
-      <h2>{{ selectedEbook?.title }}</h2>
-      <p><strong>Author:</strong> {{ selectedEbook?.author }}</p>
-      <p><strong>Genre:</strong> {{ selectedEbook?.genre }}</p>
-      <p><strong>Publisher:</strong> {{ selectedEbook?.publisher }}</p>
-      <p><strong>Publish Year:</strong> {{ selectedEbook?.publishYear }}</p>
-    </div>
+</div>
+
+<div *ngIf="ebooks.length === 0" class="no-ebooks">
+  <p>No eBooks available. Please check back later.</p>
+</div>
+
+<!-- Modal eBook -->
+<div class="modal" [class.show]="isModalOpen">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>{{ selectedEbook?.title }}</h2>
+    <p><strong>Author:</strong> {{ selectedEbook?.author }}</p>
+    <p><strong>Genre:</strong> {{ selectedEbook?.genre }}</p>
+    <p><strong>Publisher:</strong> {{ selectedEbook?.publisher }}</p>
+    <p><strong>Publish Year:</strong> {{ selectedEbook?.publishYear }}</p>
   </div>
-  
+</div>

@@ -60,10 +60,16 @@ import { ShowNormalbookComponent } from './components/admin/show-normalbook/show
     ShowaudiobooksComponent,
 
     NewAdminComponent,
+<<<<<<< HEAD
+    NewAdminComponent,
+    ShowebooksComponent,
+=======
       ShowNormalbookComponent
 
    
+>>>>>>> 438fccb7bc21e538bbce8de9d1cbe0e66fd5522a
   ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,
