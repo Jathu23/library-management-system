@@ -125,6 +125,162 @@ export class ShowaudiobooksComponent implements OnInit {
 
 
 
+// 22222222222222
+
+// export class ShowaudiobooksComponent implements OnInit {
+//   audiobooks: any[] = [];
+//   isLoading = false;
+//   currentPage = 1;
+//   pageSize = 4;
+//   totalItems = 0;
+//   isModalOpen = false;
+//   selectedAudiobook: any = null;
+//   audioSrc: string = '';
+//   backgroundPlay = false;
+//   searchQuery: string = '';
+//   isSearchActive = false; // Tracks if the user is currently searching
+
+//   constructor(private getbookservice: GetbooksService) {}
+
+//   ngOnInit() {
+//     // this.loadAudiobooks(); 
+//     console.log("start search text" ,this.searchQuery);
+//     console.log("totla items  ",this.totalItems);
+//     console.log("currentPage   ",this.currentPage);
+    
+//   }
+
+//   loadAudiobooks() {
+//     if (this.isLoading) return;
+//     this.isLoading = true;
+   
+//   }
+
+// fetchaudiobooks(){
+//   this.getbookservice.getaudiobooks(this.currentPage, this.pageSize).subscribe(
+//     (response) => {
+//       const result = response.data;
+
+//       this.audiobooks = [...this.audiobooks, ...result.items];
+//       this.totalItems = result.totalCount;
+//       this.currentPage++;
+//       this.isLoading = false;
+//     },
+//     (error) => {
+//       console.error('Error fetching audiobooks:', error);
+//       this.isLoading = false;
+//     }
+//   );
+// }
+
+//   onSearch(): void {
+//     this.audiobooks = [];
+
+//     console.log("triger Onsearch value  =",this.searchQuery);
+//     if (this.searchQuery != '') {
+//       console.log("totla items  ",this.totalItems);
+//       console.log("currentPage   ",this.currentPage);
+    
+      
+//       this.fetchsearchresult();
+//       console.log("after 1 fetch  ");
+//       console.log("totla items  ",this.totalItems);
+//       console.log("currentPage   ",this.currentPage);
+    
+//     }else{
+//       console.log("emty value");
+      
+//     }
+//     // if (this.isLoading) return;
+//     // console.log("triger search f  =",this.searchQuery);
+//     // this.isLoading = true;
+//     // this.currentPage = 1;
+//     // this.audiobooks = [];
+//     // if (this.searchQuery === '') {
+//     //   this.loadAudiobooks(); 
+//     // } else {
+//     //   console.log("triger search with value  =",this.searchQuery);
+      
+//     // }
+
+//   }
+
+//   fetchsearchresult(){
+//     this.getbookservice.searchAudiobooks(this.searchQuery, this.currentPage, this.pageSize).subscribe(
+//       (response) => {
+//         const result = response.data;
+//         // console.log("result   ",result.items);
+        
+//         this.audiobooks = [...this.audiobooks, ...result.items];
+//         this.totalItems = result.totalCount;
+//         this.currentPage++;
+//         this.isLoading = false;
+//       },
+//       (error) => {
+//         console.error('Error searching audiobooks:', error);
+//         this.isLoading = false;
+//       }
+//     );
+//   }
+
+//   onScroll() {
+//     const scrollContainer = document.querySelector('.scroll-container') as HTMLElement;
+//     if (!scrollContainer) return;
+
+//     const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+
+//     if (scrollTop + clientHeight >= scrollHeight - 10 && this.audiobooks.length < this.totalItems) {
+//       console.log("hit scroll  ",this.searchQuery,this.currentPage);
+      
+//       this.fetchsearchresult();
+//       console.log("after 1 hit  ");
+//       console.log("totla items  ",this.totalItems);
+//       console.log("currentPage   ",this.currentPage);
+//     }
+//   }
+
+//   openAudioPlayer(audiobook: any) {
+//     this.selectedAudiobook = audiobook;
+//     this.isModalOpen = true;
+//     this.audioSrc = `https://localhost:7261/${audiobook.filePath}`;
+
+//     const audioElement = document.querySelector('audio');
+//     if (audioElement) {
+//       audioElement.src = this.audioSrc;
+//       audioElement.play();
+//     }
+//   }
+
+//   closeModal() {
+//     if (!this.backgroundPlay) {
+//       const audioElement = document.querySelector('audio');
+//       if (audioElement) {
+//         audioElement.pause();
+//         audioElement.currentTime = 0;
+//       }
+//       this.audioSrc = '';
+//     }
+
+//     this.isModalOpen = false;
+//     this.selectedAudiobook = null;
+//   }
+
+//   toggleBackgroundPlay() {
+//     this.backgroundPlay = !this.backgroundPlay;
+//   }
+  
+// }
+
+
+
+
+
+
+
+
+
+
+// 11111111111111111111111111
 
 // export class ShowaudiobooksComponent implements OnInit {
 //   audiobooks: any[] = []; // Store the fetched audiobooks
