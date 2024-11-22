@@ -21,6 +21,15 @@
   </div>
 </div> -->
 
+
+<div class="search-container">
+  <input
+    type="text"
+    placeholder="Search audiobooks (title, author, year)..."
+    [(ngModel)]="searchQuery"
+    (input)="onSearch()"
+    class="search-bar"
+  />
   
 <div class="mt-2">
   <label>

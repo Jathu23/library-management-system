@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BookService } from '../../../services/bookservice/book.service';
 import { AddBookDto } from '../../../models/interfaces/add-newbook.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-addbook',
@@ -71,12 +72,16 @@ import { AddBookDto } from '../../../models/interfaces/add-newbook.interface';
 
 
 
-export class AddbookComponent {
+export class AddbookComponent implements OnInit {
+
+  ngOnInit(): void {
+    this.fetchData()
+  }
   addBookForm: FormGroup;
   genresList: string[] = ['Fiction', 'Non-Fiction', 'Science', 'Biography', 'History'];
   imagePreviews: string[] = []; // Stores image previews
 
-  constructor(private fb: FormBuilder, private bookService: BookService) {
+  constructor(private fb: FormBuilder, private bookService: BookService,private http: HttpClient) {
     this.addBookForm = this.fb.group({
       ISBN: ['', [Validators.required, Validators.pattern(/^[0-9-]+$/)]], // Allow numbers and hyphens
       Title: ['', Validators.required],
@@ -88,6 +93,8 @@ export class AddbookComponent {
       CoverImages: ['']
     });
   }
+
+
 
   /**
    * Handles file input change event.
@@ -129,4 +136,62 @@ export class AddbookComponent {
       });
     }
   }
+
+  // ts for book inventry
+
+  data:any[]=[]
+  datas:any;
+
+  booksCopie:any;
+  booksCopies:any[]=[]
+  
+  baseUrl:string =  `https://localhost:7261/api/Books/get-all-books-with-copies?page=1&pageSize=20`;
+
+  fetchData(): void {
+    const apiUrl = this.baseUrl; 
+    this.http.get(apiUrl).subscribe({
+      next: (response) => {
+        this.datas = (response)
+
+        this.booksCopie=this.datas.data
+
+        this.datas.data.forEach((element: any) => {
+          let sample:any={
+            "id": element.id,
+            "isbn": element.isbn,
+            "title": element.title,
+            "author": element.author,
+            "toggle": 0,
+            "genre": [
+              element.genre[0],
+              element.genre[1]
+            ],
+            "publishYear": element.publishYear,
+            "shelfLocation": element.shelfLocation,
+            "availableCopies": element.availableCopies,
+            "totalCopies": element.totalCopies,
+            "coverImagePath": [
+              element.coverImagePath
+            ],
+            "bookCopies":element.bookCopies
+
+          }
+          this.data.push(sample)
+          
+        });    
+        console.log(this.data);
+      },
+      error: (err) => {
+        console.error('Error fetching data:', err);
+      },
+    });
+  }
+
+
+
+
 }
+
+
+// 
+

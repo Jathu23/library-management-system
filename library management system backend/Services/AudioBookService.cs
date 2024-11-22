@@ -186,5 +186,52 @@ namespace library_management_system.Services
             };
         }
 
+        public async Task<ApiResponse<PaginatedResult<AudiobookDto>>> SearchAudioBooksAsync(string searchString,int pageNumber,int pageSize)
+        {
+            try
+            {
+                var (audioBooks, totalRecords) = await _audioBookRepository.SearchAsync(searchString, pageNumber, pageSize);
+
+                var audiobookDtos = audioBooks.Select(a => new AudiobookDto
+                {
+                    Id = a.Id,
+                    Title = a.Title,
+                    Author = a.Author,
+                    Genre = a.Genre,
+                    FilePath = a.FilePath,
+                    CoverImagePath = a.CoverImagePath,
+                    PublishYear = a.PublishYear,
+                    Language = a.Metadata.Language,
+                    Narrator = a.Metadata.Narrator,
+                    Publisher = a.Metadata.Publisher
+                }).ToList();
+
+                var paginatedResult = new PaginatedResult<AudiobookDto>
+                {
+                    Items = audiobookDtos,
+                    TotalCount = totalRecords,
+                    CurrentPage = pageNumber,
+                    PageSize = pageSize
+                };
+
+                return new ApiResponse<PaginatedResult<AudiobookDto>>
+                {
+                    Success = true,
+                    Message = "AudioBooks retrieved successfully.",
+                    Data = paginatedResult
+                };
+            }
+            catch (Exception ex)
+            {
+              
+                return new ApiResponse<PaginatedResult<AudiobookDto>>
+                {
+                    Success = false,
+                    Message = $"An error occurred: {ex.Message}",
+                    Data = null
+                };
+            }
+        }
+
     }
 }

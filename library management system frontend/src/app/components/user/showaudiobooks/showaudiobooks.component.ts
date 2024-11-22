@@ -9,48 +9,71 @@ import { GetbooksService } from '../../../services/bookservice/getbooks.service'
 })
 
 export class ShowaudiobooksComponent implements OnInit {
-  audiobooks: any[] = []; // Store the fetched audiobooks
-  isLoading = false; // Loading flag for API calls
-  currentPage = 1; // Tracks the current page being fetched
-  pageSize = 10; // Number of items per page
-  totalItems = 0; // Total number of audiobooks on the server
-  isModalOpen = false; // Tracks if the modal is open
-  selectedAudiobook: any = null; // Holds the selected audiobook details
-  audioSrc: string = ''; // Holds the dynamically generated audio URL
-  backgroundPlay = false; 
+  audiobooks: any[] = [];
+  isLoading = false;
+  currentPage = 1;
+  pageSize = 4;
+  totalItems = 0;
+  isModalOpen = false;
+  selectedAudiobook: any = null;
+  audioSrc: string = '';
+  backgroundPlay = false;
+  searchQuery: string = '';
+  isSearchActive = false; // Tracks if the user is currently searching
 
-
-  
   constructor(private getbookservice: GetbooksService) {}
 
   ngOnInit() {
-    this.loadAudiobooks(); // Fetch the initial data
-    console.log(this.backgroundPlay);
+    this.loadAudiobooks(); // Load initial data
   }
 
-  
   loadAudiobooks() {
-    if (this.isLoading) return; // Prevent multiple simultaneous calls
+    if (this.isLoading) return;
 
     this.isLoading = true;
-
     this.getbookservice.getaudiobooks(this.currentPage, this.pageSize).subscribe(
       (response) => {
-        const result = response.data; // Extract `data` containing `Items`, `TotalCount`, etc.
+        const result = response.data;
 
-        // Append new audiobooks to the list
         this.audiobooks = [...this.audiobooks, ...result.items];
-
-        // Update total items and increment the page for the next fetch
         this.totalItems = result.totalCount;
         this.currentPage++;
-        this.isLoading = false; // Mark loading as complete
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching audiobooks:', error);
-        this.isLoading = false; // Reset loading flag in case of error
+        this.isLoading = false;
       }
     );
+  }
+
+  onSearch(): void {
+    if (this.isLoading) return;
+
+    // Reset pagination when starting a new search
+    this.isLoading = true;
+    this.currentPage = 1;
+    this.audiobooks = [];
+    this.isSearchActive = !!this.searchQuery; // Active only when searchQuery is not empty
+
+    if (this.searchQuery === '') {
+      this.loadAudiobooks(); // Fallback to normal load when searchQuery is cleared
+    } else {
+      this.getbookservice.searchAudiobooks(this.searchQuery, this.currentPage, this.pageSize).subscribe(
+        (response) => {
+          const result = response.data;
+
+          this.audiobooks = [...this.audiobooks, ...result.items];
+          this.totalItems = result.totalCount;
+          this.currentPage++;
+          this.isLoading = false;
+        },
+        (error) => {
+          console.error('Error searching audiobooks:', error);
+          this.isLoading = false;
+        }
+      );
+    }
   }
 
   onScroll() {
@@ -59,54 +82,205 @@ export class ShowaudiobooksComponent implements OnInit {
 
     const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
 
-    // Check if the user has scrolled near the bottom of the container
     if (scrollTop + clientHeight >= scrollHeight - 10 && this.audiobooks.length < this.totalItems) {
-      this.loadAudiobooks(); // Load the next page of audiobooks
+      if (this.isSearchActive) {
+        this.onSearch(); // Continue search with infinite scrolling
+      } else {
+        this.loadAudiobooks(); // Load more audiobooks normally
+      }
     }
   }
 
   openAudioPlayer(audiobook: any) {
-    this.selectedAudiobook = audiobook; // Set the selected audiobook
-    this.isModalOpen = true; // Open the modal
-   
-    this.audioSrc = `https://localhost:7261/${audiobook.filePath}`; // Generate the audio URL
+    this.selectedAudiobook = audiobook;
+    this.isModalOpen = true;
+    this.audioSrc = `https://localhost:7261/${audiobook.filePath}`;
+
     const audioElement = document.querySelector('audio');
     if (audioElement) {
-      audioElement.src = this.audioSrc; 
-      audioElement.play(); // Stop the audio
+      audioElement.src = this.audioSrc;
+      audioElement.play();
     }
-    console.log(this.selectedAudiobook);
-    console.log(this.selectedAudiobook.filePath);
-    
   }
 
   closeModal() {
     if (!this.backgroundPlay) {
-      // Stop the audio only if backgroundPlay is disabled
       const audioElement = document.querySelector('audio');
       if (audioElement) {
         audioElement.pause();
         audioElement.currentTime = 0;
       }
-      this.audioSrc = ''; // Clear the audio source
+      this.audioSrc = '';
     }
 
-    this.isModalOpen = false; // Close the modal
-    this.selectedAudiobook = null; // Clear the selected audiobook
+    this.isModalOpen = false;
+    this.selectedAudiobook = null;
   }
-
 
   toggleBackgroundPlay() {
-    this.backgroundPlay = !this.backgroundPlay; 
-    this.backgroundPlay = !this.backgroundPlay; 
-    console.log(this.backgroundPlay);
+    this.backgroundPlay = !this.backgroundPlay;
   }
-  
   
 }
 
 
 
+// 22222222222222
+
+// export class ShowaudiobooksComponent implements OnInit {
+//   audiobooks: any[] = [];
+//   isLoading = false;
+//   currentPage = 1;
+//   pageSize = 4;
+//   totalItems = 0;
+//   isModalOpen = false;
+//   selectedAudiobook: any = null;
+//   audioSrc: string = '';
+//   backgroundPlay = false;
+//   searchQuery: string = '';
+//   isSearchActive = false; // Tracks if the user is currently searching
+
+//   constructor(private getbookservice: GetbooksService) {}
+
+//   ngOnInit() {
+//     // this.loadAudiobooks(); 
+//     console.log("start search text" ,this.searchQuery);
+//     console.log("totla items  ",this.totalItems);
+//     console.log("currentPage   ",this.currentPage);
+    
+//   }
+
+//   loadAudiobooks() {
+//     if (this.isLoading) return;
+//     this.isLoading = true;
+   
+//   }
+
+// fetchaudiobooks(){
+//   this.getbookservice.getaudiobooks(this.currentPage, this.pageSize).subscribe(
+//     (response) => {
+//       const result = response.data;
+
+//       this.audiobooks = [...this.audiobooks, ...result.items];
+//       this.totalItems = result.totalCount;
+//       this.currentPage++;
+//       this.isLoading = false;
+//     },
+//     (error) => {
+//       console.error('Error fetching audiobooks:', error);
+//       this.isLoading = false;
+//     }
+//   );
+// }
+
+//   onSearch(): void {
+//     this.audiobooks = [];
+
+//     console.log("triger Onsearch value  =",this.searchQuery);
+//     if (this.searchQuery != '') {
+//       console.log("totla items  ",this.totalItems);
+//       console.log("currentPage   ",this.currentPage);
+    
+      
+//       this.fetchsearchresult();
+//       console.log("after 1 fetch  ");
+//       console.log("totla items  ",this.totalItems);
+//       console.log("currentPage   ",this.currentPage);
+    
+//     }else{
+//       console.log("emty value");
+      
+//     }
+//     // if (this.isLoading) return;
+//     // console.log("triger search f  =",this.searchQuery);
+//     // this.isLoading = true;
+//     // this.currentPage = 1;
+//     // this.audiobooks = [];
+//     // if (this.searchQuery === '') {
+//     //   this.loadAudiobooks(); 
+//     // } else {
+//     //   console.log("triger search with value  =",this.searchQuery);
+      
+//     // }
+
+//   }
+
+//   fetchsearchresult(){
+//     this.getbookservice.searchAudiobooks(this.searchQuery, this.currentPage, this.pageSize).subscribe(
+//       (response) => {
+//         const result = response.data;
+//         // console.log("result   ",result.items);
+        
+//         this.audiobooks = [...this.audiobooks, ...result.items];
+//         this.totalItems = result.totalCount;
+//         this.currentPage++;
+//         this.isLoading = false;
+//       },
+//       (error) => {
+//         console.error('Error searching audiobooks:', error);
+//         this.isLoading = false;
+//       }
+//     );
+//   }
+
+//   onScroll() {
+//     const scrollContainer = document.querySelector('.scroll-container') as HTMLElement;
+//     if (!scrollContainer) return;
+
+//     const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+
+//     if (scrollTop + clientHeight >= scrollHeight - 10 && this.audiobooks.length < this.totalItems) {
+//       console.log("hit scroll  ",this.searchQuery,this.currentPage);
+      
+//       this.fetchsearchresult();
+//       console.log("after 1 hit  ");
+//       console.log("totla items  ",this.totalItems);
+//       console.log("currentPage   ",this.currentPage);
+//     }
+//   }
+
+//   openAudioPlayer(audiobook: any) {
+//     this.selectedAudiobook = audiobook;
+//     this.isModalOpen = true;
+//     this.audioSrc = `https://localhost:7261/${audiobook.filePath}`;
+
+//     const audioElement = document.querySelector('audio');
+//     if (audioElement) {
+//       audioElement.src = this.audioSrc;
+//       audioElement.play();
+//     }
+//   }
+
+//   closeModal() {
+//     if (!this.backgroundPlay) {
+//       const audioElement = document.querySelector('audio');
+//       if (audioElement) {
+//         audioElement.pause();
+//         audioElement.currentTime = 0;
+//       }
+//       this.audioSrc = '';
+//     }
+
+//     this.isModalOpen = false;
+//     this.selectedAudiobook = null;
+//   }
+
+//   toggleBackgroundPlay() {
+//     this.backgroundPlay = !this.backgroundPlay;
+//   }
+  
+// }
+
+
+
+
+
+
+
+
+
+
+// 11111111111111111111111111
 
 // export class ShowaudiobooksComponent implements OnInit {
 //   audiobooks: any[] = []; // Store the fetched audiobooks

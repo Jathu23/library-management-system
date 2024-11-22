@@ -82,6 +82,37 @@ namespace library_management_system.Repositories
             return (audiobooks, totalCount);
         }
 
+        public async Task<(List<Audiobook>, int)> SearchAsync(string searchString, int pageNumber, int pageSize)
+        {
+            var query = _context.Audiobooks.Include(a => a.Metadata).AsQueryable();
+
+            
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(a =>
+
+
+                    a.Genre.Contains(searchString));
+
+                //query = query.Where(a =>
+                //   a.Title.Contains(searchString) ||
+                //   a.Author.Contains(searchString) ||
+                //   a.Genre.Contains(searchString) ||
+                //   a.PublishYear.ToString().Contains(searchString));
+            }
+
+           
+            int totalRecords = await query.CountAsync();
+
+           
+            var audioBooks = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (audioBooks, totalRecords);
+        }
+
 
 
 

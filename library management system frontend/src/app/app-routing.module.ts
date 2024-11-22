@@ -24,6 +24,8 @@ import { ShowebooksComponent } from './components/user/showebooks/showebooks.com
 
 import { NewAdminComponent } from './components/admin/new-admin/new-admin.component';
 
+import { ShowNormalbookComponent } from './components/admin/show-normalbook/show-normalbook.component';
+
 
 
 const routes: Routes = [
@@ -48,7 +50,9 @@ const routes: Routes = [
        { path: 'audio-books', component: AudiobooksComponent },
       { path: 'E-books', component: AudiobooksComponent },
       { path: 'audiobook/:id', component: AudiobookDetailsComponent },
-      {path:'add-admin',component:NewAdminComponent}
+      {path:'add-admin',component:NewAdminComponent},
+      {path:'show-noramal-Books',component:ShowNormalbookComponent}
+
     ]
   },
   {
