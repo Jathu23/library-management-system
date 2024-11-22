@@ -1,5 +1,4 @@
-
-  <div class="container">
+<div class="container">
     <div class="sidebar">
         <div class="menu-btn">
             <i class="bi bi-arrow-bar-left"></i>
@@ -10,7 +9,7 @@
             </div>
             <div class="user-details">
                 <p class="title">WelCome</p>
-                
+
             </div>
         </div>
         <div class="nav">
@@ -30,8 +29,10 @@
                             <i class="arrow bi bi-arrow-bar-down"></i>
                         </a>
                         <ul class="sub-menu">
-                            <li><a href=""><i class="icon bi bi-person-check-fill"></i><span class="text">Active Users</span></a></li>
-                            <li><a href=""><i class="icon bi bi-ban"></i><span class="text">Non-ActoveUsers</span></a></li>
+                            <li><a href=""><i class="icon bi bi-person-check-fill"></i><span class="text">Active
+                                        Users</span></a></li>
+                            <li><a href=""><i class="icon bi bi-ban"></i><span class="text">Non-ActoveUsers</span></a>
+                            </li>
                             <li><a href=""><i class="icon bi bi-coin"></i><span class="text">Subscribers</span></a></li>
                         </ul>
                     </li>
@@ -42,43 +43,54 @@
                             <i class="arrow bi bi-arrow-bar-down"></i>
                         </a>
                         <ul class="sub-menu">
-                            <li><a [routerLink]="['/admin/add-e-book']"><i class="icon bi bi-file-earmark-pdf-fill"></i><span class="text">EBooks</span></a></li>
-                            <li><a [routerLink]="['/admin/add-audio-book']"><i class="icon bi bi-file-earmark-music-fill"></i><span class="text">AudioBooks</span></a></li>
-                            <li><a [routerLink]="['/admin/add-normal-book']"><i class="icon bi bi-book-half"></i><span class="text">Physical Books</span></a></li>
+                            <li><a [routerLink]="['/admin/add-e-book']"><i
+                                        class="icon bi bi-file-earmark-pdf-fill"></i><span
+                                        class="text">EBooks</span></a></li>
+                            <li><a [routerLink]="['/admin/add-audio-book']"><i
+                                        class="icon bi bi-file-earmark-music-fill"></i><span
+                                        class="text">AudioBooks</span></a></li>
+                            <li><a [routerLink]="['/admin/add-normal-book']"><i class="icon bi bi-book-half"></i><span
+                                        class="text">Physical Books</span></a></li>
                         </ul>
                     </li>
                     <li>
-                      <a href="">
-                          <i class="icon bi bi-book"></i>
-                          <span class="text">Books</span>
-                          <i class="arrow bi bi-arrow-bar-down"></i>
-                      </a>
-                      <ul class="sub-menu">
-                          <li><a [routerLink]="['/admin/add-ebook']"><i class="icon bi bi-file-earmark-pdf-fill"></i><span class="text">EBooks</span></a></li>
-                          <li><a [routerLink]="['/admin/audiobook/:id']"><i class="icon bi bi-file-earmark-music-fill"></i><span class="text">AudioBooks</span></a></li>
-                          <li><a [routerLink]="['/admin/add-normal-book']"><i class="icon bi bi-book-half"></i><span class="text">Physical Books</span></a></li>
-                      </ul>
-                  </li>
-                  <li><a href=""><i class="icon bi bi-arrow-return-left"></i><span class="text">Lend</span></a></li>
-                  <li><a href=""><i class="icon bi bi-arrow-return-right"></i><span class="text">Return</span></a></li>
-                  <li><a [routerLink]="['/admin/add-admin']"><i class="icon bi bi-person-add"></i><span class="text">Create Admin</span></a></li>
+                        <a href="">
+                            <i class="icon bi bi-book"></i>
+                            <span class="text">Books</span>
+                            <i class="arrow bi bi-arrow-bar-down"></i>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a [routerLink]="['/admin/add-ebook']"><i
+                                        class="icon bi bi-file-earmark-pdf-fill"></i><span
+                                        class="text">EBooks</span></a></li>
+                            <li><a [routerLink]="['/admin/audiobook/:id']"><i
+                                        class="icon bi bi-file-earmark-music-fill"></i><span
+                                        class="text">AudioBooks</span></a></li>
+                            <li><a [routerLink]="['/admin/add-normal-book']"><i class="icon bi bi-book-half"></i><span
+                                        class="text">Physical Books</span></a></li>
+                        </ul>
+                    </li>
+                    <li><a href=""><i class="icon bi bi-arrow-return-left"></i><span class="text">Lend</span></a></li>
+                    <li><a href=""><i class="icon bi bi-arrow-return-right"></i><span class="text">Return</span></a>
+                    </li>
+                    <li><a [routerLink]="['/admin/add-admin']"><i class="icon bi bi-person-add"></i><span
+                                class="text">Create Admin</span></a></li>
                 </ul>
             </div>
-            
+
             <div class="menu">
                 <p class="title">Account</p>
                 <ul>
-                  <li><a href=""><i class="icon bi bi-person-badge-fill"></i><span class="text">Profile</span></a></li>
-                   
+                    <li><a href=""><i class="icon bi bi-person-badge-fill"></i><span class="text">Profile</span></a>
+                    </li>
+
                     <li><a href=""><i class="icon bi bi-box-arrow-right"></i><span class="text">Logout</span></a></li>
                 </ul>
             </div>
         </div>
     </div>
-    
-    <div class="content flex-grow-1 ">
-      <router-outlet></router-outlet>
+
+    <div class="content flex-grow-1 routerDiv">
+        <router-outlet></router-outlet>
     </div>
 </div>
-
-

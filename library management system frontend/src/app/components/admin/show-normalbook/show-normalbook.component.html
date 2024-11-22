@@ -1,83 +1,83 @@
 <p class="text-center mt-4">Book Management</p>
-<div class="container mt-3">
-  <table class="table table-bordered table-hover">
-    <thead class="thead-light">
-      <tr>
-        <th>ID</th>
-        <th>ISBN</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Genre</th>
-        <th>Published Year</th>
-        <th>Shelf Location</th>
-        <th>Total Copies</th>
-        <th>Available Copies</th>
-        <th>Image</th>
-        <th>Edit</th>
-        <th>Delete</th>
-        <th>View More</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Main rows -->
-      <ng-container *ngFor="let book of data">
-        <tr>
-          <td>{{ book.id }}</td>
-          <td>{{ book.isbn }}</td>
-          <td>{{ book.title }}</td>
-          <td>{{ book.author }}</td>
-          <td>{{ book.genre }}</td>
-          <td>{{ book.publishYear }}</td>
-          <td>{{ book.shelfLocation }}</td>
-          <td>{{ book.totalCopies }}</td>
-          <td>{{ book.availableCopies }}</td>
-          <td>
-            <img src="book.image" alt="Book Image" class="img-thumbnail" style="width: 50px; height: 50px;" />
-          </td>
-          <td>
-            <button class="btn btn-sm btn-primary">Edit</button>
-          </td>
-          <td>
-            <button class="btn btn-sm btn-danger">Delete</button>
-          </td>
-          <td>
-            <a *ngIf="book.toggle === 0" (click)="book.toggle = 1">
-              <button class="btn btn-sm btn-success">+</button>
-            </a>
-            <a *ngIf="book.toggle === 1" (click)="book.toggle = 0">
-              <button class="btn btn-sm btn-warning">-</button>
-            </a>
-          </td>
+<div class="container mt-3" style="width: 100%;">
+  <div style="max-height: 600px; overflow-y: auto;">
+    <table class="table table-bordered table-hover table-sm">
+      <thead class="thead-light">
+        <tr class="m-0 p-0">
+          <th class="p-0">ID</th>
+          <th class="p-0">ISBN</th>
+          <th class="p-0">Title</th>
+          <th class="p-0">Author</th>
+          <th class="p-0">Genre</th>
+          <th class="p-0">Published Year</th>
+          <th class="p-0">Shelf Location</th>
+          <th class="p-0">Total Copies</th>
+          <th class="p-0">Available Copies</th>
+          <th class="p-0">Image</th>
+          <th class="p-0">Edit</th>
+          <th class="p-0">Delete</th>
+          <th class="p-0">View More</th>
         </tr>
-
-        <!-- Nested rows -->
-        <ng-container *ngIf="book.toggle === 1">
-          <tr class="bg-light">
-            <td colspan="13">
-              <table class="table table-sm table-bordered">
-                <thead class="thead-dark">
-                  <tr>
-                    <th>Copy ID</th>
-                    <th>Condition</th>
-                    <th>Is Available</th>
-                    <th>Last Borrowed Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let nestedRow of book.bookCopies">
-                    <td>{{ nestedRow.copyId }}</td>
-                    <td>{{ nestedRow.condition }}</td>
-                    <td>{{ nestedRow.isAvailable ? 'Yes' : 'No' }}</td>
-                    <td>null</td>
-                  </tr>
-                </tbody>
-              </table>
+      </thead>
+      <tbody>
+        <!-- Main rows -->
+        <ng-container *ngFor="let book of data">
+          <tr class="m-0">
+            <td class="p-1">{{ book.id }}</td>
+            <td class="p-1">{{ book.isbn }}</td>
+            <td class="p-1">{{ book.title }}</td>
+            <td class="p-1">{{ book.author }}</td>
+            <td class="p-1">{{ book.genre }}</td>
+            <td class="p-1">{{ book.publishYear }}</td>
+            <td class="p-1">{{ book.shelfLocation }}</td>
+            <td class="p-1">{{ book.totalCopies }}</td>
+            <td class="p-1">{{ book.availableCopies }}</td>
+            <td class="p-1">
+              <img src="{{ book.image }}" alt="Book Image" class="img-thumbnail" style="width: 50px; height: 50px;" />
+            </td>
+            <td class="p-1">
+              <button class="btn btn-sm btn-primary">Edit</button>
+            </td>
+            <td class="p-1">
+              <button class="btn btn-sm btn-danger">Delete</button>
+            </td>
+            <td class="p-1">
+              <a *ngIf="book.toggle === 0" (click)="book.toggle = 1">
+                <button class="btn btn-sm btn-success p-0">+</button>
+              </a>
+              <a *ngIf="book.toggle === 1" (click)="book.toggle = 0">
+                <button class="btn btn-sm btn-warning p-0">-</button>
+              </a>
             </td>
           </tr>
+
+          <!-- Nested rows -->
+          <ng-container *ngIf="book.toggle === 1">
+            <tr class="bg-light">
+              <td colspan="13" class="p-0">
+                <table class="table table-sm table-bordered m-0">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th class="p-1">Copy ID</th>
+                      <th class="p-1">Condition</th>
+                      <th class="p-1">Is Available</th>
+                      <th class="p-1">Last Borrowed Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let nestedRow of book.bookCopies">
+                      <td class="p-1">{{ nestedRow.copyId }}</td>
+                      <td class="p-1">{{ nestedRow.condition }}</td>
+                      <td class="p-1">{{ nestedRow.isAvailable ? 'Yes' : 'No' }}</td>
+                      <td class="p-1">null</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </ng-container>
         </ng-container>
-      </ng-container>
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  </div>
 </div>
-
-
