@@ -2,8 +2,7 @@
   <div 
     class="grid-item" 
     *ngFor="let ebook of ebooks" 
-    (click)="openEbookModal(ebook)"
-  >
+    (click)="openEbookModal(ebook)">
   <img 
   [src]="ebook.coverImagePath || 'assets/default-cover.jpg'" 
   alt="{{ ebook.title }}" 
@@ -18,6 +17,18 @@
 <div *ngIf="ebooks.length === 0" class="no-ebooks">
   <p>No eBooks available. Please check back later.</p>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- Modal eBook -->
 <div class="modal" [class.show]="isModalOpen">
