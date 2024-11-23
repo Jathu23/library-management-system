@@ -51,6 +51,11 @@ namespace library_management_system.Repositories
             return await _context.NormalBooks.FindAsync(id);
 
         }
+        public async Task<BookCopy?> GetBookCopyById(int bookCopyId)
+        {
+            return await _context.BookCopies.Include(bc => bc.Book).FirstOrDefaultAsync(bc => bc.CopyId == bookCopyId);
+        }
+
 
         public async Task<LentRecord?> GetLentRecordWithDetailsAsync(int lentRecordId)
         {
