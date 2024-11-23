@@ -1,132 +1,90 @@
-/* Grid Container with Scroll */
+
 .grid-container.scroll-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive columns */
-    gap: 16px;
-    padding: 16px;
-    max-height: 80vh; /* Limit height for scrolling */
-    overflow-y: auto; /* Enable vertical scroll */
-    background-color: #f5f5f5; /* Light background for the container */
-    border-radius: 8px; /* Rounded corners for container */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  }
-  
-  /* Grid Item */
-  .grid-item {
-    border: 1px solid #ddd; /* Light border for separation */
-    border-radius: 12px; /* Rounded corners */
-    text-align: center; /* Center align content */
-    padding: 16px;
-    background-color: #ffffff; /* White card background */
-    cursor: pointer; /* Pointer on hover */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effects */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  }
-  
-  .grid-item img {
-    width: 100%; /* Full width images */
-    max-width: 150px; /* Limit size */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 8px; /* Rounded image corners */
-    margin-bottom: 12px; /* Space below image */
-  }
-  
-  .grid-item h3 {
-    font-size: 18px;
-    color: #333;
-    margin: 8px 0;
-    font-weight: 600;
-  }
-  
-  .grid-item p {
-    font-size: 14px;
-    color: #666;
-    margin: 4px 0;
-  }
-  
-  .grid-item:hover {
-    transform: scale(1.05); /* Slightly enlarge on hover */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Elevated shadow */
-  }
-  
-  /* Modal Window */
-  .modal {
-    display: none; /* Hidden by default */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .modal.show {
-    display: flex; /* Show modal when active */
-  }
-  
-  .modal-content {
-    background-color: #ffffff; /* White modal background */
-    padding: 24px;
-    border-radius: 12px;
-    max-width: 600px;
-    width: 90%;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Elevated shadow for modal */
-  }
-  
-  .modal-content .close {
-    position: absolute;
-    top: 8px;
-    right: 16px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #333;
-  }
-  
-  .modal-content img {
-    width: 100%;
-    max-width: 200px;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 16px;
-  }
-  
-  .modal-content h2 {
-    font-size: 22px;
-    color: #333;
-    margin: 12px 0;
-    font-weight: bold;
-  }
-  
-  .modal-content p {
-    font-size: 16px;
-    color: #666;
-    margin: 6px 0;
-  }
-  
-  audio {
-    width: 100%;
-    margin-top: 16px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  label {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    font-size: 16px;
-    color: #333;
-    font-weight: bold;
-  }
-  
-  input[type='checkbox'] {
-    margin-right: 8px;
-    transform: scale(1.2); /* Slightly larger checkbox */
-    cursor: pointer;
-  }
-  
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 16px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+
+.grid-item {
+  border: 1px solid #ddd; 
+  border-radius: 12px; 
+  padding: 16px; 
+  text-align: center; 
+  background-color: #fff; 
+  cursor: pointer; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  transition: transform 0.2s ease, box-shadow 0.2s ease; 
+  width: 200px; 
+  height: 280px; 
+}
+
+.grid-item img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover; 
+  border-radius: 8px; 
+  margin-bottom: 12px; 
+}
+
+.grid-item h3 {
+  font-size: 16px;
+  color: #333;
+  margin: 8px 0; 
+  font-weight: 600; 
+  line-height: 1.4;
+}
+
+.grid-item p {
+  font-size: 14px;
+  color: #666; 
+  margin: 4px 0; 
+}
+
+.grid-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+}
+
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 80%;
+}
+
+.modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.no-ebooks {
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+  margin-top: 20px;
+}

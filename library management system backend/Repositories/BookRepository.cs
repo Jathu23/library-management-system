@@ -2,6 +2,7 @@
 using library_management_system.Database.Entiy;
 using Microsoft.EntityFrameworkCore;
 using PdfSharp;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace library_management_system.Repositories
 {
@@ -82,13 +83,19 @@ namespace library_management_system.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<NormalBook>> GetAllNormalBooksWithAvailableCopies(int page, int pageSize)
+        public async Task<(List<NormalBook>, int)> GetAllNormalBooksWithAvailableCopies(int page, int pageSize)
         {
-            return await _context.NormalBooks
-                                  .Include(b => b.BookCopies) 
-                                  .Skip((page - 1) * pageSize) 
-                                  .Take(pageSize) 
-                                  .ToListAsync();
+            var query = _context.NormalBooks.Include(a => a.BookCopies).AsQueryable();
+
+           
+            var books = await query.OrderBy(b => b.Id) .
+                                    Skip((page - 1) * pageSize)
+                                   .Take(pageSize)
+                                   .ToListAsync();
+
+            int totalRecords = await query.CountAsync();
+
+            return (books, totalRecords);
         }
 
 
@@ -99,14 +106,21 @@ namespace library_management_system.Repositories
                                  .Include(b => b.BookCopies)
                                  .FirstOrDefaultAsync(b => b.Id == bookId);
         }
-        public async Task<List<NormalBook>> GetAllBooksWithCopies(int page, int pageSize)
+        public async Task<(List<NormalBook>, int)> GetAllBooksWithCopies(int page, int pageSize)
         {
-            return await _context.NormalBooks
-                                 .Include(b => b.BookCopies)
-                                  .Skip((page - 1) * pageSize)
-                                  .Take(pageSize)
-                                  .ToListAsync();
+            var query = _context.NormalBooks.Include(a => a.BookCopies).AsQueryable();
+
+            var books = await query.OrderBy(b => b.Id) 
+                                 .Skip((page - 1) * pageSize)
+                                 .Take(pageSize)
+                                 .ToListAsync();
+
+            int totalRecords = await query.CountAsync();
+
+            return (books, totalRecords);
+
         }
+
 
         public async Task<(List<NormalBook>, int)> Categorization(string? genre, string? author, int? publishYear, int pageNumber, int pageSize)
         {

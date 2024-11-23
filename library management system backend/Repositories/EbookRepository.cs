@@ -80,6 +80,31 @@ namespace library_management_system.Repositories
             return (ebooks, totalCount);
         }
 
+        public async Task<(List<Ebook>, int)> SearchEbooksAsync(string searchString, int pageNumber, int pageSize)
+        {
+            var query = _context.Ebooks.Include(e => e.Metadata).AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(e =>
+                    e.Title.Contains(searchString) ||
+                    e.Author.Contains(searchString) ||
+                    e.Genre.Contains(searchString) ||
+                    e.ISBN.Contains(searchString) ||
+                    e.PublishYear.ToString().Contains(searchString));
+            }
+
+            int totalRecords = await query.CountAsync();
+
+            var ebooks = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (ebooks, totalRecords);
+        }
+
+
 
     }
 }

@@ -7,52 +7,54 @@ import { GetbooksService } from '../../../services/bookservice/getbooks.service'
   styleUrls: ['./showebooks.component.css'],
 })
 export class ShowebooksComponent implements OnInit {
-  ebooks: any[] = [];
+  ebooks: any[] = []; 
   isModalOpen = false;
-  selectedEbook: any | null = null;
-
-  currentPage = 1;
+  selectedEbook: any | null = null; 
+  currentPage = 1; 
   pageSize = 10;
-  hasMoreEbooks = true; // To track if more eBooks are available
 
   constructor(private getbooksService: GetbooksService) {}
 
   ngOnInit(): void {
-    this.loadEbooks();
+    this.loadEbooks(); 
   }
 
   loadEbooks(): void {
     this.getbooksService.getebooks(this.currentPage, this.pageSize).subscribe(
-      (data) => {
-        console.log('Ebooks fetched:', data);
-        if (data.items && data.items.length > 0) {
-          this.ebooks = data.items;
+      (response) => {
+        console.log('API Response:', response); 
+        if (response?.data?.items && Array.isArray(response.data.items)) {
+          this.ebooks = response.data.items; 
         } else {
-          console.warn('No eBooks found!');
+          console.warn('No eBooks found or invalid data structure:', response);
+          this.ebooks = []; 
         }
       },
       (error) => {
-        console.error('Error fetching eBooks:', error);
+        console.error('Error fetching eBooks:', error); 
       }
     );
   }
-  
-
-  onScroll(): void {
-    // Implement lazy loading or infinite scrolling
-    if (this.hasMoreEbooks) {
-      this.currentPage++;
-      this.loadEbooks();
-    }
-  }
 
   openEbookModal(ebook: any): void {
-    this.selectedEbook = ebook;
-    this.isModalOpen = true;
+    this.selectedEbook = ebook; 
+    this.isModalOpen = true; 
   }
 
   closeModal(): void {
-    this.isModalOpen = false;
+    this.isModalOpen = false; 
     this.selectedEbook = null;
   }
+
+  onImageError(event: Event): void {
+    const target = event.target as HTMLImageElement;
+  
+    if (target.src.includes('default-cover.jpg')) {
+      console.warn('Default image not found:', target.src);
+      return;
+    }
+  
+    target.src = 'assets/default-cover.jpg'; 
+  }
+  
 }

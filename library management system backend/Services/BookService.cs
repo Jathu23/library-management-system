@@ -1,5 +1,6 @@
 ﻿using library_management_system.Database.Entiy;
 using library_management_system.DTOs;
+using library_management_system.DTOs.AudioBook;
 using library_management_system.DTOs.Book;
 using library_management_system.DTOs.Ebook;
 using library_management_system.Repositories;
@@ -269,12 +270,12 @@ namespace library_management_system.Services
             }
         }
 
-        public async Task<ApiResponse<List<NormalBookDto>>> GetAllNormalBooksWithAvailableCopies(int page, int pageSize)
+        public async Task<ApiResponse<PaginatedResult<NormalBookDto>>> GetAllNormalBooksWithAvailableCopies(int page, int pageSize)
         {
             try
             {
                 // Retrieve all normal books along with their copies
-                var books = await _bookRepository.GetAllNormalBooksWithAvailableCopies(page, pageSize);
+                var (books, totalCount) = await _bookRepository.GetAllNormalBooksWithAvailableCopies(page, pageSize);
 
                 // Map the retrieved books to DTOs for API response
                 var bookDtos = books.Select(book => new NormalBookDto
@@ -292,20 +293,30 @@ namespace library_management_system.Services
                     CoverImagePath = book.CoverImagePath
                 }).ToList();
 
-                return new ApiResponse<List<NormalBookDto>>
+
+                var result = new PaginatedResult<NormalBookDto>
+                {
+                    Items = bookDtos,
+                    TotalCount = totalCount,
+                    CurrentPage = page,
+                    PageSize = pageSize
+                };
+
+
+                return new ApiResponse<PaginatedResult<NormalBookDto>>
                 {
                     Success = true,
-                    Message = "Normal books retrieved successfully.",
-                    Data = bookDtos
+                    Message = "Books retrieved successfully.",
+                    Data = result
                 };
             }
             catch (Exception ex)
             {
-                return new ApiResponse<List<NormalBookDto>>
+                return new ApiResponse<PaginatedResult<NormalBookDto>>
                 {
                     Success = false,
-                    Message = "An error occurred while retrieving normal books.",
-                    Errors = new List<string> { ex.Message }
+                    Message = $"An error occurred while retrieving the books: {ex.Message}",
+                    Data = null
                 };
             }
         }
@@ -366,14 +377,13 @@ namespace library_management_system.Services
             }
         }
 
-        public async Task<ApiResponse<List<NormalBookDetailsDto>>> GetAllBooksWithCopies(int page, int pageSize)
+        public async Task<ApiResponse<PaginatedResult<NormalBookDetailsDto>>> GetAllBooksWithCopies(int page, int pageSize)
         {
             try
             {
                
-                var books = await _bookRepository.GetAllBooksWithCopies(page, pageSize);
+                var (books, totalCount) = await _bookRepository.GetAllBooksWithCopies(page, pageSize);
 
-               
                 var bookDtos = books.Select(book => new NormalBookDetailsDto
                 {
                     Id = book.Id,
@@ -395,23 +405,35 @@ namespace library_management_system.Services
                     }).ToList()
                 }).ToList();
 
-                return new ApiResponse<List<NormalBookDetailsDto>>
+                
+                var result = new PaginatedResult<NormalBookDetailsDto>
+                {
+                    Items = bookDtos,
+                    TotalCount = totalCount,
+                    CurrentPage = page,
+                    PageSize = pageSize
+                };
+
+              
+                return new ApiResponse<PaginatedResult<NormalBookDetailsDto>>
                 {
                     Success = true,
-                    Message = "All books with copies retrieved successfully.",
-                    Data = bookDtos
+                    Message = "Books retrieved successfully.",
+                    Data = result
                 };
             }
             catch (Exception ex)
             {
-                return new ApiResponse<List<NormalBookDetailsDto>>
+                
+                return new ApiResponse<PaginatedResult<NormalBookDetailsDto>>
                 {
                     Success = false,
-                    Message = "An error occurred while retrieving the books.",
-                    Errors = new List<string> { ex.Message }
+                    Message = $"An error occurred while retrieving the books: {ex.Message}",
+                    Data = null
                 };
             }
         }
+
 
         public async Task<ApiResponse<PaginatedResult<NormalBookDto>>> GetCategorizedBooks(string? genre,string? author,int? publishYear,int pageNumber,int pageSize)
         {

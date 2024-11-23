@@ -1,4 +1,5 @@
-﻿using library_management_system.DTOs.LentRecord;
+﻿using library_management_system.DTOs;
+using library_management_system.DTOs.LentRecord;
 using library_management_system.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,5 +42,27 @@ namespace library_management_system.Controllers
             return Ok(response);
         }
 
+        [HttpPost("lend-by-copy-id")]
+        public async Task<IActionResult> LendNormalBookByCopyId([FromQuery] LendByCopyIdDto lendByCopyIdDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Invalid input data",
+                    Data = false
+                });
+            }
+
+            var result = await _lentService.LendNormalBookByCopyId(lendByCopyIdDto);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
     }
 }

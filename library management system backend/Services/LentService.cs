@@ -92,7 +92,7 @@ namespace library_management_system.Services
 
 
             book.RentCount++;
-            book.TotalCopies = book.BookCopies.Count;
+            //book.TotalCopies = book.BookCopies.Count;
 
 
             var rentHistory = new RentHistory
@@ -107,6 +107,111 @@ namespace library_management_system.Services
 
 
             await _lentRecordRepository.LendNormalBook(lentRecord, rentHistory, availableCopy, book);
+
+            return new ApiResponse<bool>
+            {
+                Success = true,
+                Message = "Book lent successfully",
+                Data = true
+            };
+        }
+
+
+        public async Task<ApiResponse<bool>> LendNormalBookByCopyId(LendByCopyIdDto lendByCopyIdDto)
+        {
+           
+            var bookCopy = await _lentRecordRepository.GetBookCopyById(lendByCopyIdDto.BookCopyId);
+            var user = await _lentRecordRepository.GetUserById(lendByCopyIdDto.UserId);
+            var admin = await _lentRecordRepository.GetAdminById(lendByCopyIdDto.AdminId);
+
+          
+            if (bookCopy == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Book copy not found",
+                    Data = false
+                };
+            }
+
+            
+            if (!bookCopy.IsAvailable)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Book copy is not available",
+                    Data = false
+                };
+            }
+
+           
+            if (user == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "User not found",
+                    Data = false
+                };
+            }
+
+          
+            if (admin == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Admin not found",
+                    Data = false
+                };
+            }
+
+        
+            var book = await _lentRecordRepository.GetNormalBookWithCopies(bookCopy.BookId);
+
+            if (book == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "Associated book not found",
+                    Data = false
+                };
+            }
+
+           
+            var lendDate = DateTime.Now;
+            var dueDate = lendDate.AddDays(lendByCopyIdDto.DueDays);
+
+            var lentRecord = new LentRecord
+            {
+                BookCopyId = bookCopy.CopyId,
+                UserId = lendByCopyIdDto.UserId,
+                AdminId = lendByCopyIdDto.AdminId,
+                LentDate = lendDate,
+                DueDate = dueDate
+            };
+
+            bookCopy.IsAvailable = false;
+            bookCopy.LastBorrowedDate = lendDate;
+
+           
+            book.RentCount++;
+
+           
+            var rentHistory = new RentHistory
+            {
+                BookCopyId = bookCopy.CopyId,
+                UserId = lendByCopyIdDto.UserId,
+                AdminId = lendByCopyIdDto.AdminId,
+                LendDate = lendDate,
+                DueDate = dueDate
+            };
+
+         
+            await _lentRecordRepository.LendNormalBook(lentRecord, rentHistory, bookCopy, book);
 
             return new ApiResponse<bool>
             {

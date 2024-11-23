@@ -1,28 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
-import { ManageBooksComponent } from './components/admin/manage-books/manage-books.component';
-import { ManageUsersComponent } from './components/admin/manage-users/manage-users.component';
-
 import { UserDashboardComponent } from './components/user/user-dashboard/user-dashboard.component';
-
-
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { LandingLayoutComponent } from './layouts/landing-layout/landing-layout.component';
 import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
-
 import { AddbookComponent } from './components/admin/addbook/addbook.component';
 import { LoginComponent } from './components/landing/login/login.component';
-import { AudiobooksComponent } from './components/admin/audiobooks/audiobooks.component';
-import { AudiobookDetailsComponent } from './components/admin/audiobook-details/audiobook-details.component';
 import { AddebookComponent } from './components/admin/addebook/addebook.component';
 import { AddAudiobookComponent } from './components/admin/add-audiobook/add-audiobook.component';
-
 import { ShowbooksComponent } from './components/user/showbooks/showbooks.component';
 import { ShowaudiobooksComponent } from './components/user/showaudiobooks/showaudiobooks.component';
 import { ShowebooksComponent } from './components/user/showebooks/showebooks.component';
-
 import { NewAdminComponent } from './components/admin/new-admin/new-admin.component';
+import { ShowNormalbookComponent } from './components/admin/show-normalbook/show-normalbook.component';
 
 
 
@@ -38,17 +28,13 @@ const routes: Routes = [
     path: 'admin',
     component: AdminLayoutComponent,
     children: [
-      { path: '', component: AdminDashboardComponent },
-      { path: 'manage-books', component: ManageBooksComponent },
-      { path: 'manage-users', component: ManageUsersComponent },
+     
       { path: 'add-normal-book', component: AddbookComponent },
       { path: 'add-e-book', component: AddebookComponent },
       { path: 'add-audio-book', component: AddAudiobookComponent },
-      { path: 'audio-books', component: AudiobooksComponent },
-       { path: 'audio-books', component: AudiobooksComponent },
-      { path: 'E-books', component: AudiobooksComponent },
-      { path: 'audiobook/:id', component: AudiobookDetailsComponent },
-      {path:'add-admin',component:NewAdminComponent}
+      {path:'add-admin',component:NewAdminComponent},
+      {path:'show-noramal-Books',component:ShowNormalbookComponent}
+
     ]
   },
   {
@@ -63,6 +49,7 @@ const routes: Routes = [
     ]
   }
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
