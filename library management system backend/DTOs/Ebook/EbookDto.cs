@@ -11,6 +11,8 @@
         public DateTime AddedDate { get; set; }
         public string FilePath { get; set; }
         public string CoverImagePath { get; set; }
+        public string Language { get; set; }
+        public string Publisher { get; set; }
         public EbookMetadataDtoRes Metadata { get; set; }
     }
 }
