@@ -237,6 +237,53 @@ namespace library_management_system.Services
         }
 
 
+        public async Task<ApiResponse<PaginatedResult<EbookDto>>> SearchEbooksAsync(string searchString, int pageNumber, int pageSize)
+        {
+            try
+            {
+                var (ebooks, totalRecords) = await _ebookRepository.SearchEbooksAsync(searchString, pageNumber, pageSize);
+
+                var ebookDtos = ebooks.Select(e => new EbookDto
+                {
+                    Id = e.Id,
+                    ISBN = e.ISBN,
+                    Title = e.Title,
+                    Author = e.Author,
+                    Genre = e.Genre,
+                    PublishYear = e.PublishYear,
+                    AddedDate = e.AddedDate,
+                    FilePath = e.FilePath,
+                    CoverImagePath = e.CoverImagePath,
+                    Language = e.Metadata.Language,
+                    Publisher = e.Metadata.Publisher
+                }).ToList();
+
+                var paginatedResult = new PaginatedResult<EbookDto>
+                {
+                    Items = ebookDtos,
+                    TotalCount = totalRecords,
+                    CurrentPage = pageNumber,
+                    PageSize = pageSize
+                };
+
+                return new ApiResponse<PaginatedResult<EbookDto>>
+                {
+                    Success = true,
+                    Message = "EBooks retrieved successfully.",
+                    Data = paginatedResult
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<PaginatedResult<EbookDto>>
+                {
+                    Success = false,
+                    Message = $"An error occurred: {ex.Message}",
+                    Data = null
+                };
+            }
+        }
+
 
     }
 }
