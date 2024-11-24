@@ -15,7 +15,7 @@
     
     <tbody>
       <!-- Main rows -->
-      <ng-container *ngFor="let element of dataSource">
+      <ng-container *ngFor="let element of audiobooks">
         <tr>
           <td>{{ element.id }}</td>
           <td>{{ element.title }}</td>
@@ -34,14 +34,11 @@
         <!-- Expanded row -->
         <tr *ngIf="expandedElementId === element">
           <td colspan="9" class="expanded-content">
-            
-            <p><strong>Cover Image:</strong></p>
-            <!-- <img [src]="element.coverImagePath" alt="Cover Image" width="100" /> -->
-            <p><strong>Audio File:</strong></p>
-            <!-- <audio controls>
-              <source [src]="element.filePath" type="audio/mpeg" />
+            <span><strong>Audio File:</strong></span>
+            <audio controls>
+              <source [src]="'https://localhost:7261/${element.filePath}'"  />
               Your browser does not support the audio element.
-            </audio> -->
+            </audio>
           </td>
         </tr>
       </ng-container>
