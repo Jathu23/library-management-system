@@ -150,6 +150,32 @@ namespace library_management_system.Repositories
         }
 
 
+      
+
+            public async Task<(List<NormalBook>, int)> SearchAsync(string searchString, int pageNumber, int pageSize)
+            {
+                var query = _context.NormalBooks.AsQueryable();
+
+                if (!string.IsNullOrEmpty(searchString))
+                {
+                    query = query.Where(b =>
+                        b.Title.Contains(searchString) ||
+                        b.Author.Contains(searchString) ||
+                        b.Genre.Any(g => g.Contains(searchString)));
+                }
+
+                int totalRecords = await query.CountAsync();
+
+                var books = await query
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                return (books, totalRecords);
+            }
+        
+
+
 
     }
 }

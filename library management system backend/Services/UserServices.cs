@@ -357,6 +357,44 @@ namespace library_management_system.Services
             return response;
         }
 
+        //public async Task<ApiResponse<List<UserRequstModel>>> SearchUsersAsync(string searchString)
+        //{
+        //    try
+        //    {
+                
+        //        var users = await _userRepo.SearchUsersAsync(searchString);
+
+               
+        //        var userDtos = users.Select(u => new UserRequstModel
+        //        {
+        //            UserNic = u.UserNic,
+        //            FirstName = u.FirstName,
+        //            LastName = u.LastName,
+        //            Email = u.Email,
+        //            PhoneNumber = u.PhoneNumber,
+        //            Address = u.Address,
+                  
+        //        }).ToList();
+
+        //        return new ApiResponse<List<UserRequstModel>>
+        //        {
+        //            Success = true,
+        //            Message = "Users retrieved successfully.",
+        //            Data = userDtos
+        //        };
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new ApiResponse<List<UserRequstModel>>
+        //        {
+        //            Success = false,
+        //            Message = $"An error occurred: {ex.Message}",
+        //            Data = null
+        //        };
+        //    }
+        //}
+
+
     }
 
 }

@@ -164,7 +164,15 @@ namespace library_management_system.Controllers
             return Ok(response);
         }
 
-
+        [HttpGet("Search")]
+          public async Task<IActionResult> Search(
+          [FromQuery] string searchString,
+          [FromQuery] int pageNumber = 1,
+          [FromQuery] int pageSize = 10)
+          {
+            var response = await _bookService.SearchBooksAsync(searchString, pageNumber, pageSize);
+            return Ok(response);
+          }
 
 
 

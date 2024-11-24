@@ -497,6 +497,56 @@ namespace library_management_system.Services
         }
 
 
+
+            public async Task<ApiResponse<PaginatedResult<NormalBookDto>>> SearchBooksAsync(string searchString, int pageNumber, int pageSize)
+            {
+                try
+                {
+                    var (books, totalRecords) = await _bookRepository.SearchAsync(searchString, pageNumber, pageSize);
+
+                    var bookDtos = books.Select(b => new NormalBookDto
+                    {
+                        Id = b.Id,
+                        ISBN = b.ISBN,
+                        Title = b.Title,
+                        Author = b.Author,
+                        Genre = b.Genre,
+                        PublishYear = b.PublishYear,
+                        AddedDate = b.AddedDate,
+                        ShelfLocation = b.ShelfLocation,
+                        RentCount = b.RentCount,
+                        TotalCopies = b.TotalCopies,
+                        CoverImagePath = b.CoverImagePath
+                    }).ToList();
+
+                    var paginatedResult = new PaginatedResult<NormalBookDto>
+                    {
+                        Items = bookDtos,
+                        TotalCount = totalRecords,
+                        CurrentPage = pageNumber,
+                        PageSize = pageSize
+                    };
+
+                    return new ApiResponse<PaginatedResult<NormalBookDto>>
+                    {
+                        Success = true,
+                        Message = "Books retrieved successfully.",
+                        Data = paginatedResult
+                    };
+                }
+                catch (Exception ex)
+                {
+                    return new ApiResponse<PaginatedResult<NormalBookDto>>
+                    {
+                        Success = false,
+                        Message = $"An error occurred: {ex.Message}",
+                        Data = null
+                    };
+                }
+            }
+        
+
+
     }
 
 
