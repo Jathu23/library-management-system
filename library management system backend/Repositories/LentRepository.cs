@@ -57,16 +57,25 @@ namespace library_management_system.Repositories
         }
 
 
-        public async Task<LentRecord?> GetLentRecordWithDetailsAsync(int lentRecordId)
+        public async Task<LentRecord?> GetLentRecordWithDetailsAsync(int userid)
         {
             return await _context.LentRecords
                 .Include(lr => lr.BookCopy) // Include the BookCopy related to the LentRecord
       
                 .Include(lr => lr.User) // Include the User related to the LentRecord
                 .Include(lr => lr.Admin) // Include the Admin related to the LentRecord
-                .FirstOrDefaultAsync(lr => lr.UserId == lentRecordId);
+                .FirstOrDefaultAsync(lr => lr.UserId == userid);
         }
 
+        public async Task<List<LentRecord>?> GetLentRecordWithDetailsbyuserid(int userid)
+        {
+            return await _context.LentRecords
+                .Include(lr => lr.BookCopy)
+                .Include(lr => lr.User)
+                .Include(lr => lr.Admin)
+                .Where(lr => lr.UserId == userid)
+                .ToListAsync();
+        }
 
 
     }
