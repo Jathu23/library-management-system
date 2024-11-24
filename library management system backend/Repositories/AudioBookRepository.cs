@@ -93,12 +93,6 @@ namespace library_management_system.Repositories
 
 
                     a.Genre.Contains(searchString));
-
-                //query = query.Where(a =>
-                //   a.Title.Contains(searchString) ||
-                //   a.Author.Contains(searchString) ||
-                //   a.Genre.Contains(searchString) ||
-                //   a.PublishYear.ToString().Contains(searchString));
             }
 
            
