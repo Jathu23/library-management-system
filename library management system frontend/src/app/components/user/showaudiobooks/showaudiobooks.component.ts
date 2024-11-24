@@ -12,7 +12,7 @@ export class ShowaudiobooksComponent implements OnInit {
   audiobooks: any[] = [];
   isLoading = false;
   currentPage = 1;
-  pageSize = 4;
+  pageSize = 10;
   totalItems = 0;
   isModalOpen = false;
   selectedAudiobook: any = null;

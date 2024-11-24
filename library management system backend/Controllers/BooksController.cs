@@ -219,7 +219,7 @@ namespace library_management_system.Controllers
             {
                 var response = await _bookService.AddNewBook(item);
                 count += response.Data;
-                Thread.Sleep(2000);
+                Thread.Sleep(200);
             }
 
             return count;

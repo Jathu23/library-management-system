@@ -186,3 +186,8 @@
    .routerDiv{
     width: 100%;
    }
+
+   .outer{
+    width: 100%;
+    background-color: bisque;
+   }
