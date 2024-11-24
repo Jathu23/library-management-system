@@ -1,0 +1,50 @@
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Genre</th>
+        <th>Publish Year</th>
+        <th>Language</th>
+        <th>Narrator</th>
+        <th>Publisher</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <!-- Main rows -->
+      <ng-container *ngFor="let element of dataSource">
+        <tr>
+          <td>{{ element.id }}</td>
+          <td>{{ element.title }}</td>
+          <td>{{ element.author }}</td>
+          <td>{{ element.genre }}</td>
+          <td>{{ element.publishYear }}</td>
+          <td>{{ element.language }}</td>
+          <td>{{ element.narrator }}</td>
+          <td>{{ element.publisher }}</td>
+          <td>
+            <button (click)="toggleRow(element)">
+              {{ expandedElementId === element ? 'Hide' : 'View' }}
+            </button>
+          </td>
+        </tr>
+        <!-- Expanded row -->
+        <tr *ngIf="expandedElementId === element">
+          <td colspan="9" class="expanded-content">
+            
+            <p><strong>Cover Image:</strong></p>
+            <!-- <img [src]="element.coverImagePath" alt="Cover Image" width="100" /> -->
+            <p><strong>Audio File:</strong></p>
+            <!-- <audio controls>
+              <source [src]="element.filePath" type="audio/mpeg" />
+              Your browser does not support the audio element.
+            </audio> -->
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  

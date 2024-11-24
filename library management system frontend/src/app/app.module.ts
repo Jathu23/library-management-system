@@ -20,6 +20,8 @@ import { NewAdminComponent } from './components/admin/new-admin/new-admin.compon
 import { ShowebooksComponent } from './components/user/showebooks/showebooks.component';
 import { ShowNormalbookComponent } from './components/admin/show-normalbook/show-normalbook.component';
 import { CommonModule } from '@angular/common';
+import { ShowAudiobookComponent } from './components/admin/show-audiobook/show-audiobook.component';
+import { ShowEbookComponent } from './components/admin/show-ebook/show-ebook.component';
 
 
 
@@ -48,7 +50,9 @@ import { CommonModule } from '@angular/common';
    ShowNormalbookComponent,
    ShowebooksComponent,
     ShowebooksComponent,
-    ShowNormalbookComponent
+    ShowNormalbookComponent,
+    ShowAudiobookComponent,
+    ShowEbookComponent
 
    
 
