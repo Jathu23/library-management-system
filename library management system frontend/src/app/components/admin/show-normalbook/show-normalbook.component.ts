@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { GetbooksService } from '../../../services/bookservice/getbooks.service';
 
 @Component({
   selector: 'app-show-normalbook',
@@ -8,63 +9,46 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShowNormalbookComponent implements OnInit {
 
-  data:any[]=[]
-  datas:any;
+  isLoading = false;
+  currentPage = 1;
+  pageSize = 10;
+  totalItems = 0;
+  Nbooks: any[] = [];
 
-  booksCopie:any;
-  booksCopies:any[]=[]
-  
-  baseUrl:string =  `https://localhost:7261/api/Books/get-all-books-with-copies?page=1&pageSize=20`;
 
-  constructor(private http: HttpClient) {}
+
+  constructor(private getbookservice: GetbooksService) { }
 
   ngOnInit(): void {
-    this.fetchData();
+    this.loadEbooks() 
+  }
+  loadEbooks() {
+    if (this.isLoading) return;
+
+    this.isLoading = true;
+    this.getbookservice.getNoramlbooks(this.currentPage, this.pageSize).subscribe(
+      (response) => {
+        const result = response.data;
+
+        this.Nbooks = [...this.Nbooks, ...result.items];
+        this.totalItems = result.totalCount;
+        this.currentPage++;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching audiobooks:', error);
+        this.isLoading = false;
+      }
+    );
   }
 
-  fetchData(): void {
-    const apiUrl = this.baseUrl; // Replace with your API URL
+  expandedElementId: number | null = null;
 
-    this.http.get(apiUrl).subscribe({
-      next: (response) => {
-        this.datas = (response)
+  toggleRow(elementId: number): void {
+    this.expandedElementId = this.expandedElementId === elementId ? null : elementId;
 
-        this.booksCopie=this.datas.data
 
-        this.datas.data.forEach((element: any) => {
-          let sample:any={
-            "id": element.id,
-            "isbn": element.isbn,
-            "title": element.title,
-            "author": element.author,
-            "toggle": 0,
-            "genre": [
-              element.genre[0],
-              element.genre[1]
-            ],
-            "publishYear": element.publishYear,
-            "shelfLocation": element.shelfLocation,
-            "availableCopies": element.availableCopies,
-            "totalCopies": element.totalCopies,
-            "coverImagePath": [
-              element.coverImagePath
-            ],
-            "bookCopies":element.bookCopies
 
-          }
-          this.data.push(sample)
-          
-        });    
-        console.log(this.data);
-      },
-      error: (err) => {
-        console.error('Error fetching data:', err);
-  
-        
-      },
-    });
   }
-
-
 
 }
