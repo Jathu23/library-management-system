@@ -1,6 +1,7 @@
 ﻿using library_management_system.Database;
 using library_management_system.Database.Entiy;
 using Microsoft.EntityFrameworkCore;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace library_management_system.Repositories
 {
@@ -75,6 +76,23 @@ namespace library_management_system.Repositories
                 .Include(lr => lr.Admin)
                 .Where(lr => lr.UserId == userid)
                 .ToListAsync();
+        }
+        public async Task<(List<RentHistory>?,int)> GetAllRentHistory(int page, int pageSize)
+        {
+            var query =  _context.RentHistory
+                .Include(lr => lr.BookCopy)
+                .Include(lr => lr.User)
+                .Include(lr => lr.Admin)
+                .AsQueryable();
+
+            var recods = await query.OrderBy(b => b.Id)
+                                .Skip((page - 1) * pageSize)
+                                .Take(pageSize)
+                                .ToListAsync();
+
+            int totalRecords = await query.CountAsync();
+
+            return (recods, totalRecords);
         }
 
         public async Task<List<LentRecord>?> GetAllLentRecordsWithDetailsAsync()

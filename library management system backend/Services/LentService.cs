@@ -3,6 +3,9 @@ using library_management_system.DTOs.LentRecord;
 using library_management_system.DTOs;
 using library_management_system.Repositories;
 using System.Diagnostics.Eventing.Reader;
+using static System.Reflection.Metadata.BlobBuilder;
+using library_management_system.DTOs.Book;
+using library_management_system.DTOs.Ebook;
 
 namespace library_management_system.Services
 {
@@ -285,6 +288,7 @@ namespace library_management_system.Services
         }
 
 
+<<<<<<< HEAD
         public async Task<ApiResponse<List<LentRecordAdminDto>>> GetAllLentRecordsAsync()
         {
             var lentRecords = await _lentRecordRepository.GetAllLentRecordsWithDetailsAsync();
@@ -345,5 +349,103 @@ namespace library_management_system.Services
             };
         }
 
+=======
+        public async Task<ApiResponse<PaginatedResult<LentHistoryAdminDto>>> GetAllRentHistory(int page, int pageSize)
+        {
+            try
+            {
+                var (records, totalRecords) = await _lentRecordRepository.GetAllRentHistory(page, pageSize);
+
+                if (records == null || !records.Any())
+                {
+                    return new ApiResponse<PaginatedResult<LentHistoryAdminDto>>
+                    {
+                        Success = false,
+                        Message = "No History found",
+                        Data = null
+                    };
+                }
+                Console.Write("count 1 ",records.Count);
+                var lentHistoryDtos = new List<LentHistoryAdminDto>();
+                var book = await _lentRecordRepository.GetBookById(records[0].BookCopy.BookId);
+
+                foreach (var rec in records)
+                {
+                    int statusValue;
+                    string status;
+                    var currentDateTime = DateTime.UtcNow;
+                    if (rec.ReturnDate == null)
+                    {
+                        statusValue = (int)(rec.DueDate - currentDateTime).TotalMinutes;
+
+                        status = statusValue > 0
+                           ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
+                           : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours over";
+
+                    }
+                    else
+                    {
+                        statusValue = 0;
+                        status = "close";
+                    }
+
+                   
+                     
+
+                    var lentRecordDto = new LentHistoryAdminDto
+                    {
+                        Id = rec.Id,
+                        UserId = rec.UserId,
+                        UserName = rec.User.FullName,
+                        UserEmail = rec.User.Email,
+                        AdminId = rec.AdminId,
+                        AdminName = rec.Admin.FullName,
+                        BookId = book.Id,
+                        BookTitle = book.Title,
+                        BookISBN = book.ISBN,
+                        BookAuthor = book.Author,
+                        BookGenre = string.Join(", ", book.Genre),
+                        BookPublishYear = book.PublishYear,
+                        BookCopyId = rec.BookCopyId,
+                        BookCondition = rec.BookCopy.Condition,
+                        LentDate = rec.LendDate,
+                        DueDate = rec.DueDate,
+                        ReturnDate = rec.ReturnDate,
+                        Status = status,
+                        StatusValue = statusValue
+                    };
+
+                    lentHistoryDtos.Add(lentRecordDto);
+                }
+                Console.Write("count 1 ", lentHistoryDtos.Count);
+                var paginatedResult = new PaginatedResult<LentHistoryAdminDto>
+                {
+                    Items = lentHistoryDtos,
+                    TotalCount = totalRecords,
+                    CurrentPage = page,
+                    PageSize = pageSize
+                };
+
+                return new ApiResponse<PaginatedResult<LentHistoryAdminDto>>
+                {
+                    Success = true,
+                    Message = "Records retrieved successfully.",
+                    Data = paginatedResult
+                };
+            }
+            catch (Exception ex)
+            {
+               
+                return new ApiResponse<PaginatedResult<LentHistoryAdminDto>>
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving rent history.",
+                    Data = null
+                };
+            }
+        }
+
+
+>>>>>>> 251122842f420bbca62c67c575d80ee6e879b4b6
     }
 }

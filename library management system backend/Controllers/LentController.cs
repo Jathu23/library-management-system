@@ -64,11 +64,18 @@ namespace library_management_system.Controllers
 
             return Ok(result);
         }
+<<<<<<< HEAD
 
         [HttpGet("all-lent-All-records")]
         public async Task<IActionResult> GetAllLentRecords()
         {
             var result = await _lentService.GetAllLentRecordsAsync();
+=======
+        [HttpGet("lent-historys")]
+        public async Task<IActionResult> GetAllRentHistory(int page, int pageSize)
+        {
+            var result = await _lentService.GetAllRentHistory(page, pageSize);
+>>>>>>> 251122842f420bbca62c67c575d80ee6e879b4b6
 
             if (!result.Success)
             {
@@ -77,6 +84,9 @@ namespace library_management_system.Controllers
 
             return Ok(result);
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 251122842f420bbca62c67c575d80ee6e879b4b6
     }
 }
