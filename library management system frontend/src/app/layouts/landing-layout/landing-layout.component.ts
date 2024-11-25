@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth-service/auth.service';
   styleUrl: './landing-layout.component.css'
 })
 export class LandingLayoutComponent  {
-
+  isLoading = false;
   signupForm: FormGroup;
   loginForm!: FormGroup;
 
@@ -73,6 +73,10 @@ export class LandingLayoutComponent  {
   }
 
   onLogin() {
+    console.log("loding 1 :" ,this.isLoading);
+    this.isLoading = true;
+    console.log("loding 2 :" ,this.isLoading);
+
     if (this.loginForm.valid) {
       const formData = this.loginForm.value;
       console.log('Login Data:', formData);
@@ -80,7 +84,9 @@ export class LandingLayoutComponent  {
       this.authService.login(formData).subscribe(
         (response) => {
           if (response.success) {
+            this.isLoading = false;
             console.log('Admin logged in successfully:', response.data);
+            console.log("loding sucess 3 :" ,this.isLoading);
               if (response.data.role == "admin") {
                 this.router.navigate(['/admin']); 
               }else{
@@ -89,13 +95,15 @@ export class LandingLayoutComponent  {
             console.log( response.data.role); 
             
           } else {
+            this.isLoading = false;
             console.error('Login failed:', response.errors);
-            
+         
           }
         },
         (error) => {
+          this.isLoading = false;
           console.error('An error occurred:', error);
-          
+          console.log("loding  error 4:" ,this.isLoading);
         }
       );
 

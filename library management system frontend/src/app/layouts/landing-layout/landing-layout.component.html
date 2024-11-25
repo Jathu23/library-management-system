@@ -29,6 +29,11 @@
     </div>
   </nav>
 
+<!-- loding -->
+<div *ngIf="isLoading" class="loading-overlay">
+  <img src="https://cdnl.iconscout.com/lottie/premium/thumb/login-9631530-7874173.gif" alt="Loading..." class="loading-spinner" />
+</div>
+
   <!-- login modal -->
   <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">

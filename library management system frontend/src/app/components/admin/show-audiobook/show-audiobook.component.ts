@@ -10,7 +10,7 @@ export class ShowAudiobookComponent implements OnInit {
   audiobooks: any[] = [];
   isLoading = false;
   currentPage = 1;
-  pageSize = 10;
+  pageSize = 17;
   totalItems = 0;
 
 
