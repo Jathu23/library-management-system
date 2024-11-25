@@ -55,8 +55,8 @@ namespace library_management_system.Services
                     PhoneNumber = userRequestDto.PhoneNumber,
                     Address = userRequestDto.Address,
                     ProfileImage = profileImagePath,
-                    IsActive = userRequestDto.IsActive,
-                    IsSubscribed = userRequestDto.IsSubscribed,
+                    IsActive =true,
+                    IsSubscribed = false,
                     RegistrationDate = DateTime.Now
                 };
 
