@@ -64,5 +64,19 @@ namespace library_management_system.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("all-lent-All-records")]
+        public async Task<IActionResult> GetAllLentRecords()
+        {
+            var result = await _lentService.GetAllLentRecordsAsync();
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
     }
 }

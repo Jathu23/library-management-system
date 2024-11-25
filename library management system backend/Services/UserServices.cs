@@ -357,42 +357,49 @@ namespace library_management_system.Services
             return response;
         }
 
-        //public async Task<ApiResponse<List<UserRequstModel>>> SearchUsersAsync(string searchString)
-        //{
-        //    try
-        //    {
-                
-        //        var users = await _userRepo.SearchUsersAsync(searchString);
+        public async Task<ApiResponse<PaginatedResult<UserDto>>> SearchUsersAsync(string searchString, int pageNumber, int pageSize)
+        {
+            try
+            {
+                var (users, totalRecords) = await _userRepo.SearchAsync(searchString, pageNumber, pageSize);
 
-               
-        //        var userDtos = users.Select(u => new UserRequstModel
-        //        {
-        //            UserNic = u.UserNic,
-        //            FirstName = u.FirstName,
-        //            LastName = u.LastName,
-        //            Email = u.Email,
-        //            PhoneNumber = u.PhoneNumber,
-        //            Address = u.Address,
-                  
-        //        }).ToList();
+                var userDtos = users.Select(u => new UserDto
+                {
+                    Id = u.Id,
+                    UserNic = u.UserNic,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                    PhoneNumber = u.PhoneNumber,
+                    Address = u.Address
 
-        //        return new ApiResponse<List<UserRequstModel>>
-        //        {
-        //            Success = true,
-        //            Message = "Users retrieved successfully.",
-        //            Data = userDtos
-        //        };
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new ApiResponse<List<UserRequstModel>>
-        //        {
-        //            Success = false,
-        //            Message = $"An error occurred: {ex.Message}",
-        //            Data = null
-        //        };
-        //    }
-        //}
+                }).ToList();
+
+                var paginatedResult = new PaginatedResult<UserDto>
+                {
+                    Items = userDtos,
+                    TotalCount = totalRecords,
+                    CurrentPage = pageNumber,
+                    PageSize = pageSize
+                };
+
+                return new ApiResponse<PaginatedResult<UserDto>>
+                {
+                    Success = true,
+                    Message = "Users retrieved successfully.",
+                    Data = paginatedResult
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<PaginatedResult<UserDto>>
+                {
+                    Success = false,
+                    Message = $"An error occurred: {ex.Message}",
+                    Data = null
+                };
+            }
+        }
 
 
     }

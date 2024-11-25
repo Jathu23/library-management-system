@@ -284,5 +284,66 @@ namespace library_management_system.Services
             };
         }
 
+
+        public async Task<ApiResponse<List<LentRecordAdminDto>>> GetAllLentRecordsAsync()
+        {
+            var lentRecords = await _lentRecordRepository.GetAllLentRecordsWithDetailsAsync();
+
+            if (lentRecords == null || !lentRecords.Any())
+            {
+                return new ApiResponse<List<LentRecordAdminDto>>
+                {
+                    Success = false,
+                    Message = "No lent records found",
+                    Data = null
+                };
+            }
+
+            var lentRecordDtos = new List<LentRecordAdminDto>();
+
+            foreach (var lentRecord in lentRecords)
+            {
+                var book = await _lentRecordRepository.GetBookById(lentRecord.BookCopy.BookId);
+
+                var currentDateTime = DateTime.UtcNow;
+                var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
+
+                string status = statusValue > 0
+                    ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
+                    : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours over";
+
+                var lentRecordDto = new LentRecordAdminDto
+                {
+                    Id = lentRecord.Id,
+                    UserId = lentRecord.UserId,
+                    UserName = lentRecord.User.FullName,
+                    UserEmail = lentRecord.User.Email,
+                    AdminId = lentRecord.AdminId,
+                    AdminName = lentRecord.Admin.FullName,
+                    BookId = book.Id,
+                    BookTitle = book.Title,
+                    BookISBN = book.ISBN,
+                    BookAuthor = book.Author,
+                    BookGenre = string.Join(", ", book.Genre),
+                    BookPublishYear = book.PublishYear,
+                    BookCopyId = lentRecord.BookCopyId,
+                    BookCondition = lentRecord.BookCopy.Condition,
+                    LentDate = lentRecord.LentDate,
+                    DueDate = lentRecord.DueDate,
+                    Status = status,
+                    StatusValue = statusValue
+                };
+
+                lentRecordDtos.Add(lentRecordDto);
+            }
+
+            return new ApiResponse<List<LentRecordAdminDto>>
+            {
+                Success = true,
+                Message = "All lent records retrieved successfully",
+                Data = lentRecordDtos
+            };
+        }
+
     }
 }

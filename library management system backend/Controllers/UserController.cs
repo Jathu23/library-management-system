@@ -192,7 +192,17 @@ namespace library_management_system.Controllers
             return Ok(response);
         }
 
-       
+
+        [HttpGet("Search")]
+        public async Task<IActionResult> Search(
+            [FromQuery] string searchString,
+            [FromQuery] int pageNumber = 1,
+
+            [FromQuery] int pageSize = 10)
+        {
+            var response = await _userService.SearchUsersAsync(searchString, pageNumber, pageSize);
+            return Ok(response);
+        }
 
 
     }
