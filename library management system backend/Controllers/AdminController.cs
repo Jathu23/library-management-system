@@ -44,7 +44,7 @@ namespace library_management_system.Controllers
                 return BadRequest(response);
 
 
-            const string subject = "Account Created";
+            const string subject = "Account Admin Account is Created";
 
             var body = $"""
                 <html>

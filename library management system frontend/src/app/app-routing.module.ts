@@ -35,7 +35,7 @@ const routes: Routes = [
       { path: 'add-e-book', component: AddebookComponent },
       { path: 'add-audio-book', component: AddAudiobookComponent },
       {path:'add-admin',component:NewAdminComponent},
-      {path:'show-noramal-Books',component:ShowNormalbookComponent},
+      {path:'show-normal-Books',component:ShowNormalbookComponent},
       {path:'show-audio-Books',component:ShowAudiobookComponent},
       {path:'show-e-Books',component:ShowEbookComponent},
 
