@@ -21,9 +21,9 @@ export class ShowNormalbookComponent implements OnInit {
   constructor(private getbookservice: GetbooksService, private DleteNBook:BookDeleteServicesService) { }
 
   ngOnInit(): void {
-    this.loadEbooks()
+    this.loadnormalbooks()
   }
-  loadEbooks() {
+  loadnormalbooks() {
     if (this.isLoading) return;
 
     this.isLoading = true;
@@ -37,7 +37,7 @@ export class ShowNormalbookComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Error fetching audiobooks:', error);
+        console.error('Error fetching normalobooks:', error);
         this.isLoading = false;
       }
     );
