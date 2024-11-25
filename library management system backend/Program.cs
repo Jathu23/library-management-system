@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
+using VersOne.Epub.Schema;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,6 +49,13 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
+
+//Email Services
+
+builder.Services.AddSingleton(provider => new Email(
+    smtpUser: builder.Configuration["Gmail:Email"], // Read from appsettings.json or environment variables
+    smtpPass: builder.Configuration["Gmail:Password"]
+));
 
 // Register other services
 builder.Services.AddScoped<UserServices>();

@@ -64,12 +64,12 @@
                 <h4>Additional Information</h4>
                 <table class="additional-info-table">
                   <tr>
-                    <td><strong>Book Id</strong></td>
-                    <td><strong>Is Available:</strong></td>
-                    <td><strong>Condition:</strong></td>
-                    <td><strong>Last Rent</strong></td>
-                    <td><strong>Edit</strong></td>
-                    <td><strong>Delete</strong></td>
+                    <td class="border" ><strong>Book Id</strong></td>
+                    <td class="border"><strong>Is Available:</strong></td>
+                    <td class="border"><strong>Condition:</strong></td>
+                    <td class="border"><strong>Last Rent</strong></td>
+                    <td class="border"><strong>Edit</strong></td>
+                    <td class="border"><strong>Delete</strong></td>
 
                   </tr>
                   <!-- 
@@ -90,17 +90,17 @@
                     </td>
                   </tr> -->
 
-                  <tr *ngFor="let nestedRow of Nbook.bookCopies">
-                    <td>{{nestedRow.copyId}}</td>
-                    <td>{{nestedRow.isAvailable}}</td>
-                    <td>{{nestedRow.condition}}</td>
-                    <td>{{nestedRow.lastBorrowedDate}}</td>
-                    <td>
+                  <tr *ngFor="let nestedRow of Nbook.bookCopies" class="">
+                    <td class="border">{{nestedRow.copyId}}</td>
+                    <td class="border">{{nestedRow.isAvailable}}</td>
+                    <td class="border">{{nestedRow.condition}}</td>
+                    <td class="border">{{nestedRow.lastBorrowedDate}}</td>
+                    <td class="border">
                       <button class="btn btn-primary" onclick="editItem()">
                         <i class="bi bi-pencil"></i> Edit
                       </button>
                     </td>
-                    <td>
+                    <td class="border">
                       <button class="btn btn-danger" onclick="deleteItem()">
                         <i class="bi bi-trash"></i> Delete
                       </button>
@@ -109,12 +109,7 @@
 
 
 
-                  <!-- <tr *ngFor="let nestedRow of Nbook.bookCopies">
-                    <td>{{ nestedRow.copyId }}</td>
-                    <td>{{ nestedRow.condition }}</td>
-                    <td>{{ nestedRow.isAvailable ? 'Yes' : 'No' }}</td>
-                    <td>null</td>
-                  </tr> -->
+      
                 </table>
               </div>
             </td>

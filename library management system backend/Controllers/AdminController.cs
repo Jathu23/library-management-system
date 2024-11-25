@@ -12,10 +12,13 @@ namespace library_management_system.Controllers
     public class AdminController : ControllerBase
     {
         private readonly AdminServices _adminServices;
+        private readonly Email _Email;
 
-        public AdminController(AdminServices adminServices)
+
+        public AdminController(AdminServices adminServices, Email email)
         {
             _adminServices = adminServices;
+            _Email = email;
         }
 
 
@@ -39,6 +42,27 @@ namespace library_management_system.Controllers
 
             if (!response.Success)
                 return BadRequest(response);
+
+
+            const string subject = "Account Created";
+
+            var body = $"""
+                <html>
+                    <body>
+                        <h1>Hello, {AdminRequstDto.FirstName} {AdminRequstDto.LastName}</h1>
+                        <h2>
+                            Your account has been created and we have sent approval request to admin.
+                            Once the request is approved by admin you will receive email, and you will be
+                            able to login in to your account.
+                        </h2>
+                        <h3>Thanks</h3>
+                    </body>
+                </html>
+            
+            """
+            ;
+
+            await _Email.SendEmailAsync(AdminRequstDto.Email, subject, body);
 
             return Ok(response);
 
