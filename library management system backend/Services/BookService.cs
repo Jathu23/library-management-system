@@ -191,6 +191,15 @@ namespace library_management_system.Services
                         Errors = new List<string> { "No book copy with the provided ID exists." }
                     };
                 }
+                if (!bookCopy.IsAvailable)
+                {
+                    return new ApiResponse<int>
+                    {
+                        Success = false,
+                        Message = "Book is Curently Rented",
+                        Errors = new List<string> { " book copy with the provided ID curently rented." }
+                    };
+                }
 
               
                 var book = await _bookRepository.GetBookById(bookCopy.BookId);
@@ -245,8 +254,19 @@ namespace library_management_system.Services
                         Errors = new List<string> { "No book with the provided ID exists." }
                     };
                 }
+                else
+                {
+                    foreach (var copy in book.BookCopies)
+                    {
+                        if (!copy.IsAvailable)
+                        {
+                            throw new Exception("one or more copy of the book is currently rented");
+                        }
+                    }
+                }
+                
 
-               
+
                 await _bookRepository.DeleteAllBookCopiesByBookId(bookId);
 
                 

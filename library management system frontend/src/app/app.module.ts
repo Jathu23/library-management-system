@@ -23,6 +23,7 @@ import { CommonModule } from '@angular/common';
 import { ShowAudiobookComponent } from './components/admin/show-audiobook/show-audiobook.component';
 import { ShowEbookComponent } from './components/admin/show-ebook/show-ebook.component';
 import { SubscriptionComponent } from './components/user/subscription/subscription.component';
+import { ShowLentRecComponent } from './components/admin/show-lent-rec/show-lent-rec.component';
 
 
 
@@ -54,7 +55,8 @@ import { SubscriptionComponent } from './components/user/subscription/subscripti
     ShowNormalbookComponent,
     ShowAudiobookComponent,
     ShowEbookComponent,
-    SubscriptionComponent
+    SubscriptionComponent,
+    ShowLentRecComponent
 
    
 

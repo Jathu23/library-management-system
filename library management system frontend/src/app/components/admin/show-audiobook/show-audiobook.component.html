@@ -35,10 +35,11 @@
         <tr *ngIf="expandedElementId === element">
           <td colspan="9" class="expanded-content">
             <span><strong>Audio File:</strong></span>
-            <audio controls>
+            <!-- <audio controls>
               <source [src]="'https://localhost:7261/${element.filePath}'"  />
               Your browser does not support the audio element.
-            </audio>
+            </audio> -->
+            <progress id="file" value="-10" max="100">32%</progress>
           </td>
         </tr>
       </ng-container>

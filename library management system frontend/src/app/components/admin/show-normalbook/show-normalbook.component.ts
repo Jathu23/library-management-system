@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
+import { BookDeleteServicesService } from '../../../services/bookservice/book-delete-services.service';
 
 @Component({
   selector: 'app-show-normalbook',
@@ -17,10 +18,10 @@ export class ShowNormalbookComponent implements OnInit {
 
 
 
-  constructor(private getbookservice: GetbooksService) { }
+  constructor(private getbookservice: GetbooksService, private DleteNBook:BookDeleteServicesService) { }
 
   ngOnInit(): void {
-    this.loadEbooks() 
+    this.loadEbooks()
   }
   loadEbooks() {
     if (this.isLoading) return;
@@ -40,6 +41,7 @@ export class ShowNormalbookComponent implements OnInit {
         this.isLoading = false;
       }
     );
+
   }
 
   expandedElementId: number | null = null;
@@ -47,8 +49,20 @@ export class ShowNormalbookComponent implements OnInit {
   toggleRow(elementId: number): void {
     this.expandedElementId = this.expandedElementId === elementId ? null : elementId;
 
-
-
   }
 
+  deleteItem(id: number): void {
+    if (confirm('Are you sure you want to delete this item?')) {
+      this.DleteNBook.deleteItem(id).subscribe({
+        next: () => {
+          alert('Item deleted successfully.');
+          // Optionally refresh data or update UI
+        },
+        error: (err) => {
+          console.error('Error deleting item:', err);
+          alert('Failed to delete item.');
+        },
+      });
+    }
+  }
 }
