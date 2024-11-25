@@ -8,7 +8,12 @@
         public int AdminId { get; set; }
         public DateTime LendDate { get; set; }
         public DateTime DueDate { get; set; }
-        public DateTime? ReturnDate { get; set; } 
+        public DateTime? ReturnDate { get; set; }
+
+
+        public BookCopy BookCopy { get; set; } 
+        public User User { get; set; }
+        public Admin Admin { get; set; }
     }
 
 }

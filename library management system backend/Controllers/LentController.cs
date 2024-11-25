@@ -64,5 +64,17 @@ namespace library_management_system.Controllers
 
             return Ok(result);
         }
+        [HttpGet("lent-historys")]
+        public async Task<IActionResult> GetAllRentHistory(int page, int pageSize)
+        {
+            var result = await _lentService.GetAllRentHistory(page, pageSize);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
     }
 }
