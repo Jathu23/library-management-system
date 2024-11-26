@@ -1,3 +1,4 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -5,16 +6,32 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class MainBookUpdateService {
-  http: any;
-
-  // private mainBookUpdateUrl =  `https://localhost:7261/api/Books/Update?Id=5&ISBN=333333&Title=3333Just&Author=Denojan&Genre=string3&Genre=string3&Genre=string&PublishYear=2010&ShelfLocation=d1&TotalCopies=10`
-  private mainBookUpdateUrl =  `https://localhost:7261/api/Books/Update?Id`
 
 
+  // private mainBookUpdateUrl = `https://localhost:7261/api/Books/Update`;
 
-  constructor() { }
-  
-  updateBook(id: number, book: any): Observable<any> {
-    return this.http.put(`${this.mainBookUpdateUrl}=${id}`, book);
+  // constructor(private http: HttpClient) { }
+
+  // updateBook(id: number, book: any): Observable<any> {
+  //   const params = new HttpParams()
+  //     .set('Id', id.toString())
+  //     .set('ISBN', book.ISBN)
+  //     .set('Title', book.Title)
+  //     .set('Author', book.Author)
+  //     .set('Genre', book.Genre)
+  //     .set('PublishYear', book.PublishYear)
+  //     .set('ShelfLocation', book.ShelfLocation)
+  //     .set('TotalCopies', book.TotalCopies);
+
+  //   return this.http.put(this.mainBookUpdateUrl, null, { params });
+  // }
+
+  private mainBookUpdateUrl = `https://localhost:7261/api/Books/Update`;
+
+  constructor(private http: HttpClient) {}
+
+  updateBook(book: any): Observable<any> {
+    // Send the entire book object in the request body
+    return this.http.put(this.mainBookUpdateUrl, book);
   }
 }
