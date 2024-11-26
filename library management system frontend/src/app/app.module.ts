@@ -83,14 +83,11 @@ import { MatDialogModule } from '@angular/material/dialog';
     CommonModule,
     MatPaginatorModule,
     MatTableModule,
-<<<<<<< HEAD
     
-=======
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatDialogModule,
->>>>>>> f4d47f9b04d3f3ff8ebe6f20f01551f8643fa631
 
      
   ],

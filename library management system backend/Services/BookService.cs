@@ -87,12 +87,12 @@ namespace library_management_system.Services
                 }
 
                 // Update book properties
-                book.ISBN = bookDto.ISBN;
-                book.Title = bookDto.Title;
-                book.Author = bookDto.Author;
-                book.Genre = bookDto.Genre;
-                book.PublishYear = bookDto.PublishYear;
-                book.ShelfLocation = bookDto.ShelfLocation;
+                book.ISBN = bookDto.ISBN ?? book.ISBN;
+                book.Title = bookDto.Title ?? book.Title;
+                book.Author = bookDto.Author ?? book.Author;
+                book.Genre = bookDto.Genre ?? book.Genre;
+                book.PublishYear = bookDto.PublishYear ?? book.PublishYear;
+                book.ShelfLocation = bookDto.ShelfLocation ?? book.ShelfLocation;
                
 
                 // Save new cover images if provided
