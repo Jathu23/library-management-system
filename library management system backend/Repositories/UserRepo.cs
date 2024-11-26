@@ -115,7 +115,7 @@ namespace library_management_system.Repositories
             return await _context.Users
           .Where(u => (EF.Functions.Like(u.Email.ToLower(), prefix.ToLower() + "%")) ||
                       (EF.Functions.Like(u.UserNic.ToLower(), prefix.ToLower() + "%"))) 
-          .Select(u => u.FullName)
+          .Select(u => u.Email)
           .ToListAsync();
 
         }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RentService } from '../../../services/lent-service/rent.service';
+import { UserService } from '../../../services/user-service/user.service';
 
 @Component({
   selector: 'app-show-lent-rec',
@@ -20,13 +21,24 @@ export class ShowLentRecComponent implements OnInit {
   bookId: string = '';
   bookInfo: any = null;
 
-  constructor(private lentService: RentService) {}
+  constructor(private lentService: RentService, private userservice:UserService) {}
 
   onSearch(){
     
-    if(this.searchQuery.trim().length > 1){
+    if(this.searchQuery.trim().length > 0){
       this.suggestions=[];
-      this.suggestions.push("jathu","thuva")
+      this.userservice.GetUserEmailsByPrefix(this.searchQuery).subscribe(
+        (response)=>{
+          if (response.success) {
+            this.suggestions= response.data;
+          }
+        },
+        (error) =>{
+          console.log("error",error);
+          
+        }
+      );
+     
     }else
     {
       this.suggestions = [];
