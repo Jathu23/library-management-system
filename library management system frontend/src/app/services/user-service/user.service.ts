@@ -14,5 +14,8 @@ export class UserService {
   GetUserEmailsByPrefix(prefix:string): Observable<any> {
     return this.http.get<any>(this.Url + `GetUserEmails?prefix=${prefix}`);
   }
+  GetUserByEmailorNic(emaiornic:string){
+    return this.http.get<any>(this.Url + `getSingleUserByNICorEmail?emailorNic=${emaiornic}`);
+  }
 
 }

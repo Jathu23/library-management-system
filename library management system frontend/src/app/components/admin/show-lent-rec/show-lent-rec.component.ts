@@ -47,27 +47,26 @@ export class ShowLentRecComponent implements OnInit {
     }
    
   }
-  selectUsername(username: string) {
-    this.searchQuery = username;
+  selectUsername(emailornic: string) {
+    this.searchQuery = emailornic;
     this.suggestions = []; 
-    this.fetchUserInfo(username); 
-    this.fetchPendingBooks(username);
+    this.fetchUserInfo(emailornic); 
+    this.fetchPendingBooks(emailornic);
   }
-  fetchUserInfo(username: string) {
-    this.userInfo =  {
-      "id": 1,
-      "userNic": "1",
-      "firstName": "Esvaran",
-      "lastName": "Jathushan",
-      "fullName": "Esvaran Jathushan",
-      "email": "jathushanj@gmail.com",
-      "phoneNumber": "0769155204",
-      "address": "No-298 punnaineeravi visuvamadu",
-      "profileImage": "defaultimg.jpg",
-      "registrationDate": "2024-11-25T21:38:06.1939206",
-      "isActive": true,
-      "isSubscribed": false
-    }
+  fetchUserInfo(emailornic: string) {
+    this.userservice.GetUserByEmailorNic(emailornic).subscribe(
+      (response)=>{
+        if (response.success) {
+          this.userInfo= response.data;
+          console.log(this.userInfo);
+          
+        }
+      },
+      (error) =>{
+        console.log("error",error);
+        
+      }
+    );
 }
 fetchPendingBooks(username: string) {
   this.isLoading = true; // Show loading spinner
