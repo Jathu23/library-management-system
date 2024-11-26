@@ -1,83 +1,136 @@
+<div class="container mt-4">
+  <!-- Search Section -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <!-- Search by Username -->
+      <div class="mb-3">
+        <label for="usernameSearch" class="form-label">Search for a Username</label>
+        <input type="text" id="usernameSearch" class="form-control" placeholder="Enter username"
+          [(ngModel)]="searchQuery" (input)="onSearch()" />
+        <!-- Suggestions -->
+        <ul class="list-group mt-2" *ngIf="suggestions.length > 0">
+          <li class="list-group-item suggestion-item" *ngFor="let suggestion of suggestions"
+            (click)="selectUsername(suggestion)">
+            {{ suggestion }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid View -->
+  <div class="row">
+
+    <!-- Pending Books Card -->
+    <div *ngIf="pendingBooks.length > 0" class="col-md-6 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-warning">Pending Books</h5>
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let book of pendingBooks">
+              <div>
+                <strong>{{ book.title }}</strong>
+                <span class="text-muted"> - Due on {{ book.dueDate | date }}</span>
+              </div>
+              <button class="btn btn-primary " (click)="onReturnClick(book.title)">Resive</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="isLoading" class="text-center mt-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</div>
+
+
 <table class="table table-bordered">
-    <thead>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Book Title</th>
+      <th>Lent Date</th>
+      <th>Due Date</th>
+      <th>Return Date</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Main Rows -->
+    <ng-container *ngFor="let history of lenthistorys">
       <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>Book Title</th>
-        <th>Lent Date</th>
-        <th>Due Date</th>
-        <th>Return Date</th>
-        <th>Status</th>
-        <th>Actions</th>
+        <td>{{ history.id }}</td>
+        <td>{{ history.userName }}</td>
+        <td>{{ history.bookTitle }}</td>
+        <td>{{ history.lentDate | date: 'medium' }}</td>
+        <td>{{ history.dueDate | date: 'medium' }}</td>
+        <td>
+          {{ history.returnDate ? (history.returnDate | date: 'medium') : 'Not Returned' }}
+        </td>
+        <td>{{ history.status }}</td>
+        <td>
+          <button (click)="toggleRow(history.id)">
+            {{ expandedElementId === history.id ? 'Hide' : 'View' }}
+          </button>
+        </td>
       </tr>
-    </thead>
-    <tbody>
-      <!-- Main Rows -->
-      <ng-container *ngFor="let history of lenthistorys">
-        <tr>
-          <td>{{ history.id }}</td>
-          <td>{{ history.userName }}</td>
-          <td>{{ history.bookTitle }}</td>
-          <td>{{ history.lentDate | date: 'medium' }}</td>
-          <td>{{ history.dueDate | date: 'medium' }}</td>
-          <td>
-            {{ history.returnDate ? (history.returnDate | date: 'medium') : 'Not Returned' }}
-          </td>
-          <td>{{ history.status }}</td>
-          <td>
-            <button (click)="toggleRow(history.id)">
-              {{ expandedElementId === history.id ? 'Hide' : 'View' }}
-            </button>
-          </td>
-        </tr>
-  
-        <!-- Expanded Row -->
-        <tr *ngIf="expandedElementId === history.id">
-          <td colspan="8">
-            <div class="expanded-content">
-              <h4>Detailed Information</h4>
-              <table class="additional-info-table">
-                <tr>
-                  <td><strong>User ID:</strong></td>
-                  <td>{{ history.userId }}</td>
-                </tr>
-                <tr>
-                  <td><strong>User Email:</strong></td>
-                  <td>{{ history.userEmail }} <button>sent-message</button></td>
-                </tr>
-                <tr>
-                  <td><strong>Admin Name:</strong></td>
-                  <td>{{ history.adminName }}</td>
-                </tr>
-                <tr>
-                  <td><strong>Admin ID:</strong></td>
-                  <td>{{ history.adminId }}</td>
-                </tr>
-                <tr>
-                  <td><strong>Book ISBN:</strong></td>
-                  <td>{{ history.bookISBN }}</td>
-                </tr>
-                <tr>
-                  <td><strong>Book Genre:</strong></td>
-                  <td>{{ history.bookGenre }}</td>
-                </tr>
-                <tr>
-                  <td><strong>Book Copy ID:</strong></td>
-                  <td>{{ history.bookCopyId }}</td>
-                </tr>
-                <tr>
-                  <td><strong>Book Condition:</strong></td>
-                  <td>{{ history.bookCondition }}</td>
-                </tr>
-                <tr>
-                  <td><strong>Status Value:</strong></td>
-                  <td>{{ history.statusValue }}</td>
-                </tr>
-              </table>
-            </div>
-          </td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
-  
+
+      <!-- Expanded Row -->
+      <tr *ngIf="expandedElementId === history.id">
+        <td colspan="8">
+          <div class="expanded-content">
+            <h4>Detailed Information</h4>
+            <table class="additional-info-table">
+              <tr>
+                <td><strong>User ID:</strong></td>
+                <td>{{ history.userId }}</td>
+              </tr>
+              <tr>
+                <td><strong>User Email:</strong></td>
+                <td>{{ history.userEmail }} <button>sent-message</button></td>
+              </tr>
+              <tr>
+                <td><strong>Admin Name:</strong></td>
+                <td>{{ history.adminName }}</td>
+              </tr>
+              <tr>
+                <td><strong>Admin ID:</strong></td>
+                <td>{{ history.adminId }}</td>
+              </tr>
+              <tr>
+                <td><strong>Book ISBN:</strong></td>
+                <td>{{ history.bookISBN }}</td>
+              </tr>
+              <tr>
+                <td><strong>Book Genre:</strong></td>
+                <td>{{ history.bookGenre }}</td>
+              </tr>
+              <tr>
+                <td><strong>Book Copy ID:</strong></td>
+                <td>{{ history.bookCopyId }}</td>
+              </tr>
+              <tr>
+                <td><strong>Book Condition:</strong></td>
+                <td>{{ history.bookCondition }}</td>
+              </tr>
+              <tr>
+                <td><strong>Status Value:</strong></td>
+                <td>{{ history.statusValue }}</td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
