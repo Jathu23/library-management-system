@@ -9,34 +9,10 @@ import { Router } from '@angular/router';
 export class UserLayoutComponent {
   constructor() { }
 
-  
-  // ngAfterViewInit(): void {
-    
-  //   $(".menu > ul > li > a").click(function (e) {
-  //     e.preventDefault();
-  //     const parentLi = $(this).parent();
-  //     parentLi.toggleClass("active").siblings().removeClass("active");
-  //     parentLi.find(".sub-menu").slideToggle();
-  //     parentLi.siblings().find(".sub-menu").slideUp();
-  //   });
 
-  //   $(".menu-btn").click(function () {
-  //     $(".sidebar").toggleClass("active");
-  //   });
-  // }
-
-   isSidebarActive: boolean = false;
-
-  // Allow any string as a key with a boolean value
-  dropdowns: { [key: string]: boolean } = {
-    booksDropdown: false,
-  };
+  isCollapsed = false;
 
   toggleSidebar() {
-    this.isSidebarActive = !this.isSidebarActive;
-  }
-
-  toggleDropdown(dropdown: string) {
-    this.dropdowns[dropdown] = !this.dropdowns[dropdown];
+    this.isCollapsed = !this.isCollapsed;
   }
 }
