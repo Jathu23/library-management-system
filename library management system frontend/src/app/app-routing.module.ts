@@ -16,6 +16,7 @@ import { ShowNormalbookComponent } from './components/admin/show-normalbook/show
 import { ShowAudiobookComponent } from './components/admin/show-audiobook/show-audiobook.component';
 import { ShowEbookComponent } from './components/admin/show-ebook/show-ebook.component';
 import { ShowLentRecComponent } from './components/admin/show-lent-rec/show-lent-rec.component';
+import { ShowLentHistoryComponent } from './components/admin/show-lent-history/show-lent-history.component';
 
 
 
@@ -40,6 +41,7 @@ const routes: Routes = [
       {path:'show-audio-Books',component:ShowAudiobookComponent},
       {path:'show-e-Books',component:ShowEbookComponent},
       {path:'show-rent-rec',component:ShowLentRecComponent},
+      {path:'show-rent-his',component:ShowLentHistoryComponent},
 
     ]
   },
