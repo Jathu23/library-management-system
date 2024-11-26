@@ -98,11 +98,13 @@ namespace library_management_system.Repositories
         public async Task<List<LentRecord>?> GetAllLentRecordsWithDetailsAsync()
         {
             return await _context.LentRecords
-                .Include(lr => lr.BookCopy) // Include BookCopy details
-                .Include(lr => lr.User)     // Include User details
-                .Include(lr => lr.Admin)    // Include Admin details
+                .Include(lr => lr.BookCopy) 
+                .Include(lr => lr.User)     
+                .Include(lr => lr.Admin)   
                 .ToListAsync();
         }
+
+
 
 
 

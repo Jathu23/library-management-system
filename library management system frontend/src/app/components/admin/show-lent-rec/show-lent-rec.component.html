@@ -1,1 +1,38 @@
-<p>show-lent-rec works!</p>
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Lent ID</th>
+        <th>User Name</th>
+        <th>User Email</th>
+        <th>Admin Name</th>
+        <th>Book Title</th>
+        <th>ISBN</th>
+        <th>Author</th>
+        <th>Lent Date</th>
+        <th>Due Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+  
+    <tbody>
+      <tr *ngIf="isLoading">
+        <td colspan="10">Loading...</td>
+      </tr>
+      <tr *ngIf="errorMessage">
+        <td colspan="10">{{ errorMessage }}</td>
+      </tr>
+      <tr *ngFor="let record of lentRecords">
+        <td>{{ record.id }}</td>
+        <td>{{ record.userName }}</td>
+        <td>{{ record.userEmail }}</td>
+        <td>{{ record.adminName }}</td>
+        <td>{{ record.bookTitle }}</td>
+        <td>{{ record.bookISBN }}</td>
+        <td>{{ record.bookAuthor }}</td>
+        <td>{{ record.lentDate | date: 'yyyy-MM-dd' }}</td>
+        <td>{{ record.dueDate | date: 'yyyy-MM-dd' }}</td>
+        <td>{{ record.status }}</td>
+      </tr>
+    </tbody>
+  </table>
+  

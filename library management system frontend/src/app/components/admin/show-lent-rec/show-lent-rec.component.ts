@@ -4,44 +4,39 @@ import { RentService } from '../../../services/lent-service/rent.service';
 @Component({
   selector: 'app-show-lent-rec',
   templateUrl: './show-lent-rec.component.html',
-  styleUrl: './show-lent-rec.component.css'
+  styleUrls: ['./show-lent-rec.component.css']
 })
 export class ShowLentRecComponent implements OnInit {
-  lentrec: any[] = [];
-  isLoading = false;
-  userId :number =1;
+  lentRecords: any[] = []; // Holds all the records fetched from the API
+  isLoading = false;      // Flag to show loading state
+  errorMessage: string = ''; // Holds error messages, if any
 
-constructor(private lentservice:RentService){}
+  constructor(private lentService: RentService) {}
+
   ngOnInit(): void {
-   this.getallrentrecods();
+    this.getallrentrecods(); // Fetch all records when the component initializes
   }
 
-lodadrecodes(){
-  this.lentservice.getlentrecByuserid(this.userId).subscribe(
-(response) =>{
-  const result = response.data;
-  console.log(result);
-  
-},
-(error) =>{
-console.log(error);
+  getallrentrecods(): void {
+    this.isLoading = true; // Start the loading state
+    this.errorMessage = ''; // Clear previous errors
 
-}
-  );
-}
-
-getallrentrecods(){
-  this.lentservice.getallrentrecods().subscribe(
-(response) =>{
-  const result = response.data;
-  console.log(result);
-  
-},
-(error) =>{
-console.log(error);
-
-}
-  );
-}
-
+    this.lentService.getallrentrecods().subscribe(
+      (response) => {
+        if (response && response.data) {
+          this.lentRecords = response.data; // Bind the data to the table
+          console.log('Fetched records:', this.lentRecords);
+        } else {
+          console.error('Unexpected response format:', response);
+          this.errorMessage = 'Failed to fetch data. Please try again later.';
+        }
+        this.isLoading = false; // Stop the loading state
+      },
+      (error) => {
+        console.error('Error fetching data:', error);
+        this.errorMessage = 'An error occurred while fetching the records.';
+        this.isLoading = false; // Stop the loading state
+      }
+    );
+  }
 }
