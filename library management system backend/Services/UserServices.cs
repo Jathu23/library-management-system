@@ -401,6 +401,40 @@ namespace library_management_system.Services
             }
         }
 
+        public async Task<ApiResponse<List<string>>> GetUserEmailsByPrefix(string prefix)
+        {
+            if (string.IsNullOrEmpty(prefix))
+            {
+                return new ApiResponse<List<string>>
+                {
+                    Success = false,
+                    Message = "Prefix cannot be empty",
+                    Data = null,
+                    Errors = new List<string> { "Invalid input: prefix is null or empty" }
+                };
+            }
+
+            var usernames = await _userRepo.GetUserEmailsByPrefix(prefix);
+
+            if (usernames == null || !usernames.Any())
+            {
+                return new ApiResponse<List<string>>
+                {
+                    Success = false,
+                    Message = "No usernames found",
+                    Data = new List<string>(),
+                    Errors = new List<string>()
+                };
+            }
+
+            return new ApiResponse<List<string>>
+            {
+                Success = true,
+                Message = "Usernames retrieved successfully",
+                Data = usernames
+            };
+        }
+
 
     }
 
