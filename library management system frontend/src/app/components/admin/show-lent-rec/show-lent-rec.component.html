@@ -1,3 +1,72 @@
+<div class="container mt-4">
+  <!-- Search bar -->
+  <div class="search-bar mb-4">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search for a username"
+      [(ngModel)]="searchQuery"
+      (input)="onSearch()"
+    />
+    <!-- Suggestions -->
+    <ul class="list-group mt-1" *ngIf="suggestions.length > 0">
+      <li
+        class="list-group-item suggestion-item"
+        *ngFor="let suggestion of suggestions"
+        (click)="selectUsername(suggestion)"
+      >
+        {{ suggestion }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- User Information Display -->
+  <div *ngIf="userInfo" class="card user-info-card mb-4">
+    <img
+      [src]="'assets/' + userInfo.profileImage"
+      class="card-img-top profile-img"
+      alt="User Profile"
+    />
+    <div class="card-body">
+      <h5 class="card-title">{{ userInfo.fullName }}</h5>
+      <p class="card-text">
+        <strong>Email:</strong> {{ userInfo.email }} <br />
+        <strong>Phone Number:</strong> {{ userInfo.phoneNumber }} <br />
+        <strong>Address:</strong> {{ userInfo.address }} <br />
+        <strong>Registration Date:</strong>
+        {{ userInfo.registrationDate | date: 'medium' }} <br />
+        <strong>Status:</strong>
+        {{ userInfo.isActive ? 'Active' : 'Inactive' }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Pending Books Display -->
+  <div *ngIf="pendingBooks.length > 0" class="card pending-books-card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Pending Books</h5>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let book of pendingBooks">
+          <strong>{{ book.title }}</strong> - Due on {{ book.dueDate | date }}
+        </li>
+      </ul>
+      
+    </div>
+  </div>
+  <button class="btn btn-primary mt-3" (click)="onRentClick()">Rent</button>
+  <!-- Loader -->
+  <div *ngIf="isLoading" class="text-center mt-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
 <table class="table table-bordered">
   <thead>
     <tr>

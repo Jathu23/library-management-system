@@ -44,3 +44,45 @@
     font-weight: bold;
   }
   
+
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .search-bar input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .suggestion-item {
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .suggestion-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .user-info-card {
+    margin-top: 20px;
+  }
+  
+  .profile-img {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: block;
+  }
+  
+  .card-title {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .card-body {
+    text-align: left;
+  }
+  
