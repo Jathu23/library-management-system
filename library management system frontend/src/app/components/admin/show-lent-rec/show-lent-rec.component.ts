@@ -7,68 +7,62 @@ import { RentService } from '../../../services/lent-service/rent.service';
   styleUrls: ['./show-lent-rec.component.css']
 })
 export class ShowLentRecComponent implements OnInit {
-  lentRecords: any[] = []; // Holds all the records fetched from the API
-  isLoading = false;      // Flag to show loading state
-  errorMessage: string = ''; // Holds error messages, if any
+  lentRecords: any[] = [];
+  isLoading = false;   
+  errorMessage: string = ''; 
+  userId: number = 1;      
 
   constructor(private lentService: RentService) {}
 
   ngOnInit(): void {
-    this.getallrentrecods(); // Fetch all records when the component initializes
+    this.getallrentrecods(); 
   }
 
-<<<<<<< HEAD
+ 
   getallrentrecods(): void {
-    this.isLoading = true; // Start the loading state
-    this.errorMessage = ''; // Clear previous errors
+    this.isLoading = true;
+    this.errorMessage = ''; 
 
     this.lentService.getallrentrecods().subscribe(
       (response) => {
         if (response && response.data) {
-          this.lentRecords = response.data; // Bind the data to the table
+          this.lentRecords = response.data; 
           console.log('Fetched records:', this.lentRecords);
         } else {
           console.error('Unexpected response format:', response);
           this.errorMessage = 'Failed to fetch data. Please try again later.';
         }
-        this.isLoading = false; // Stop the loading state
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching data:', error);
         this.errorMessage = 'An error occurred while fetching the records.';
-        this.isLoading = false; // Stop the loading state
+        this.isLoading = false; 
       }
     );
   }
-=======
-lodadrecodes(){
-  this.lentservice.getlentrecByuserid(this.userId).subscribe(
-(response) =>{
-  const result = response.data;
-  console.log(result);
-  
-},
-(error) =>{
-console.log(error);
 
-}
-  );
-}
+ 
+  loadRecords(): void {
+    this.isLoading = true; 
+    this.errorMessage = ''; 
 
-getallrentrecods(){
-  this.lentservice.getallrentrecods().subscribe(
-(response) =>{
-  const result = response.data;
-  console.log(result);
-  
-},
-(error) =>{
-console.log(error);
-
-}
-);
-}
-
-
->>>>>>> 75fb154a63cbe0d9f0b18c4a59835bd96ce0e28c
+    this.lentService.getlentrecByuserid(this.userId).subscribe(
+      (response) => {
+        if (response && response.data) {
+          const result = response.data; 
+          console.log('User-specific records:', result);
+        } else {
+          console.error('Unexpected response format:', response);
+          this.errorMessage = 'Failed to fetch user-specific data. Please try again later.';
+        }
+        this.isLoading = false; 
+      },
+      (error) => {
+        console.error('Error fetching user-specific data:', error);
+        this.errorMessage = 'An error occurred while fetching user-specific records.';
+        this.isLoading = false; 
+      }
+    );
+  }
 }
