@@ -30,4 +30,14 @@
   .additional-info-table td:first-child {
     font-weight: bold;
   }
+
+  .table-container {
+    margin: 20px 0;
+  }
+  
+  .mat-paginator {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+  }
   

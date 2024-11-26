@@ -25,6 +25,8 @@ import { ShowEbookComponent } from './components/admin/show-ebook/show-ebook.com
 import { SubscriptionComponent } from './components/user/subscription/subscription.component';
 import { ShowLentRecComponent } from './components/admin/show-lent-rec/show-lent-rec.component';
 import { ShowLentHistoryComponent } from './components/admin/show-lent-history/show-lent-history.component';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 
 
 
@@ -71,11 +73,12 @@ import { ShowLentHistoryComponent } from './components/admin/show-lent-history/s
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-   
+    MatPaginatorModule,
+    MatTableModule
 
      
   ],
-  providers: [],
+  providers: [MatPaginatorIntl],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
