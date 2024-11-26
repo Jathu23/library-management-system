@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BookDeleteServicesService } from './book-delete-services.service';
+import { BookDeleteServicesService } from './deletebook.service';
 
 describe('BookDeleteServicesService', () => {
   let service: BookDeleteServicesService;

@@ -14,4 +14,7 @@ export class RentService {
   getlentrecByuserid(id:number): Observable<any> {
     return this.http.get<any>(this.rentUrl + `lent-records-id?id=${id}`);
   }
+  getallrentrecods(){
+    return this.http.get<any>(this.rentUrl + `all-lent-All-records`);
+  }
 }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
-import { BookDeleteServicesService } from '../../../services/bookservice/book-delete-services.service';
+import { BookDeleteServicesService } from '../../../services/bookservice/deletebook.service';
 
 @Component({
   selector: 'app-show-normalbook',

@@ -13,11 +13,25 @@ export class ShowLentRecComponent implements OnInit {
 
 constructor(private lentservice:RentService){}
   ngOnInit(): void {
-   this.lodadrecodes();
+   this.getallrentrecods();
   }
 
 lodadrecodes(){
   this.lentservice.getlentrecByuserid(this.userId).subscribe(
+(response) =>{
+  const result = response.data;
+  console.log(result);
+  
+},
+(error) =>{
+console.log(error);
+
+}
+  );
+}
+
+getallrentrecods(){
+  this.lentservice.getallrentrecods().subscribe(
 (response) =>{
   const result = response.data;
   console.log(result);

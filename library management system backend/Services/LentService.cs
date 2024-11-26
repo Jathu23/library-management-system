@@ -288,7 +288,7 @@ namespace library_management_system.Services
         }
 
 
-<<<<<<< HEAD
+
         public async Task<ApiResponse<List<LentRecordAdminDto>>> GetAllLentRecordsAsync()
         {
             var lentRecords = await _lentRecordRepository.GetAllLentRecordsWithDetailsAsync();
@@ -349,7 +349,7 @@ namespace library_management_system.Services
             };
         }
 
-=======
+
         public async Task<ApiResponse<PaginatedResult<LentHistoryAdminDto>>> GetAllRentHistory(int page, int pageSize)
         {
             try
@@ -446,6 +446,6 @@ namespace library_management_system.Services
         }
 
 
->>>>>>> 251122842f420bbca62c67c575d80ee6e879b4b6
+
     }
 }

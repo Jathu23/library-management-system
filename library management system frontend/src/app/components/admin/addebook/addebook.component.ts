@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AddEbookDto } from '../../../models/interfaces/add-newebook.interface';
-import { BookService } from '../../../services/bookservice/book.service';
+import { BookService } from '../../../services/bookservice/addbook.service';
 
 @Component({
   selector: 'app-addebook',
