@@ -14,7 +14,11 @@ export class RentService {
   getlentrecByuserid(id:number): Observable<any> {
     return this.http.get<any>(this.rentUrl + `lent-records-id?id=${id}`);
   }
-  getallrentrecods(){
+  getallrentrecods():Observable<any> {
     return this.http.get<any>(this.rentUrl + `all-lent-All-records`);
+  }
+
+  getrenthistory(currentPage:number,pageSize:number):Observable<any> {
+      return this.http.get<any>(this.rentUrl + `lent-historys?page=${currentPage}&pageSize=${pageSize}`);
   }
 }

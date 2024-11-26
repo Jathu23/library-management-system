@@ -1,0 +1,33 @@
+.table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table th,
+  .table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .expanded-content {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+  }
+  
+  .additional-info-table {
+    width: 100%;
+    margin-top: 10px;
+    border-collapse: collapse;
+  }
+  
+  .additional-info-table td {
+    padding: 8px;
+    border: 1px solid #ccc;
+  }
+  
+  .additional-info-table td:first-child {
+    font-weight: bold;
+  }
+  
