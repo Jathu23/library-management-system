@@ -98,8 +98,8 @@ export class ShowNormalbookComponent implements OnInit {
 
     updateBook(updatedBook: any): void {
     
-      this.UpdateMainBook.updateBook(updatedBook.id, updatedBook).subscribe(response => {
-        // Handle success
+      this.UpdateMainBook.updateBook(updatedBook).subscribe(response => {
+      
       });
     }
   // -----------------
