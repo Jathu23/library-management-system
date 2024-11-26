@@ -74,7 +74,8 @@ import { MatTableModule } from '@angular/material/table';
     ReactiveFormsModule,
     CommonModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    
 
      
   ],

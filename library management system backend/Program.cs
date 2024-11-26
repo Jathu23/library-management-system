@@ -102,7 +102,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
+app.Urls.Add("https://localhost:7261");
 app.UseStaticFiles();
 
 // Configure the HTTP request pipeline.
