@@ -18,7 +18,11 @@ export class ShowNormalbookComponent implements OnInit {
 
 
 
-  constructor(private getbookservice: GetbooksService, private DleteNBook:BookDeleteServicesService) { }
+  constructor(private getbookservice: GetbooksService,
+     private DleteNBook:BookDeleteServicesService,
+     private DeleetMainBook:BookDeleteServicesService
+    
+    ) { }
 
   ngOnInit(): void {
     this.loadnormalbooks()
@@ -50,6 +54,26 @@ export class ShowNormalbookComponent implements OnInit {
     this.expandedElementId = this.expandedElementId === elementId ? null : elementId;
 
   }
+
+  // functions for main books
+
+  deleteMainBook(id:any):void{
+    if (confirm('Are you sure you want to delete this item?')) {
+      this.DeleetMainBook.deleteMainBook(id).subscribe({
+        next: () => {
+          alert('Item deleted successfully.');
+          // Optionally refresh data or update UI
+        },
+        error: (err) => {
+          console.error('Error deleting item:', err);
+          alert('Failed to delete item.');
+        },
+      });
+    }
+    
+  }
+
+  // -----------------
 
   deleteItem(id: number): void {
     if (confirm('Are you sure you want to delete this item?')) {
