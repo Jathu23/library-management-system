@@ -42,12 +42,12 @@
                 {{ expandedElementId === Nbook.id ? 'Hide' : 'View' }}
               </button>
             </td>
-            <td> <button class="btn btn-success" onclick="createItem()">
+            <td> <button class="btn btn-success" (click)="addNewBook()">
                 <i class="bi bi-plus-circle"></i> Add
               </button>
             </td>
             <td>
-              <button class="btn btn-primary" onclick="editItem()">
+              <button class="btn btn-primary" (click)="openEditDialog(Nbook)">
                 <i class="bi bi-pencil"></i> Edit
               </button>
             </td>

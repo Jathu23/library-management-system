@@ -27,6 +27,13 @@ import { ShowLentRecComponent } from './components/admin/show-lent-rec/show-lent
 import { ShowLentHistoryComponent } from './components/admin/show-lent-history/show-lent-history.component';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { EditBookDialogComponent } from './components/admin/edit-book-dialog/edit-book-dialog.component';
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
@@ -60,7 +67,8 @@ import { MatTableModule } from '@angular/material/table';
     ShowEbookComponent,
     SubscriptionComponent,
     ShowLentRecComponent,
-    ShowLentHistoryComponent
+    ShowLentHistoryComponent,
+    EditBookDialogComponent
 
    
 
@@ -74,11 +82,15 @@ import { MatTableModule } from '@angular/material/table';
     ReactiveFormsModule,
     CommonModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDialogModule,
 
      
   ],
-  providers: [MatPaginatorIntl],
+  providers: [MatPaginatorIntl, provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

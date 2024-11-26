@@ -2,6 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
 import { BookDeleteServicesService } from '../../../services/bookservice/deletebook.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EditBookDialogComponent } from '../edit-book-dialog/edit-book-dialog.component';
+import { MainBookUpdateService } from '../../../services/bookservice/main-book-update.service';
+import { data } from 'jquery';
 
 @Component({
   selector: 'app-show-normalbook',
@@ -20,7 +24,9 @@ export class ShowNormalbookComponent implements OnInit {
 
   constructor(private getbookservice: GetbooksService,
      private DleteNBook:BookDeleteServicesService,
-     private DeleetMainBook:BookDeleteServicesService
+     private DeleetMainBook:BookDeleteServicesService,
+     private UpdateMainBook:MainBookUpdateService,
+     private dialog: MatDialog
     
     ) { }
 
@@ -73,6 +79,29 @@ export class ShowNormalbookComponent implements OnInit {
     
   }
 
+  addNewBook(){
+
+  }
+
+  openEditDialog(book: any): void {
+    const dialogRef = this.dialog.open(EditBookDialogComponent, {
+      width: '600px',
+      data: { book },
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.updateBook(result);
+      }
+    })
+  }
+
+    updateBook(updatedBook: any): void {
+    
+      this.UpdateMainBook.updateBook(updatedBook.id, updatedBook).subscribe(response => {
+        // Handle success
+      });
+    }
   // -----------------
 
   deleteItem(id: number): void {
