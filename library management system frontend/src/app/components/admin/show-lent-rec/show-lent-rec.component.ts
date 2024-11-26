@@ -8,25 +8,25 @@ import { RentService } from '../../../services/lent-service/rent.service';
 })
 export class ShowLentRecComponent implements OnInit {
   lentRecords: any[] = [];
-  isLoading = false;   
-  errorMessage: string = ''; 
-  userId: number = 1;      
+  isLoading = false;
+  errorMessage: string = '';
+  expandedElementId: number | null = null;
+  selectedRecord: any | null = null;
 
   constructor(private lentService: RentService) {}
 
   ngOnInit(): void {
-    this.getallrentrecods(); 
+    this.getallrentrecods();
   }
 
- 
   getallrentrecods(): void {
     this.isLoading = true;
-    this.errorMessage = ''; 
+    this.errorMessage = '';
 
     this.lentService.getallrentrecods().subscribe(
       (response) => {
         if (response && response.data) {
-          this.lentRecords = response.data; 
+          this.lentRecords = response.data;
           console.log('Fetched records:', this.lentRecords);
         } else {
           console.error('Unexpected response format:', response);
@@ -37,32 +37,20 @@ export class ShowLentRecComponent implements OnInit {
       (error) => {
         console.error('Error fetching data:', error);
         this.errorMessage = 'An error occurred while fetching the records.';
-        this.isLoading = false; 
+        this.isLoading = false;
       }
     );
   }
 
- 
-  loadRecords(): void {
-    this.isLoading = true; 
-    this.errorMessage = ''; 
+  toggleRow(recordId: number): void {
+    this.expandedElementId = this.expandedElementId === recordId ? null : recordId;
+  }
 
-    this.lentService.getlentrecByuserid(this.userId).subscribe(
-      (response) => {
-        if (response && response.data) {
-          const result = response.data; 
-          console.log('User-specific records:', result);
-        } else {
-          console.error('Unexpected response format:', response);
-          this.errorMessage = 'Failed to fetch user-specific data. Please try again later.';
-        }
-        this.isLoading = false; 
-      },
-      (error) => {
-        console.error('Error fetching user-specific data:', error);
-        this.errorMessage = 'An error occurred while fetching user-specific records.';
-        this.isLoading = false; 
-      }
-    );
+  openModal(record: any): void {
+    this.selectedRecord = record;
+  }
+
+  closeModal(): void {
+    this.selectedRecord = null;
   }
 }

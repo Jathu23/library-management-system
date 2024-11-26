@@ -1,38 +1,71 @@
 <table class="table table-bordered">
-    <thead>
+  <thead>
+    <tr>
+      <th>Lent ID</th>
+      <th>Book Title</th>
+      <th>BookCopyId</th>
+      <th>Author</th>
+      <th>Lent Date</th>
+      <th>Due Date</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngIf="isLoading">
+      <td colspan="8">Loading...</td>
+    </tr>
+    <tr *ngIf="errorMessage">
+      <td colspan="8">{{ errorMessage }}</td>
+    </tr>
+    <ng-container *ngFor="let record of lentRecords">
       <tr>
-        <th>Lent ID</th>
-        <th>User Name</th>
-        <th>User Email</th>
-        <th>Admin Name</th>
-        <th>Book Title</th>
-        <th>ISBN</th>
-        <th>Author</th>
-        <th>Lent Date</th>
-        <th>Due Date</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-  
-    <tbody>
-      <tr *ngIf="isLoading">
-        <td colspan="10">Loading...</td>
-      </tr>
-      <tr *ngIf="errorMessage">
-        <td colspan="10">{{ errorMessage }}</td>
-      </tr>
-      <tr *ngFor="let record of lentRecords">
         <td>{{ record.id }}</td>
-        <td>{{ record.userName }}</td>
-        <td>{{ record.userEmail }}</td>
-        <td>{{ record.adminName }}</td>
         <td>{{ record.bookTitle }}</td>
-        <td>{{ record.bookISBN }}</td>
+        <td>{{ record.bookCopyId }}</td>
         <td>{{ record.bookAuthor }}</td>
         <td>{{ record.lentDate | date: 'yyyy-MM-dd' }}</td>
         <td>{{ record.dueDate | date: 'yyyy-MM-dd' }}</td>
         <td>{{ record.status }}</td>
+        <td>
+          <button (click)="openModal(record)">Details</button>
+        </td>
       </tr>
-    </tbody>
-  </table>
-  
+<!-- Modal for Expanded Details -->
+<div *ngIf="selectedRecord" class="modal-backdrop">
+  <div class="modal-content">
+    <h3>Detailed Information</h3>
+    <button class="close-btn" (click)="closeModal()">Close</button>
+    <table class="additional-info-table">
+      <tr>
+        <td><strong>User ID:</strong></td>
+        <td>{{ selectedRecord.userId }}</td>
+      </tr>
+      <tr>
+        <td><strong>User Name:</strong></td>
+        <td>{{ selectedRecord.userName }}</td>
+      </tr>
+      <tr>
+        <td><strong>User Email:</strong></td>
+        <td>{{ selectedRecord.userEmail }}</td>
+      </tr>
+      <tr>
+        <td><strong>Admin ID:</strong></td>
+        <td>{{ selectedRecord.adminId }}</td>
+      </tr>
+      <tr>
+        <td><strong>Admin Name:</strong></td>
+        <td>{{ selectedRecord.adminName }}</td>
+      </tr>
+      <tr>
+        <td><strong>Book Condition:</strong></td>
+        <td>{{ selectedRecord.bookCondition }}</td>
+      </tr>
+      <tr>
+        <td><strong>Book ISBN:</strong></td>
+        <td>{{ selectedRecord.bookISBN }}</td>
+      </tr>
+    </table>
+  </div>
+</div>
