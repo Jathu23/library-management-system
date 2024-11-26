@@ -12,11 +12,13 @@ export class ShowLentRecComponent implements OnInit {
   errorMessage: string = '';
   expandedElementId: number | null = null;
   selectedRecord: any | null = null;
-  searchQuery: string = ''; // Query entered by the user
-  suggestions: string[] = []; // Array of suggestions
-  userInfo: any = null; // Selected user information
-  pendingBooks: any[] = []; // Pending books information
-  relatedTextArray: string[] = []; // Array of related usernames fetched from the API
+  searchQuery: string = ''; 
+  suggestions: string[] = [];
+  userInfo: any = null; 
+  pendingBooks: any[] = []; 
+  relatedTextArray: string[] = []; 
+  bookId: string = '';
+  bookInfo: any = null;
 
   constructor(private lentService: RentService) {}
 
@@ -87,10 +89,29 @@ setTimeout(() => {
 },2000)
 
 }
+fetchBookInfo() {
+  if (!this.bookId) {
+    this.bookInfo = null;
+    return;
+  }else{
+    this.bookInfo ={
+      "bookId": 101,
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "genre": "Fiction",
+      "publishYear": 1925,
+      "isbn": "978-0743273565"
+    }
+    
+  }
+
+ 
+}
 
 
 onRentClick() {
   console.log(`Rent button clicked for username: ${this.userInfo?.fullName}`);
+  console.log(`Rent button clicked for bookname: ${this.bookInfo?.title}`);
 }
 
   ngOnInit(): void {

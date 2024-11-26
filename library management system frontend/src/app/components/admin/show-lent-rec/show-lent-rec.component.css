@@ -45,7 +45,9 @@
   }
   
 
-  .container {
+
+
+  /* .container {
     max-width: 600px;
     margin: 0 auto;
   }
@@ -65,10 +67,7 @@
     background-color: #f0f0f0;
   }
   
-  .user-info-card {
-    margin-top: 20px;
-  }
-  
+
   .profile-img {
     max-width: 150px;
     max-height: 150px;
@@ -85,4 +84,30 @@
   .card-body {
     text-align: left;
   }
-  
+  .container {
+  max-width: 900px;
+}
+
+
+
+.user-info-card,
+.pending-books-card,
+.book-info-card {
+  border-radius: 10px;
+}
+
+.user-info-card img {
+  max-height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .user-info-card img {
+    max-height: 200px;
+  }
+
+  .search-bar input {
+    font-size: 0.9rem;
+  }
+} */
+
