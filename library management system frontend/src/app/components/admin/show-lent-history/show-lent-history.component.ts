@@ -12,6 +12,7 @@ export class ShowLentHistoryComponent implements OnInit{
   pageSize = 10;
   totalItems = 0;
    lenthistorys: any[] = [];
+   expandedElementId: number | null = null;
 
    constructor(private rentservice:RentService) {}
   ngOnInit(): void {
@@ -44,5 +45,8 @@ export class ShowLentHistoryComponent implements OnInit{
     );
   }
 
+  toggleRow(id: number): void {
+    this.expandedElementId = this.expandedElementId === id ? null : id;
+  }
 
 }

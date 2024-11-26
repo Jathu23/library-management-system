@@ -41,7 +41,8 @@ getallrentrecods(){
 console.log(error);
 
 }
-  );
+);
 }
+
 
 }

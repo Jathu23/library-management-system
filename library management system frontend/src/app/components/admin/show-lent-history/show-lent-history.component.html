@@ -1,1 +1,83 @@
-<p>show-lent-history works!</p>
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Book Title</th>
+        <th>Lent Date</th>
+        <th>Due Date</th>
+        <th>Return Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Main Rows -->
+      <ng-container *ngFor="let history of lenthistorys">
+        <tr>
+          <td>{{ history.id }}</td>
+          <td>{{ history.userName }}</td>
+          <td>{{ history.bookTitle }}</td>
+          <td>{{ history.lentDate | date: 'medium' }}</td>
+          <td>{{ history.dueDate | date: 'medium' }}</td>
+          <td>
+            {{ history.returnDate ? (history.returnDate | date: 'medium') : 'Not Returned' }}
+          </td>
+          <td>{{ history.status }}</td>
+          <td>
+            <button (click)="toggleRow(history.id)">
+              {{ expandedElementId === history.id ? 'Hide' : 'View' }}
+            </button>
+          </td>
+        </tr>
+  
+        <!-- Expanded Row -->
+        <tr *ngIf="expandedElementId === history.id">
+          <td colspan="8">
+            <div class="expanded-content">
+              <h4>Detailed Information</h4>
+              <table class="additional-info-table">
+                <tr>
+                  <td><strong>User ID:</strong></td>
+                  <td>{{ history.userId }}</td>
+                </tr>
+                <tr>
+                  <td><strong>User Email:</strong></td>
+                  <td>{{ history.userEmail }} <button>sent-message</button></td>
+                </tr>
+                <tr>
+                  <td><strong>Admin Name:</strong></td>
+                  <td>{{ history.adminName }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Admin ID:</strong></td>
+                  <td>{{ history.adminId }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Book ISBN:</strong></td>
+                  <td>{{ history.bookISBN }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Book Genre:</strong></td>
+                  <td>{{ history.bookGenre }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Book Copy ID:</strong></td>
+                  <td>{{ history.bookCopyId }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Book Condition:</strong></td>
+                  <td>{{ history.bookCondition }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Status Value:</strong></td>
+                  <td>{{ history.statusValue }}</td>
+                </tr>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  
