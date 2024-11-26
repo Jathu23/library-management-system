@@ -12,7 +12,6 @@ namespace library_management_system.DTOs.User
         public required string Address { get; set; }
         public required string Password { get; set; } 
         public required IFormFile? ProfileImage { get; set; }
-        public required bool IsActive { get; set; }
-        public required bool IsSubscribed { get; set; }
+       
     }
 }

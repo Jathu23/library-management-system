@@ -1,11 +1,13 @@
 ﻿using Azure.Core;
 using library_management_system.Database.Entiy;
 using library_management_system.DTOs;
+using library_management_system.DTOs.Book;
 using library_management_system.DTOs.User;
 using library_management_system.Services;
 using library_management_system.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using VersOne.Epub.Schema;
 
 namespace library_management_system.Controllers
 {
@@ -14,12 +16,16 @@ namespace library_management_system.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserServices _userService;
-       
+        private readonly Email _Email;
 
-        public UserController(UserServices userServices)
+
+
+        public UserController(UserServices userServices, AudioBookFileService emailServices, Email Email)
         {
             _userService = userServices;
-          
+            _Email = Email;
+
+
         }
 
         [HttpPost("create")]
@@ -43,7 +49,29 @@ namespace library_management_system.Controllers
         if (!response.Success)
             return BadRequest(response);
 
-        return Ok(response);
+
+            const string subject = "Account Created";
+
+            var body = $"""
+                <html>
+                    <body>
+                        <h1>Hello, {userRequestDto.FirstName} {userRequestDto.LastName}</h1>
+                        <h2>
+                            Your account has been created and we have sent approval request to admin.
+                            Once the request is approved by admin you will receive email, and you will be
+                            able to login in to your account.
+                        </h2>
+                        <h3>Thanks</h3>
+                    </body>
+                </html>
+            
+            """
+            ;
+
+            await _Email.SendEmailAsync(userRequestDto.Email, subject, body);
+
+            return Ok(response);
+
 
 
 
@@ -164,7 +192,17 @@ namespace library_management_system.Controllers
             return Ok(response);
         }
 
-       
+
+        [HttpGet("Search")]
+        public async Task<IActionResult> Search(
+            [FromQuery] string searchString,
+            [FromQuery] int pageNumber = 1,
+
+            [FromQuery] int pageSize = 10)
+        {
+            var response = await _userService.SearchUsersAsync(searchString, pageNumber, pageSize);
+            return Ok(response);
+        }
 
 
     }

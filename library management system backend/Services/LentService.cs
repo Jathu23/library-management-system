@@ -2,6 +2,10 @@
 using library_management_system.DTOs.LentRecord;
 using library_management_system.DTOs;
 using library_management_system.Repositories;
+using System.Diagnostics.Eventing.Reader;
+using static System.Reflection.Metadata.BlobBuilder;
+using library_management_system.DTOs.Book;
+using library_management_system.DTOs.Ebook;
 
 namespace library_management_system.Services
 {
@@ -222,59 +226,226 @@ namespace library_management_system.Services
         }
 
 
-        public async Task<ApiResponse<LentRecordAdminDto>> GetLentRecordForAdminAsync(int lentRecordId)
+        public async Task<ApiResponse<List<LentRecordAdminDto>>> GetLentRecordForAdminAsync(int userid)
         {
-            var lentRecord = await _lentRecordRepository.GetLentRecordWithDetailsAsync(lentRecordId);
+            var lentRecords = await _lentRecordRepository.GetLentRecordWithDetailsbyuserid(userid);
 
-            if (lentRecord == null)
+            if (lentRecords == null || !lentRecords.Any())
             {
-                return new ApiResponse<LentRecordAdminDto>
+                return new ApiResponse<List<LentRecordAdminDto>>
                 {
                     Success = false,
-                    Message = "Lent record not found",
+                    Message = "No lent records found",
                     Data = null
                 };
             }
 
-          
-            var book =  await _lentRecordRepository.GetBookById(lentRecord.BookCopy.BookId);
+            var lentRecordDtos = new List<LentRecordAdminDto>();
+            var book = await _lentRecordRepository.GetBookById(lentRecords[0].BookCopy.BookId);
 
-            var currentDateTime = DateTime.UtcNow;
-            var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
-
-            string status = statusValue > 0
-                ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
-                : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours over";
-
-            var lentRecordDto = new LentRecordAdminDto
+            foreach (var lentRecord in lentRecords)
             {
-                Id = lentRecord.Id,
-                UserId = lentRecord.UserId,
-                UserName = lentRecord.User.FullName,
-                UserEmail = lentRecord.User.Email,
-                AdminId = lentRecord.AdminId,
-                AdminName = lentRecord.Admin.FullName,
-                BookId = book.Id,
-                BookTitle =book.Title,
-                BookISBN =book.ISBN,
-                BookAuthor =book.Author,
-                BookGenre = string.Join(", ", book.Genre),
-                BookPublishYear =book.PublishYear,
-                BookCopyId = lentRecord.BookCopyId,
-                BookCondition = lentRecord.BookCopy.Condition,
-                LentDate = lentRecord.LentDate,
-                DueDate = lentRecord.DueDate,
-                Status = status,
-                StatusValue = statusValue
-            };
+                
 
-            return new ApiResponse<LentRecordAdminDto>
+                var currentDateTime = DateTime.UtcNow;
+                var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
+
+                string status = statusValue > 0
+                    ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
+                    : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours over";
+
+                var lentRecordDto = new LentRecordAdminDto
+                {
+                    Id = lentRecord.Id,
+                    UserId = lentRecord.UserId,
+                    UserName = lentRecord.User.FullName,
+                    UserEmail = lentRecord.User.Email,
+                    AdminId = lentRecord.AdminId,
+                    AdminName = lentRecord.Admin.FullName,
+                    BookId = book.Id,
+                    BookTitle = book.Title,
+                    BookISBN = book.ISBN,
+                    BookAuthor = book.Author,
+                    BookGenre = string.Join(", ", book.Genre),
+                    BookPublishYear = book.PublishYear,
+                    BookCopyId = lentRecord.BookCopyId,
+                    BookCondition = lentRecord.BookCopy.Condition,
+                    LentDate = lentRecord.LentDate,
+                    DueDate = lentRecord.DueDate,
+                    Status = status,
+                    StatusValue = statusValue
+                };
+
+                lentRecordDtos.Add(lentRecordDto);
+            }
+
+            return new ApiResponse<List<LentRecordAdminDto>>
             {
                 Success = true,
-                Message = "Lent record retrieved successfully",
-                Data = lentRecordDto
+                Message = "Lent records retrieved successfully",
+                Data = lentRecordDtos
             };
         }
+
+
+
+        public async Task<ApiResponse<List<LentRecordAdminDto>>> GetAllLentRecordsAsync()
+        {
+            var lentRecords = await _lentRecordRepository.GetAllLentRecordsWithDetailsAsync();
+
+            if (lentRecords == null || !lentRecords.Any())
+            {
+                return new ApiResponse<List<LentRecordAdminDto>>
+                {
+                    Success = false,
+                    Message = "No lent records found",
+                    Data = null
+                };
+            }
+
+            var lentRecordDtos = new List<LentRecordAdminDto>();
+
+            foreach (var lentRecord in lentRecords)
+            {
+                var book = await _lentRecordRepository.GetBookById(lentRecord.BookCopy.BookId);
+
+                var currentDateTime = DateTime.UtcNow;
+                var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
+
+                string status = statusValue > 0
+                    ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
+                    : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours over";
+
+                var lentRecordDto = new LentRecordAdminDto
+                {
+                    Id = lentRecord.Id,
+                    UserId = lentRecord.UserId,
+                    UserName = lentRecord.User.FullName,
+                    UserEmail = lentRecord.User.Email,
+                    AdminId = lentRecord.AdminId,
+                    AdminName = lentRecord.Admin.FullName,
+                    BookId = book.Id,
+                    BookTitle = book.Title,
+                    BookISBN = book.ISBN,
+                    BookAuthor = book.Author,
+                    BookGenre = string.Join(", ", book.Genre),
+                    BookPublishYear = book.PublishYear,
+                    BookCopyId = lentRecord.BookCopyId,
+                    BookCondition = lentRecord.BookCopy.Condition,
+                    LentDate = lentRecord.LentDate,
+                    DueDate = lentRecord.DueDate,
+                    Status = status,
+                    StatusValue = statusValue
+                };
+
+                lentRecordDtos.Add(lentRecordDto);
+            }
+
+            return new ApiResponse<List<LentRecordAdminDto>>
+            {
+                Success = true,
+                Message = "All lent records retrieved successfully",
+                Data = lentRecordDtos
+            };
+        }
+
+
+        public async Task<ApiResponse<PaginatedResult<LentHistoryAdminDto>>> GetAllRentHistory(int page, int pageSize)
+        {
+            try
+            {
+                var (records, totalRecords) = await _lentRecordRepository.GetAllRentHistory(page, pageSize);
+
+                if (records == null || !records.Any())
+                {
+                    return new ApiResponse<PaginatedResult<LentHistoryAdminDto>>
+                    {
+                        Success = false,
+                        Message = "No History found",
+                        Data = null
+                    };
+                }
+                Console.Write("count 1 ",records.Count);
+                var lentHistoryDtos = new List<LentHistoryAdminDto>();
+                var book = await _lentRecordRepository.GetBookById(records[0].BookCopy.BookId);
+
+                foreach (var rec in records)
+                {
+                    int statusValue;
+                    string status;
+                    var currentDateTime = DateTime.UtcNow;
+                    if (rec.ReturnDate == null)
+                    {
+                        statusValue = (int)(rec.DueDate - currentDateTime).TotalMinutes;
+
+                        status = statusValue > 0
+                           ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
+                           : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours over";
+
+                    }
+                    else
+                    {
+                        statusValue = 0;
+                        status = "close";
+                    }
+
+                   
+                     
+
+                    var lentRecordDto = new LentHistoryAdminDto
+                    {
+                        Id = rec.Id,
+                        UserId = rec.UserId,
+                        UserName = rec.User.FullName,
+                        UserEmail = rec.User.Email,
+                        AdminId = rec.AdminId,
+                        AdminName = rec.Admin.FullName,
+                        BookId = book.Id,
+                        BookTitle = book.Title,
+                        BookISBN = book.ISBN,
+                        BookAuthor = book.Author,
+                        BookGenre = string.Join(", ", book.Genre),
+                        BookPublishYear = book.PublishYear,
+                        BookCopyId = rec.BookCopyId,
+                        BookCondition = rec.BookCopy.Condition,
+                        LentDate = rec.LendDate,
+                        DueDate = rec.DueDate,
+                        ReturnDate = rec.ReturnDate,
+                        Status = status,
+                        StatusValue = statusValue
+                    };
+
+                    lentHistoryDtos.Add(lentRecordDto);
+                }
+                Console.Write("count 1 ", lentHistoryDtos.Count);
+                var paginatedResult = new PaginatedResult<LentHistoryAdminDto>
+                {
+                    Items = lentHistoryDtos,
+                    TotalCount = totalRecords,
+                    CurrentPage = page,
+                    PageSize = pageSize
+                };
+
+                return new ApiResponse<PaginatedResult<LentHistoryAdminDto>>
+                {
+                    Success = true,
+                    Message = "Records retrieved successfully.",
+                    Data = paginatedResult
+                };
+            }
+            catch (Exception ex)
+            {
+               
+                return new ApiResponse<PaginatedResult<LentHistoryAdminDto>>
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving rent history.",
+                    Data = null
+                };
+            }
+        }
+
+
 
     }
 }

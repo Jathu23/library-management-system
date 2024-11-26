@@ -21,14 +21,18 @@
           </li>
 
           <li class="nav-item">
-            <a class="btn btn-outline-dark btn-sm ms-2"  data-bs-toggle="modal"
-              data-bs-target="#loginModal">Login</a>
+            <a class="btn btn-outline-dark btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
           </li>
 
         </ul>
       </div>
     </div>
   </nav>
+
+<!-- loding -->
+<div *ngIf="isLoading" class="loading-overlay">
+  <img src="https://cdnl.iconscout.com/lottie/premium/thumb/login-9631530-7874173.gif" alt="Loading..." class="loading-spinner" />
+</div>
 
   <!-- login modal -->
   <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -60,8 +64,8 @@
 
                     <div data-mdb-input-init class="form-outline mb-4">
                       <input type="password" id="form1Example23" class="form-control form-control-lg"
-                      formControlName="password" 
-                      [ngClass]="{ 'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched }" />
+                        formControlName="password"
+                        [ngClass]="{ 'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched }" />
                       <label class="form-label" for="form1Example23">Password</label>
                       <div class="invalid-feedback">
                         Password is required.
@@ -74,7 +78,8 @@
                       </div>
                       <a href="#!" class="text-decoration-none">Forgot password?</a>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-lg btn-block w-100"  data-bs-dismiss="modal" [disabled]="loginForm.invalid">Login</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block w-100" data-bs-dismiss="modal"
+                      [disabled]="loginForm.invalid">Login</button>
                   </form>
                 </div>
               </div>
@@ -87,103 +92,98 @@
 
   <!-- sinup modal -->
   <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title" id="signupModalLabel" style="align-items: center;">Sign Up</h3>
+          <h5 class="modal-title" id="signupModalLabel">Create a new account</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <div class="d-flex align-items-center justify-content-center" style="min-height: 70vh;">
-            <section class="container">
-              <div class="row d-flex align-items-center justify-content-center">
-                <div class="col-md-6 d-none d-md-block">
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-                    class="img-fluid" alt="SignUp image">
-                </div>
-                <div class="col-md-6">
-                  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-                    <!-- Form fields for user details -->
-                    <div class="form-outline mb-4">
-                      <input type="text" id="firstName" formControlName="firstName"
-                        class="form-control form-control-lg" />
-                      <label class="form-label" for="firstName">First Name</label>
-                    </div>
-
-                    <div class="form-outline mb-4">
-                      <input type="text" id="lastName" formControlName="lastName"
-                        class="form-control form-control-lg" />
-                      <label class="form-label" for="lastName">Last Name</label>
-                    </div>
-
-                    <div class="form-outline mb-4">
-                      <input type="text" id="fullName" formControlName="fullName"
-                        class="form-control form-control-lg" />
-                      <label class="form-label" for="fullName">Full Name</label>
-                    </div>
-
-                    <div class="form-outline mb-4">
-                      <input type="email" id="email" formControlName="email" class="form-control form-control-lg" />
-                      <label class="form-label" for="email">Email address</label>
-                    </div>
-
-                    <div class="form-outline mb-4">
-                      <input type="text" id="phoneNumber" formControlName="phoneNumber"
-                        class="form-control form-control-lg" />
-                      <label class="form-label" for="phoneNumber">Phone Number</label>
-                    </div>
-
-                    <div class="form-outline mb-4">
-                      <input type="text" id="address" formControlName="address" class="form-control form-control-lg" />
-                      <label class="form-label" for="address">Address</label>
-                    </div>
-
-                    <div class="form-outline mb-4">
-                      <input type="file" id="profileImage" formControlName="profileImage"
-                        class="form-control form-control-lg" />
-                      <label class="form-label" for="profileImage">Profile Image</label>
-                    </div>
-
-                    <input type="hidden" id="registrationDate" formControlName="registrationDate" />
-
-                    <!-- Terms of Service Checkbox -->
-                    <div class="form-check mb-4">
-                      <input class="form-check-input" type="checkbox" formControlName="terms" id="terms" />
-                      <label class="form-check-label" for="terms">
-                        I agree to all statements in <a href="/terms-of-service" target="_blank">Terms of Service</a>
-                      </label>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary btn-lg btn-block w-100"
-                      [disabled]="!signupForm.valid">Sign Up</button>
-
-                  </form>
-
-                  <!-- Link to Login Modal -->
-                  <div class="mt-3 text-center">
-                    <span class="text-muted">Have already an account?</span>
-                    <a class="btn btn-outline-dark btn-sm ms-2" data-bs-toggle="modal"
-                      data-bs-target="#loginModal">Login</a>
-                  </div>
+          <p class="text-center text-muted">It's quick and easy.</p>
+          <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+            <div class="row mb-3">
+              <div class="col">
+                <label for="firstName" class="form-label">First name</label>
+                <input type="text" id="firstName" class="form-control" formControlName="firstName"
+                  placeholder="Enter first name" />
+                <div *ngIf="signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched"
+                  class="text-danger">
+                  First name is required.
                 </div>
               </div>
-            </section>
-          </div>
+              <div class="col">
+                <label for="lastName" class="form-label">Last name</label>
+                <input type="text" id="lastName" class="form-control" formControlName="lastName"
+                  placeholder="Enter last name" />
+                <div *ngIf="signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched"
+                  class="text-danger">
+                  Last name is required.
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="userNic" class="form-label">NIC Number</label>
+              <input type="text" id="userNic" class="form-control" formControlName="userNic"
+                placeholder="Enter NIC number" />
+            </div>
+            <div class="mb-3">
+              <label for="phoneNumber" class="form-label">Phone Number</label>
+              <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber"
+                placeholder="Enter phone number" />
+              <div *ngIf="signupForm.get('phoneNumber')?.invalid && signupForm.get('phoneNumber')?.touched"
+                class="text-danger">
+                Phone number is required.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" id="email" class="form-control" formControlName="email" placeholder="Enter email" />
+              <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched" class="text-danger">
+                Valid email is required.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="phoneNumber" class="form-label">Address</label>
+              <input type="text" id="Address" class="form-control" formControlName="address"
+                placeholder="Enter Address" />
+              <div *ngIf="signupForm.get('address')?.invalid && signupForm.get('address')?.touched"
+                class="text-danger">
+                Address is required.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="password" class="form-label">Create New Password</label>
+              <input type="password" id="password" class="form-control" formControlName="password"
+                placeholder="Enter password" />
+              <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched"
+                class="text-danger">
+                Password is required (minimum 6 characters).
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirm Password</label>
+              <input type="password" id="confirmPassword" class="form-control" formControlName="confirmPassword"
+                placeholder="Confirm password" />
+              <div *ngIf="signupForm.hasError('passwordMismatch')" class="text-danger">
+                Passwords do not match.
+              </div>
+            </div>
+            <button type="submit" class="btn btn-success w-100" [disabled]="signupForm.invalid">
+              Sign Up
+            </button>
+          </form>
         </div>
+
+        <div class="modal-footer">
+          <p class="text-center w-100">
+            <a class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#loginModal">Already have an
+              account?</a>
+          </p>
+        </div>
+
       </div>
     </div>
   </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
   <!-- Hero Section -->

@@ -32,9 +32,9 @@ namespace library_management_system.Controllers
         }
 
         [HttpGet("lent-records-id")]
-        public async Task<IActionResult> GetLentRecordForAdmin(int id)
+        public async Task<IActionResult> GetLentRecordForAdmin(int Userid)
         {
-            var response = await _lentService.GetLentRecordForAdminAsync(id);
+            var response = await _lentService.GetLentRecordForAdminAsync(Userid);
 
             if (!response.Success)
                 return NotFound(response);
@@ -64,5 +64,33 @@ namespace library_management_system.Controllers
 
             return Ok(result);
         }
+
+
+        [HttpGet("all-lent-All-records")]
+        public async Task<IActionResult> GetAllLentRecords()
+        {
+            var result = await _lentService.GetAllLentRecordsAsync();
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+        [HttpGet("lent-historys")]
+        public async Task<IActionResult> GetAllRentHistory(int page=1, int pageSize=5)
+        {
+            var result = await _lentService.GetAllRentHistory(page, pageSize);
+
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+
     }
 }

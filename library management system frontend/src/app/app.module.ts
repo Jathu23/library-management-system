@@ -20,6 +20,20 @@ import { NewAdminComponent } from './components/admin/new-admin/new-admin.compon
 import { ShowebooksComponent } from './components/user/showebooks/showebooks.component';
 import { ShowNormalbookComponent } from './components/admin/show-normalbook/show-normalbook.component';
 import { CommonModule } from '@angular/common';
+import { ShowAudiobookComponent } from './components/admin/show-audiobook/show-audiobook.component';
+import { ShowEbookComponent } from './components/admin/show-ebook/show-ebook.component';
+import { SubscriptionComponent } from './components/user/subscription/subscription.component';
+import { ShowLentRecComponent } from './components/admin/show-lent-rec/show-lent-rec.component';
+import { ShowLentHistoryComponent } from './components/admin/show-lent-history/show-lent-history.component';
+import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { EditBookDialogComponent } from './components/admin/edit-book-dialog/edit-book-dialog.component';
+
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
@@ -48,7 +62,13 @@ import { CommonModule } from '@angular/common';
    ShowNormalbookComponent,
    ShowebooksComponent,
     ShowebooksComponent,
-    ShowNormalbookComponent
+    ShowNormalbookComponent,
+    ShowAudiobookComponent,
+    ShowEbookComponent,
+    SubscriptionComponent,
+    ShowLentRecComponent,
+    ShowLentHistoryComponent,
+    EditBookDialogComponent
 
    
 
@@ -61,11 +81,17 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-   
+    MatPaginatorModule,
+    MatTableModule,
+    
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDialogModule,
 
      
   ],
-  providers: [],
+  providers: [MatPaginatorIntl, provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -10,4 +10,6 @@ thead th {
     padding: 30px;
   }
 
-  
+  .table-containe{
+    width: 100%;
+  }

@@ -1,96 +1,126 @@
-<div class="container">
-    <div class="sidebar">
-        <div class="menu-btn">
-            <i class="bi bi-arrow-bar-left"></i>
-        </div>
-        <div class="head">
-            <div class="user-img">
-                <img src="user.img" alt="User">
-            </div>
-            <div class="user-details">
-                <p class="title">WelCome</p>
 
-            </div>
+<div class="wrapper">
+    <aside id="sidebar" [ngClass]="{ 'expand': isExpanded }">
+      <div class="d-flex">
+        <button class="toggle-btn" type="button" (click)="toggleSidebar()">
+          <i class="bi bi-grip-horizontal"></i>
+        </button>
+        <div class="sidebar-logo">
+          <a href="#">CodzSword</a>
         </div>
-        <div class="nav">
-            <div class="menu">
-                <p class="title" style="font-size: larger;">Admin</p>
-                <ul>
-                    <li class="active">
-                        <a [routerLink]="['/admin']">
-                            <i class="icon bi bi-speedometer2"></i>
-                            <span class="text">Dashboard</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="icon bi bi-people"></i>
-                            <span class="text">Members</span>
-                            <i class="arrow bi bi-arrow-bar-down"></i>
-                        </a>
-                        <ul class="sub-menu">
-                            <li><a href=""><i class="icon bi bi-person-check-fill"></i><span class="text">Active
-                                        Users</span></a></li>
-                            <li><a href=""><i class="icon bi bi-ban"></i><span class="text">Non-ActoveUsers</span></a>
-                            </li>
-                            <li><a href=""><i class="icon bi bi-coin"></i><span class="text">Subscribers</span></a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="icon bi bi-book"></i>
-                            <span class="text">Books-Inventory</span>
-                            <i class="arrow bi bi-arrow-bar-down"></i>
-                        </a>
-                        <ul class="sub-menu">
-                            <li><a [routerLink]="['/admin/add-e-book']"><i
-                                        class="icon bi bi-file-earmark-pdf-fill"></i><span
-                                        class="text">EBooks</span></a></li>
-                            <li><a [routerLink]="['/admin/add-audio-book']"><i
-                                        class="icon bi bi-file-earmark-music-fill"></i><span
-                                        class="text">AudioBooks</span></a></li>
-                            <li><a [routerLink]="['/admin/add-normal-book']"><i class="icon bi bi-book-half"></i><span
-                                        class="text">Physical Books</span></a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="icon bi bi-book"></i>
-                            <span class="text">View-Books</span>
-                            <i class="arrow bi bi-arrow-bar-down"></i>
-                        </a>
-                        <ul class="sub-menu">
-                            <li><a [routerLink]="['/admin']"><i
-                                        class="icon bi bi-file-earmark-pdf-fill"></i><span
-                                        class="text">EBooks</span></a></li>
-                            <li><a [routerLink]="['/admin']"><i
-                                        class="icon bi bi-file-earmark-music-fill"></i><span
-                                        class="text">AudioBooks</span></a></li>
-                            <li><a [routerLink]="['/admin/show-noramal-Books']"><i class="icon bi bi-book-half"></i><span
-                                        class="text">Physical Books</span></a></li>
-                        </ul>
-                    </li>
-                    <li><a [routerLink]="['/admin']"><i class="icon bi bi-arrow-return-left"></i><span class="text">Lend</span></a></li>
-                    <li><a href=""><i class="icon bi bi-arrow-return-right"></i><span class="text">Return</span></a>
-                    </li>
-                    <li><a [routerLink]="['/admin/add-admin']"><i class="icon bi bi-person-add"></i><span
-                                class="text">Create Admin</span></a></li>
-                </ul>
-            </div>
-
-            <div class="menu">
-                <p class="title">Account</p>
-                <ul>
-                    <li><a href=""><i class="icon bi bi-person-badge-fill"></i><span class="text">Profile</span></a>
-                    </li>
-
-                    <li><a href=""><i class="icon bi bi-box-arrow-right"></i><span class="text">Logout</span></a></li>
-                </ul>
-            </div>
+      </div>
+      <div class="head">
+        <div class="user-img">
+          <img src="Library-.jpg" alt="User">
         </div>
+       
+      </div>
+      <ul class="sidebar-nav">
+        <li class="sidebar-item">
+          <a [routerLink]="['/admin']"  class="sidebar-link">
+            <i class="icon bi bi-speedometer2"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+            data-bs-target="#book" aria-expanded="false" aria-controls="auth">
+            <i class="icon bi bi-book"></i>
+            <span>View-Books</span>
+          </a>
+          <ul id="book" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="padding-left: 25px;">
+            <li class="sidebar-item">
+              <a [routerLink]="['/admin/show-normal-Books']" class="sidebar-link"><i class="icon bi bi-book-half"></i>Physical Books</a>
+            </li>
+            <li class="sidebar-item">
+              <a [routerLink]="['/admin/show-audio-Books']"  class="sidebar-link"><i class="icon bi bi-file-earmark-music-fill"></i>Audio Books</a>
+            </li>
+            <li class="sidebar-item">
+              <a [routerLink]="['/admin/show-e-Books']"  class="sidebar-link"><i class="icon bi bi-file-earmark-pdf-fill"></i>Book-PDF</a>
+            </li>
+          </ul>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+            data-bs-target="#inven" aria-expanded="false" aria-controls="auth">
+            <i class="bi bi-pencil-square"></i>
+            <span>Books-inventory</span>
+          </a>
+          <ul id="inven" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="padding-left: 25px;">
+            <li class="sidebar-item">
+              <a [routerLink]="['/admin/add-normal-book']"  class="sidebar-link"><i class="icon bi bi-book-half"></i>Physical Books</a>
+            </li>
+            <li class="sidebar-item">
+              <a [routerLink]="['/admin/add-audio-book']"  class="sidebar-link"><i class="icon bi bi-file-earmark-music-fill"></i>Audio Books</a>
+            </li>
+            <li class="sidebar-item">
+              <a  [routerLink]="['/admin/add-e-book']"  class="sidebar-link"><i class="icon bi bi-file-earmark-pdf-fill"></i>Book-PDF</a>
+            </li>
+          </ul>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+            data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+            <i class="icon bi bi-people"></i>
+            <span>Members</span>
+          </a>
+          <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="padding-left: 25px;">
+            <li class="sidebar-item">
+              <a [routerLink]="['/admin/add-audio-book']"  class="sidebar-link"><i class="icon bi bi-person-check-fill"></i>Active Users</a>
+            </li>
+            <li class="sidebar-item">
+              <a [routerLink]="['/admin/add-audio-book']"  class="sidebar-link"><i class="icon bi bi-coin"></i>Subscribed Users</a>
+            </li>
+            <li class="sidebar-item">
+              <a [routerLink]="['/admin/add-audio-book']"  class="sidebar-link"><i class="icon bi bi-ban"></i>NonActive Users</a>
+            </li>
+          </ul>
+        </li>
+        
+        <li class="sidebar-item">
+          <a  [routerLink]="['/admin/show-rent-rec']" class="sidebar-link">
+            <i class="icon bi bi-arrow-return-left"></i>
+            <span>Lend</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a [routerLink]="['/admin/show-rent-his']" class="sidebar-link">
+            <i class="icon bi bi-arrow-return-right"></i>
+            <span>Return</span>
+          </a>
+        </li>
+        
+        <li class="sidebar-item">
+          <a [routerLink]="['/admin/add-admin']" class="sidebar-link">
+            <i class="icon bi bi-person-add"></i>
+            <span>Create Admin</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a [routerLink]="['/admin/add-admin']" class="sidebar-link">
+            <i class="icon bi bi-person-badge-fill"></i>
+            <span>Profile</span>
+          </a>
+        </li>
+        
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link">
+            <i class="lni lni-cog"></i>
+            <span>Setting</span>
+          </a>
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        <a href="#" class="sidebar-link">
+          <i class="icon bi bi-box-arrow-right"></i>
+          <span>Logout</span>
+        </a>
+      </div>
+    </aside>
+    
+    <div class="main p-3">
+      
+     <router-outlet></router-outlet>
     </div>
-
-    <div class="outer">
-        <router-outlet></router-outlet>
-    </div>
-</div>
+  </div>
+  

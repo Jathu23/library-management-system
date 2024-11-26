@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BookService } from '../../../services/bookservice/book.service';
+import { BookService } from '../../../services/bookservice/addbook.service';
 import { AddBookDto } from '../../../models/interfaces/add-newbook.interface';
 import { HttpClient } from '@angular/common/http';
 

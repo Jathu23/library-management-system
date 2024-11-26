@@ -1,5 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { GetbooksService } from '../../../services/bookservice/getbooks.service';
+import { BookDeleteServicesService } from '../../../services/bookservice/deletebook.service';
+import { MatDialog } from '@angular/material/dialog';
+import { EditBookDialogComponent } from '../edit-book-dialog/edit-book-dialog.component';
+import { MainBookUpdateService } from '../../../services/bookservice/main-book-update.service';
+import { data } from 'jquery';
 
 @Component({
   selector: 'app-show-normalbook',
@@ -8,63 +14,108 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShowNormalbookComponent implements OnInit {
 
-  data:any[]=[]
-  datas:any;
+  isLoading = false;
+  currentPage = 1;
+  pageSize = 10;
+  totalItems = 0;
+  Nbooks: any[] = [];
 
-  booksCopie:any;
-  booksCopies:any[]=[]
-  
-  baseUrl:string =  `https://localhost:7261/api/Books/get-all-books-with-copies?page=1&pageSize=20`;
 
-  constructor(private http: HttpClient) {}
+
+  constructor(private getbookservice: GetbooksService,
+     private DleteNBook:BookDeleteServicesService,
+     private DeleetMainBook:BookDeleteServicesService,
+     private UpdateMainBook:MainBookUpdateService,
+     private dialog: MatDialog
+    
+    ) { }
 
   ngOnInit(): void {
-    this.fetchData();
+    this.loadnormalbooks()
+  }
+  loadnormalbooks() {
+    if (this.isLoading) return;
+
+    this.isLoading = true;
+    this.getbookservice.getNoramlbooks(this.currentPage, this.pageSize).subscribe(
+      (response) => {
+        const result = response.data;
+
+        this.Nbooks = [...this.Nbooks, ...result.items];
+        this.totalItems = result.totalCount;
+        this.currentPage++;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching normalobooks:', error);
+        this.isLoading = false;
+      }
+    );
+
   }
 
-  fetchData(): void {
-    const apiUrl = this.baseUrl; // Replace with your API URL
+  expandedElementId: number | null = null;
 
-    this.http.get(apiUrl).subscribe({
-      next: (response) => {
-        this.datas = (response)
+  toggleRow(elementId: number): void {
+    this.expandedElementId = this.expandedElementId === elementId ? null : elementId;
 
-        this.booksCopie=this.datas.data
+  }
 
-        this.datas.data.forEach((element: any) => {
-          let sample:any={
-            "id": element.id,
-            "isbn": element.isbn,
-            "title": element.title,
-            "author": element.author,
-            "toggle": 0,
-            "genre": [
-              element.genre[0],
-              element.genre[1]
-            ],
-            "publishYear": element.publishYear,
-            "shelfLocation": element.shelfLocation,
-            "availableCopies": element.availableCopies,
-            "totalCopies": element.totalCopies,
-            "coverImagePath": [
-              element.coverImagePath
-            ],
-            "bookCopies":element.bookCopies
+  // functions for main books
 
-          }
-          this.data.push(sample)
-          
-        });    
-        console.log(this.data);
-      },
-      error: (err) => {
-        console.error('Error fetching data:', err);
-  
-        
-      },
+  deleteMainBook(id:any):void{
+    if (confirm('Are you sure you want to delete this item?')) {
+      this.DeleetMainBook.deleteMainBook(id).subscribe({
+        next: () => {
+          alert('Item deleted successfully.');
+          // Optionally refresh data or update UI
+        },
+        error: (err) => {
+          console.error('Error deleting item:', err);
+          alert('Failed to delete item.');
+        },
+      });
+    }
+    
+  }
+
+  addNewBook(){
+
+  }
+
+  openEditDialog(book: any): void {
+    const dialogRef = this.dialog.open(EditBookDialogComponent, {
+      width: '600px',
+      data: { book },
     });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.updateBook(result);
+      }
+    })
   }
 
+    updateBook(updatedBook: any): void {
+    
+      this.UpdateMainBook.updateBook(updatedBook).subscribe(response => {
+      
+      });
+    }
+  // -----------------
 
-
+  deleteItem(id: number): void {
+    if (confirm('Are you sure you want to delete this item?')) {
+      this.DleteNBook.deleteItem(id).subscribe({
+        next: () => {
+          alert('Item deleted successfully.');
+          // Optionally refresh data or update UI
+        },
+        error: (err) => {
+          console.error('Error deleting item:', err);
+          alert('Failed to delete item.');
+        },
+      });
+    }
+  }
 }

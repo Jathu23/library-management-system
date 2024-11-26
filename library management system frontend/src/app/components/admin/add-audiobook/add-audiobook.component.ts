@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BookService } from '../../../services/bookservice/book.service';
+import { BookService } from '../../../services/bookservice/addbook.service';
 import { AddAudiobookDto } from '../../../models/interfaces/add-newaudiobook.interface';
 
 @Component({

@@ -84,22 +84,30 @@ namespace library_management_system.Repositories
             return true;
         }
 
-        //public async Task<List<User>> SearchUsersAsync(string searchString)
-        //{
-        //    var query = _context.Users.AsQueryable();
 
-        //    if (!string.IsNullOrEmpty(searchString))
-        //    {
-        //        query = query.Where(u =>
-        //            u.UserNic.Contains(searchString) ||
-        //            u.FirstName.Contains(searchString) ||
-        //            u.LastName.Contains(searchString) ||
-        //            u.Email.Contains(searchString) ||
-        //            u.PhoneNumber.Contains(searchString));
-        //    }
 
-        //    return await query.ToListAsync();
-        //}
+        public async Task<(List<User>, int)> SearchAsync(string searchString, int pageNumber, int pageSize)
+        {
+            var query = _context.Users.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(u =>
+                    u.FirstName.Contains(searchString) ||
+                    u.LastName.Contains(searchString) ||
+                    u.Email.Contains(searchString) ||
+                    u.PhoneNumber.Contains(searchString));
+            }
+
+            int totalRecords = await query.CountAsync();
+
+            var users = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (users, totalRecords);
+        }
 
 
     }

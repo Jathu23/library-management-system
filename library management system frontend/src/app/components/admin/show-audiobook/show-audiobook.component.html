@@ -1,0 +1,59 @@
+<div class="table-container">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Genre</th>
+        <th>Publish Year</th>
+        <th>Language</th>
+        <th>Narrator</th>
+        <th>Publisher</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let element of audiobooks">
+        <tr>
+          <td>{{ element.id }}</td>
+          <td>{{ element.title }}</td>
+          <td>{{ element.author }}</td>
+          <td>{{ element.genre }}</td>
+          <td>{{ element.publishYear }}</td>
+          <td>{{ element.language }}</td>
+          <td>{{ element.narrator }}</td>
+          <td>{{ element.publisher }}</td>
+          <td>
+            <button (click)="toggleRow(element.id)">
+              {{ expandedElementId === element.id ? 'Hide' : 'View' }}
+            </button>
+          </td>
+        </tr>
+        <!-- Expanded row -->
+        <tr *ngIf="expandedElementId === element.id">
+          <td colspan="9" class="expanded-content">
+            <div>
+              <p><strong>Audio File:</strong></p>
+              <audio controls>
+                <source [src]="'https://localhost:7261/' + element.filePath" />
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination -->
+<mat-paginator
+  [length]="totalItems"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[10, 17, 25, 50]"
+  showFirstLastButtons
+  (page)="onPageChange($event)"
+>
+</mat-paginator>
+
