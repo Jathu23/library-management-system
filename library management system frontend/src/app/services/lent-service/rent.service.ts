@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/internal/Observable';
 export class RentService {
 
   private rentUrl = `https://localhost:7261/api/Lent/`;
+  
 
   constructor(private http: HttpClient) {}
 

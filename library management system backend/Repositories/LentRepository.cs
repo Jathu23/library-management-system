@@ -99,12 +99,10 @@ namespace library_management_system.Repositories
         {
             return await _context.LentRecords
                 .Include(lr => lr.BookCopy) 
-                .Include(lr => lr.User)     
-                .Include(lr => lr.Admin)   
+                .Include(lr => lr.User)     // Include User details
+                .Include(lr => lr.Admin)    // Include Admin details
                 .ToListAsync();
         }
-
-
 
 
 
