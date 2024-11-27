@@ -10,10 +10,9 @@ export interface AddEbookDto {
   }
   
   export interface EbookMetadataDto {
-    // Define the fields of EbookMetadataDto based on its structure
-    // For example:
-    Field1: string;
-    Field2: number;
-    // Add other fields as required
+    Language:string;
+    Publisher:string;
+    Description:string;
+    DigitalRights:string;
   }
   
