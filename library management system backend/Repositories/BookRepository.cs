@@ -99,12 +99,23 @@ namespace library_management_system.Repositories
         }
 
 
-        public async Task<NormalBook?> GetBookWithCopies(int bookId)
+        public async Task<NormalBook?> GetBookWithCopies(int bookId,bool IdSelector)
         {
-            // Include the BookCopies and filter for only available ones
-            return await _context.NormalBooks
-                                 .Include(b => b.BookCopies)
-                                 .FirstOrDefaultAsync(b => b.Id == bookId);
+            if (IdSelector)
+            {
+                // Include the BookCopies and filter for only available ones
+                return await _context.NormalBooks
+                                     .Include(b => b.BookCopies)
+                                     .FirstOrDefaultAsync(b => b.Id == bookId);
+            }
+            else
+            {
+                var bookcopy = await _context.BookCopies.FindAsync(bookId);
+                return await _context.NormalBooks
+                                    .Include(b => b.BookCopies)
+                                    .FirstOrDefaultAsync(b => b.Id == bookcopy.BookId);
+            }
+           
         }
         public async Task<(List<NormalBook>, int)> GetAllBooksWithCopies(int page, int pageSize)
         {

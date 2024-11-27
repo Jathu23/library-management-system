@@ -10,129 +10,142 @@ import { GetbooksService } from '../../../services/bookservice/getbooks.service'
 })
 export class ShowLentRecComponent implements OnInit {
   lentRecords: any[] = [];
-  isLoading: boolean = false; 
+  isLoading: boolean = false;
   errorMessage: string = '';
   expandedElementId: number | null = null;
   selectedRecord: any | null = null;
-  searchQuery: string = ''; 
+  searchQuery: string = '';
   suggestions: string[] = [];
-  userInfo: any = null; 
-  pendingBooks: any[] = []; 
-  relatedTextArray: string[] = []; 
-  bookId: any ;
+  userInfo: any = null;
+  pendingBooks: any[] = [];
+  relatedTextArray: string[] = [];
+  bookId: any;
   bookInfo: any = null;
-  adminId:number=1;
-  selectedDuesday:number=2;
-  duesdays:number[] =[2,3,4,5,6,7,10];
+  adminId: number = 1;
+  selectedDuesday: number = 2;
+  duesdays: number[] = [2, 3, 4, 5, 6, 7, 10];
 
-  constructor(private lentService: RentService, private userservice:UserService, private bookservice:GetbooksService) {}
+  constructor(private lentService: RentService, private userservice: UserService, private bookservice: GetbooksService) { }
 
-  onSearch(){
-    if(this.searchQuery.trim().length > 0){
-      this.suggestions=[];
+  onSearch() {
+    if (this.searchQuery.trim().length > 0) {
+      this.suggestions = [];
       this.userservice.GetUserEmailsByPrefix(this.searchQuery).subscribe(
-        (response)=>{
+        (response) => {
           if (response.success) {
-            this.suggestions= response.data;
+            this.suggestions = response.data;
           }
         },
-        (error) =>{
-          console.log("error",error);
-          
+        (error) => {
+          console.log("error", error);
+
         }
       );
-     
-    }else
-    {
+
+    } else {
       this.suggestions = [];
-      this.pendingBooks = []; 
-      this.userInfo = null; 
+      this.pendingBooks = [];
+      this.userInfo = null;
     }
-   
+
   }
   selectUsername(emailornic: string) {
     this.searchQuery = emailornic;
-    this.suggestions = []; 
-    this.fetchUserInfo(emailornic); 
+    this.suggestions = [];
+    this.fetchUserInfo(emailornic);
   }
   fetchUserInfo(emailornic: string) {
-    this.isLoading=true;
+    this.isLoading = true;
     this.userservice.GetUserByEmailorNic(emailornic).subscribe(
-      (response)=>{
+      (response) => {
         if (response.success) {
-         
-          this.userInfo= response.data;
+
+          this.userInfo = response.data;
           setTimeout(() => {
             this.fetchPendingBooks(this.userInfo.id);
+            this.isLoading = false;
+          }, 5000)
+
+        } else {
+          this.isLoading = false;
+        }
+      },
+      (error) => {
+        console.log("error", error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  fetchPendingBooks(userid: number) {
+    this.isLoading = true;
+    this.lentService.getlentrecByuserid(userid).subscribe(
+      (response) => {
+        if (response.success) {
+          this.isLoading = false;
+          this.pendingBooks = response.data;
+          console.log(this.pendingBooks);
+        } else {
+          this.isLoading = false;
+        }
+      },
+      (error) => {
+        console.log("error", error);
+        this.isLoading = false;
+      }
+    );
+  }
+  fetchBookInfo() {
+    if (!this.bookId) {
+      this.bookInfo = null;
+      return;
+    } else {
+      this.bookservice.getNoramlbookbyId(this.bookId).subscribe(
+        (response) => {
+          if (response.success) {
+            this.bookInfo = response.data
+            console.log(this.bookInfo);
+
+          }
+        },
+        (error) => {
+          console.log("error", error);
+        }
+      );
+    }
+  }
+
+
+  onRentClick() {
+   
+    if (this.userInfo && this.bookId) {
+      this.isLoading=true;
+      this.lentService.rentnormalbookbycopyid(this.bookId, this.userInfo.id, this.adminId, this.selectedDuesday).subscribe(
+        (response:any) => {
+          if (response.success) {
             this.isLoading=false;
-          },5000)
-         
-        }else{
+            alert(response.message);
+            this.searchQuery = "";
+            this.bookId = "";
+            this.bookInfo = '';
+            this.userInfo = '';
+            this.pendingBooks = []
+          }else{
+            this.isLoading=false;
+            alert(response.message);
+          }
+        },
+        (error) => {
+          alert(error.error.message);
+          console.log("error: ",error);
           this.isLoading=false;
         }
-      },
-      (error) =>{
-        console.log("error",error);
-        this.isLoading=false;
-      }
-    );
-}
+      );
+    } else {
+      console.log("fill all information");
 
-fetchPendingBooks(userid: number) {
-  this.isLoading = true; 
-  this.lentService.getlentrecByuserid(userid).subscribe(
-    (response) =>{
-      if (response.success) {
-        this.isLoading=false;
-        this.pendingBooks = response.data;
-        console.log(this.pendingBooks);
-      }else{
-        this.isLoading=false;
-      }
-    },
-    (error) =>{
-      console.log("error",error);
-      this.isLoading=false;
     }
-  );
-}
-fetchBookInfo() {
-  if (!this.bookId) {
-    this.bookInfo = null;
-    return;
-  }else{
-    this.bookservice.getNoramlbookbyId(this.bookId).subscribe(
-      (response) =>{
-        if (response.success) {
-         this.bookInfo=response.data
-          console.log(this.bookInfo);
-          
-        }
-      },
-      (error) =>{
-        console.log("error",error);
-      }
-    );
   }
-}
-
-
-onRentClick() {
-  if (this.userInfo && this.bookId) {
-    console.log(this.adminId);
-console.log(this.selectedDuesday);
-console.log(this.bookId);
-console.log(this.userInfo.id);
-this.searchQuery="";
-this.bookId="";
-this.bookInfo =[];
-this.userInfo= [];
-this.pendingBooks=[]
-  }else{
-    console.log("fill all information");
-    
-  }
-}
 
   ngOnInit(): void {
     this.getallrentrecods();

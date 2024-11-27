@@ -125,9 +125,9 @@ namespace library_management_system.Controllers
         }
 
         [HttpGet("get-book")]
-        public async Task<IActionResult> GetBookWithAvailableCopies(int bookId)
+        public async Task<IActionResult> GetBookWithAvailableCopies(int bookId , bool IdSelector = false)
         {
-            var response = await _bookService.GetBookWithAvailableCopies(bookId);
+            var response = await _bookService.GetBookWithAvailableCopies(bookId, IdSelector);
 
             if (!response.Success)
                 return BadRequest(response);

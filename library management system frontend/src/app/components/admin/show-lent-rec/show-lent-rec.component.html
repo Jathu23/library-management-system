@@ -4,12 +4,12 @@
     <div class="col-md-6">
       <!-- Search by Username -->
       <div class="mb-3">
-        <label for="usernameSearch" class="form-label">Search for a Username</label>
+        <label for="usernameSearch" class="form-label">Select for a User</label>
         <input
           type="text"
           id="usernameSearch"
           class="form-control"
-          placeholder="Enter username"
+          placeholder="Enter Nic-or-Email"
           [(ngModel)]="searchQuery"
           (input)="onSearch()"
         />
@@ -25,7 +25,7 @@
         </ul>
       </div>
 
-      <label for="numberSelect" class="form-label">Select a number:</label>
+      <label for="numberSelect" class="form-label">Select a DueTime:</label>
       <select
     id="numberSelect"
     class="form-select"
@@ -43,12 +43,12 @@
     <div class="col-md-6">
       <!-- Search by Book ID -->
       <div class="mb-3">
-        <label for="bookIdInput" class="form-label">Search Book by Book ID</label>
+        <label for="bookIdInput" class="form-label">Select Book by Copy ID</label>
         <input
           type="text"
           id="bookIdInput"
           class="form-control"
-          placeholder="Enter Book ID"
+          placeholder="Enter BookCopy ID"
           [(ngModel)]="bookId"
           (input)="fetchBookInfo()"
         />
