@@ -181,17 +181,28 @@ namespace library_management_system.Services
 
                 if (user == null)
                 {
+                   
                     response.Success = false;
                     response.Message = "User not found.";
                     return response;
                 }
 
-                user.IsActive = false;
+                if (!user.IsActive)
+                {
+                   
+                    response.Success = false;
+                    response.Message = "User is already soft-deleted.";
+                    return response;
+                }
+               
+                    user.IsActive = false;
 
 
-                response.Success = true;
-                response.Message = "User soft deleted successfully.";
-                return response;
+                    response.Success = true;
+                    response.Message = "User is already softDeleted";
+                    return response;
+                
+                
             }
             catch (Exception ex)
             {
