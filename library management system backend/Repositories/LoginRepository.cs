@@ -32,5 +32,19 @@ namespace library_management_system.Repositories
         {
             return await _context.LoginPort.FirstOrDefaultAsync(a => a.Email == emailOrNic || a.NIC == emailOrNic);
         }
-    }
+        public async Task<User?> GetUserByEmailOrNic(string emailOrNic)
+        {
+            var iaActive= await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == emailOrNic || u.UserNic == emailOrNic ) ;
+            if (iaActive != null && iaActive.IsActive == true)
+
+            {
+                return iaActive;
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }   
 }
