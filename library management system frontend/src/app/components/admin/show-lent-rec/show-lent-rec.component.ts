@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RentService } from '../../../services/lent-service/rent.service';
 import { UserService } from '../../../services/user-service/user.service';
+import { BookService } from '../../../services/bookservice/addbook.service';
+import { GetbooksService } from '../../../services/bookservice/getbooks.service';
 
 @Component({
   selector: 'app-show-lent-rec',
@@ -18,10 +20,10 @@ export class ShowLentRecComponent implements OnInit {
   userInfo: any = null; 
   pendingBooks: any[] = []; 
   relatedTextArray: string[] = []; 
-  bookId: string = '';
+  bookId: any ;
   bookInfo: any = null;
 
-  constructor(private lentService: RentService, private userservice:UserService) {}
+  constructor(private lentService: RentService, private userservice:UserService, private bookservice:GetbooksService) {}
 
   onSearch(){
     
@@ -105,18 +107,19 @@ fetchBookInfo() {
     this.bookInfo = null;
     return;
   }else{
-    this.bookInfo ={
-      "bookId": 101,
-      "title": "The Great Gatsby",
-      "author": "F. Scott Fitzgerald",
-      "genre": "Fiction",
-      "publishYear": 1925,
-      "isbn": "978-0743273565"
-    }
-    
+    this.bookservice.getNoramlbookbyId(this.bookId).subscribe(
+      (response) =>{
+        if (response.success) {
+         this.bookInfo=response.data
+          console.log(this.bookInfo);
+          
+        }
+      },
+      (error) =>{
+        console.log("error",error);
+      }
+    );
   }
-
- 
 }
 
 

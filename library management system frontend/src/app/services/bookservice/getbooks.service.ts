@@ -9,11 +9,11 @@ export class GetbooksService {
 
   constructor(private http: HttpClient) {}
 
-private ebookUrl = `https://localhost:7261/api/Ebook/GetEbooks`;
+private ebookUrl = `https://localhost:7261/api/Ebook/`;
 
 private audiobookUrl = `https://localhost:7261/api/Audiobook/`;
 
-private NormalBookUrl = `https://localhost:7261/api/Books/get-all-books-with-copies`
+private NormalBookUrl = `https://localhost:7261/api/Books/`
 
 
 getaudiobooks(currentPage:number,pageSize:number): Observable<any> {
@@ -26,11 +26,14 @@ searchAudiobooks(searchString: string,currentPage: number,pageSize: number): Obs
 
 
 getebooks(currentPage: number, pageSize: number): Observable<any> {
-  return this.http.get<any>(this.ebookUrl + `?page=${currentPage}&pageSize=${pageSize}`);
+  return this.http.get<any>(this.ebookUrl + `GetEbooks?page=${currentPage}&pageSize=${pageSize}`);
 }
 
 getNoramlbooks(currentPage: number, pageSize: number): Observable<any> {
-  return this.http.get<any>(this.NormalBookUrl + `?page=${currentPage}&pageSize=${pageSize}`);
+  return this.http.get<any>(this.NormalBookUrl + `get-all-books-with-copies/?page=${currentPage}&pageSize=${pageSize}`);
+}
+getNoramlbookbyId(bookid: number): Observable<any> {
+  return this.http.get<any>(this.NormalBookUrl + `get-book?bookId=${bookid}`);
 }
 
 
