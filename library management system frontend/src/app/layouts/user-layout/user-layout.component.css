@@ -36,6 +36,7 @@ a {
   align-items: stretch;
   display: flex;
   width: 100%;
+  height: 100%;
 }
 
 #sidebar {
@@ -120,4 +121,22 @@ a.sidebar-link {
   .content {
     width: auto;
   }
+}
+main.content {
+  height: 100vh; /* Set main to take the full height of the screen */
+  overflow: hidden; /* Prevent overflow on the main element itself */
+}
+
+.container-fluid {
+  height: calc(100vh - 2rem); /* Adjust height by the padding of the main */
+  overflow-y: auto; /* Enable vertical scrolling for the container */
+  padding: 1rem 0; /* Optional: Adjust the padding if needed */
+/* Hide scrollbar in Webkit browsers */
+-ms-overflow-style: none;  /* For IE and Edge */
+scrollbar-width: none;  /* For Firefox */
+}
+
+/* Hide scrollbar for Webkit browsers (Chrome, Safari, etc.) */
+.container-fluid::-webkit-scrollbar {
+display: none;
 }
