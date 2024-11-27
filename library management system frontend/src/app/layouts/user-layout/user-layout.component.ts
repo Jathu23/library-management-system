@@ -7,12 +7,18 @@ import { Router } from '@angular/router';
   styleUrl: './user-layout.component.css'
 })
 export class UserLayoutComponent {
-  constructor() { }
-
-
-  isCollapsed = false;
+  isCollapsed = false; 
+  menuStates: { [key: string]: boolean } = {}; 
 
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
+  }
+
+  toggleMenu(menuKey: string) {
+    this.menuStates[menuKey] = !this.menuStates[menuKey];
+  }
+
+  isMenuExpanded(menuKey: string): boolean {
+    return this.menuStates[menuKey] || false;
   }
 }

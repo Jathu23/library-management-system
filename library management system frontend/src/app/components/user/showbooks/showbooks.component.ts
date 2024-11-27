@@ -7,6 +7,25 @@ import { GetbooksService } from '../../../services/bookservice/getbooks.service'
   styleUrls: ['./showbooks.component.css']
 })
 export class ShowbooksComponent implements OnInit {
+<<<<<<< HEAD
+  
+  books: any[] = [];  
+  currentPage: number = 1;  // Default to the first page
+  pageSize: number = 10;  
+  totalBooks: number = 0; 
+  totalPages: number = 0; 
+  pageNumbers: number[] = [];  
+  isLoading: boolean = false;
+
+  constructor(private getBooksService: GetbooksService) {}
+
+  ngOnInit(): void {
+    this.loadBooks();
+  }
+
+  loadBooks(): void {
+    if (this.isLoading) return;  // Prevent making multiple requests at once
+=======
   isLoading = false;
   currentPage = 1;
   pageSize = 10;
@@ -27,12 +46,30 @@ export class ShowbooksComponent implements OnInit {
   loadNormalBooks(): void {
     if (this.isLoading) return;
 
+>>>>>>> 33e886cef7b1cd36617ca74019b21c4420523e08
     this.isLoading = true;
-    this.getbookservice.getNoramlbooks(this.currentPage, this.pageSize).subscribe(
-      (response) => {
-        if (response.success) {
-          const result = response.data;
 
+<<<<<<< HEAD
+    // Get books for the current page
+    this.getBooksService.showBookstoUser(this.currentPage, this.pageSize).subscribe(
+      (response) => {
+        const result = response.data;
+
+        // Replace the current list of books with the new set of books
+        this.books = result.items;
+
+        // Update total book count and calculate total pages
+        this.totalBooks = result.totalCount;
+        this.totalPages = Math.ceil(this.totalBooks / this.pageSize);
+
+        // Generate pagination numbers
+        this.generatePagination();
+
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error loading books:', error);
+=======
           // Ensure coverImagePath is treated as an array and resolve paths
           this.Normalbooks = [
             ...this.Normalbooks,
@@ -50,11 +87,27 @@ export class ShowbooksComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching normal books:', error);
+>>>>>>> 33e886cef7b1cd36617ca74019b21c4420523e08
         this.isLoading = false;
       }
     );
   }
 
+<<<<<<< HEAD
+  generatePagination(): void {
+    this.pageNumbers = [];
+    for (let i = 1; i <= this.totalPages; i++) {
+      this.pageNumbers.push(i);
+    }
+  }
+
+  changePage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;  // Update the current page number
+      this.loadBooks();  // Load books for the updated page
+    }
+  }
+=======
   onSearch(): void {
     if (this.isLoading) return;
 
@@ -131,4 +184,5 @@ export class ShowbooksComponent implements OnInit {
     }
     return path.startsWith('http') ? path : `assets/images/${path}`;
   }
+>>>>>>> 33e886cef7b1cd36617ca74019b21c4420523e08
 }

@@ -1,3 +1,46 @@
+<<<<<<< HEAD
+/* Custom styling for the cards and pagination */
+.card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .card-img-top {
+    height: 250px;
+    object-fit: cover;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  .pagination .page-item {
+    cursor: pointer;
+  }
+  
+  .pagination .page-item.active .page-link {
+    background-color: #7E60BF;
+    border-color: #7E60BF;
+    color: white;
+  }
+  
+  .pagination .page-item.disabled .page-link {
+    background-color: #e9ecef;
+    border-color: #e9ecef;
+    color: #6c757d;
+  }
+  
+  .pagination .page-link {
+    border-radius: 50%;
+    margin: 0 5px;
+    font-size: 1rem;
+=======
 .search-container {
     max-width: 600px;
     margin: 0 auto;
@@ -107,5 +150,6 @@
   
   .slider-container .next {
     right: 10px;
+>>>>>>> 33e886cef7b1cd36617ca74019b21c4420523e08
   }
   
