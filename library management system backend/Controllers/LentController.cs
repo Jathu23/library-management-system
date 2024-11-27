@@ -77,6 +77,7 @@ namespace library_management_system.Controllers
 
             return Ok(result);
         }
+
         [HttpGet("lent-historys")]
         public async Task<IActionResult> GetAllRentHistory(int page=1, int pageSize=5)
         {
