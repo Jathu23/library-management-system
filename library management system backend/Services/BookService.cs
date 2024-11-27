@@ -341,12 +341,12 @@ namespace library_management_system.Services
             }
         }
 
-        public async Task<ApiResponse<NormalBookDetailsDto>> GetBookWithAvailableCopies(int bookId)
+        public async Task<ApiResponse<NormalBookDetailsDto>> GetBookWithAvailableCopies(int bookId, bool IdSelector)
         {
             try
             {
                
-                var book = await _bookRepository.GetBookWithCopies(bookId);
+                var book = await _bookRepository.GetBookWithCopies(bookId, IdSelector);
 
                 if (book == null)
                 {

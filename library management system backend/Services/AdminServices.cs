@@ -1,4 +1,5 @@
-﻿using library_management_system.Database.Entiy;
+﻿using Azure;
+using library_management_system.Database.Entiy;
 using library_management_system.DTOs;
 using library_management_system.DTOs.Admin;
 using library_management_system.Repositories;
@@ -16,18 +17,21 @@ namespace library_management_system.Services
         private readonly BCryptService _bcryptService;
         private readonly JwtService _jwtService;
         private readonly LoginRepository _loginRepo;
+        private readonly UserRepo _userRepo;
 
         public AdminServices(AdminRepo adminRepo,
                             ImageService imageService,
                             BCryptService bCryptService,
                             JwtService jwtService,
-                            LoginRepository loginRepository)
+                            LoginRepository loginRepository,
+                            UserRepo userRepo)
         {
             _adminRepo = adminRepo;
             _imageService = imageService;
             _bcryptService = bCryptService;
             _jwtService = jwtService;
             _loginRepo = loginRepository;
+            _userRepo = userRepo;
         }
 
         public async Task<ApiResponse<AuthResponse>> CreateAdmin(AdminRequstModel AdminRequstDto)
@@ -219,7 +223,36 @@ namespace library_management_system.Services
             return response;
         }
 
+        public async Task<ApiResponse<string>?> ActiveteUserAccount(string NimOrEmail)
+        {
+            var response = new ApiResponse<string?>();
+
+            try
+            {
+               
+                var user = await _userRepo.ActivateUserAccount(NimOrEmail);
+
+                if (user == null)
+                {
+                    response.Success = false;
+                    response.Message = "User not found.";
+                    response.Data = null;
+                    return response;
+                }
+                response.Success = true;
+                response.Message = "User account activated successfully.";
+                response.Data = $"User with NIC or Email '{NimOrEmail}' has been activated.";
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "An error occurred while activating the user account.";
+                response.Errors.Add(ex.Message);
+            }
+
+            return response;
 
 
+        }
     }
 }
