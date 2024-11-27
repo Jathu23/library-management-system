@@ -438,7 +438,7 @@ namespace library_management_system.Services
             }
             catch (Exception ex)
             {
-                // Handle any exceptions and return a failed response
+                
                 return new ApiResponse<PaginatedResult<LentHistoryAdminDto>>
                 {
                     Success = false,

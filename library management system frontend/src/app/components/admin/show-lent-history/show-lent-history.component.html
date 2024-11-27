@@ -99,14 +99,18 @@
                 <td><strong>User Email:</strong></td>
                 <td>{{ history.userEmail }} <button>sent-message</button></td>
               </tr>
+              
               <tr>
-                <td><strong>Admin Name:</strong></td>
-                <td>{{ history.adminName }}</td>
+                <td><strong>IssuingAdmin:</strong></td>
+                <td>{{ history.iAdminName }}   ID ({{ history.iAdminId }})</td>
               </tr>
+           
               <tr>
-                <td><strong>Admin ID:</strong></td>
-                <td>{{ history.adminId }}</td>
+                <td><strong>ReceivingAdmin:</strong></td>
+                <td  *ngIf="history.rAdminName">{{ history.rAdminName }}    ID ({{ history.rAdminId }})</td>
+                <td  *ngIf="!history.rAdminName" >Not Return Yet</td>
               </tr>
+             
               <tr>
                 <td><strong>Book ISBN:</strong></td>
                 <td>{{ history.bookISBN }}</td>
@@ -124,8 +128,8 @@
                 <td>{{ history.bookCondition }}</td>
               </tr>
               <tr>
-                <td><strong>Status Value:</strong></td>
-                <td>{{ history.statusValue }}</td>
+                <td><strong>Status:</strong></td>
+                <td>{{ history.status }}</td>
               </tr>
             </table>
           </div>
