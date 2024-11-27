@@ -76,6 +76,7 @@ builder.Services.AddScoped<AudioBookRepository>();
 
 builder.Services.AddScoped<GlobalSubscriptionService>();
 builder.Services.AddScoped<GlobalSubscriptionRepository>();
+builder.Services.AddScoped<EmailService>();
 
 
 builder.Services.AddScoped<LentService>();
