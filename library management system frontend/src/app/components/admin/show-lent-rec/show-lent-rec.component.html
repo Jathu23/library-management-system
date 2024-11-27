@@ -24,6 +24,20 @@
           </li>
         </ul>
       </div>
+
+      <label for="numberSelect" class="form-label">Select a number:</label>
+      <select
+    id="numberSelect"
+    class="form-select"
+    [(ngModel)]="selectedDuesday"
+    name="duesdays"
+  >
+    <option *ngFor="let duesday of duesdays" [value]="duesday">
+      {{ duesday }}
+    </option>
+  </select>
+      <button class="btn btn-primary btn-sm" (click)="onRentClick()">Rent</button>
+  
     </div>
 
     <div class="col-md-6">
@@ -88,10 +102,10 @@
               *ngFor="let book of pendingBooks"
             >
               <div>
-                <strong>{{ book.title }}</strong>
+                <strong>{{ book.bookTitle }}</strong>
                 <span class="text-muted"> - Due on {{ book.dueDate | date }}</span>
               </div>
-              <button class="btn btn-primary btn-sm" (click)="onRentClick()">Rent</button>
+             
             </li>
           </ul>
         </div>
@@ -112,6 +126,7 @@
       </div>
     </div>
   </div>
+
 
   <!-- Loader -->
   <div *ngIf="isLoading" class="text-center mt-4">

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RentService } from '../../../services/lent-service/rent.service';
 import { UserService } from '../../../services/user-service/user.service';
-import { BookService } from '../../../services/bookservice/addbook.service';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
 
 @Component({
@@ -22,11 +21,13 @@ export class ShowLentRecComponent implements OnInit {
   relatedTextArray: string[] = []; 
   bookId: any ;
   bookInfo: any = null;
+  adminId:number=1;
+  selectedDuesday:number=2;
+  duesdays:number[] =[2,3,4,5,6,7,10];
 
   constructor(private lentService: RentService, private userservice:UserService, private bookservice:GetbooksService) {}
 
   onSearch(){
-    
     if(this.searchQuery.trim().length > 0){
       this.suggestions=[];
       this.userservice.GetUserEmailsByPrefix(this.searchQuery).subscribe(
@@ -53,54 +54,47 @@ export class ShowLentRecComponent implements OnInit {
     this.searchQuery = emailornic;
     this.suggestions = []; 
     this.fetchUserInfo(emailornic); 
-    this.fetchPendingBooks(emailornic);
   }
   fetchUserInfo(emailornic: string) {
+    this.isLoading=true;
     this.userservice.GetUserByEmailorNic(emailornic).subscribe(
       (response)=>{
         if (response.success) {
+         
           this.userInfo= response.data;
-          console.log(this.userInfo);
-          
+          setTimeout(() => {
+            this.fetchPendingBooks(this.userInfo.id);
+            this.isLoading=false;
+          },5000)
+         
+        }else{
+          this.isLoading=false;
         }
       },
       (error) =>{
         console.log("error",error);
-        
+        this.isLoading=false;
       }
     );
 }
-fetchPendingBooks(username: string) {
-  this.isLoading = true; // Show loading spinner
 
-setTimeout(() => {
-  this.pendingBooks = [
-    {
-      "bookId": 101,
-      "title": "The Great Gatsby",
-      "dueDate": "2024-12-05T10:00:00Z",
-      "author": "F. Scott Fitzgerald",
-      "status": "Overdue"
+fetchPendingBooks(userid: number) {
+  this.isLoading = true; 
+  this.lentService.getlentrecByuserid(userid).subscribe(
+    (response) =>{
+      if (response.success) {
+        this.isLoading=false;
+        this.pendingBooks = response.data;
+        console.log(this.pendingBooks);
+      }else{
+        this.isLoading=false;
+      }
     },
-    {
-      "bookId": 102,
-      "title": "To Kill a Mockingbird",
-      "dueDate": "2024-11-30T15:00:00Z",
-      "author": "Harper Lee",
-      "status": "Due Soon"
-    },
-    {
-      "bookId": 103,
-      "title": "1984",
-      "dueDate": "2024-12-01T09:00:00Z",
-      "author": "George Orwell",
-      "status": "Due Soon"
+    (error) =>{
+      console.log("error",error);
+      this.isLoading=false;
     }
-  ];
-
-  this.isLoading=false;
-},2000)
-
+  );
 }
 fetchBookInfo() {
   if (!this.bookId) {
@@ -124,18 +118,30 @@ fetchBookInfo() {
 
 
 onRentClick() {
-  console.log(`Rent button clicked for username: ${this.userInfo?.fullName}`);
-  console.log(`Rent button clicked for bookname: ${this.bookInfo?.title}`);
+  if (this.userInfo && this.bookId) {
+    console.log(this.adminId);
+console.log(this.selectedDuesday);
+console.log(this.bookId);
+console.log(this.userInfo.id);
+this.searchQuery="";
+this.bookId="";
+this.bookInfo =[];
+this.userInfo= [];
+this.pendingBooks=[]
+  }else{
+    console.log("fill all information");
+    
+  }
 }
 
   ngOnInit(): void {
     this.getallrentrecods();
+    // this.fetchPendingBooks(2);
   }
 
   getallrentrecods(): void {
     this.isLoading = true;
     this.errorMessage = '';
-
     this.lentService.getallrentrecods().subscribe(
       (response) => {
         if (response && response.data) {

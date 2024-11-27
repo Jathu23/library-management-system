@@ -12,7 +12,7 @@ export class RentService {
   constructor(private http: HttpClient) {}
 
   getlentrecByuserid(id:number): Observable<any> {
-    return this.http.get<any>(this.rentUrl + `lent-records-id?id=${id}`);
+    return this.http.get<any>(this.rentUrl + `lent-records-id?Userid=${id}`);
   }
   getallrentrecods():Observable<any> {
     return this.http.get<any>(this.rentUrl + `all-lent-All-records`);
