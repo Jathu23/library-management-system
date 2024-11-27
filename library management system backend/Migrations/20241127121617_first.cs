@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace library_management_system.Migrations
 {
     /// <inheritdoc />
-    public partial class updatedata : Migration
+    public partial class first : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -106,24 +106,6 @@ namespace library_management_system.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_NormalBooks", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RentHistory",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BookCopyId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    AdminId = table.Column<int>(type: "int", nullable: false),
-                    LendDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RentHistory", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -288,6 +270,49 @@ namespace library_management_system.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "RentHistory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookCopyId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    IAdminId = table.Column<int>(type: "int", nullable: false),
+                    RAdminId = table.Column<int>(type: "int", nullable: true),
+                    LendDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RentHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RentHistory_Admins_IAdminId",
+                        column: x => x.IAdminId,
+                        principalTable: "Admins",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RentHistory_Admins_RAdminId",
+                        column: x => x.RAdminId,
+                        principalTable: "Admins",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RentHistory_BookCopies_BookCopyId",
+                        column: x => x.BookCopyId,
+                        principalTable: "BookCopies",
+                        principalColumn: "CopyId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RentHistory_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AudiobookMetadatas_AudiobookId",
                 table: "AudiobookMetadatas",
@@ -323,6 +348,26 @@ namespace library_management_system.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_LentRecords_UserId",
                 table: "LentRecords",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RentHistory_BookCopyId",
+                table: "RentHistory",
+                column: "BookCopyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RentHistory_IAdminId",
+                table: "RentHistory",
+                column: "IAdminId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RentHistory_RAdminId",
+                table: "RentHistory",
+                column: "RAdminId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RentHistory_UserId",
+                table: "RentHistory",
                 column: "UserId");
         }
 

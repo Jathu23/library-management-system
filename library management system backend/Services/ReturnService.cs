@@ -12,7 +12,7 @@ namespace library_management_system.Services
             _repository = repository;
         }
 
-        public async Task<ApiResponse<bool>> ReturnLentBook(int lentRecordId)
+        public async Task<ApiResponse<bool>> ReturnLentBook(int lentRecordId,int ResiveAdminId)
         {
           
             var lentRecord = await _repository.GetLentRecordById(lentRecordId);
@@ -65,8 +65,9 @@ namespace library_management_system.Services
             }
 
             rentHistory.ReturnDate = DateTime.Now;
+            rentHistory.RAdminId = ResiveAdminId;
 
-        
+
             await _repository.ReturnLentBook(lentRecord, rentHistory, bookCopy);
 
             return new ApiResponse<bool>

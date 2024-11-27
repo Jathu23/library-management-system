@@ -432,17 +432,20 @@ namespace library_management_system.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AdminId")
-                        .HasColumnType("int");
-
                     b.Property<int>("BookCopyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("IAdminId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("LendDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("RAdminId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ReturnDate")
                         .HasColumnType("datetime2");
@@ -451,6 +454,14 @@ namespace library_management_system.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookCopyId");
+
+                    b.HasIndex("IAdminId");
+
+                    b.HasIndex("RAdminId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("RentHistory");
                 });
@@ -574,6 +585,40 @@ namespace library_management_system.Migrations
                     b.Navigation("Admin");
 
                     b.Navigation("BookCopy");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.RentHistory", b =>
+                {
+                    b.HasOne("library_management_system.Database.Entiy.BookCopy", "BookCopy")
+                        .WithMany()
+                        .HasForeignKey("BookCopyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("library_management_system.Database.Entiy.Admin", "IssuingAdmin")
+                        .WithMany()
+                        .HasForeignKey("IAdminId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("library_management_system.Database.Entiy.Admin", "ReceivingAdmin")
+                        .WithMany()
+                        .HasForeignKey("RAdminId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("library_management_system.Database.Entiy.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BookCopy");
+
+                    b.Navigation("IssuingAdmin");
+
+                    b.Navigation("ReceivingAdmin");
 
                     b.Navigation("User");
                 });

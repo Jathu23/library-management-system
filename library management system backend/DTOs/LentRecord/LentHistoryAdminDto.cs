@@ -7,8 +7,10 @@
         public string UserName { get; set; }
         public string UserEmail { get; set; }
 
-        public int AdminId { get; set; }
-        public string AdminName { get; set; }
+        public int IAdminId { get; set; }
+        public string IAdminName { get; set; }
+        public int? RAdminId { get; set; }
+        public string RAdminName { get; set; }
 
         public int BookId { get; set; }
         public string BookTitle { get; set; }

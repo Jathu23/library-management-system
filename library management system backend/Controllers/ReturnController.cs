@@ -16,12 +16,12 @@ namespace library_management_system.Controllers
         }
 
         [HttpPost("return-lent-book")]
-        public async Task<IActionResult> ReturnLentBook(int lentRecordId)
+        public async Task<IActionResult> ReturnLentBook(int lentRecordId,int ResiveAdminId)
         {
             if (lentRecordId <= 0)
                 return BadRequest("Invalid lent record ID.");
 
-            var response = await _returnService.ReturnLentBook(lentRecordId);
+            var response = await _returnService.ReturnLentBook(lentRecordId, ResiveAdminId);
 
             if (!response.Success)
                 return BadRequest(response);
