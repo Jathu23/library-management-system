@@ -1,6 +1,7 @@
 ﻿using library_management_system.Database;
 using library_management_system.Database.Entiy;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace library_management_system.Repositories
 {
@@ -53,6 +54,21 @@ namespace library_management_system.Repositories
             await _context.SaveChangesAsync();
             return user;
         }
+
+        public async Task<User?> ActivateUserAccount(string nicOrEmail)
+        {
+           
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == nicOrEmail || u.UserNic == nicOrEmail);
+
+            if (user == null)
+                return null;
+              user.IsActive = true;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return user;
+        }
+
         public async Task<User?> GetUserByNICorEmail(string  emailorNic)
         {
             return await _context.Users
@@ -68,15 +84,21 @@ namespace library_management_system.Repositories
         public async Task<User> DeleteUserPermanently(int id)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-
             if (user == null)
                 return null;
-
+            var log = await _context.LoginPort.FirstOrDefaultAsync(l =>
+                l.Email == user.Email || l.NIC == user.UserNic);
             _context.Users.Remove(user);
+
+            if (log != null)
+            {
+                _context.LoginPort.Remove(log);
+            }
             await _context.SaveChangesAsync();
 
             return user;
         }
+
         public async Task<bool> UpdateUser( User updatedUserData)
         {
           _context.Users.Update(updatedUserData);
@@ -109,6 +131,16 @@ namespace library_management_system.Repositories
             return (users, totalRecords);
         }
 
+        public async Task<List<string>> GetUserEmailsByPrefix(string prefix)
+        {
+
+            return await _context.Users
+          .Where(u => (EF.Functions.Like(u.Email.ToLower(), prefix.ToLower() + "%")) ||
+                      (EF.Functions.Like(u.UserNic.ToLower(), prefix.ToLower() + "%"))) 
+          .Select(u => u.Email)
+          .ToListAsync();
+
+        }
 
     }
 }

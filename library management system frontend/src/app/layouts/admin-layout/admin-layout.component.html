@@ -1,6 +1,6 @@
 
-<div class="wrapper">
-    <aside id="sidebar" [ngClass]="{ 'expand': isExpanded }">
+<div class="wrapper" >
+    <aside id="sidebar" [ngClass]="{ 'expand': isExpanded }" >
       <div class="d-flex">
         <button class="toggle-btn" type="button" (click)="toggleSidebar()">
           <i class="bi bi-grip-horizontal"></i>
@@ -103,14 +103,9 @@
           </a>
         </li>
         
-        <li class="sidebar-item">
-          <a href="#" class="sidebar-link">
-            <i class="lni lni-cog"></i>
-            <span>Setting</span>
-          </a>
-        </li>
+       
       </ul>
-      <div class="sidebar-footer">
+      <div class="sidebar-footer" style="margin-bottom: 10px;">
         <a href="#" class="sidebar-link">
           <i class="icon bi bi-box-arrow-right"></i>
           <span>Logout</span>
@@ -118,9 +113,11 @@
       </div>
     </aside>
     
-    <div class="main p-3">
+   <div class="super">
+    <div class=" main p-2">
       
-     <router-outlet></router-outlet>
-    </div>
+      <router-outlet></router-outlet>
+     </div>
+   </div>
   </div>
   

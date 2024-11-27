@@ -181,17 +181,28 @@ namespace library_management_system.Services
 
                 if (user == null)
                 {
+                   
                     response.Success = false;
                     response.Message = "User not found.";
                     return response;
                 }
 
-                user.IsActive = false;
+                if (!user.IsActive)
+                {
+                   
+                    response.Success = false;
+                    response.Message = "User is already soft-deleted.";
+                    return response;
+                }
+               
+                    user.IsActive = false;
 
 
-                response.Success = true;
-                response.Message = "User soft deleted successfully.";
-                return response;
+                    response.Success = true;
+                    response.Message = "User is already softDeleted";
+                    return response;
+                
+                
             }
             catch (Exception ex)
             {
@@ -399,6 +410,40 @@ namespace library_management_system.Services
                     Data = null
                 };
             }
+        }
+
+        public async Task<ApiResponse<List<string>>> GetUserEmailsByPrefix(string prefix)
+        {
+            if (string.IsNullOrEmpty(prefix))
+            {
+                return new ApiResponse<List<string>>
+                {
+                    Success = false,
+                    Message = "Prefix cannot be empty",
+                    Data = null,
+                    Errors = new List<string> { "Invalid input: prefix is null or empty" }
+                };
+            }
+
+            var usernames = await _userRepo.GetUserEmailsByPrefix(prefix);
+
+            if (usernames == null || !usernames.Any())
+            {
+                return new ApiResponse<List<string>>
+                {
+                    Success = false,
+                    Message = "No usernames found",
+                    Data = new List<string>(),
+                    Errors = new List<string>()
+                };
+            }
+
+            return new ApiResponse<List<string>>
+            {
+                Success = true,
+                Message = "Usernames retrieved successfully",
+                Data = usernames
+            };
         }
 
 

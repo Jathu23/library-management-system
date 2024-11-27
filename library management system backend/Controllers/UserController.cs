@@ -204,6 +204,17 @@ namespace library_management_system.Controllers
             return Ok(response);
         }
 
+        [HttpGet("GetUserEmails")]
+        public async Task<IActionResult> GetUserEmailsByPrefix([FromQuery] string prefix)
+        {
+            var response = await _userService.GetUserEmailsByPrefix(prefix);
 
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
     }
 }

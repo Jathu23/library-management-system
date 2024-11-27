@@ -26,6 +26,41 @@
         public DbSet<LentRecord> LentRecords { get; set; }
         public DbSet<RentHistory> RentHistory { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Define relationship between BookCopy and NormalBook
+            modelBuilder.Entity<BookCopy>()
+                .HasOne(bc => bc.Book)
+                .WithMany(nb => nb.BookCopies)
+                .HasForeignKey(bc => bc.BookId)
+                .OnDelete(DeleteBehavior.Cascade); // Cascade delete ensures dependent copies are deleted when a book is deleted.
+
+            // Define relationships in RentHistory
+            modelBuilder.Entity<RentHistory>()
+                .HasOne(rh => rh.BookCopy)
+                .WithMany() // No navigation property back to RentHistory in BookCopy
+                .HasForeignKey(rh => rh.BookCopyId)
+                .OnDelete(DeleteBehavior.Restrict); // Prevent deleting a BookCopy if referenced by RentHistory
+
+            modelBuilder.Entity<RentHistory>()
+                .HasOne(rh => rh.User)
+                .WithMany() // No navigation property back to RentHistory in User
+                .HasForeignKey(rh => rh.UserId);
+
+            modelBuilder.Entity<RentHistory>()
+                .HasOne(rh => rh.IssuingAdmin)
+                .WithMany() // No navigation property back to RentHistory in Admin
+                .HasForeignKey(rh => rh.IAdminId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<RentHistory>()
+                .HasOne(rh => rh.ReceivingAdmin)
+                .WithMany() // No navigation property back to RentHistory in Admin
+                .HasForeignKey(rh => rh.RAdminId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            base.OnModelCreating(modelBuilder);
+        }
 
 
 

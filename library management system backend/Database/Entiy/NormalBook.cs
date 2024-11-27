@@ -12,13 +12,13 @@
         public string ShelfLocation { get; set; }    
         public int RentCount { get; set; }          
         public int TotalCopies { get; set; }          
-        public List<string> CoverImagePath { get; set; }  
+        public List<string> CoverImagePath { get; set; }
 
 
         // Navigation property for book copies
-        public List<BookCopy> BookCopies { get; set; } 
+        public List<BookCopy> BookCopies { get; set; }
 
-        //public List<LentRecord> lentRecords { get; set; }
+
     }
 
 

@@ -124,10 +124,15 @@ export class AddbookComponent implements OnInit {
       console.log(formData);
       this.bookService.addBook(formData).subscribe({
         next: (response) => {
-          console.log(response);
-          this.addBookForm.reset(); // Reset the form on success
-          this.imagePreviews = [];
-          alert('Book added successfully!');
+          if (response.success) {
+            console.log(response);
+            this.addBookForm.reset(); // Reset the form on success
+            this.imagePreviews = [];
+            alert('Book added successfully!');
+          }else{
+            alert('Failed to add book. Please try again.');
+          }
+         
         },
         error: (error) => {
           alert('Failed to add book. Please try again.');

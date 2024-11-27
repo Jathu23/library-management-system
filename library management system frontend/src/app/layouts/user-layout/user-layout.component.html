@@ -1,116 +1,94 @@
-<!-- 
-
-<div class="container">
-  <div class="sidebar">
-      <div class="menu-btn">
-          <i class="bi bi-arrow-bar-left"></i>
+<div class="wrapper">
+  <!-- Sidebar -->
+  <aside id="sidebar" [class.collapsed]="isCollapsed">
+    <div class="h-100">
+      <div class="sidebar-logo">
+        <a href="#">Premium Library</a>
       </div>
-      <div class="head">
-          <div class="user-img">
-              <img src="user.img" alt="User">
-          </div>
-          <div class="user-details">
-              <p class="title">WelCome</p>
-              
-          </div>
-      </div>
-      <div class="nav">
-          <div class="menu">
-              <p class="title" style="font-size: larger; color: white;">Member</p>
-              <ul>
-                  <li class="active">
-                      <a [routerLink]="['/user']">
-                          <i class="icon bi bi-speedometer2"></i>
-                          <span class="text">Dashboard</span>
-                      </a>
-                  </li>
-                  
-                  <li>
-                      <a href="">
-                          <i class="icon bi bi-book"></i>
-                          <span class="text"style="padding-right: 82px;">Books</span>
-                          <i class="arrow bi bi-arrow-bar-down"></i>
-                      </a>
-                      <ul class="sub-menu">
-                          <li><a [routerLink]="['/user/view-e-books']"><i class="icon bi bi-file-earmark-pdf-fill"></i><span class="text">EBooks</span></a></li>
-                          <li><a [routerLink]="['/user/view-audio-books']"><i class="icon bi bi-file-earmark-music-fill"></i><span class="text">AudioBooks</span></a></li>
-                          <li><a [routerLink]="['/user/view-normal-books']"><i class="icon bi bi-book-half"></i><span class="text">Physical Books</span></a></li>
-                      </ul>
-                  </li>
-                 
-                <li><a href=""><i class="icon bi bi-arrow-return-left"></i><span class="text">Lended Books</span></a></li>
-                <li><a href=""><i class="icon bi bi-stopwatch-fill"></i><span class="text">Activity History</span></a></li>
-                <li><a href=""><i class="icon bi bi-bi bi-bell-fill"></i><span class="text">Notification</span></a></li>
-                <li><a href=""><i class="icon bi bi-card-checklist"></i><span class="text">Reports</span></a></li>
 
-              </ul>
-          </div>
-          
-          <div class="menu">
-              <p class="title">Account</p>
-              <ul>
-                <li><a href=""><i class="icon bi bi-person-badge-fill"></i><span class="text">Profile</span></a></li>
-                 
-                <li><a href=""><i class="icon bi bi-box-arrow-right"></i><span class="text" style="padding-right: 112px;">Logout</span></a></li>
-              </ul>
-          </div>
-      </div>
-  </div>
-  <div class="content flex-grow-1 ">
-    <router-outlet></router-outlet>
-  </div>
-</div> -->
+      <ul class="sidebar-nav">
+       
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top main-navigation">
-    <div class="container-fluid">
-      <a class="navbar-brand order-2 order-lg-1 mr-auto mr-lg-3 ml-3 ml-lg-0" href="#">Frontendfun</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        (click)="toggleSidebar()"
-      >
+        <li class="sidebar-item">
+          <a href="#" style="font-size: 20px; " class="sidebar-link"><i class="bi bi-house-check p-3"></i>Home</a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="#" style="font-size: 20px; "
+             class="sidebar-link" 
+             (click)="toggleMenu('books'); $event.preventDefault()" 
+             [attr.aria-expanded]="isMenuExpanded('books')"><i class="bi bi-book p-3"></i>
+            Books<i class="bi bi-arrow-down-up p-4"></i>
+          </a>
+          <ul id="pages" style="padding-left: 24px;"
+              class="sidebar-dropdown list-unstyled collapse" 
+              [class.show]="isMenuExpanded('books')">
+            <li class="sidebar-item">
+              <a [routerLink]="['/user/view-normal-books']" class="sidebar-link"><i class="bi bi-book-half p-3"></i>Physical Books</a>
+            </li>
+            <li class="sidebar-item">
+              <a [routerLink]="['/user/view-audio-books']" class="sidebar-link"><i class="bi bi-file-earmark-music p-3"></i>Audio Books</a>
+            </li>
+            <li class="sidebar-item">
+              <a [routerLink]="['/user/view-e-books']" class="sidebar-link"><i class="bi bi-file-earmark-pdf p-3"></i>Book PDF</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="#" style="font-size: 20px; " class="sidebar-link"><i class="bi bi-journal-arrow-down p-3"></i>Lended Books</a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" style="font-size: 20px; " class="sidebar-link"><i class="bi bi-activity p-3"></i>Activity History</a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" style="font-size: 20px; " class="sidebar-link"><i class="bi bi-coin p-3"></i>Subscription</a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" style="font-size: 20px; " class="sidebar-link"><i class="bi bi-bell p-3"></i>Notification</a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="#" style="font-size: 20px; "
+             class="sidebar-link" 
+             (click)="toggleMenu('reports'); $event.preventDefault()" 
+             [attr.aria-expanded]="isMenuExpanded('reports')"><i class="bi bi-bar-chart-line p-3"></i>
+            Reports<i class="bi bi-arrow-down-up  p-4"></i>
+          </a>
+          <ul id="auth" style="padding-left: 24px;"
+              class="sidebar-dropdown list-unstyled collapse" 
+              [class.show]="isMenuExpanded('reports')">
+            <li class="sidebar-item">
+              <a href="#" class="sidebar-link"><i class="bi bi-cash-coin p-3"></i>Subscription </a>
+            </li>
+            <li class="sidebar-item">
+              <a href="#" class="sidebar-link"><i class="bi bi-calendar-date p-3"></i>Activity </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="#" style="font-size: 20px; " class="sidebar-link"><i class="bi bi-person-bounding-box p-3" ></i>Profile</a>
+        </li>
+
+        <li class="sidebar-footer mt-5">
+          <a href="#" style="font-size: 20px; " class="sidebar-link"><i class="bi bi-box-arrow-left p-3 "></i>LogOut</a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  
+  <div class="main">
+    <nav class="navbar navbar-expand px-3 border-bottom">
+      <button class="btn" (click)="toggleSidebar()" type="button">
         <span class="navbar-toggler-icon"></span>
       </button>
-  
-      <div
-        class="overlay d-flex d-lg-none"
-        [class.active]="isSidebarActive"
-        (click)="toggleSidebar()"
-      ></div>
-  
-      <div
-        class="order-lg-2 bg-dark d-lg-flex w-100 sidebar pb-3 pb-lg-0"
-        [class.active]="isSidebarActive"
-      >
-        <ul class="navbar-nav mr-lg-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link px-3 px-lg-2 active" aria-current="page" href="#">Home</a>
-          </li>
-          
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link px-3 px-lg-2 dropdown-toggle"
-              href="#"
-              id="navbarDropdown"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Books
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">Physical books</a></li>
-              <li><a class="dropdown-item" href="#">E-Books</a></li>
-              <li><a class="dropdown-item" href="#">Audio-Books</a></li>
-              <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-            <li class="nav-item"><a class="nav-link px-3 px-lg-2" href="#">Lended Books</a></li>
-            <li class="nav-item"><a class="nav-link px-3 px-lg-2" href="#">Activity History</a></li>
-            <li class="nav-item"><a class="nav-link px-3 px-lg-2" href="#">Notification</a></li>
-            <li class="nav-item"><a class="nav-link px-3 px-lg-2" href="#">Reports</a></li>
-        </ul>
+    </nav>
+    <main class="content px-3 py-2">
+      <div class="container-fluid">
+        <router-outlet></router-outlet>
       </div>
-    </div>
-  </nav>
-  <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
