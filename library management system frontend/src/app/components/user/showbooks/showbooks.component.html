@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="container my-4">
   <!-- Book Grid -->
   <div class="row">
@@ -48,3 +49,53 @@
     </ul>
   </nav>
 </div>
+=======
+<div class="search-container">
+    <input
+      type="text"
+      placeholder="Search books (title, author, year)..."
+      [(ngModel)]="searchQuery"
+      (input)="onSearch()"
+      class="search-bar"
+    />
+  </div>
+  
+  <div class="grid-container scroll-container" (scroll)="onScroll()">
+    <div class="grid-item" *ngFor="let book of Normalbooks" (click)="openModal(book)">
+      <div class="card">
+        <div class="card-images">
+          <img *ngIf="book.coverImagePath?.length" [src]="book.coverImagePath[0]" [alt]="book.title" />
+        </div>
+        <h3>{{ book.title }}</h3>
+        <p>Author: {{ book.author }}</p>
+        <p>Genre: {{ book.genre }}</p>
+        <p>Publisher: {{ book.publisher }}</p>
+        <p>Published Year: {{ book.publishYear }}</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal" [class.show]="isModalOpen">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+  
+      <h2>{{ selectedBook?.title }}</h2>
+  
+      <!-- Image Slider -->
+      <div class="slider-container">
+        <button class="prev" (click)="prevImage()">&#10094;</button>
+        <img
+          *ngIf="selectedBook?.coverImagePath?.length"
+          [src]="selectedBook.coverImagePath[currentImageIndex]"
+          [alt]="selectedBook.title"
+        />
+        <button class="next" (click)="nextImage()">&#10095;</button>
+      </div>
+  
+      <p><strong>Author:</strong> {{ selectedBook?.author }}</p>
+      <p><strong>Published Year:</strong> {{ selectedBook?.publishYear }}</p>
+    </div>
+  </div>
+  
+>>>>>>> 33e886cef7b1cd36617ca74019b21c4420523e08
