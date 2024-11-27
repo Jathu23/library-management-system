@@ -1,85 +1,134 @@
 import { Component, OnInit } from '@angular/core';
 import { RentService } from '../../../services/lent-service/rent.service';
+import { GetbooksService } from '../../../services/bookservice/getbooks.service';
+import { UserService } from '../../../services/user-service/user.service';
 
 @Component({
   selector: 'app-show-lent-history',
   templateUrl: './show-lent-history.component.html',
   styleUrl: './show-lent-history.component.css'
 })
-export class ShowLentHistoryComponent implements OnInit{
+export class ShowLentHistoryComponent implements OnInit {
   isLoading = false;
   currentPage = 1;
   pageSize = 10;
   totalItems = 0;
-   lenthistorys: any[] = [];
-   expandedElementId: number | null = null;
-   searchQuery: string = ''; 
+  lenthistorys: any[] = [];
+  expandedElementId: number | null = null;
+  searchQuery: string = '';
   suggestions: string[] = [];
-  userInfo: any = null; 
-  pendingBooks: any[] = []; 
-  relatedTextArray: string[] = []; 
+  userInfo: any = null;
+  pendingBooks: any[] = [];
+  relatedTextArray: string[] = [];
+  adminId: number = 2;
 
-   constructor(private rentservice:RentService) {}
+  constructor(private rentservice: RentService, private lentService: RentService, private userservice: UserService, private bookservice: GetbooksService) { }
   ngOnInit(): void {
-    this.loadEbooks();
+    this.loadrecods();
   }
 
-  onSearch(){
-    
-    if(this.searchQuery.trim().length > 1){
-      this.suggestions=[];
-      this.suggestions.push("jathu","thuva")
-    }else
-    {
+  onSearch() {
+    if (this.searchQuery.trim().length > 0) {
       this.suggestions = [];
-      this.pendingBooks = []; 
-      this.userInfo = null; 
+      this.userservice.GetUserEmailsByPrefix(this.searchQuery).subscribe(
+        (response) => {
+          if (response.success) {
+            this.suggestions = response.data;
+          }
+        },
+        (error) => {
+          console.log("error", error);
+
+        }
+      );
+
+    } else {
+      this.suggestions = [];
+      this.pendingBooks = [];
+      this.userInfo = null;
     }
-   
-  }
-  selectUsername(username: string) {
-    this.searchQuery = username;
-    this.suggestions = []; 
-    this.fetchPendingBooks(username);
-  }
-  fetchPendingBooks(username: string) {
-    this.isLoading = true; // Show loading spinner
-  
-  setTimeout(() => {
-    this.pendingBooks = [
-      {
-        "bookId": 101,
-        "title": "The Great Gatsby",
-        "dueDate": "2024-12-05T10:00:00Z",
-        "author": "F. Scott Fitzgerald",
-        "status": "Overdue"
-      },
-      {
-        "bookId": 102,
-        "title": "To Kill a Mockingbird",
-        "dueDate": "2024-11-30T15:00:00Z",
-        "author": "Harper Lee",
-        "status": "Due Soon"
-      },
-      {
-        "bookId": 103,
-        "title": "1984",
-        "dueDate": "2024-12-01T09:00:00Z",
-        "author": "George Orwell",
-        "status": "Due Soon"
-      }
-    ];
-  
-    this.isLoading=false;
-  },2000)
-  
-  }
-  onReturnClick(rentId:any) {
-    console.log(`Rent button clicked for username: ${this.userInfo?.fullName}`);
-    console.log(`Rent button clicked for bookid: ${rentId}`);
 
   }
-   loadEbooks() {
+
+  selectUsername(emailornic: string) {
+    this.searchQuery = emailornic;
+    this.suggestions = [];
+    this.fetchUserInfo(emailornic);
+  }
+  fetchUserInfo(emailornic: string) {
+    this.isLoading = true;
+    this.userservice.GetUserByEmailorNic(emailornic).subscribe(
+      (response) => {
+        if (response.success) {
+
+          this.userInfo = response.data;
+          setTimeout(() => {
+            this.fetchPendingBooks(this.userInfo.id);
+            this.isLoading = false;
+          }, 1000)
+
+        } else {
+          this.isLoading = false;
+        }
+      },
+      (error) => {
+        console.log("error", error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  fetchPendingBooks(userid: number) {
+    this.isLoading = true;
+    this.lentService.getlentrecByuserid(userid).subscribe(
+      (response) => {
+        if (response.success) {
+          this.isLoading = false;
+          this.pendingBooks = response.data;
+          console.log(this.pendingBooks);
+        } else {
+          this.isLoading = false;
+        }
+      },
+      (error) => {
+        console.log("error", error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  onReturnClick(rentId: any) {
+    if (rentId && this.adminId > 0) {
+      this.isLoading = true;
+      this.lentService.returnNormalbook(rentId, this.adminId).subscribe(
+        (response: any) => {
+          if (response.success) {
+            this.isLoading = false;
+            alert(response.message);
+            // this.searchQuery = "";
+            // this.userInfo = '';
+            // this.pendingBooks = []
+          } else {
+            this.isLoading = false;
+            alert(response.message);
+          }
+        },
+        (error) => {
+          alert(error.error.message);
+          console.log("error: ", error);
+          this.isLoading = false;
+        }
+      );
+    } else {
+      console.log("fill all information");
+
+    }
+  }
+
+
+
+
+  loadrecods() {
 
     if (this.isLoading) return;
 
@@ -94,9 +143,9 @@ export class ShowLentHistoryComponent implements OnInit{
           this.currentPage++;
           this.isLoading = false;
           console.log(this.lenthistorys);
-          
+
         }
-       
+
       },
       (error) => {
         console.error('Error fetching recods:', error);

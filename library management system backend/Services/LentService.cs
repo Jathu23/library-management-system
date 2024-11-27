@@ -103,7 +103,7 @@ namespace library_management_system.Services
             {
                 BookCopyId = availableCopy.CopyId,
                 UserId = lentRecordDto.UserId,
-                AdminId = lentRecordDto.AdminId,
+                IAdminId = lentRecordDto.AdminId,
                 LendDate = lendDate,
                 DueDate = dueDate
                 //ReturnDate = null // Not returned yet
@@ -209,7 +209,7 @@ namespace library_management_system.Services
             {
                 BookCopyId = bookCopy.CopyId,
                 UserId = lendByCopyIdDto.UserId,
-                AdminId = lendByCopyIdDto.AdminId,
+                IAdminId = lendByCopyIdDto.AdminId,
                 LendDate = lendDate,
                 DueDate = dueDate
             };
@@ -354,58 +354,60 @@ namespace library_management_system.Services
         {
             try
             {
+                // Fetch rent history records from the repository
                 var (records, totalRecords) = await _lentRecordRepository.GetAllRentHistory(page, pageSize);
+                var Book = await _lentRecordRepository.GetBookById(records[0].BookCopy.BookId);
+
 
                 if (records == null || !records.Any())
                 {
                     return new ApiResponse<PaginatedResult<LentHistoryAdminDto>>
                     {
                         Success = false,
-                        Message = "No History found",
+                        Message = "No history found",
                         Data = null
                     };
                 }
-                Console.Write("count 1 ",records.Count);
+
                 var lentHistoryDtos = new List<LentHistoryAdminDto>();
-                var book = await _lentRecordRepository.GetBookById(records[0].BookCopy.BookId);
 
                 foreach (var rec in records)
                 {
                     int statusValue;
                     string status;
                     var currentDateTime = DateTime.UtcNow;
+
+                    // Calculate the status and status value
                     if (rec.ReturnDate == null)
                     {
                         statusValue = (int)(rec.DueDate - currentDateTime).TotalMinutes;
-
                         status = statusValue > 0
-                           ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
-                           : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours over";
-
+                            ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
+                            : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours overdue";
                     }
                     else
                     {
                         statusValue = 0;
-                        status = "close";
+                        status = "Closed";
                     }
 
-                   
-                     
-
+                    // Construct DTO
                     var lentRecordDto = new LentHistoryAdminDto
                     {
                         Id = rec.Id,
                         UserId = rec.UserId,
                         UserName = rec.User.FullName,
                         UserEmail = rec.User.Email,
-                        AdminId = rec.AdminId,
-                        AdminName = rec.Admin.FullName,
-                        BookId = book.Id,
-                        BookTitle = book.Title,
-                        BookISBN = book.ISBN,
-                        BookAuthor = book.Author,
-                        BookGenre = string.Join(", ", book.Genre),
-                        BookPublishYear = book.PublishYear,
+                        IAdminId = rec.IAdminId,
+                        RAdminId = rec.RAdminId,
+                        IAdminName = rec.IssuingAdmin?.FullName,  // Get Issuing Admin Name
+                        RAdminName = rec.ReceivingAdmin?.FullName, // Get Receiving Admin Name
+                        BookId = rec.BookCopy.BookId,
+                        BookTitle = Book.Title,
+                        BookISBN = Book.ISBN,
+                        BookAuthor =Book.Author,
+                        BookGenre = string.Join(", ", Book.Genre),
+                        BookPublishYear = Book.PublishYear,
                         BookCopyId = rec.BookCopyId,
                         BookCondition = rec.BookCopy.Condition,
                         LentDate = rec.LendDate,
@@ -417,7 +419,8 @@ namespace library_management_system.Services
 
                     lentHistoryDtos.Add(lentRecordDto);
                 }
-                Console.Write("count 1 ", lentHistoryDtos.Count);
+
+                // Create a paginated result
                 var paginatedResult = new PaginatedResult<LentHistoryAdminDto>
                 {
                     Items = lentHistoryDtos,
@@ -429,21 +432,23 @@ namespace library_management_system.Services
                 return new ApiResponse<PaginatedResult<LentHistoryAdminDto>>
                 {
                     Success = true,
-                    Message = "Records retrieved successfully.",
+                    Message = "Records retrieved successfully",
                     Data = paginatedResult
                 };
             }
             catch (Exception ex)
             {
-               
+                
                 return new ApiResponse<PaginatedResult<LentHistoryAdminDto>>
                 {
                     Success = false,
-                    Message = "An error occurred while retrieving rent history.",
+                    Message = "An error occurred while retrieving rent history",
+                    Errors = new List<string> { ex.Message },
                     Data = null
                 };
             }
         }
+
 
 
 

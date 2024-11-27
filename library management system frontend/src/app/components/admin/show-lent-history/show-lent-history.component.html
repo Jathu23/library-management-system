@@ -20,6 +20,38 @@
 
   <!-- Grid View -->
   <div class="row">
+    <!-- User Information Card -->
+    <div *ngIf="userInfo" class="col-md-6 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img
+          [src]="'assets/' + userInfo.profileImage"
+          class="card-img-top profile-img"
+          alt="User Profile"
+        />
+        <div class="card-body">
+          <h5 class="card-title text-primary">{{ userInfo.fullName }}</h5>
+          <p class="card-text mb-1">
+            <strong>Email:</strong> {{ userInfo.email }}
+          </p>
+          <p class="card-text mb-1">
+            <strong>Phone:</strong> {{ userInfo.phoneNumber }}
+          </p>
+          <p class="card-text mb-1">
+            <strong>Address:</strong> {{ userInfo.address }}
+          </p>
+          <p class="card-text mb-1">
+            <strong>Registration Date:</strong>
+            {{ userInfo.registrationDate | date: 'medium' }}
+          </p>
+          <p class="card-text">
+            <strong>Status:</strong>
+            <span class="badge" [ngClass]="userInfo.isActive ? 'bg-success' : 'bg-secondary'">
+              {{ userInfo.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
 
     <!-- Pending Books Card -->
     <div *ngIf="pendingBooks.length > 0" class="col-md-6 mb-4">
@@ -27,13 +59,18 @@
         <div class="card-body">
           <h5 class="card-title text-warning">Pending Books</h5>
           <ul class="list-group">
-            <li class="list-group-item d-flex justify-content-between align-items-center"
-              *ngFor="let book of pendingBooks">
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let rec of pendingBooks"
+            >
               <div>
-                <strong>{{ book.title }}</strong>
-                <span class="text-muted"> - Due on {{ book.dueDate | date }}</span>
+                <strong>{{ rec.bookTitle }}</strong>
+                <span class="text-muted"> - Due on {{ rec.dueDate | date }}</span>
+                <br>
+                <span class="text-muted"> {{rec.status}}</span>
+                <button class="btn btn-primary btn-sm" (click)="onReturnClick(rec.id)">Return</button>
               </div>
-              <button class="btn btn-primary " (click)="onReturnClick(book.title)">Resive</button>
+             
             </li>
           </ul>
         </div>
@@ -99,14 +136,18 @@
                 <td><strong>User Email:</strong></td>
                 <td>{{ history.userEmail }} <button>sent-message</button></td>
               </tr>
+              
               <tr>
-                <td><strong>Admin Name:</strong></td>
-                <td>{{ history.adminName }}</td>
+                <td><strong>IssuingAdmin:</strong></td>
+                <td>{{ history.iAdminName }}   ID ({{ history.iAdminId }})</td>
               </tr>
+           
               <tr>
-                <td><strong>Admin ID:</strong></td>
-                <td>{{ history.adminId }}</td>
+                <td><strong>ReceivingAdmin:</strong></td>
+                <td  *ngIf="history.rAdminName">{{ history.rAdminName }}    ID ({{ history.rAdminId }})</td>
+                <td  *ngIf="!history.rAdminName" >Not Return Yet</td>
               </tr>
+             
               <tr>
                 <td><strong>Book ISBN:</strong></td>
                 <td>{{ history.bookISBN }}</td>
@@ -124,8 +165,8 @@
                 <td>{{ history.bookCondition }}</td>
               </tr>
               <tr>
-                <td><strong>Status Value:</strong></td>
-                <td>{{ history.statusValue }}</td>
+                <td><strong>Status:</strong></td>
+                <td>{{ history.status }}</td>
               </tr>
             </table>
           </div>

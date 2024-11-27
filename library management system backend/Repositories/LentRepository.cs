@@ -64,7 +64,7 @@ namespace library_management_system.Repositories
                 .Include(lr => lr.BookCopy) // Include the BookCopy related to the LentRecord
       
                 .Include(lr => lr.User) // Include the User related to the LentRecord
-                .Include(lr => lr.Admin) // Include the Admin related to the LentRecord
+               
                 .FirstOrDefaultAsync(lr => lr.UserId == userid);
         }
 
@@ -77,23 +77,26 @@ namespace library_management_system.Repositories
                 .Where(lr => lr.UserId == userid)
                 .ToListAsync();
         }
-        public async Task<(List<RentHistory>?,int)> GetAllRentHistory(int page, int pageSize)
+        public async Task<(List<RentHistory>?, int)> GetAllRentHistory(int page, int pageSize)
         {
-            var query =  _context.RentHistory
-                .Include(lr => lr.BookCopy)
-                .Include(lr => lr.User)
-                .Include(lr => lr.Admin)
+            var query = _context.RentHistory
+                .Include(rh => rh.BookCopy)
+                .Include(rh => rh.User)
+                .Include(rh => rh.IssuingAdmin)  // Include Issuing Admin
+                .Include(rh => rh.ReceivingAdmin) // Include Receiving Admin
                 .AsQueryable();
 
-            var recods = await query.OrderBy(b => b.Id)
-                                .Skip((page - 1) * pageSize)
-                                .Take(pageSize)
-                                .ToListAsync();
+            var records = await query
+                .OrderBy(rh => rh.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
             int totalRecords = await query.CountAsync();
 
-            return (recods, totalRecords);
+            return (records, totalRecords);
         }
+
 
         public async Task<List<LentRecord>?> GetAllLentRecordsWithDetailsAsync()
         {

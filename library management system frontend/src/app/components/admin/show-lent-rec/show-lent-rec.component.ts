@@ -49,6 +49,7 @@ export class ShowLentRecComponent implements OnInit {
     }
 
   }
+
   selectUsername(emailornic: string) {
     this.searchQuery = emailornic;
     this.suggestions = [];
@@ -64,7 +65,7 @@ export class ShowLentRecComponent implements OnInit {
           setTimeout(() => {
             this.fetchPendingBooks(this.userInfo.id);
             this.isLoading = false;
-          }, 5000)
+          }, 1000)
 
         } else {
           this.isLoading = false;
@@ -95,6 +96,7 @@ export class ShowLentRecComponent implements OnInit {
       }
     );
   }
+
   fetchBookInfo() {
     if (!this.bookId) {
       this.bookInfo = null;

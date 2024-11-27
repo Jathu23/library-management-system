@@ -15,6 +15,11 @@ private audiobookUrl = `https://localhost:7261/api/Audiobook/`;
 
 private NormalBookUrl = `https://localhost:7261/api/Books/`
 
+private UserNormalBookUrl =`https://localhost:7261/api/Books/get-all-books`;
+
+showBookstoUser(currentPage:number,pageSize:number):Observable<any>{
+  return this.http.get<any>(this.UserNormalBookUrl+`?page=${currentPage}&pageSize=${pageSize}`);
+}
 
 getaudiobooks(currentPage:number,pageSize:number): Observable<any> {
   return this.http.get<any>(this.audiobookUrl + `GetAudiobooks?page=${currentPage}&pageSize=${pageSize}`);

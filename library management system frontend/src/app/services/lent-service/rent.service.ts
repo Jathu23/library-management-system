@@ -9,6 +9,8 @@ export class RentService {
 
   private rentUrl = `https://localhost:7261/api/Lent/`;
   
+  private returnUrl = `https://localhost:7261/api/Return/`;
+  
 
   constructor(private http: HttpClient) {}
 
@@ -31,5 +33,17 @@ export class RentService {
 
   getrenthistory(currentPage:number,pageSize:number):Observable<any> {
       return this.http.get<any>(this.rentUrl + `lent-historys?page=${currentPage}&pageSize=${pageSize}`);
+  }
+
+  returnNormalbook(lentId:number,adminId:number){
+     
+    const url = `${this.returnUrl}return-lent-book`;
+  const params = new HttpParams()
+    
+    .set('lentRecordId', lentId.toString())
+    .set('ResiveAdminId', adminId.toString())
+  
+
+  return this.http.post(url, null, { params });
   }
 }
