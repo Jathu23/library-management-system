@@ -4,6 +4,7 @@ using library_management_system.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using library_management_system.DTOs.Admin;
+using System.Diagnostics.Contracts;
 
 namespace library_management_system.Controllers
 {
@@ -139,5 +140,17 @@ namespace library_management_system.Controllers
                 return BadRequest(response);
             }
         }
+        [HttpPut("UseAccountActive")]
+        public async Task<IActionResult>ActiveUserAccount(string nicOrEmail)
+        {
+            var response =await _adminServices.ActiveteUserAccount(nicOrEmail);
+            if (response != null)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest(response);
+        }   }
     }
 }

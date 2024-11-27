@@ -54,6 +54,21 @@ namespace library_management_system.Repositories
             await _context.SaveChangesAsync();
             return user;
         }
+
+        public async Task<User?> ActivateUserAccount(string nicOrEmail)
+        {
+           
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == nicOrEmail || u.UserNic == nicOrEmail);
+
+            if (user == null)
+                return null;
+              user.IsActive = true;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return user;
+        }
+
         public async Task<User?> GetUserByNICorEmail(string  emailorNic)
         {
             return await _context.Users
