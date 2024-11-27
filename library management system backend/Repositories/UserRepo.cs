@@ -1,6 +1,7 @@
 ﻿using library_management_system.Database;
 using library_management_system.Database.Entiy;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace library_management_system.Repositories
 {
@@ -68,15 +69,21 @@ namespace library_management_system.Repositories
         public async Task<User> DeleteUserPermanently(int id)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
-
             if (user == null)
                 return null;
-
+            var log = await _context.LoginPort.FirstOrDefaultAsync(l =>
+                l.Email == user.Email || l.NIC == user.UserNic);
             _context.Users.Remove(user);
+
+            if (log != null)
+            {
+                _context.LoginPort.Remove(log);
+            }
             await _context.SaveChangesAsync();
 
             return user;
         }
+
         public async Task<bool> UpdateUser( User updatedUserData)
         {
           _context.Users.Update(updatedUserData);
