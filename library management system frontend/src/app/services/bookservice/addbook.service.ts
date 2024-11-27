@@ -110,6 +110,10 @@ export class BookService {
 
     if (audiobook.AudioFile) {
       formData.append('AudioFile', audiobook.AudioFile, audiobook.AudioFile.name);
+      console.log("file is aviable");
+      
+    }else{
+      console.log("file is not aviable");
     }
     
 

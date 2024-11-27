@@ -36,17 +36,25 @@ export class AddAudiobookComponent {
       const formValue = this.addAudiobookForm.value;
       const audiobookDto: AddAudiobookDto = {
         ...formValue,
-        AudioFile: formValue.AudioFile[0],
-        CoverImage: formValue.CoverImage ? formValue.CoverImage[0] : null,
+        AudioFile: formValue.AudioFile,
+        CoverImage: formValue.CoverImage ? formValue.CoverImage : null,
       };
       
 console.log(audiobookDto);
 
       this.bookService.addAudiobook(audiobookDto).subscribe({
         next: (response) => {
-          console.log('Audiobook added successfully', response);
+          if (response.success) {
+            console.log('Audiobook added successfully', response);
+            alert('Audiobook added successfully');
+            this.addAudiobookForm.reset(); 
+          }else{
+             alert('Error adding audiobook');
+          }
+          
         },
         error: (error) => {
+          alert('Error adding audiobook');
           console.log('Error adding audiobook', error.error.errors);
         },
       });
