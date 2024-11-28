@@ -11,7 +11,7 @@ export class ViewmembersService {
   private GetActiveUsers = `https://localhost:7261/api/User/GetAllActiveUsers`;
 
   getActiveUsers(currentPage: number, pageSize: number): Observable<any> {
-    return this.http.get<any>(`${this.GetActiveUsers}?page=${currentPage}&pageSize=${pageSize}`);
+    return this.http.get<any>(`${this.GetActiveUsers}?pageNumber=${currentPage}&pageSize=${pageSize}`);
   }
 
   private GetSuscribeUsers=`https://localhost:7261/api/User/subscribed-users`;

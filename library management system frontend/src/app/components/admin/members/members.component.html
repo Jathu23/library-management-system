@@ -1,146 +1,106 @@
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Members</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Select Members
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" (click)="loadActiveUsers()">All Active Members</a></li>
-                        <li><a class="dropdown-item" (click)="loadSubscribedUsers()">Subscribed Members</a></li>
-                        <li><a class="dropdown-item" (click)="loadNonActiveUsers()">Non-Active Members</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <form class="d-flex" role="search" (submit)="searchUsers(searchTerm.value)">
-                <input class="form-control me-2" type="search" placeholder="Search" #searchTerm aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
+      <a class="navbar-brand" href="#">Members</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <select
+              class="form-select"
+              [(ngModel)]="selectedOption"
+              name="selectedOption"   
+              (change)="onOptionChange(selectedOption)"
+            >
+              <option value="active">Active Members</option>
+              <option value="subscribed">Subscribed Members</option>
+              <option value="nonActive">Non-Active Members</option>
+            </select>
+          </li>
+        </ul>
+        <!-- Search Bar Always Visible -->
+        <form class="d-flex" role="search">
+          <input
+            class="form-control me-2"
+            [(ngModel)]="searchQuery"
+            name="searchQuery"  
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-success" type="button" (click)="searchUsers()">Search</button>
+        </form>
+      </div>
     </div>
-</nav>
-
-<!-- Display Users in a Responsive Table -->
+  </nav>
+  
+  <!-- Members Table -->
 <div class="container mt-4">
     <h2>{{ heading }}</h2>
-
-    <!-- Active, Subscribed Members Table -->
-    <table *ngIf="heading === 'Active Members' || heading === 'Subscribed Members'" class="table table-bordered table-striped table-responsive">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>User NIC</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Address</th>
-                <th>Profile Image</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of (heading === 'Active Members' ? activeUsers : subscribedUsers)">
-                <td>{{ user.id }}</td>
-                <td>{{ user.userNic }}</td>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.lastName }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.phoneNumber }}</td>
-                <td>{{ user.address }}</td>
-                <td>
-                    <img *ngIf="user.profileImage; else noImage" [src]="user.profileImage" alt="Profile Image" width="50"
-                        height="50">
-                    <ng-template #noImage><span><i class="bi bi-person-circle" style="font-size: 62px;"></i></span></ng-template>
-                </td>
-            </tr>
-        </tbody>
+    <table class="table table-bordered table-striped table-responsive">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User NIC</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Phone Number</th>
+          <th>Address</th>
+          <th>Profile Image</th>
+          <th *ngIf="selectedOption === 'search'">Is Active</th>
+          <th *ngIf="selectedOption === 'search'">Is Subscribed</th>
+          <th *ngIf="selectedOption === 'nonActive'">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.id }}</td>
+          <td>{{ user.userNic }}</td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phoneNumber }}</td>
+          <td>{{ user.address }}</td>
+          <td>
+            <img
+              *ngIf="user.profileImage; else noImage"
+              [src]="user.profileImage"
+              alt="Profile Image"
+              width="50"
+              height="50"
+            />
+            <ng-template #noImage>
+              <span><i class="bi bi-person-circle" style="font-size: 62px;"></i></span>
+            </ng-template>
+          </td>
+          <td *ngIf="selectedOption === 'search'">{{ user.isActive }}</td>
+          <td *ngIf="selectedOption === 'search'">{{ user.isSubscribed }}</td>
+          <td *ngIf="selectedOption === 'nonActive'">
+            <button class="btn btn-success" (click)="activateUser(user.id)">
+              Activate
+            </button>
+          </td>
+        </tr>
+      </tbody>
     </table>
-
-    <!-- Non-Active Members Table with Activate Button -->
-    <table *ngIf="heading === 'Non-Active Members'" class="table table-bordered table-striped table-responsive">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>User NIC</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Address</th>
-                <th>Profile Image</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of nonActiveUsers">
-                <td>{{ user.id }}</td>
-                <td>{{ user.userNic }}</td>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.lastName }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.phoneNumber }}</td>
-                <td>{{ user.address }}</td>
-                <td>
-                    <img *ngIf="user.profileImage; else noImage" [src]="user.profileImage" alt="Profile Image" width="50"
-                        height="50">
-                    <ng-template #noImage><span><i class="bi bi-person-circle" style="font-size: 62px;"></i></span></ng-template>
-                </td>
-                <td>
-                    <button class="btn btn-success" (click)="activateUser(user.id)">Activate</button>
-                  </td>
-                  
-            </tr>
-        </tbody>
-    </table>
-
-    <!-- Search Results Table -->
-    <table *ngIf="heading === 'Search Results'" class="table table-bordered table-striped table-responsive">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>User NIC</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Address</th>
-                <th>Is Active</th>
-                <th>Is Subscribed</th>
-                <th>Profile Image</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of searchResults">
-                <td>{{ user.id }}</td>
-                <td>{{ user.userNic }}</td>
-                <td>{{ user.firstName }}</td>
-                <td>{{ user.lastName }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.phoneNumber }}</td>
-                <td>{{ user.address }}</td>
-                <td>{{ user.isActive !== null ? (user.isActive ? 'Active' : 'Inactive') : 'N/A' }}</td>
-                <td>{{ user.isSubscribed ? 'Subscribed' : 'Not Subscribed' }}</td>
-                <td>
-                    <img *ngIf="user.profileImage; else noImage" [src]="user.profileImage" alt="Profile Image" width="50"
-                        height="50">
-                    <ng-template #noImage><span><i class="bi bi-person-circle" style="font-size: 62px;"></i></span></ng-template>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <!-- Pagination Controls -->
-    <div class="pagination-controls">
-        <button class="btn btn-secondary" (click)="loadPreviousPage()" [disabled]="currentPage <= 1">Previous</button>
-        <span>Page {{ currentPage }} of {{ totalItems / pageSize | number:'1.0-0' }}</span>
-        <button class="btn btn-secondary" (click)="loadNextPage()" [disabled]="currentPage * pageSize >= totalItems">Next</button>
-    </div>
-</div>
+  
+    <mat-paginator
+      [length]="totalItems"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[10, 17, 25, 50]"
+      showFirstLastButtons
+      (page)="onPageChange($event)"
+      [pageIndex]="currentPage - 1"
+    ></mat-paginator>
+  </div>
+  

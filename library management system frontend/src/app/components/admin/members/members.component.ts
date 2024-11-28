@@ -11,163 +11,129 @@ export class MembersComponent implements OnInit {
   currentPage = 1;
   pageSize = 10;
   totalItems = 0;
-  activeUsers: any[] = [];
-  subscribedUsers: any[] = [];
-  nonActiveUsers: any[] = [];
-  searchResults: any[] = []; 
-  heading: string = 'Active Members'; 
-  searchQuery: string = ''; 
+  users: any[] = [];
+  heading: string = 'Active Members';
+  selectedOption: string = 'active';
+  searchQuery: string = '';
+
+  apiEndpoints: { [key: string]: string } = {
+    active: 'getActiveUsers',
+    subscribed: 'getSubscribeUsers',
+    nonActive: 'getNonActiveUsers',
+    search: 'getsearchUsers'
+  };
 
   constructor(private viewmemberService: ViewmembersService) {}
 
   ngOnInit(): void {
-    
-    this.loadActiveUsers();
+    this.fetchUserDetails();
   }
 
-  
-  loadActiveUsers() {
+  fetchUserDetails(): void {
     if (this.isLoading) return;
 
-    
-    this.activeUsers = [];
     this.isLoading = true;
-    this.heading = 'Active Members'; 
 
-    this.viewmemberService.getActiveUsers(this.currentPage, this.pageSize).subscribe(
-      (response) => {
-        const result = response.data;
-        this.activeUsers = result.items;
-        this.totalItems = result.totalCount;
+    if (this.selectedOption === 'search' && this.searchQuery.trim() === '') {
+      this.isLoading = false;
+      return;
+    }
+
+    let apiCall;
+
+    switch (this.selectedOption) {
+      case 'active':
+        apiCall = this.viewmemberService.getActiveUsers(this.currentPage, this.pageSize);
+        break;
+
+      case 'subscribed':
+        apiCall = this.viewmemberService.getSubscribeUsers(this.currentPage, this.pageSize);
+        break;
+
+      case 'nonActive':
+        apiCall = this.viewmemberService.getNonActiveUsers(this.currentPage, this.pageSize);
+        break;
+
+      case 'search':
+        if (this.searchQuery.trim() !== '') {
+          apiCall = this.viewmemberService.getsearchUsers(
+            this.currentPage,
+            this.pageSize,
+            this.searchQuery
+          );
+        }
+        break;
+
+      default:
+        console.error('Invalid option selected');
         this.isLoading = false;
-      },
-      (error) => {
-        console.error('Error fetching active users:', error);
-        this.isLoading = false;
-      }
-    );
-  }
+        return;
+    }
 
-  
-  loadSubscribedUsers() {
-    if (this.isLoading) return;
-
-    this.subscribedUsers = [];
-    this.isLoading = true;
-    this.heading = 'Subscribed Members';  
-
-    this.viewmemberService.getSubscribeUsers(this.currentPage, this.pageSize).subscribe(
-      (response) => {
-        const result = response.data;
-        this.subscribedUsers = result.items;
-        this.totalItems = result.totalCount;
-        this.isLoading = false;
-      },
-      (error) => {
-        console.error('Error fetching subscribed users:', error);
-        this.isLoading = false;
-      }
-    );
-  }
-
-  
-  loadNonActiveUsers() {
-    if (this.isLoading) return;
-
-    this.nonActiveUsers = [];
-    this.isLoading = true;
-    this.heading = 'Non-Active Members';  
-
-    this.viewmemberService.getNonActiveUsers(this.currentPage, this.pageSize).subscribe(
-      (response) => {
-        const result = response.data;
-        this.nonActiveUsers = result.items;
-        this.totalItems = result.totalCount;
-        this.isLoading = false;
-      },
-      (error) => {
-        console.error('Error fetching non-active users:', error);
-        this.isLoading = false;
-      }
-    );
-  }
-
-
-
-  
- 
-  searchUsers(searchQuery: string) {
-    if (searchQuery.trim() === '') {
-      
-      this.loadActiveUsers();
-    } else {
-      
-      this.isLoading = true;
-      this.heading = 'Search Results';  
-
-      this.viewmemberService.getsearchUsers(this.currentPage, this.pageSize, searchQuery).subscribe(
-        (response) => {
+    if (apiCall) {
+      apiCall.subscribe(
+        (response: any) => {
+          console.log('API Response:', response); 
           const result = response.data;
-          this.searchResults = result.items;
+          this.users = result.items;
           this.totalItems = result.totalCount;
+          this.heading = this.getHeading(this.selectedOption);
           this.isLoading = false;
         },
-        (error) => {
-          console.error('Error searching users:', error);
+        (error: any) => {
+          console.error('API Error:', error); 
           this.isLoading = false;
         }
       );
-    }
-  }
-  activateUser(id: number) {
-    if (this.isLoading) return;
-  
-    this.isLoading = false;
-    this.viewmemberService.activateUser(id).subscribe(
-      () => {
-        this.loadNonActiveUsers();
-        alert('User activated successfully!');
-       
-        this.isLoading = true;
-      },
-      (error) => {
-        console.error('Error activating user:', error);
-        alert('Failed to activate user. Please try again.');
-        this.isLoading = false;
-      }
-      
-    );
-  }
-  
-  
-  loadNextPage() {
-    if (this.currentPage * this.pageSize < this.totalItems) {
-      this.currentPage++;
-      if (this.heading === 'Active Members') {
-        this.loadActiveUsers();
-      } else if (this.heading === 'Subscribed Members') {
-        this.loadSubscribedUsers();
-      } else if (this.heading === 'Non-Active Members') {
-        this.loadNonActiveUsers();
-      } else if (this.heading === 'Search Results') {
-        this.searchUsers(this.searchQuery); 
-      }
+    } else {
+      this.isLoading = false;
     }
   }
 
-  
-  loadPreviousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      if (this.heading === 'Active Members') {
-        this.loadActiveUsers();
-      } else if (this.heading === 'Subscribed Members') {
-        this.loadSubscribedUsers();
-      } else if (this.heading === 'Non-Active Members') {
-        this.loadNonActiveUsers();
-      } else if (this.heading === 'Search Results') {
-        this.searchUsers(this.searchQuery); 
-      }
+  getHeading(option: string): string {
+    switch (option) {
+      case 'active': return 'Active Members';
+      case 'subscribed': return 'Subscribed Members';
+      case 'nonActive': return 'Non-Active Members';
+      case 'search': return 'Search Results';
+      default: return 'Members';
     }
+  }
+
+  onOptionChange(option: string): void {
+    this.selectedOption = option;
+    this.currentPage = 1;
+    this.fetchUserDetails();
+  }
+
+  onPageChange(event: any): void {
+    const { pageIndex, pageSize } = event;
+    this.currentPage = pageIndex + 1;
+    this.pageSize = pageSize;
+    this.fetchUserDetails();
+  }
+
+  activateUser(userId: number): void {
+    if (this.isLoading) return;
+
+    this.isLoading = false;
+    this.viewmemberService.activateUser(userId).subscribe(
+      (response) => {
+        console.log('User activation response:', response); 
+        alert('User activated successfully!');
+        this.fetchUserDetails();
+      },
+      (error) => {
+        console.error('Error activating user:', error); 
+        alert('Failed to activate user. Please try again.');
+        this.isLoading = false;
+      }
+    );
+  }
+
+  searchUsers(): void {
+    this.selectedOption = 'search';
+    this.currentPage = 1;
+    this.fetchUserDetails();
   }
 }
