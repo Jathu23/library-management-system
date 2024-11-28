@@ -14,8 +14,17 @@ export class AdminService {
     return this.http.get<any[]>(this.adminurl+'GetAllAdmins');
   }
   
-  addAdmin(admin: any): Observable<any> {
-    return this.http.post(this.adminurl+'CreateAdmin', admin);
+  addAdmin(adminformdata: any): Observable<any> {
+    const formData = new FormData();
+
+    // Append form data fields
+    formData.append('AdminNic', adminformdata.AdminNic);
+    formData.append('FirstName', adminformdata.FirstName);
+    formData.append('LastName', adminformdata.LastName);
+    formData.append('Email', adminformdata.Email);
+    formData.append('Password', adminformdata.Password);
+   
+    return this.http.post(this.adminurl+'CreateAdmin', formData);
   }
   
   transferMasterControl(currentMaster: number, newMaster: number): Observable<any> {
