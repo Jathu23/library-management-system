@@ -230,14 +230,14 @@ namespace library_management_system.Services
             return response;
         }
 
-        public async Task<ApiResponse<string>?> ActiveteUserAccount(string NimOrEmail)
+        public async Task<ApiResponse<string>?> ActiveteUserAccount(int id)
         {
             var response = new ApiResponse<string?>();
 
             try
             {
                
-                var user = await _userRepo.ActivateUserAccount(NimOrEmail);
+                var user = await _userRepo.ActivateUserAccount(id);
 
                 if (user == null)
                 {
@@ -248,7 +248,7 @@ namespace library_management_system.Services
                 }
                 response.Success = true;
                 response.Message = "User account activated successfully.";
-                response.Data = $"User with NIC or Email '{NimOrEmail}' has been activated.";
+                response.Data = $"User with NIC or Email '{id}' has been activated.";
             }
             catch (Exception ex)
             {

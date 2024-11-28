@@ -152,18 +152,27 @@ namespace library_management_system.Controllers
 
         }
         [HttpGet("GetAllDisabledUsers")]
-        public async Task<IActionResult> GetDisabledUsers()
+        public async Task<IActionResult> GetAllNonactiveUsers([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var data = await _userService.GetAllDisabledUsers();
-            if (data == null)
+
+            var response = await _userService.GetAllNonactiveUsers(pageNumber, pageSize);
+
+
+            if (!response.Success)
             {
-                return BadRequest(Response);
+                return BadRequest(new
+                {
+                    response.Message
+                });
             }
-            else
+
+            return Ok(new
             {
-                return Ok(data);
-            }
+                response.Message,
+                response.Data
+            });
         }
+    
         [HttpDelete("DeletePermanantly")]
         public async Task<IActionResult> DeleteUser(int id)
         {

@@ -312,37 +312,86 @@ namespace library_management_system.Services
 
 
 
-        public async Task<ApiResponse<List<User>>> GetAllDisabledUsers()
+        public async Task<ApiResponse<PaginatedResult<UserDto>>> GetAllNonactiveUsers(int page, int pageSize)
         {
-            var response = new ApiResponse<List<User>>();
-
             try
             {
 
-                var users = await _userRepo.GetAllDisabeledUsers();
+                if (page <= 0)
+                {
+                    return new ApiResponse<PaginatedResult<UserDto>>
+                    {
+                        Success = false,
+                        Message = "Page number must be greater than 0.",
+                        Data = null
+                    };
+                }
 
-                if (users == null || users.Count == 0)
+                if (pageSize <= 0 || pageSize > 100)
                 {
-                    response.Success = false;
-                    response.Message = "No disabled users found.";
+                    return new ApiResponse<PaginatedResult<UserDto>>
+                    {
+                        Success = false,
+                        Message = "Page size must be greater than 0 and less than or equal to 100.",
+                        Data = null
+                    };
                 }
-                else
+
+
+                var (subscribers, totalCount) = await _userRepo.GetAllNonactiveUsers(page, pageSize);
+
+                if (subscribers == null || !subscribers.Any())
                 {
-                    response.Success = true;
-                    response.Message = "Disabled users retrieved successfully.";
-                    response.Data = users;
+                    return new ApiResponse<PaginatedResult<UserDto>>
+                    {
+                        Success = false,
+                        Message = "No nonActive users found for the given pagination parameters.",
+                        Data = null
+                    };
                 }
+
+
+                var subscriberDtos = subscribers.Select(user => new UserDto
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    Address = user.Address,
+                    UserNic = user.UserNic,
+
+
+
+                }).ToList();
+
+                var result = new PaginatedResult<UserDto>
+                {
+                    Items = subscriberDtos,
+                    TotalCount = totalCount,
+                    CurrentPage = page,
+                    PageSize = pageSize
+                };
+
+
+                return new ApiResponse<PaginatedResult<UserDto>>
+                {
+                    Success = true,
+                    Message = "Active users retrieved successfully.",
+                    Data = result
+                };
             }
             catch (Exception ex)
             {
-                response.Success = false;
-                response.Message = "An error occurred while fetching the disabled users.";
-                response.Errors.Add(ex.Message);
+
+                return new ApiResponse<PaginatedResult<UserDto>>
+                {
+                    Success = false,
+                    Message = $"An error occurred while retrieving the Active users: {ex.Message}",
+                    Data = null
+                };
             }
-
-            return response;
         }
-
         public async Task<ApiResponse<User>> DeleteUserPermanently(int id)
         {
             var response = new ApiResponse<User>();

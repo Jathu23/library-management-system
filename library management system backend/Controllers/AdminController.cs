@@ -141,9 +141,9 @@ namespace library_management_system.Controllers
             }
         }
         [HttpPut("UseAccountActive")]
-        public async Task<IActionResult> ActiveUserAccount(string nicOrEmail)
+        public async Task<IActionResult> ActiveUserAccount(int id)
         {
-            var response = await _adminServices.ActiveteUserAccount(nicOrEmail);
+            var response = await _adminServices.ActiveteUserAccount(id);
             if (response != null)
             {
                 return Ok(response);

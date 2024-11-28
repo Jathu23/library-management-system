@@ -34,6 +34,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MembersComponent } from './components/admin/members/members.component';
 
 
 
@@ -68,7 +69,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     SubscriptionComponent,
     ShowLentRecComponent,
     ShowLentHistoryComponent,
-    EditBookDialogComponent
+    EditBookDialogComponent,
+    MembersComponent
 
    
 
