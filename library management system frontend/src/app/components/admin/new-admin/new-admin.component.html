@@ -1,54 +1,89 @@
-
-<div class="container mt-5 ">
-    <div class="card shadow-lg border-0 rounded-2">
-      <div class="card-header text-white text-center" style="background-color: #81256c;">
-        <h3>Add New Admin</h3>
+<div class="container mt-5">
+  <div class="card shadow-lg border-0 rounded-2 mb-5">
+    <div class="card-header text-white text-center" style="background-color: #6d1b7b;">
+      <h3>Manage Admin Controls</h3>
+    </div>
+    <div class="card-body">
+      <!-- Transfer Master Control Section -->
+      <div class="card mb-4">
+        <div class="card-header text-white" style="background-color: #4a1052;">
+          <h5>Transfer Master Control</h5>
+        </div>
+        <div class="card-body">
+          <div class="form-group mb-3">
+            <label for="adminSelect" class="form-label">Select New Master Admin</label>
+            <select id="adminSelect" class="form-control" [(ngModel)]="selectedAdminId">
+              <!-- Placeholder option -->
+              <option [value]="0" disabled selected>Select an admin</option>
+              
+              <!-- Dynamic options -->
+              <option *ngFor="let admin of adminsList" [value]="admin.id">
+                {{ admin.fullName }} (Id: {{ admin.id }})
+              </option>
+            </select>
+            
+          </div>
+          <button class="btn w-100" style="background-color: #6d1b7b; color: #fff;" (click)="transferMasterControl()">
+            Transfer Master Control
+          </button>
+        </div>
       </div>
-        <form [formGroup]="adminForm" (ngSubmit)="onSubmit()" class="p-3 border rounded">
-          <div class="form-group mb-3">
-            <label for="nic">NIC Number</label>
-            <input type="text" id="nic" class="form-control" formControlName="nic" placeholder="Enter NIC number">
-            <div *ngIf="adminForm.get('nic')?.invalid && adminForm.get('nic')?.touched" class="text-danger">
-              NIC number is required.
-            </div>
-          </div>
-      
-          <div class="form-group mb-3">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" class="form-control" formControlName="firstName" placeholder="Enter first name">
-            <div *ngIf="adminForm.get('firstName')?.invalid && adminForm.get('firstName')?.touched" class="text-danger">
-              First name is required.
-            </div>
-          </div>
-      
-          <div class="form-group mb-3">
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" class="form-control" formControlName="lastName" placeholder="Enter last name">
-            <div *ngIf="adminForm.get('lastName')?.invalid && adminForm.get('lastName')?.touched" class="text-danger">
-              Last name is required.
-            </div>
-          </div>
-      
-          <div class="form-group mb-3">
-            <label for="email">Email</label>
-            <input type="email" id="email" class="form-control" formControlName="email" placeholder="Enter email">
-            <div *ngIf="adminForm.get('email')?.invalid && adminForm.get('email')?.touched" class="text-danger">
-              Please enter a valid email.
-            </div>
-          </div>
-      
-          <div class="form-group mb-3">
-            <label for="password">Password</label>
-            <input type="password" id="password" class="form-control" formControlName="password" placeholder="Enter password">
-            <div *ngIf="adminForm.get('password')?.invalid && adminForm.get('password')?.touched" class="text-danger">
-              Password must be at least 6 characters.
-            </div>
-          </div>
-      
-          <button type="submit" class="btn btn-primary w-100" [disabled]="adminForm.invalid"  style="background-color: #81256c;">Submit</button>
-        </form>
-      
-      
-</div>
- </div>
 
+      <!-- Add New Admin Section -->
+      <div class="card">
+        <div class="card-header text-white" style="background-color: #4a1052;">
+          <h5>Add New Admin</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="adminForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="nic" class="form-label">NIC Number</label>
+                <input type="text" id="nic" class="form-control" formControlName="AdminNic" placeholder="Enter NIC number">
+                <div *ngIf="adminForm.get('nic')?.invalid && adminForm.get('nic')?.touched" class="text-danger">
+                  NIC number is required.
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" id="firstName" class="form-control" formControlName="FirstName" placeholder="Enter first name">
+                <div *ngIf="adminForm.get('firstName')?.invalid && adminForm.get('firstName')?.touched" class="text-danger">
+                  First name is required.
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" id="lastName" class="form-control" formControlName="LastName" placeholder="Enter last name">
+                <div *ngIf="adminForm.get('lastName')?.invalid && adminForm.get('lastName')?.touched" class="text-danger">
+                  Last name is required.
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" class="form-control" formControlName="Email" placeholder="Enter email">
+                <div *ngIf="adminForm.get('email')?.invalid && adminForm.get('email')?.touched" class="text-danger">
+                  Please enter a valid email.
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" class="form-control" formControlName="Password" placeholder="Enter password">
+                <div *ngIf="adminForm.get('password')?.invalid && adminForm.get('password')?.touched" class="text-danger">
+                  Password must be at least 6 characters.
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn w-100" [disabled]="adminForm.invalid" style="background-color: #6d1b7b; color: #fff;">
+              Add Admin
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
