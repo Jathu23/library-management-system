@@ -261,5 +261,66 @@ namespace library_management_system.Services
 
 
         }
+
+        public async Task<ApiResponse<Admin>> TransferMasterControlAsync(int currentMasterId, int newMasterId)
+        {
+            var response = new ApiResponse<Admin>();
+
+            try
+            {
+                if (currentMasterId == newMasterId)
+                    throw new Exception("invalid input ,id is unique");
+
+
+                var newMaster = await _adminRepo.GetAdminById(newMasterId);
+
+                if (newMaster == null)
+                {
+                    response.Success = false;
+                    response.Message = "New admin not found.";
+                    return response;
+                }
+
+
+                if (newMaster.IsMaster)
+                {
+                    response.Success = false;
+                    response.Message = "The selected admin is already a master.";
+                    response.Data = newMaster;
+                    return response;
+                }
+
+                var currentMaster = await _adminRepo.GetAdminById(currentMasterId);
+                if (currentMaster == null || !currentMaster.IsMaster)
+                {
+                    response.Success = false;
+                    response.Message = "Current master admin not found or invalid.";
+                    return response;
+                }
+
+              
+
+              
+                currentMaster.IsMaster = false;
+                await _adminRepo.UpdateAdmin(currentMaster);
+
+               
+                newMaster.IsMaster = true;
+                await _adminRepo.UpdateAdmin(newMaster);
+
+                response.Success = true;
+                response.Message = "Master control has been successfully transferred.";
+                response.Data = newMaster;
+
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "An error occurred while transferring master control.";
+                response.Errors.Add(ex.Message);
+            }
+
+            return response;
+        }
     }
 }

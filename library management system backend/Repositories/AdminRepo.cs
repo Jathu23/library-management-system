@@ -45,7 +45,12 @@ namespace library_management_system.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
+        public async Task UpdateAdmin(Admin admin)
+        {
+            _context.Admins.Update(admin);
+            await _context.SaveChangesAsync();
+        }
 
-       
+
     }
 }
