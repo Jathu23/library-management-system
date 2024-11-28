@@ -101,19 +101,26 @@ namespace library_management_system.Repositories
 
         public async Task<NormalBook?> GetBookWithCopies(int bookId,bool IdSelector)
         {
-            if (IdSelector)
+            try
             {
-                // Include the BookCopies and filter for only available ones
-                return await _context.NormalBooks
-                                     .Include(b => b.BookCopies)
-                                     .FirstOrDefaultAsync(b => b.Id == bookId);
+                if (IdSelector)
+                {
+                    // Include the BookCopies and filter for only available ones
+                    return await _context.NormalBooks
+                                         .Include(b => b.BookCopies)
+                                         .FirstOrDefaultAsync(b => b.Id == bookId);
+                }
+                else
+                {
+                    var bookcopy = await _context.BookCopies.FindAsync(bookId);
+                    return await _context.NormalBooks
+                                        .Include(b => b.BookCopies)
+                                        .FirstOrDefaultAsync(b => b.Id == bookcopy.BookId);
+                }
             }
-            else
+            catch
             {
-                var bookcopy = await _context.BookCopies.FindAsync(bookId);
-                return await _context.NormalBooks
-                                    .Include(b => b.BookCopies)
-                                    .FirstOrDefaultAsync(b => b.Id == bookcopy.BookId);
+                throw new Exception("book copy mybe deleted");
             }
            
         }

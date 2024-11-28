@@ -369,6 +369,7 @@ namespace library_management_system.Services
                     PublishYear = book.PublishYear,
                     ShelfLocation = book.ShelfLocation,
                     AvailableCopies = book.BookCopies.Count(bc => bc.IsAvailable),
+                    TotalCopies = book.TotalCopies,
                     CoverImagePath = book.CoverImagePath,
                     BookCopies = book.BookCopies.Select(bc => new BookCopyDto
                     {
