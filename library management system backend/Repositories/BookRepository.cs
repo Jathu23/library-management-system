@@ -120,7 +120,7 @@ namespace library_management_system.Repositories
             }
             catch
             {
-                throw new Exception("book copy mybe deleted");
+                throw new Exception("The book or copy may have been deleted.");
             }
            
         }

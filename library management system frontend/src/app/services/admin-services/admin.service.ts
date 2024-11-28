@@ -1,0 +1,28 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AdminService {
+
+  private readonly adminurl ='https://localhost:7261/api/Admin/';
+  constructor(private http: HttpClient) { }
+
+  getAllAdmins(): Observable<any> {
+    return this.http.get<any[]>(this.adminurl+'GetAllAdmins');
+  }
+  
+  addAdmin(admin: any): Observable<any> {
+    return this.http.post(this.adminurl+'CreateAdmin', admin);
+  }
+  
+  transferMasterControl(currentMaster: number, newMaster: number): Observable<any> {
+    const url = `${this.adminurl}transfer-master-control?CurrentMasterId=${currentMaster}&NewMasterId=${newMaster}`;
+    return this.http.post(url, null); 
+  }
+  
+  
+  
+}

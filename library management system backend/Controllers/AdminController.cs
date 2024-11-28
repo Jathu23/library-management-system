@@ -157,6 +157,8 @@ namespace library_management_system.Controllers
         [HttpPost("transfer-master-control")]
         public async Task<IActionResult> TransferMasterControl([FromQuery] int CurrentMasterId, [FromQuery] int NewMasterId)
         {
+            Console.WriteLine(CurrentMasterId);
+            Console.WriteLine( NewMasterId);
             var response = await _adminServices.TransferMasterControlAsync(CurrentMasterId, NewMasterId);
 
             if (response.Success)

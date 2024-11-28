@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container mt-5">
   <div class="card shadow-lg border-0 rounded-3">
-    <div class="card-header bg-primary text-white text-center">
+    <div class="card-header text-white text-center" style="background-color: #6d1b7b;">
       <h3>Add New Audiobook</h3>
     </div>
 
@@ -11,7 +11,7 @@
           <div class="col-md-6 mb-4">
             <label for="isbn" class="form-label">ISBN</label>
             <div class="input-group">
-              <span class="input-group-text bg-secondary text-white">
+              <span class="input-group-text text-white" style="background-color: #4a1052;">
                 <i class="bi bi-upc-scan"></i>
               </span>
               <input type="text" id="isbn" class="form-control" formControlName="ISBN" placeholder="Enter ISBN" />
@@ -26,7 +26,7 @@
           <div class="col-md-6 mb-4">
             <label for="title" class="form-label">Title</label>
             <div class="input-group">
-              <span class="input-group-text bg-secondary text-white">
+              <span class="input-group-text text-white" style="background-color: #4a1052;">
                 <i class="bi bi-book"></i>
               </span>
               <input type="text" id="title" class="form-control" formControlName="Title" placeholder="Enter Title" />
@@ -43,7 +43,7 @@
           <div class="col-md-6 mb-4">
             <label for="author" class="form-label">Author</label>
             <div class="input-group">
-              <span class="input-group-text bg-secondary text-white">
+              <span class="input-group-text text-white" style="background-color: #4a1052;">
                 <i class="bi bi-person"></i>
               </span>
               <input type="text" id="author" class="form-control" formControlName="Author" placeholder="Enter Author Name" />
@@ -58,7 +58,7 @@
           <div class="col-md-6 mb-4">
             <label for="genre" class="form-label">Genre</label>
             <div class="input-group">
-              <span class="input-group-text bg-secondary text-white">
+              <span class="input-group-text text-white" style="background-color: #4a1052;">
                 <i class="bi bi-tags"></i>
               </span>
               <input type="text" id="genre" class="form-control" formControlName="Genre" placeholder="Enter Genre" />
@@ -75,7 +75,7 @@
           <div class="col-md-6 mb-4">
             <label for="publishYear" class="form-label">Publish Year</label>
             <div class="input-group">
-              <span class="input-group-text bg-secondary text-white">
+              <span class="input-group-text text-white" style="background-color: #4a1052;">
                 <i class="bi bi-calendar"></i>
               </span>
               <input type="number" id="publishYear" class="form-control" formControlName="PublishYear"
@@ -91,7 +91,7 @@
           <div class="col-md-6 mb-4">
             <label for="audioFile" class="form-label">Audio File</label>
             <div class="input-group">
-              <span class="input-group-text bg-secondary text-white">
+              <span class="input-group-text text-white" style="background-color: #4a1052;">
                 <i class="bi bi-file-earmark-music"></i>
               </span>
               <input type="file" id="audioFile" class="form-control" (change)="onFileSelect($event, 'AudioFile')" />
@@ -104,7 +104,7 @@
           <div class="col-md-6 mb-4">
             <label for="coverImage" class="form-label">Cover Image</label>
             <div class="input-group">
-              <span class="input-group-text bg-secondary text-white">
+              <span class="input-group-text text-white" style="background-color: #4a1052;">
                 <i class="bi bi-image"></i>
               </span>
               <input type="file" id="coverImage" class="form-control" (change)="onFileSelect($event, 'CoverImage')" />
@@ -115,7 +115,7 @@
           <div class="col-md-6 mb-4">
             <label for="narrator" class="form-label">Narrator</label>
             <div class="input-group">
-              <span class="input-group-text bg-secondary text-white">
+              <span class="input-group-text text-white" style="background-color: #4a1052;">
                 <i class="bi bi-mic"></i>
               </span>
               <input type="text" id="narrator" class="form-control" formControlName="Narrator"
@@ -138,7 +138,7 @@
         </div>
 
         <div class="text-center mt-4">
-          <button type="submit" class="btn btn-success px-4 py-2" [disabled]="addAudiobookForm.invalid">
+          <button type="submit" class="btn text-white px-4 py-2" style="background-color: #6d1b7b;" [disabled]="addAudiobookForm.invalid">
             <i class="bi bi-check-circle"></i> Add Audiobook
           </button>
         </div>

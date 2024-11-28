@@ -43,7 +43,7 @@
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Address</th>
-                <th>Profile Image</th>
+                <th *ngIf="false">Profile Image</th>
             </tr>
         </thead>
         <tbody>
@@ -55,7 +55,7 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.phoneNumber }}</td>
                 <td>{{ user.address }}</td>
-                <td>
+                <td *ngIf="false">
                     <img *ngIf="user.profileImage; else noImage" [src]="user.profileImage" alt="Profile Image" width="50"
                         height="50">
                     <ng-template #noImage><span><i class="bi bi-person-circle" style="font-size: 62px;"></i></span></ng-template>
@@ -114,7 +114,7 @@
                 <th>Address</th>
                 <th>Is Active</th>
                 <th>Is Subscribed</th>
-                <th>Profile Image</th>
+                <th >Profile Image</th>
             </tr>
         </thead>
         <tbody>

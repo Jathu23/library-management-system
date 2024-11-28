@@ -9,7 +9,7 @@ import { ViewmembersService } from '../../../services/admin-services/viewmembers
 export class MembersComponent implements OnInit {
   isLoading = false;
   currentPage = 1;
-  pageSize = 10;
+  pageSize = 2;
   totalItems = 0;
   activeUsers: any[] = [];
   subscribedUsers: any[] = [];
@@ -119,6 +119,7 @@ export class MembersComponent implements OnInit {
       );
     }
   }
+
   activateUser(id: number) {
     if (this.isLoading) return;
   

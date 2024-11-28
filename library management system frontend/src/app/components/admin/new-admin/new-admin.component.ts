@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { adminRequestModel } from '../../../models/interfaces/add-admin.interface';
-import { AuthService } from '../../../services/auth-service/auth.service';
-import { Router } from '@angular/router';
+import { AdminService } from '../../../services/admin-services/admin.service';
 
 @Component({
   selector: 'app-new-admin',
@@ -10,44 +8,74 @@ import { Router } from '@angular/router';
   styleUrl: './new-admin.component.css'
 })
 export class NewAdminComponent {
-  adminForm: FormGroup;
+  adminForm!: FormGroup;
+  adminsList: any[] = [];
+  selectedAdminId: number | null = 0;
+  curentAdminId: number= 2;
 
-  constructor(private fb: FormBuilder,
-     private authService: AuthService,
-    private router :Router)
-     {
-   
+  constructor(private fb: FormBuilder, private adminService: AdminService) {}
 
-    this.adminForm = this.fb.group(
-      {
-      nic:new FormControl ('',[ Validators.required]),
-      firstName: new FormControl ('',[ Validators.required]),
-      lastName: new FormControl ('',[ Validators.required]),
-      email: new FormControl ('',[ Validators.required]),
-      password:new FormControl('', [Validators.required, Validators.minLength(6)]),
+  ngOnInit(): void {
+    this.adminForm = this.fb.group({
+      nic: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
+
+    this.fetchAdmins();
+  }
+
+  fetchAdmins(): void {
+    this.adminService.getAllAdmins().subscribe(
+      (data) => {
+        if (data.success) {
+          // console.log(data.data);
+          this.adminsList=data.data;
+          console.log(this.adminsList);
+        }
+      
+    },
+  (error)=>{
+    console.log(error);
+  });
   }
 
   onSubmit(): void {
-    if (this.adminForm.invalid) {
-      return;}
-    
-      const adminData = {
-        ...this.adminForm.value
-      };
-console.log(adminData);
-
-      this.authService.createAdmin(adminData).subscribe(
-        (response) => {
-          console.log('Admin created successfully:', response);
-          alert('Admin created successfully!');
-          this.adminForm.reset(); 
+    if (this.adminForm.valid) {
+      const newAdmin = this.adminForm.value;
+      this.adminService.addAdmin(newAdmin).subscribe({
+        next: () => {
+          alert('Admin added successfully!');
+          this.adminForm.reset();
         },
-        (error) => {
-          console.log('Error creating admin:', error);
-          alert('An error occurred while creating the admin.');
+        error: (err) => {
+          console.error(err);
+          alert('Failed to add admin.');
         },
-      );
+      });
     }
   }
+
+  transferMasterControl(): void {
+    if (this.selectedAdminId) {
+      this.adminService.transferMasterControl(this.curentAdminId,this.selectedAdminId).subscribe({
+        next: () => {
+          alert('Master control transferred successfully!');
+          this.fetchAdmins();
+          this.selectedAdminId=0;
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Failed to transfer master control.');
+          this.selectedAdminId=0;
+        },
+      });
+    } else {
+      alert('Please select an admin.');
+      
+    }
+  }
+}
 
