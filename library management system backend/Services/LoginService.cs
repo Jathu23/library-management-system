@@ -26,87 +26,87 @@ namespace library_management_system.Services
             _userRepo = userRepo;
             _adminRepo = adminRepo;
         }
-
         public async Task<ApiResponse<AuthResponse>> Login(LoginRequstDto loginRequest)
         {
             var response = new ApiResponse<AuthResponse>();
 
-            var user = await _repository.GetByEmailOrNic(loginRequest.EmailOrNic);
-            var isActive = await _repository.GetUserByEmailOrNic(loginRequest.EmailOrNic);
+            try
+            {
+                var user = await _repository.GetByEmailOrNic(loginRequest.EmailOrNic);
 
-            if (user == null || !_bCryptService.VerifyPassword(loginRequest.Password, user.PasswordHash))
-            {
-                response.Success = false;
-                response.Message = "Login failed";
-                response.Errors.Add("Invalid email or password.");
-                return response;
-            }
-            else
-            {
-                if (user.Role == "user")
+               
+                if (user == null || !_bCryptService.VerifyPassword(loginRequest.Password, user.PasswordHash))
                 {
-                    if (isActive != null && isActive.IsActive == true)
-                    {
-                        var LoginUser = await _userRepo.Getuserid(user.MemberId);
+                    response.Success = false;
+                    response.Message = "Login failed";
+                    response.Errors.Add("Invalid email or password.");
+                    return response;
+                }
 
-                        response.Success = true;
-                        response.Message = "Login successful";
-                        response.Data = new AuthResponse
+              
+                switch (user.Role)
+                {
+                    case "user":
+                        var loginUser = await _userRepo.Getuserid(user.MemberId);
+                        if (loginUser?.IsActive == true)
                         {
-                            Token = _jwtService.GenerateToken(LoginUser),
-                            Role = "user"
-                        };
-
-                        return response;
-                    }
-                    else
-                    {
-                        if (isActive != null && isActive.IsActive == false)
-                        {
-                            response.Success = false;
-                            response.Message = "User Not Active";
-                            response.Errors.Add("User status is Not Active.");
-                            return response;
+                            response.Success = true;
+                            response.Message = "Login successful";
+                            response.Data = new AuthResponse
+                            {
+                                Token = _jwtService.GenerateToken(loginUser),
+                                Role = "user"
+                            };
                         }
                         else
                         {
                             response.Success = false;
-                            response.Message = "User Not find";
-                            response.Errors.Add("User is Not find");
-                            return response;
+                            response.Message = "User not active";
+                            response.Errors.Add("User status is not active.");
                         }
-                    }
+                        break;
 
-                }
-                else
-                {
-                    if (user.Role == "admin" && user != null)
-                    {
-                        var Loginadmin = await _adminRepo.GetAdminById(user.MemberId);
-
-                        response.Success = true;
-                        response.Message = "Login successful";
-                        response.Data = new AuthResponse
+                    case "admin":
+                        var loginAdmin = await _adminRepo.GetAdminById(user.MemberId);
+                        if (loginAdmin != null)
                         {
-                            Token = _jwtService.GenerateAdminToken(Loginadmin),
-                            Role = "admin"
-                        };
+                            response.Success = true;
+                            response.Message = "Login successful";
+                            response.Data = new AuthResponse
+                            {
+                                Token = _jwtService.GenerateAdminToken(loginAdmin),
+                                Role = "admin",
+                                Ismaster = loginAdmin.IsMaster
+                            };
+                        }
+                        else
+                        {
+                            response.Success = false;
+                            response.Message = "Admin login failed";
+                            response.Errors.Add("Invalid admin credentials.");
+                        }
+                        break;
 
-                        return response;
-                    }
-                    else
-                    {
+                    default:
                         response.Success = false;
-                        response.Message = "Invalid password or userId";
-                        response.Errors.Add("Admin login failed");
-                        return response;
-                    }
-
-
+                        response.Message = "Invalid role";
+                        response.Errors.Add("Unrecognized user role.");
+                        break;
                 }
-
             }
-          
+            catch (Exception ex)
+            {
+                // Log the exception (optional, depending on logging implementation)
+                Console.Error.WriteLine($"An error occurred during login: {ex.Message}");
+
+                // Return a generic error response
+                response.Success = false;
+                response.Message = "An unexpected error occurred.";
+                response.Errors.Add("Please try again later.");
+            }
+
+            return response;
         }
+
     }
 }

@@ -27,7 +27,6 @@
     <Folder Include="wwwRoot\EbookCoverImages\" />
     <Folder Include="wwwRoot\Ebooks\" />
     <Folder Include="wwwRoot\AudiobookCovers\" />
-    <Folder Include="wwwRoot\Audiobooks\" />
     <Folder Include="wwwRoot\userimages\" />
   </ItemGroup>
 

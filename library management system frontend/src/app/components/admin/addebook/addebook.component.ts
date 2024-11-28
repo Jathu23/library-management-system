@@ -20,7 +20,7 @@ export class AddebookComponent implements OnInit {
       Genre: ['fd', Validators.required],
       PublishYear: [
         '1234',
-        [Validators.required, Validators.pattern(/^\d{4}$/), Validators.min(1000)],
+        [Validators.required, Validators.pattern(/^\d{4}$/), Validators.min(2000)],
       ],
       EbookFile: [null, Validators.required],
       CoverImages: [null],

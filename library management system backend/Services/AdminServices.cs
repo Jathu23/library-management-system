@@ -38,13 +38,19 @@ namespace library_management_system.Services
         {
             var response = new ApiResponse<AuthResponse>();
             var exLoginData = await _loginRepo.GetByEmailOrNic(AdminRequstDto.Email);
+            var alladmins = await _adminRepo.GetAllAdmins();
 
           try
             {
+                if (alladmins.Count() == 5)
+                    throw new Exception("Only 5 admin accounts are allowed.");
+               
                 if (exLoginData != null)
                     throw new Exception("An User with this email  already exists.");
 
                 var profileImagePath = await SaveProfileImage(AdminRequstDto.ProfileImage);
+
+                var isMasterExists = alladmins.Any(admin => admin.IsMaster);
 
                 var admin = new Admin
                 {
@@ -53,12 +59,11 @@ namespace library_management_system.Services
                     LastName = AdminRequstDto.LastName,
                     FullName = $"{AdminRequstDto.FirstName} {AdminRequstDto.LastName}",
                     Email = AdminRequstDto.Email,
+                    IsMaster = !isMasterExists, 
                     ProfileImage = profileImagePath
-                  
-
                 };
 
-            var Createdadmin   =  await _adminRepo.CreateAdmin(admin);
+                var Createdadmin   =  await _adminRepo.CreateAdmin(admin);
 
                 var logindata = new LoginT
                 {
@@ -74,12 +79,16 @@ namespace library_management_system.Services
 
                 if (Createdadmin != null && state == true)
                 {
+                   
+
                     response.Success = true;
-                    response.Message = "Admin created successfully.";
+                    response.Message = isMasterExists? "Admin created successfully (slave account).": "Admin created successfully (master account).";
+
                     response.Data = new AuthResponse
                     {
                         Token = _jwtService.GenerateAdminToken(admin),
-                        Role = "admin"
+                        Role = "admin",
+                        Ismaster = !isMasterExists,
                     };
                 }
                 else
@@ -87,8 +96,6 @@ namespace library_management_system.Services
                     throw new Exception("error");
 
                 }
-
-            
 
             }
             catch (Exception ex)

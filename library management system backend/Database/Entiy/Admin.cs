@@ -11,7 +11,8 @@ namespace library_management_system.Database.Entiy
         public required string LastName { get; set; }
         public required string FullName { get; set; }
         public required string Email { get; set; }
-        public  required string ProfileImage { get; set; }
+        public required bool IsMaster { get; set; }
+        public string? ProfileImage { get; set; }
       
 
        
