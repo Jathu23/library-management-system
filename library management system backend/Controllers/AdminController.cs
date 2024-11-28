@@ -140,8 +140,8 @@ namespace library_management_system.Controllers
                 return BadRequest(response);
             }
         }
-        [HttpPut("UseAccountActive")]
-        public async Task<IActionResult> ActiveUserAccount(int id)
+        [HttpGet("UserAccountActive")]
+        public async Task<IActionResult> ActiveUserAccount([FromQuery] int id)
         {
             var response = await _adminServices.ActiveteUserAccount(id);
             if (response != null)

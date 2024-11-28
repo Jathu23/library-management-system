@@ -122,18 +122,20 @@ export class MembersComponent implements OnInit {
   activateUser(id: number) {
     if (this.isLoading) return;
   
-    this.isLoading = true;
+    this.isLoading = false;
     this.viewmemberService.activateUser(id).subscribe(
       () => {
+        this.loadNonActiveUsers();
         alert('User activated successfully!');
-        this.loadNonActiveUsers(); // Refresh the non-active users list
-        this.isLoading = false;
+       
+        this.isLoading = true;
       },
       (error) => {
         console.error('Error activating user:', error);
         alert('Failed to activate user. Please try again.');
         this.isLoading = false;
       }
+      
     );
   }
   

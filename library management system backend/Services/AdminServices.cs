@@ -248,7 +248,8 @@ namespace library_management_system.Services
                 }
                 response.Success = true;
                 response.Message = "User account activated successfully.";
-                response.Data = $"User with NIC or Email '{id}' has been activated.";
+                response.Data = $"User with Id '{id}' has been activated.";
+                return response;
             }
             catch (Exception ex)
             {

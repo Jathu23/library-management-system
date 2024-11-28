@@ -31,9 +31,8 @@ getsearchUsers(currentPage: number, pageSize: number, searchstring: string): Obs
   return this.http.get<any>(`${this.SearchUrl}?searchString=${searchstring}&pageNumber=${currentPage}&pageSize=${pageSize}`);
 }
 
-
-activateUser(id: number): Observable<any> {
-  const activateUrl = `https://localhost:7261/api/Admin/UseAccountActive?id=${id}`;
-  return this.http.post(activateUrl, {}); // Sending an empty object as the request body
+private  activateUrl = `https://localhost:7261/api/Admin/UserAccountActive`;
+activateUser(id: number): Observable<any> { 
+  return this.http.get(`${this.activateUrl}?id= ${id}`); 
 }
 }
