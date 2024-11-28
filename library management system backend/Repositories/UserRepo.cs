@@ -2,6 +2,8 @@
 using library_management_system.Database.Entiy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using PdfSharp;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace library_management_system.Repositories
 {
@@ -32,13 +34,22 @@ namespace library_management_system.Repositories
             return await _context.Users.FindAsync(id);
 
         }
-        public async Task<List<User>> GetAllUsers()
+        public async Task<(List<User> Users, int TotalCount)> GetAllActiveUsers(int pageNumber, int pageSize)
         {
+            var subscribers = _context.Users.Where(u => u.IsActive);
 
-            var data = await _context.Users
-                               .Where(u => u.IsActive)  
-                               .ToListAsync();
-            return data;
+            if (subscribers == null)
+            {
+                return (new List<User>(), 0);
+            }
+
+            int totalCount = await subscribers.CountAsync();
+            var users = await subscribers
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (users, totalCount);
         }
         public async Task<User> SoftDelete(int id)
         {
@@ -140,6 +151,23 @@ namespace library_management_system.Repositories
           .Select(u => u.Email)
           .ToListAsync();
 
+        }
+        public async Task<(List<User> Users, int TotalCount)> GetSubscribedUsersAsync(int pageNumber, int pageSize)
+        {
+            var subscribers = _context.Users.Where(u => u.IsSubscribed);
+
+            if (subscribers == null)
+            {
+                return (new List<User>(), 0); 
+            }
+
+            int totalCount = await subscribers.CountAsync();
+            var users = await subscribers
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (users, totalCount);
         }
 
     }
