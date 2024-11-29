@@ -19,6 +19,7 @@ export class ShowNormalbookComponent implements OnInit {
   pageSize = 10;
   totalItems = 0;
   Nbooks: any[] = [];
+  
 
 
 
@@ -31,27 +32,44 @@ export class ShowNormalbookComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.loadnormalbooks()
+    // this.loadnormalbooks();
+    this.loadNormalbooks(0, this.pageSize);
   }
-  loadnormalbooks() {
-    if (this.isLoading) return;
+  // loadnormalbooks() {
+  //   if (this.isLoading) return;
 
+  //   this.isLoading = true;
+  //   this.getbookservice.getNoramlbooks(this.currentPage, this.pageSize).subscribe(
+  //     (response) => {
+  //       const result = response.data;
+
+  //       this.Nbooks = [...this.Nbooks, ...result.items];
+  //       this.totalItems = result.totalCount;
+  //       this.currentPage++;
+  //       this.isLoading = false;
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching normalobooks:', error);
+  //       this.isLoading = false;
+  //     }
+  //   );
+
+  // }
+
+  loadNormalbooks(pageIndex: number, pageSize: number) {
     this.isLoading = true;
-    this.getbookservice.getNoramlbooks(this.currentPage, this.pageSize).subscribe(
+    this.getbookservice.getNoramlbooks(pageIndex + 1, pageSize).subscribe(
       (response) => {
         const result = response.data;
-
-        this.Nbooks = [...this.Nbooks, ...result.items];
+        this.Nbooks = result.items;
         this.totalItems = result.totalCount;
-        this.currentPage++;
         this.isLoading = false;
       },
       (error) => {
-        console.error('Error fetching normalobooks:', error);
+        console.error('Error fetching audiobooks:', error);
         this.isLoading = false;
       }
     );
-
   }
 
   expandedElementId: number | null = null;
@@ -100,6 +118,8 @@ export class ShowNormalbookComponent implements OnInit {
     
       this.UpdateMainBook.updateBook(updatedBook).subscribe(response => {
       
+        console.log(response);
+        
       });
     }
   // -----------------
@@ -117,5 +137,17 @@ export class ShowNormalbookComponent implements OnInit {
         },
       });
     }
+  }
+
+
+  onPageChange(event: any) {
+    const { pageIndex, pageSize } = event;
+    if (pageSize !== this.pageSize) {
+      this.currentPage = 1;
+    } else {
+      this.currentPage = pageIndex + 1;
+    }
+    this.pageSize = pageSize;
+    this.loadNormalbooks(this.currentPage - 1, this.pageSize);
   }
 }
