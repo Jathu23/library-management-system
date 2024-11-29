@@ -130,5 +130,18 @@ namespace library_management_system.Repositories
             return records;
         }
 
+
+        public async Task<List<RentHistory>> GetAllLentRecordsAsync(DateTime date)
+        {
+            return await _context.RentHistory
+                .Include(r => r.BookCopy)
+                .ThenInclude(bc => bc.Book)
+                .Include(r => r.User)
+                .Include(r => r.IssuingAdmin)
+                .Include(r => r.ReceivingAdmin)
+                .Where(r => r.LendDate.Date < date.Date)
+                .ToListAsync();
+        }
+
     }
 }

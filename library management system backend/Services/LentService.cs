@@ -612,6 +612,66 @@ namespace library_management_system.Services
             }
         }
 
+        public async Task<LendReportDto> GetLentReportAsync(DateTime date)
+        {
+            var lentRecords = await _lentRecordRepository.GetAllLentRecordsAsync(date);
+
+            var pendingLent = lentRecords
+                .Where(r => r.ReturnDate == null )
+                .Select(MapToLentRecordAdminDto)
+                .ToList();
+
+            var onTimeLent = lentRecords
+                .Where(r => r.ReturnDate != null && r.ReturnDate <= r.DueDate)
+                .Select(MapToLentRecordAdminDto)
+                .ToList();
+
+            var laterLent = lentRecords
+                .Where(r => r.ReturnDate != null && r.ReturnDate > r.DueDate)
+                .Select(MapToLentRecordAdminDto)
+                .ToList();
+
+            return new LendReportDto
+            {
+                Date = date,
+                TotalRengings = lentRecords.Count,
+                Pending = pendingLent.Count,
+                OnTime = onTimeLent.Count,
+                Later = laterLent.Count,
+                PendingLent = pendingLent,
+                OnTimeLent = onTimeLent,
+                LaterLent = laterLent
+            };
+        }
+
+        private LentHistoryAdminDto MapToLentRecordAdminDto(RentHistory record)
+        {
+            return new LentHistoryAdminDto
+            {
+                Id = record.Id,
+                UserId = record.UserId,
+                UserName = $"{record.User.FirstName} {record.User.LastName}",
+                UserEmail = record.User.Email,
+                IAdminId = record.IAdminId,
+                IAdminName = $"{record.IssuingAdmin.FirstName} {record.IssuingAdmin.LastName}",
+                RAdminId = record.RAdminId,
+                RAdminName = record.ReceivingAdmin != null
+                    ? $"{record.ReceivingAdmin.FirstName} {record.ReceivingAdmin.LastName}"
+                    : null,
+                BookId = record.BookCopy.Book.Id,
+                BookTitle = record.BookCopy.Book.Title,
+                BookISBN = record.BookCopy.Book.ISBN,
+                BookAuthor = record.BookCopy.Book.Author,
+                BookGenre = string.Join(", ", record.BookCopy.Book.Genre),
+                BookPublishYear = record.BookCopy.Book.PublishYear,
+                BookCopyId = record.BookCopyId,
+                BookCondition = record.BookCopy.Condition,
+                LentDate = record.LendDate,
+                DueDate = record.DueDate,
+                ReturnDate = record.ReturnDate,
+                Status = record.ReturnDate == null ? "Pending" : (record.ReturnDate <= record.DueDate ? "On Time" : "Later")
+            };
+        }
 
 
     }

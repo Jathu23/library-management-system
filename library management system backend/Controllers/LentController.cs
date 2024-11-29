@@ -121,5 +121,19 @@ namespace library_management_system.Controllers
         }
 
 
+        [HttpGet("report")]
+        public async Task<IActionResult> GetLentReport([FromQuery] DateTime date)
+        {
+            try
+            {
+                var report = await _lentService.GetLentReportAsync(date);
+                return Ok(report);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
+        }
+
     }
 }
