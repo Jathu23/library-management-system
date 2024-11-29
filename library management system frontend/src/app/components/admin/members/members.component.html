@@ -1,0 +1,105 @@
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Members</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <select
+            class="form-select"
+            [(ngModel)]="selectedOption"
+            name="selectedOption"   
+            (change)="onOptionChange(selectedOption)"
+          >
+            <option value="active">Active Members</option>
+            <option value="subscribed">Subscribed Members</option>
+            <option value="nonActive">Non-Active Members</option>
+          </select>
+        </li>
+      </ul>
+      <!-- Search Bar Always Visible -->
+      <form class="d-flex" role="search">
+        <input
+          class="form-control me-2"
+          [(ngModel)]="searchQuery"
+          name="searchQuery"  
+          placeholder="Search"
+          aria-label="Search"
+        />
+        <button class="btn btn-outline-success" type="button" (click)="searchUsers()">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<!-- Members Table -->
+<div class="container mt-4">
+  <h2>{{ heading }}</h2>
+  <table class="table table-bordered table-striped table-responsive">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>User NIC</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>Address</th>
+        <th>Profile Image</th>
+        <th *ngIf="selectedOption === 'search'">Is Active</th>
+        <th *ngIf="selectedOption === 'search'">Is Subscribed</th>
+        <th *ngIf="selectedOption === 'nonActive'">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.id }}</td>
+        <td>{{ user.userNic }}</td>
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phoneNumber }}</td>
+        <td>{{ user.address }}</td>
+        <td>
+          <img
+            *ngIf="user.profileImage; else noImage"
+            [src]="user.profileImage"
+            alt="Profile Image"
+            width="50"
+            height="50"
+          />
+          <ng-template #noImage>
+            <span><i class="bi bi-person-circle" style="font-size: 62px;"></i></span>
+          </ng-template>
+        </td>
+        <td *ngIf="selectedOption === 'search'">{{ user.isActive }}</td>
+        <td *ngIf="selectedOption === 'search'">{{ user.isSubscribed }}</td>
+        <td *ngIf="selectedOption === 'nonActive'">
+          <button class="btn btn-success" (click)="activateUser(user.id)">
+            Activate
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <mat-paginator
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[1,2,10, 17, 25, 50]"
+    showFirstLastButtons
+    (page)="onPageChange($event)"
+    [pageIndex]="currentPage - 1"
+  ></mat-paginator>
+</div>

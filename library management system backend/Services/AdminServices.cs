@@ -38,13 +38,19 @@ namespace library_management_system.Services
         {
             var response = new ApiResponse<AuthResponse>();
             var exLoginData = await _loginRepo.GetByEmailOrNic(AdminRequstDto.Email);
+            var alladmins = await _adminRepo.GetAllAdmins();
 
           try
             {
+                if (alladmins.Count() == 5)
+                    throw new Exception("Only 5 admin accounts are allowed.");
+               
                 if (exLoginData != null)
                     throw new Exception("An User with this email  already exists.");
 
                 var profileImagePath = await SaveProfileImage(AdminRequstDto.ProfileImage);
+
+                var isMasterExists = alladmins.Any(admin => admin.IsMaster);
 
                 var admin = new Admin
                 {
@@ -53,12 +59,11 @@ namespace library_management_system.Services
                     LastName = AdminRequstDto.LastName,
                     FullName = $"{AdminRequstDto.FirstName} {AdminRequstDto.LastName}",
                     Email = AdminRequstDto.Email,
+                    IsMaster = !isMasterExists, 
                     ProfileImage = profileImagePath
-                  
-
                 };
 
-            var Createdadmin   =  await _adminRepo.CreateAdmin(admin);
+                var Createdadmin   =  await _adminRepo.CreateAdmin(admin);
 
                 var logindata = new LoginT
                 {
@@ -74,12 +79,16 @@ namespace library_management_system.Services
 
                 if (Createdadmin != null && state == true)
                 {
+                   
+
                     response.Success = true;
-                    response.Message = "Admin created successfully.";
+                    response.Message = isMasterExists? "Admin created successfully (slave account).": "Admin created successfully (master account).";
+
                     response.Data = new AuthResponse
                     {
                         Token = _jwtService.GenerateAdminToken(admin),
-                        Role = "admin"
+                        Role = "admin",
+                        Ismaster = !isMasterExists,
                     };
                 }
                 else
@@ -87,8 +96,6 @@ namespace library_management_system.Services
                     throw new Exception("error");
 
                 }
-
-            
 
             }
             catch (Exception ex)
@@ -223,14 +230,14 @@ namespace library_management_system.Services
             return response;
         }
 
-        public async Task<ApiResponse<string>?> ActiveteUserAccount(string NimOrEmail)
+        public async Task<ApiResponse<string>?> ActiveteUserAccount(int id)
         {
             var response = new ApiResponse<string?>();
 
             try
             {
                
-                var user = await _userRepo.ActivateUserAccount(NimOrEmail);
+                var user = await _userRepo.ActivateUserAccount(id);
 
                 if (user == null)
                 {
@@ -241,7 +248,8 @@ namespace library_management_system.Services
                 }
                 response.Success = true;
                 response.Message = "User account activated successfully.";
-                response.Data = $"User with NIC or Email '{NimOrEmail}' has been activated.";
+                response.Data = $"User with Id '{id}' has been activated.";
+                return response;
             }
             catch (Exception ex)
             {
@@ -253,6 +261,67 @@ namespace library_management_system.Services
             return response;
 
 
+        }
+
+        public async Task<ApiResponse<Admin>> TransferMasterControlAsync(int currentMasterId, int newMasterId)
+        {
+            var response = new ApiResponse<Admin>();
+
+            try
+            {
+                if (currentMasterId == newMasterId)
+                    throw new Exception("invalid input ,id is unique");
+
+
+                var newMaster = await _adminRepo.GetAdminById(newMasterId);
+
+                if (newMaster == null)
+                {
+                    response.Success = false;
+                    response.Message = "New admin not found.";
+                    return response;
+                }
+
+
+                if (newMaster.IsMaster)
+                {
+                    response.Success = false;
+                    response.Message = "The selected admin is already a master.";
+                    response.Data = newMaster;
+                    return response;
+                }
+
+                var currentMaster = await _adminRepo.GetAdminById(currentMasterId);
+                if (currentMaster == null || !currentMaster.IsMaster)
+                {
+                    response.Success = false;
+                    response.Message = "Current master admin not found or invalid.";
+                    return response;
+                }
+
+              
+
+              
+                currentMaster.IsMaster = false;
+                await _adminRepo.UpdateAdmin(currentMaster);
+
+               
+                newMaster.IsMaster = true;
+                await _adminRepo.UpdateAdmin(newMaster);
+
+                response.Success = true;
+                response.Message = "Master control has been successfully transferred.";
+                response.Data = newMaster;
+
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "An error occurred while transferring master control.";
+                response.Errors.Add(ex.Message);
+            }
+
+            return response;
         }
     }
 }

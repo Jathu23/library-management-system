@@ -249,7 +249,7 @@ namespace library_management_system.Services
 
                 var currentDateTime = DateTime.UtcNow;
                 var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
-
+                var maxvalue = (int)(lentRecord.DueDate-lentRecord.LentDate).TotalMinutes;
                 string status = statusValue > 0
                     ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
                     : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours over";
@@ -273,7 +273,8 @@ namespace library_management_system.Services
                     LentDate = lentRecord.LentDate,
                     DueDate = lentRecord.DueDate,
                     Status = status,
-                    StatusValue = statusValue
+                    StatusValue = statusValue,
+                    MaxValue = maxvalue
                 };
 
                 lentRecordDtos.Add(lentRecordDto);
@@ -311,7 +312,7 @@ namespace library_management_system.Services
 
                 var currentDateTime = DateTime.UtcNow;
                 var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
-
+                var maxvalue = (int)(lentRecord.DueDate - lentRecord.LentDate).TotalMinutes;
                 string status = statusValue > 0
                     ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
                     : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours over";
@@ -335,7 +336,8 @@ namespace library_management_system.Services
                     LentDate = lentRecord.LentDate,
                     DueDate = lentRecord.DueDate,
                     Status = status,
-                    StatusValue = statusValue
+                    StatusValue = statusValue,
+                    MaxValue=maxvalue
                 };
 
                 lentRecordDtos.Add(lentRecordDto);
@@ -375,12 +377,14 @@ namespace library_management_system.Services
                 {
                     int statusValue;
                     string status;
+                    int maxvalue;
                     var currentDateTime = DateTime.UtcNow;
 
                     // Calculate the status and status value
                     if (rec.ReturnDate == null)
                     {
                         statusValue = (int)(rec.DueDate - currentDateTime).TotalMinutes;
+                        maxvalue = (int)(rec.DueDate - rec.LendDate).TotalMinutes;
                         status = statusValue > 0
                             ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
                             : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours overdue";
@@ -389,6 +393,7 @@ namespace library_management_system.Services
                     {
                         statusValue = 0;
                         status = "Closed";
+                        maxvalue = 0;
                     }
 
                     // Construct DTO
@@ -414,7 +419,8 @@ namespace library_management_system.Services
                         DueDate = rec.DueDate,
                         ReturnDate = rec.ReturnDate,
                         Status = status,
-                        StatusValue = statusValue
+                        StatusValue = statusValue,
+                        MaxValue =maxvalue
                     };
 
                     lentHistoryDtos.Add(lentRecordDto);

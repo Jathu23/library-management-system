@@ -103,19 +103,26 @@ namespace library_management_system.Controllers
         //}
 
 
-        [HttpGet("GetAllUsers")]
-        public async Task<IActionResult> GetUsers()
+        [HttpGet("GetAllActiveUsers")]
+        public async Task<IActionResult> GetAllActiveUsersWithPagination([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var response = await _userService.GetAllUsers();
 
-            if (response.Success)
+            var response = await _userService.GetAllActiveUsers(pageNumber, pageSize);
+
+
+            if (!response.Success)
             {
-                return Ok(response); 
+                return BadRequest(new
+                {
+                    response.Message
+                });
             }
-            else
+
+            return Ok(new
             {
-                return BadRequest(response);  
-            }
+                response.Message,
+                response.Data
+            });
         }
         [HttpDelete("soft-delete-user")]
         public async Task<IActionResult> SoftDeleteUser(int id)
@@ -145,18 +152,27 @@ namespace library_management_system.Controllers
 
         }
         [HttpGet("GetAllDisabledUsers")]
-        public async Task<IActionResult> GetDisabledUsers()
+        public async Task<IActionResult> GetAllNonactiveUsers([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var data = await _userService.GetAllDisabledUsers();
-            if (data == null)
+
+            var response = await _userService.GetAllNonactiveUsers(pageNumber, pageSize);
+
+
+            if (!response.Success)
             {
-                return BadRequest(Response);
+                return BadRequest(new
+                {
+                    response.Message
+                });
             }
-            else
+
+            return Ok(new
             {
-                return Ok(data);
-            }
+                response.Message,
+                response.Data
+            });
         }
+    
         [HttpDelete("DeletePermanantly")]
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -215,6 +231,27 @@ namespace library_management_system.Controllers
             }
 
             return Ok(response);
+        }
+        [HttpGet("subscribed-users")]
+        public async Task<IActionResult> GetSubscribedUsersWithPagination([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            
+            var response = await _userService.GetSubscribedUsersWithPagination(pageNumber, pageSize);
+
+           
+            if (!response.Success)
+            {
+                return BadRequest(new
+                {
+                    response.Message
+                });
+            }
+
+            return Ok(new
+            {
+                response.Message,
+                response.Data
+            });
         }
     }
 }

@@ -5,6 +5,7 @@ using library_management_system.DTOs;
 using library_management_system.DTOs.User;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Text.Json;
@@ -55,14 +56,14 @@ namespace library_management_system.Services
                     PhoneNumber = userRequestDto.PhoneNumber,
                     Address = userRequestDto.Address,
                     ProfileImage = profileImagePath,
-                    IsActive =true,
+                    IsActive = true,
                     IsSubscribed = false,
                     RegistrationDate = DateTime.Now
                 };
 
-              var Createduser = await _userRepo.CreateUser(user);
-               
-             
+                var Createduser = await _userRepo.CreateUser(user);
+
+
 
                 var logindata = new LoginT
                 {
@@ -140,37 +141,87 @@ namespace library_management_system.Services
         }
 
 
-        public async Task<ApiResponse<List<User>>> GetAllUsers()
+        public async Task<ApiResponse<PaginatedResult<UserDto>>> GetAllActiveUsers(int page, int pageSize)
         {
-            var response = new ApiResponse<List<User>>();
-
             try
             {
 
-                var users = await _userRepo.GetAllUsers();
+                if (page <= 0)
+                {
+                    return new ApiResponse<PaginatedResult<UserDto>>
+                    {
+                        Success = false,
+                        Message = "Page number must be greater than 0.",
+                        Data = null
+                    };
+                }
+
+                if (pageSize <= 0 || pageSize > 100)
+                {
+                    return new ApiResponse<PaginatedResult<UserDto>>
+                    {
+                        Success = false,
+                        Message = "Page size must be greater than 0 and less than or equal to 100.",
+                        Data = null
+                    };
+                }
 
 
-                if (users == null || users.Count == 0)
+                var (subscribers, totalCount) = await _userRepo.GetAllActiveUsers(page, pageSize);
+
+                if (subscribers == null || !subscribers.Any())
                 {
-                    response.Success = false;
-                    response.Message = "No users found.";
+                    return new ApiResponse<PaginatedResult<UserDto>>
+                    {
+                        Success = false,
+                        Message = "No Active users found for the given pagination parameters.",
+                        Data = null
+                    };
                 }
-                else
+
+
+                var subscriberDtos = subscribers.Select(user => new UserDto
                 {
-                    response.Success = true;
-                    response.Message = "Users retrieved successfully.";
-                    response.Data = users;
-                }
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    Address = user.Address,
+                    UserNic = user.UserNic,
+                   
+
+
+                }).ToList();
+
+                var result = new PaginatedResult<UserDto>
+                {
+                    Items = subscriberDtos,
+                    TotalCount = totalCount,
+                    CurrentPage = page,
+                    PageSize = pageSize
+                };
+
+
+                return new ApiResponse<PaginatedResult<UserDto>>
+                {
+                    Success = true,
+                    Message = "Active users retrieved successfully.",
+                    Data = result
+                };
             }
             catch (Exception ex)
             {
-                response.Success = false;
-                response.Message = "An error occurred while fetching users.";
-                response.Errors.Add(ex.Message);
-            }
 
-            return response;
+                return new ApiResponse<PaginatedResult<UserDto>>
+                {
+                    Success = false,
+                    Message = $"An error occurred while retrieving the Active users: {ex.Message}",
+                    Data = null
+                };
+            }
         }
+
         public async Task<ApiResponse<string>> SoftDelete(int id)
         {
             var response = new ApiResponse<string>();
@@ -181,7 +232,7 @@ namespace library_management_system.Services
 
                 if (user == null)
                 {
-                   
+
                     response.Success = false;
                     response.Message = "User not found.";
                     return response;
@@ -189,20 +240,20 @@ namespace library_management_system.Services
 
                 if (!user.IsActive)
                 {
-                   
+
                     response.Success = false;
                     response.Message = "User is already soft-deleted.";
                     return response;
                 }
-               
-                    user.IsActive = false;
+
+                user.IsActive = false;
 
 
-                    response.Success = true;
-                    response.Message = "User is already softDeleted";
-                    return response;
-                
-                
+                response.Success = true;
+                response.Message = "User is already softDeleted";
+                return response;
+
+
             }
             catch (Exception ex)
             {
@@ -261,37 +312,86 @@ namespace library_management_system.Services
 
 
 
-        public async Task<ApiResponse<List<User>>> GetAllDisabledUsers()
+        public async Task<ApiResponse<PaginatedResult<UserDto>>> GetAllNonactiveUsers(int page, int pageSize)
         {
-            var response = new ApiResponse<List<User>>();
-
             try
             {
 
-                var users = await _userRepo.GetAllDisabeledUsers();
+                if (page <= 0)
+                {
+                    return new ApiResponse<PaginatedResult<UserDto>>
+                    {
+                        Success = false,
+                        Message = "Page number must be greater than 0.",
+                        Data = null
+                    };
+                }
 
-                if (users == null || users.Count == 0)
+                if (pageSize <= 0 || pageSize > 100)
                 {
-                    response.Success = false;
-                    response.Message = "No disabled users found.";
+                    return new ApiResponse<PaginatedResult<UserDto>>
+                    {
+                        Success = false,
+                        Message = "Page size must be greater than 0 and less than or equal to 100.",
+                        Data = null
+                    };
                 }
-                else
+
+
+                var (subscribers, totalCount) = await _userRepo.GetAllNonactiveUsers(page, pageSize);
+
+                if (subscribers == null || !subscribers.Any())
                 {
-                    response.Success = true;
-                    response.Message = "Disabled users retrieved successfully.";
-                    response.Data = users;
+                    return new ApiResponse<PaginatedResult<UserDto>>
+                    {
+                        Success = false,
+                        Message = "No nonActive users found for the given pagination parameters.",
+                        Data = null
+                    };
                 }
+
+
+                var subscriberDtos = subscribers.Select(user => new UserDto
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    Address = user.Address,
+                    UserNic = user.UserNic,
+
+
+
+                }).ToList();
+
+                var result = new PaginatedResult<UserDto>
+                {
+                    Items = subscriberDtos,
+                    TotalCount = totalCount,
+                    CurrentPage = page,
+                    PageSize = pageSize
+                };
+
+
+                return new ApiResponse<PaginatedResult<UserDto>>
+                {
+                    Success = true,
+                    Message = "Active users retrieved successfully.",
+                    Data = result
+                };
             }
             catch (Exception ex)
             {
-                response.Success = false;
-                response.Message = "An error occurred while fetching the disabled users.";
-                response.Errors.Add(ex.Message);
+
+                return new ApiResponse<PaginatedResult<UserDto>>
+                {
+                    Success = false,
+                    Message = $"An error occurred while retrieving the Active users: {ex.Message}",
+                    Data = null
+                };
             }
-
-            return response;
         }
-
         public async Task<ApiResponse<User>> DeleteUserPermanently(int id)
         {
             var response = new ApiResponse<User>();
@@ -319,14 +419,14 @@ namespace library_management_system.Services
 
             return response;
         }
-     
+
         public async Task<ApiResponse<bool>> UpdateUser(UserInfoUpdateDto userInfoUpdate)
         {
             var response = new ApiResponse<bool>();
 
             try
             {
-             
+
                 var existingUser = await _userRepo.Getuserid(userInfoUpdate.Id);
 
                 if (existingUser == null)
@@ -336,14 +436,14 @@ namespace library_management_system.Services
                     return response;
                 }
 
-               
-              
+
+
                 if (userInfoUpdate.ProfileImage != null)
                 {
                     existingUser.ProfileImage = await SaveProfileImage(userInfoUpdate.ProfileImage);
                 }
 
-              
+
 
                 existingUser.FirstName = userInfoUpdate.FirstName ?? existingUser.FirstName;
                 existingUser.LastName = userInfoUpdate.LastName ?? existingUser.FirstName;
@@ -368,13 +468,13 @@ namespace library_management_system.Services
             return response;
         }
 
-        public async Task<ApiResponse<PaginatedResult<UserDto>>> SearchUsersAsync(string searchString, int pageNumber, int pageSize)
+        public async Task<ApiResponse<PaginatedResult<usersearchDTO>>> SearchUsersAsync(string searchString, int pageNumber, int pageSize)
         {
             try
             {
                 var (users, totalRecords) = await _userRepo.SearchAsync(searchString, pageNumber, pageSize);
 
-                var userDtos = users.Select(u => new UserDto
+                var userDtos = users.Select(u => new usersearchDTO
                 {
                     Id = u.Id,
                     UserNic = u.UserNic,
@@ -386,7 +486,7 @@ namespace library_management_system.Services
 
                 }).ToList();
 
-                var paginatedResult = new PaginatedResult<UserDto>
+                var paginatedResult = new PaginatedResult<usersearchDTO>
                 {
                     Items = userDtos,
                     TotalCount = totalRecords,
@@ -394,7 +494,7 @@ namespace library_management_system.Services
                     PageSize = pageSize
                 };
 
-                return new ApiResponse<PaginatedResult<UserDto>>
+                return new ApiResponse<PaginatedResult<usersearchDTO>>
                 {
                     Success = true,
                     Message = "Users retrieved successfully.",
@@ -403,7 +503,7 @@ namespace library_management_system.Services
             }
             catch (Exception ex)
             {
-                return new ApiResponse<PaginatedResult<UserDto>>
+                return new ApiResponse<PaginatedResult<usersearchDTO>>
                 {
                     Success = false,
                     Message = $"An error occurred: {ex.Message}",
@@ -444,6 +544,86 @@ namespace library_management_system.Services
                 Message = "Usernames retrieved successfully",
                 Data = usernames
             };
+        }
+        public async Task<ApiResponse<PaginatedResult<UserDto>>> GetSubscribedUsersWithPagination(int page, int pageSize)
+        {
+            try
+            {
+               
+                if (page <= 0)
+                {
+                    return new ApiResponse<PaginatedResult<UserDto>>
+                    {
+                        Success = false,
+                        Message = "Page number must be greater than 0.",
+                        Data = null
+                    };
+                }
+
+                if (pageSize <= 0 || pageSize > 100)
+                {
+                    return new ApiResponse<PaginatedResult<UserDto>>
+                    {
+                        Success = false,
+                        Message = "Page size must be greater than 0 and less than or equal to 100.",
+                        Data = null
+                    };
+                }
+
+               
+                var (subscribers, totalCount) = await _userRepo.GetSubscribedUsersAsync(page, pageSize);
+
+                if (subscribers == null || !subscribers.Any())
+                {
+                    return new ApiResponse<PaginatedResult<UserDto>>
+                    {
+                        Success = false,
+                        Message = "No subscribed users found for the given pagination parameters.",
+                        Data = null
+                    };
+                }
+
+                
+                var subscriberDtos = subscribers.Select(user => new UserDto
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    Address = user.Address,
+                    UserNic=user.UserNic,
+                    
+                   
+                  
+                }).ToList();
+
+                var result = new PaginatedResult<UserDto>
+                {
+                    Items = subscriberDtos,
+                    TotalCount = totalCount,
+                    CurrentPage = page,
+                    PageSize = pageSize
+                };
+
+                
+                return new ApiResponse<PaginatedResult<UserDto>>
+                {
+                    Success = true,
+                    Message = "Subscribed users retrieved successfully.",
+                    Data = result
+                };
+            }
+            catch (Exception ex)
+            {
+               
+                return new ApiResponse<PaginatedResult<UserDto>>
+                {
+                    Success = false,
+                    Message = $"An error occurred while retrieving the subscribed users: {ex.Message}",
+                    Data = null
+                };
+            }
         }
 
 

@@ -25,6 +25,15 @@ export class ShowaudiobooksComponent implements OnInit {
 
   ngOnInit() {
     this.loadAudiobooks(); // Load initial data
+
+    this.audio.addEventListener('loadedmetadata', () => {
+      this.duration = this.formatTime(this.audio.duration);
+    });
+
+    this.audio.addEventListener('timeupdate', () => {
+      this.progress = (this.audio.currentTime / this.audio.duration) * 100;
+      this.currentTime = this.formatTime(this.audio.currentTime);
+    });
   }
 
   loadAudiobooks() {
@@ -121,7 +130,66 @@ export class ShowaudiobooksComponent implements OnInit {
     this.backgroundPlay = !this.backgroundPlay;
   }
   
+  audio = new Audio('https://localhost:7261/Audiobooks/a (4).mp3'); // Add your audio file path here
+  isPlaying: boolean = false;
+  progress: number = 0;
+  currentTime: string = '0:00';
+  duration: string = '0:00';
+  interval: any;
+
+  // ngOnInit() {
+  //   this.audio.addEventListener('loadedmetadata', () => {
+  //     this.duration = this.formatTime(this.audio.duration);
+  //   });
+
+  //   this.audio.addEventListener('timeupdate', () => {
+  //     this.progress = (this.audio.currentTime / this.audio.duration) * 100;
+  //     this.currentTime = this.formatTime(this.audio.currentTime);
+  //   });
+  // }
+
+  ngOnDestroy() {
+    clearInterval(this.interval);
+  }
+
+  togglePlay() {
+    if (this.isPlaying) {
+      this.audio.pause();
+    } else {
+      this.audio.play();
+    }
+    this.isPlaying = !this.isPlaying;
+  }
+
+  updateProgress(event: any) {
+    this.audio.currentTime = (event.target.value / 100) * this.audio.duration;
+  }
+
+  formatTime(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+  }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
