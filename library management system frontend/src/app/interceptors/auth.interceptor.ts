@@ -11,7 +11,8 @@ import { Observable } from 'rxjs';
 export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Add a custom header (e.g., Authorization)
-    const token = localStorage.getItem('token'); // Retrieve your JWT token
+    // const token = localStorage.getItem('token'); // Retrieve your JWT token
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJGdWxsTmFtZSI6IkVzdmFyYW4gSmF0aHVzaGFuIiwiRW1haWwiOiJqYXRodXNoYW5AZ21haWwuY29tIiwiQWRtaW5OaWMiOiIxIiwiZXhwIjoxNzMyODk0ODk1LCJpc3MiOiJsaWJyYXJ5LW1hbmFnZW1lbnQiLCJhdWQiOiJ1c2VycyJ9.VlXT6iODTBxcwyuRZH8BV4Y0IMHTjn5asK-NwL_U4v8';
     if (token) {
       const clonedRequest = req.clone({
         setHeaders: {

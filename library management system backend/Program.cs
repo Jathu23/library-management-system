@@ -25,6 +25,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
+
 .AddJwtBearer(options =>
 {
     var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -103,6 +104,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
 app.Urls.Add("https://localhost:7261");
 app.UseStaticFiles();
 

@@ -1,6 +1,7 @@
 ﻿using library_management_system.DTOs;
 using library_management_system.DTOs.LentRecord;
 using library_management_system.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,6 +32,7 @@ namespace library_management_system.Controllers
             return Ok(response);
         }
 
+        
         [HttpGet("lent-records-id")]
         public async Task<IActionResult> GetLentRecordForAdmin(int Userid)
         {
@@ -65,7 +67,7 @@ namespace library_management_system.Controllers
             return Ok(result);
         }
 
-
+        [Authorize]
         [HttpGet("all-lent-All-records")]
         public async Task<IActionResult> GetAllLentRecords()
         {
@@ -77,7 +79,7 @@ namespace library_management_system.Controllers
 
             return Ok(result);
         }
-
+        [Authorize]
         [HttpGet("lent-historys")]
         public async Task<IActionResult> GetAllRentHistory(int page=1, int pageSize=5)
         {
