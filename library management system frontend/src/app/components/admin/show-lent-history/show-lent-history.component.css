@@ -41,3 +41,33 @@
     justify-content: flex-end;
   }
   
+  
+  td {
+    text-align: center; /* Center-align the content in the table cell */
+    vertical-align: middle;
+  }
+  
+  progress {
+    width: 100%; /* Make the progress bar take the full width of the parent container */
+    height: 10px; /* Set the height of the progress bar */
+    border-radius: 5px; /* Round the corners */
+    -webkit-appearance: none; /* Remove default styling on WebKit-based browsers */
+    appearance: none; /* Remove default styling on other browsers */
+    background-color: #f0f0f0; /* Light gray background for the progress bar */
+  }
+  
+  progress::-webkit-progress-bar {
+    background-color: #f0f0f0; /* Set the background of the progress bar */
+  }
+  
+  progress::-webkit-progress-value {
+    background-color: #7e076a; /* Green color for the progress */
+    border-radius: 5px; /* Rounded corners for the filled area */
+  }
+  
+  progress::-moz-progress-bar {
+    background-color: #7e076a; /* Green color for Mozilla Firefox */
+    border-radius: 5px;
+  }
+  
+  

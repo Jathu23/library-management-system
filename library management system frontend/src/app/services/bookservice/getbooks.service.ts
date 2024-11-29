@@ -1,21 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment.testing';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GetbooksService {
-
+  private baseurl = environment.apiBaseUrl;
   constructor(private http: HttpClient) {}
 
-private ebookUrl = `https://localhost:7261/api/Ebook/`;
+private ebookUrl = `${this.baseurl}/Ebook/`;
 
-private audiobookUrl = `https://localhost:7261/api/Audiobook/`;
+private audiobookUrl = `${this.baseurl}/Audiobook/`;
 
-private NormalBookUrl = `https://localhost:7261/api/Books/`
+private NormalBookUrl = `${this.baseurl}/Books/`
 
-private UserNormalBookUrl =`https://localhost:7261/api/Books/get-all-books`;
+private UserNormalBookUrl =`${this.baseurl}/Books/get-all-books`;
 
 showBookstoUser(currentPage:number,pageSize:number):Observable<any>{
   return this.http.get<any>(this.UserNormalBookUrl+`?page=${currentPage}&pageSize=${pageSize}`);

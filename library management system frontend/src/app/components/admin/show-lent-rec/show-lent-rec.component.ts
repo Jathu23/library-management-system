@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { RentService } from '../../../services/lent-service/rent.service';
 import { UserService } from '../../../services/user-service/user.service';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
@@ -152,6 +152,7 @@ export class ShowLentRecComponent implements OnInit {
   ngOnInit(): void {
     this.getallrentrecods();
     // this.fetchPendingBooks(2);
+ 
   }
 
   getallrentrecods(): void {
@@ -187,4 +188,10 @@ export class ShowLentRecComponent implements OnInit {
   closeModal(): void {
     this.selectedRecord = null;
   }
+
+
+
+
+
+ 
 }

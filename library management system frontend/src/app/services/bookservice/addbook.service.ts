@@ -4,15 +4,18 @@ import { Observable } from 'rxjs';
 import { AddBookDto } from '../../models/interfaces/add-newbook.interface';
 import { AddEbookDto } from '../../models/interfaces/add-newebook.interface';
 import { AddAudiobookDto } from '../../models/interfaces/add-newaudiobook.interface';
+import { environment } from '../../../environments/environment.testing';
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class BookService {
-  private readonly apiUrl = 'https://localhost:7261/api/Books/add';
-  private ebookUrl = 'https://localhost:7261/api/Ebook/add'; 
-  private audiobookUrl = 'https://localhost:7261/api/Audiobook/add-audiobook'; 
+  private baseurl = environment.apiBaseUrl;
+
+  private readonly apiUrl = `${this.baseurl}/Books/add`;
+  private ebookUrl = `${this.baseurl}/Ebook/add`; 
+  private audiobookUrl = `${this.baseurl}/Audiobook/add-audiobook`; 
 
   constructor(private http: HttpClient) {}
 
@@ -58,30 +61,34 @@ export class BookService {
   addEbook(ebook: AddEbookDto): Observable<any> {
     const formData = new FormData();
 
-    
     formData.append('ISBN', ebook.ISBN);
     formData.append('Title', ebook.Title);
     formData.append('Author', ebook.Author);
     formData.append('Genre', ebook.Genre);
     formData.append('PublishYear', ebook.PublishYear.toString());
-    // Handle EbookFile
+
+    // Append EbookFile
     if (ebook.EbookFile instanceof File) {
       formData.append('EbookFile', ebook.EbookFile, ebook.EbookFile.name);
     } else {
-      console.error('EbookFile is not a valid File object');
+      console.error('EbookFile is not a valid File object.');
     }
-    if (ebook.CoverImages) {
+
+    // Append CoverImages (optional)
+    if (ebook.CoverImages instanceof File) {
       formData.append('CoverImages', ebook.CoverImages, ebook.CoverImages.name);
     }
 
     // Append metadata fields
-    for (const [key, value] of Object.entries(ebook.Metadata)) {
-      formData.append(`Metadata.${key}`, value as string);
+    if (ebook.Metadata) {
+      for (const [key, value] of Object.entries(ebook.Metadata)) {
+        formData.append(`Metadata.${key}`, value);
+      }
     }
 
-    // Send POST request
     return this.http.post<any>(this.ebookUrl, formData);
   }
+  
 
 
   addAudiobook(audiobook: AddAudiobookDto): Observable<any> {
@@ -110,6 +117,10 @@ export class BookService {
 
     if (audiobook.AudioFile) {
       formData.append('AudioFile', audiobook.AudioFile, audiobook.AudioFile.name);
+    
+      
+    }else{
+      console.log("file is not aviable");
     }
     
 

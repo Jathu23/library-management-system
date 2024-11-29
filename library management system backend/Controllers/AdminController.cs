@@ -140,17 +140,32 @@ namespace library_management_system.Controllers
                 return BadRequest(response);
             }
         }
-        [HttpPut("UseAccountActive")]
-        public async Task<IActionResult>ActiveUserAccount(string nicOrEmail)
+        [HttpGet("UserAccountActive")]
+        public async Task<IActionResult> ActiveUserAccount([FromQuery] int id)
         {
-            var response =await _adminServices.ActiveteUserAccount(nicOrEmail);
+            var response = await _adminServices.ActiveteUserAccount(id);
             if (response != null)
             {
                 return Ok(response);
             }
             else
+
             {
                 return BadRequest(response);
-        }   }
+            } }
+
+        [HttpPost("transfer-master-control")]
+        public async Task<IActionResult> TransferMasterControl([FromQuery] int CurrentMasterId, [FromQuery] int NewMasterId)
+        {
+            
+            var response = await _adminServices.TransferMasterControlAsync(CurrentMasterId, NewMasterId);
+
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(response);
+        }
     }
 }

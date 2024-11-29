@@ -114,7 +114,7 @@
         <td>
           {{ history.returnDate ? (history.returnDate | date: 'medium') : 'Not Returned' }}
         </td>
-        <td>{{ history.status }}</td>
+        <td> <progress *ngIf="history.statusValue != 0" value="{{history.statusValue}}" max="{{history.maxValue}}"></progress>{{ history.status }}</td>
         <td>
           <button (click)="toggleRow(history.id)">
             {{ expandedElementId === history.id ? 'Hide' : 'View' }}

@@ -4,6 +4,7 @@
     {
         public required string Token { get; set; }
         public required string Role { get; set; }
+        public  bool? Ismaster { get; set; }
     }
 
 }

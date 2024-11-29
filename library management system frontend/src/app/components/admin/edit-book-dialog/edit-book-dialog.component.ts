@@ -14,9 +14,9 @@ export class EditBookDialogComponent {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<EditBookDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { book: any }
-  ) {
-    this.editForm = this.fb.group({
+    @Inject(MAT_DIALOG_DATA) public data: { book: any }) 
+    {
+      this.editForm = this.fb.group({
       id: [data.book.id],
       isbn: [data.book.isbn, Validators.required],
       title: [data.book.title, Validators.required],

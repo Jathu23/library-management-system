@@ -12,7 +12,7 @@
   <div class="grid-item" *ngFor="let book of Normalbooks" (click)="openModal(book)">
     <div class="card">
       <div class="card-images">
-        <img *ngIf="book.coverImagePath?.length" [src]="book.coverImagePath[0]" [alt]="book.title" />
+        <img *ngIf="book.coverImagePath?.length" [src]="'https://visme.co/blog/wp-content/uploads/2021/06/fiction-book-cover-template-visme-313x500.jpg'" [alt]="book.title" />
       </div>
       <h3>{{ book.title }}</h3>
       <p>Author: {{ book.author }}</p>

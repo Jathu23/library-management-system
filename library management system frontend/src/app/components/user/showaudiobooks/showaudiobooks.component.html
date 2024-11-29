@@ -1,24 +1,35 @@
-<!-- <div class="grid-container scroll-container" (scroll)="onScroll()">
- 
-  <div class="grid-item" *ngFor="let audiobook of audiobooks" (click)="openModal(audiobook)">
-    <img [src]="audiobook.coverImagePath" alt="{{ audiobook.title }}" />
-    <h3>{{ audiobook.title }}</h3>
-    <p>Author: {{ audiobook.author }}</p>
+<div class="audio-player-container">
+  <div class="audio-player">
+    <!-- Audio Info Section -->
+    <div class="audio-info">
+      <img class="album-cover" src='https://visme.co/blog/wp-content/uploads/2021/06/recipe-book-cover-template-visme-642x1024.jpg' alt="Album Cover">
+      <div class="song-info">
+        <p class="song-title">Ennavale Ennavale</p>
+        <p class="artist">Mano and Anuradha Sriram</p>
+      </div>
+    </div>
+
+    <!-- Controls Section -->
+    <div class="controls">
+      <button class="prev"><i class="fas fa-backward"></i></button>
+      <button class="play-pause" (click)="togglePlay()">
+        <i [class.fas]="isPlaying" [class.fa-pause]="isPlaying" [class.fa-play]="!isPlaying"></i>
+      </button>
+      <button class="next"><i class="fas fa-forward"></i></button>
+    </div>
+
+    <!-- Progress Bar Section -->
+    <div class="progress-bar">
+      <input type="range" class="progress" [value]="progress" (input)="updateProgress($event)">
+      <div class="time">
+        <span class="current-time">{{ currentTime }}</span>
+        <span class="duration">{{ duration }}</span>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="modal" [class.show]="isModalOpen">
-  <div class="modal-content">
-    <span class="close" (click)="closeModal()">&times;</span>
-    <h2>{{ selectedAudiobook?.title }}</h2>
-    <p><strong>Author:</strong> {{ selectedAudiobook?.author }}</p>
-    <p><strong>Genre:</strong> {{ selectedAudiobook?.genre }}</p>
-    <p><strong>Language:</strong> {{ selectedAudiobook?.language }}</p>
-    <p><strong>Narrator:</strong> {{ selectedAudiobook?.narrator }}</p>
-    <p><strong>Publisher:</strong> {{ selectedAudiobook?.publisher }}</p>
-    <p><strong>Publish Year:</strong> {{ selectedAudiobook?.publishYear }}</p>
-  </div>
-</div> -->
+
 
 <p>show audio books works!</p>
 <div class="search-container">
@@ -46,7 +57,7 @@
 <div class="grid-container scroll-container" (scroll)="onScroll()">
   <!-- Display Audiobooks in Grid -->
   <div class="grid-item" *ngFor="let audiobook of audiobooks" (click)="openAudioPlayer(audiobook)">
-    <img [src]="'audiobook.coverImagePath'" alt="{{ audiobook.title }}" />
+    <img class="audio-cover" [src]="'https://visme.co/blog/wp-content/uploads/2021/06/recipe-book-cover-template-visme-642x1024.jpg'" alt="{{ audiobook.title }}" />
     <h3>{{ audiobook.title }}</h3>
     <p>Author: {{ audiobook.author }}</p>
   </div>

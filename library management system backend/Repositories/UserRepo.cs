@@ -2,6 +2,8 @@
 using library_management_system.Database.Entiy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using PdfSharp;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace library_management_system.Repositories
 {
@@ -14,12 +16,18 @@ namespace library_management_system.Repositories
             _context = context;
         }
 
+
+
+
         public async Task<User?> CreateUser(User user)
         {
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
             return await _context.Users.FindAsync(user.Id);
         }
+
+
+
 
         public async Task<User?> GetUserByEmailOrNic(string emailOrNic)
         {
@@ -32,14 +40,39 @@ namespace library_management_system.Repositories
             return await _context.Users.FindAsync(id);
 
         }
-        public async Task<List<User>> GetAllUsers()
-        {
 
-            var data = await _context.Users
-                               .Where(u => u.IsActive)  
-                               .ToListAsync();
-            return data;
+
+
+
+
+
+        public async Task<(List<User> Users, int TotalCount)> GetAllActiveUsers(int pageNumber, int pageSize)
+        {
+            var subscribers = _context.Users.Where(u => u.IsActive==true);
+
+            if (subscribers == null)
+            {
+                return (new List<User>(), 0);
+            }
+
+            int totalCount = await subscribers.CountAsync();
+            var users = await subscribers
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (users, totalCount);
         }
+
+
+
+
+
+
+
+
+
+
         public async Task<User> SoftDelete(int id)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
@@ -55,10 +88,14 @@ namespace library_management_system.Repositories
             return user;
         }
 
-        public async Task<User?> ActivateUserAccount(string nicOrEmail)
+
+
+
+
+        public async Task<User?> ActivateUserAccount(int id)
         {
            
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == nicOrEmail || u.UserNic == nicOrEmail);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id==id);
 
             if (user == null)
                 return null;
@@ -74,11 +111,29 @@ namespace library_management_system.Repositories
             return await _context.Users
          .FirstOrDefaultAsync(u => u.Email == emailorNic || u.UserNic == emailorNic) ;
         }
-        public async Task<List<User>> GetAllDisabeledUsers()
+
+
+
+        public async Task<(List<User> Users, int TotalCount)> GetAllNonactiveUsers(int pageNumber, int pageSize)
         {
-            var users=await _context.Users.Where(u => u.IsActive==false).ToListAsync();
-            return users;
+            var subscribers = _context.Users.Where(u => u.IsActive==false);
+
+            if (subscribers == null)
+            {
+                return (new List<User>(), 0);
+            }
+
+            int totalCount = await subscribers.CountAsync();
+            var users = await subscribers
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (users, totalCount);
         }
+
+
+
 
 
         public async Task<User> DeleteUserPermanently(int id)
@@ -108,6 +163,9 @@ namespace library_management_system.Repositories
 
 
 
+
+
+
         public async Task<(List<User>, int)> SearchAsync(string searchString, int pageNumber, int pageSize)
         {
             var query = _context.Users.AsQueryable();
@@ -131,6 +189,9 @@ namespace library_management_system.Repositories
             return (users, totalRecords);
         }
 
+
+
+
         public async Task<List<string>> GetUserEmailsByPrefix(string prefix)
         {
 
@@ -140,6 +201,27 @@ namespace library_management_system.Repositories
           .Select(u => u.Email)
           .ToListAsync();
 
+        }
+
+
+
+
+        public async Task<(List<User> Users, int TotalCount)> GetSubscribedUsersAsync(int pageNumber, int pageSize)
+        {
+            var subscribers = _context.Users.Where(u => u.IsSubscribed==true);
+
+            if (subscribers == null)
+            {
+                return (new List<User>(), 0); 
+            }
+
+            int totalCount = await subscribers.CountAsync();
+            var users = await subscribers
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (users, totalCount);
         }
 
     }
