@@ -6,7 +6,7 @@
     *ngFor="let ebook of ebooks" 
     (click)="openEbookModal(ebook)">
   <img 
-  [src]="ebook.coverImagePath || 'assets/default-cover.jpg'" 
+  [src]="'https://visme.co/blog/wp-content/uploads/2021/06/novel-book-cover-template-visme.jpg'" 
   alt="{{ ebook.title }}" 
   (error)="onImageError($event)" 
 />

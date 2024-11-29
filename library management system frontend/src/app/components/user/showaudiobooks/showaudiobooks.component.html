@@ -46,7 +46,7 @@
 <div class="grid-container scroll-container" (scroll)="onScroll()">
   <!-- Display Audiobooks in Grid -->
   <div class="grid-item" *ngFor="let audiobook of audiobooks" (click)="openAudioPlayer(audiobook)">
-    <img [src]="'audiobook.coverImagePath'" alt="{{ audiobook.title }}" />
+    <img [src]="'https://visme.co/blog/wp-content/uploads/2021/06/recipe-book-cover-template-visme-642x1024.jpg'" alt="{{ audiobook.title }}" />
     <h3>{{ audiobook.title }}</h3>
     <p>Author: {{ audiobook.author }}</p>
   </div>

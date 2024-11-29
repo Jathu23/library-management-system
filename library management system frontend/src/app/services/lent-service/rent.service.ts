@@ -1,15 +1,16 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { environment } from '../../../environments/environment.testing';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RentService {
-
-  private rentUrl = `https://localhost:7261/api/Lent/`;
+  private baseurl = environment.apiBaseUrl;
   
-  private returnUrl = `https://localhost:7261/api/Return/`;
+  private rentUrl = `${this.baseurl}/Lent/`;
+  private returnUrl = `${this.baseurl}/Return/`;
   
 
   constructor(private http: HttpClient) {}

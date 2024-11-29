@@ -1,12 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment.testing';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MainBookUpdateService {
-
+  private baseurl = environment.apiBaseUrl;
 
   // private mainBookUpdateUrl = `https://localhost:7261/api/Books/Update`;
 
@@ -26,7 +27,7 @@ export class MainBookUpdateService {
   //   return this.http.put(this.mainBookUpdateUrl, null, { params });
   // }
 
-  private mainBookUpdateUrl = `https://localhost:7261/api/Books/Update`;
+  private mainBookUpdateUrl = `${this.baseurl}/Books/Update`;
 
   constructor(private http: HttpClient) {}
 
