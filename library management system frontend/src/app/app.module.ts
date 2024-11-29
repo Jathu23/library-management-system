@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddbookComponent } from './components/admin/addbook/addbook.component';
 import { UserDashboardComponent } from './components/user/user-dashboard/user-dashboard.component';
@@ -29,12 +29,12 @@ import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginato
 import { MatTableModule } from '@angular/material/table';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { EditBookDialogComponent } from './components/admin/edit-book-dialog/edit-book-dialog.component';
-
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MembersComponent } from './components/admin/members/members.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 
 
@@ -93,7 +93,16 @@ import { MembersComponent } from './components/admin/members/members.component';
 
      
   ],
-  providers: [MatPaginatorIntl, provideAnimationsAsync()],
+  providers: [
+    MatPaginatorIntl, provideAnimationsAsync(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true, // Allows multiple interceptors
+    },
+
+  ],
   bootstrap: [AppComponent]
+  
 })
 export class AppModule { }
