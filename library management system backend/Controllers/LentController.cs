@@ -94,6 +94,32 @@ namespace library_management_system.Controllers
             return Ok(result);
         }
 
+        [HttpGet("user-lent-records")]
+        public async Task<IActionResult> GetLentRecordsByUserId(int userId)
+        {
+            var result = await _lentService.GetLentRecordsByUserIdAsync(userId);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("user-rent-history")]
+        public async Task<IActionResult> GetRentHistoryByUser(int userId)
+        {
+            var result = await _lentService.GetRentHistoryByUser(userId);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
 
     }
 }

@@ -107,7 +107,28 @@ namespace library_management_system.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<LentRecord>> GetLentRecordsByUserIdAsync(int userId)
+        {
+            return await _context.LentRecords
+                .Include(lr => lr.BookCopy)
+                .Include(lr => lr.User)
+                .Where(lr => lr.UserId == userId)
+                .ToListAsync();
+        }
 
+        public async Task<List<RentHistory>> GetRentHistoryByUser(int userId)
+        {
+            var records = await _context.RentHistory
+                .Include(rh => rh.BookCopy)
+                .Include(rh => rh.User)
+                .Include(rh => rh.IssuingAdmin)
+                .Include(rh => rh.ReceivingAdmin)
+                .Where(rh => rh.UserId == userId)
+                .OrderBy(rh => rh.Id)
+                .ToListAsync();
+
+            return records;
+        }
 
     }
 }

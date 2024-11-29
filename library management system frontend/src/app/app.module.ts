@@ -35,6 +35,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MembersComponent } from './components/admin/members/members.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { ShowLentRecodesComponent } from './components/user/show-lent-recodes/show-lent-recodes.component';
 
 
 
@@ -70,7 +71,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     ShowLentRecComponent,
     ShowLentHistoryComponent,
     EditBookDialogComponent,
-    MembersComponent
+    MembersComponent,
+    ShowLentRecodesComponent
 
    
 

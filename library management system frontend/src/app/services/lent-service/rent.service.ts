@@ -47,4 +47,9 @@ export class RentService {
 
   return this.http.post(url, null, { params });
   }
+
+  getUserLentRecords(userId: number): Observable<any> {
+    const url = `https://localhost:7261/api/Lent/user-lent-records?userId=${userId}`;
+    return this.http.get<any>(url);
+  }
 }

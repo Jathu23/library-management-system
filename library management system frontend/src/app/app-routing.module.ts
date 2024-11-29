@@ -18,6 +18,7 @@ import { ShowEbookComponent } from './components/admin/show-ebook/show-ebook.com
 import { ShowLentRecComponent } from './components/admin/show-lent-rec/show-lent-rec.component';
 import { ShowLentHistoryComponent } from './components/admin/show-lent-history/show-lent-history.component';
 import { MembersComponent } from './components/admin/members/members.component';
+import { ShowLentRecodesComponent } from './components/user/show-lent-recodes/show-lent-recodes.component';
 
 
 
@@ -54,7 +55,8 @@ const routes: Routes = [
       { path: '', component: UserDashboardComponent },
       { path: 'view-normal-books', component: ShowbooksComponent },
       { path: 'view-audio-books', component: ShowaudiobooksComponent },
-      {path: 'view-e-books' , component:ShowebooksComponent }
+      {path: 'view-e-books' , component:ShowebooksComponent },
+      {path: 'view-lend-records' , component:ShowLentRecodesComponent }
    
     ]
   }

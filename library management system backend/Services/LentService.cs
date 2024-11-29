@@ -455,6 +455,162 @@ namespace library_management_system.Services
             }
         }
 
+        public async Task<ApiResponse<List<LentRecordUserDto>>> GetLentRecordsByUserIdAsync(int userId)
+        {
+            try
+            {
+
+                var lentRecords = await _lentRecordRepository.GetLentRecordsByUserIdAsync(userId);
+
+                if (lentRecords == null || !lentRecords.Any())
+                {
+                    return new ApiResponse<List<LentRecordUserDto>>
+                    {
+                        Success = false,
+                        Message = "No lent records found for this user",
+                        Data = null
+                    };
+                }
+
+                var lentRecordDtos = new List<LentRecordUserDto>();
+
+                foreach (var lentRecord in lentRecords)
+                {
+
+                    var book = await _lentRecordRepository.GetBookById(lentRecord.BookCopy.BookId);
+
+                    if (book == null)
+                    {
+                        return new ApiResponse<List<LentRecordUserDto>>
+                        {
+                            Success = false,
+                            Message = $"Book details not found for Book ID: {lentRecord.BookCopy.BookId}",
+                            Data = null
+                        };
+                    }
+
+
+                    var currentDateTime = DateTime.UtcNow;
+                    var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
+
+                    string status = statusValue > 0
+                        ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
+                        : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours overdue";
+
+
+                    var lentRecordDto = new LentRecordUserDto
+                    {
+                        Id = lentRecord.Id,
+                        BookId = book.Id,
+                        BookTitle = book.Title,
+                        BookCopyId = lentRecord.BookCopyId,
+                        BookAuthor = book.Author,
+                        LentDate = lentRecord.LentDate,
+                        DueDate = lentRecord.DueDate,
+                        Status = status,
+                        StatusValue = statusValue
+                    };
+
+                    lentRecordDtos.Add(lentRecordDto);
+                }
+
+                return new ApiResponse<List<LentRecordUserDto>>
+                {
+                    Success = true,
+                    Message = "User-specific lent records retrieved successfully",
+                    Data = lentRecordDtos
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<LentRecordUserDto>>
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving user-specific lent records",
+                    Errors = new List<string> { ex.Message },
+                    Data = null
+                };
+            }
+        }
+
+
+        public async Task<ApiResponse<List<LentHistoryUserDto>>> GetRentHistoryByUser(int userId)
+        {
+            try
+            {
+
+                var records = await _lentRecordRepository.GetRentHistoryByUser(userId);
+                var Book = await _lentRecordRepository.GetBookById(records[0].BookCopy.BookId);
+
+                if (records == null || !records.Any())
+                {
+                    return new ApiResponse<List<LentHistoryUserDto>>
+                    {
+                        Success = false,
+                        Message = "No history found for this user",
+                        Data = null
+                    };
+                }
+
+                var lentHistoryDtos = new List<LentHistoryUserDto>();
+
+                foreach (var rec in records)
+                {
+                    int statusValue;
+                    string status;
+                    var currentDateTime = DateTime.UtcNow;
+
+
+                    if (rec.ReturnDate == null)
+                    {
+                        statusValue = (int)(rec.DueDate - currentDateTime).TotalMinutes;
+                        status = statusValue > 0
+                            ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
+                            : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours overdue";
+                    }
+                    else
+                    {
+                        statusValue = 0;
+                        status = "Closed";
+                    }
+
+
+                    var lentRecordDto = new LentHistoryUserDto
+                    {
+                        Id = rec.Id,
+                        BookId = rec.BookCopy.BookId,
+                        BookTitle = Book.Title,
+                        BookAuthor = Book.Author,
+                        BookCopyId = rec.BookCopyId,
+                        LentDate = rec.LendDate,
+                        DueDate = rec.DueDate,
+                        ReturnDate = rec.ReturnDate,
+                        Status = status,
+                        StatusValue = statusValue
+                    };
+
+                    lentHistoryDtos.Add(lentRecordDto);
+                }
+
+                return new ApiResponse<List<LentHistoryUserDto>>
+                {
+                    Success = true,
+                    Message = "Records retrieved successfully",
+                    Data = lentHistoryDtos
+                };
+            }
+            catch (Exception ex)
+            {
+
+                return new ApiResponse<List<LentHistoryUserDto>>
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving rent history",
+                    Errors = new List<string> { ex.Message },
+                    Data = null
+                };
+            }
+        }
 
 
 
