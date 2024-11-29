@@ -107,6 +107,15 @@ namespace library_management_system.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<LentRecord>> GetLentRecordsByUserIdAsync(int userId)
+        {
+            return await _context.LentRecords
+                .Include(lr => lr.BookCopy)
+                .Include(lr => lr.User)
+                .Where(lr => lr.UserId == userId)
+                .ToListAsync();
+        }
+
 
 
     }
