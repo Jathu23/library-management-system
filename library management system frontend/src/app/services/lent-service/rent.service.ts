@@ -52,4 +52,9 @@ export class RentService {
     const url = `https://localhost:7261/api/Lent/user-lent-records?userId=${userId}`;
     return this.http.get<any>(url);
   }
+
+  getUserLendingHistory(userId: number): Observable<any> {
+    const url = `https://localhost:7261/api/Lent/user-rent-history?userId=${userId}`;
+    return this.http.get<any>(url);
+  }
 }

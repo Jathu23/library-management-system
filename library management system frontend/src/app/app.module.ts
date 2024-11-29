@@ -36,6 +36,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MembersComponent } from './components/admin/members/members.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ShowLentRecodesComponent } from './components/user/show-lent-recodes/show-lent-recodes.component';
+import { ShowLendingHistoryComponent } from './components/user/show-lending-history/show-lending-history.component';
 
 
 
@@ -72,7 +73,8 @@ import { ShowLentRecodesComponent } from './components/user/show-lent-recodes/sh
     ShowLentHistoryComponent,
     EditBookDialogComponent,
     MembersComponent,
-    ShowLentRecodesComponent
+    ShowLentRecodesComponent,
+    ShowLendingHistoryComponent
 
    
 
