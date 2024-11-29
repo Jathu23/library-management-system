@@ -27,5 +27,6 @@
 
         public string Status { get; set; }
         public int StatusValue { get; set; }
+        public int MaxValue { get; set; }
     }
 }

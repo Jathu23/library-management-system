@@ -9,7 +9,7 @@ import { ViewmembersService } from '../../../services/admin-services/viewmembers
 export class MembersComponent implements OnInit {
   isLoading = false;
   currentPage = 1;
-  pageSize = 10;
+  pageSize = 1;
   totalItems = 0;
   users: any[] = [];
   heading: string = 'Active Members';

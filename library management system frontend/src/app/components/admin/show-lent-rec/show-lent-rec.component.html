@@ -170,7 +170,8 @@
         <td>{{ record.bookAuthor }}</td>
         <td>{{ record.lentDate | date: 'yyyy-MM-dd' }}</td>
         <td>{{ record.dueDate | date: 'yyyy-MM-dd' }}</td>
-        <td>{{ record.status }}</td>
+        <td> <progress value="{{record.statusValue}}" max="{{record.maxValue}}"></progress>
+          {{ record.status }} </td>
         <td>
           <button (click)="openModal(record)">Details</button>
         </td>
@@ -212,3 +213,6 @@
           </table>
         </div>
       </div>
+
+
+      
