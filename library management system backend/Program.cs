@@ -1,3 +1,5 @@
+using DinkToPdf.Contracts;
+using DinkToPdf;
 using library_management_system.Database;
 using library_management_system.Repositories;
 using library_management_system.Services;
@@ -58,6 +60,10 @@ builder.Services.AddSingleton(provider => new Email(
     smtpPass: builder.Configuration["Gmail:Password"]
 ));
 
+builder.Services.AddControllers();
+builder.Services.AddSingleton<IConverter, SynchronizedConverter>(
+    provider => new SynchronizedConverter(new PdfTools()));
+
 // Register other services
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<UserRepo>();
@@ -98,6 +104,7 @@ builder.Services.AddScoped<ImageService>();
 builder.Services.AddScoped<BCryptService>();
 builder.Services.AddScoped<EbookFileService>();
 builder.Services.AddScoped<AudioBookFileService>();
+builder.Services.AddScoped<PdfGeneratorService>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();

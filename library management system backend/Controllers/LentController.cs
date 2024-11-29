@@ -1,6 +1,7 @@
 ﻿using library_management_system.DTOs;
 using library_management_system.DTOs.LentRecord;
 using library_management_system.Services;
+using library_management_system.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,12 @@ namespace library_management_system.Controllers
     public class LentController : ControllerBase
     {
         private readonly LentService _lentService;
+        private readonly PdfGeneratorService _pdfGeneratorService;
 
-        public LentController(LentService lentService)
+        public LentController(LentService lentService, PdfGeneratorService pdfGeneratorService)
         {
             _lentService = lentService;
+            _pdfGeneratorService = pdfGeneratorService;
         }
 
         [HttpPost("lend-normal-book")]
@@ -121,18 +124,47 @@ namespace library_management_system.Controllers
         }
 
 
-        [HttpGet("report")]
+        [HttpGet("Lent-Report")]
         public async Task<IActionResult> GetLentReport([FromQuery] DateTime date)
         {
             try
             {
-                var report = await _lentService.GetLentReportAsync(date);
+                var report = await _lentService.GetLentReport(date);
                 return Ok(report);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { Message = ex.Message });
             }
+        }
+
+        [HttpGet("lend-report")]
+        public IActionResult GetLendReport()
+        {
+            // Sample HTML content for the report
+            var htmlContent = @"
+            <html>
+            <head><style>body { font-family: Arial, sans-serif; }</style></head>
+            <body>
+                <h1>Lend Report</h1>
+                <p>Date: " + DateTime.Now + @"</p>
+                <p>Total Rentings: 20</p>
+                <p>Pending: 5</p>
+                <p>On Time: 10</p>
+                <p>Later: 5</p>
+                <h3>Details</h3>
+                <ul>
+                    <li>Pending Record 1</li>
+                    <li>Pending Record 2</li>
+                </ul>
+            </body>
+            </html>";
+
+            // Generate the PDF
+            var pdfBytes = _pdfGeneratorService.GeneratePdf(htmlContent);
+
+            // Return as a downloadable file
+            return File(pdfBytes, "application/pdf", "LendReport.pdf");
         }
 
     }

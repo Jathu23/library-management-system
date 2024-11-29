@@ -131,7 +131,7 @@ namespace library_management_system.Repositories
         }
 
 
-        public async Task<List<RentHistory>> GetAllLentRecordsAsync(DateTime date)
+        public async Task<List<RentHistory>> GetAllLentRecords(DateTime date)
         {
             return await _context.RentHistory
                 .Include(r => r.BookCopy)

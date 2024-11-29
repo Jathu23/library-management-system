@@ -612,9 +612,9 @@ namespace library_management_system.Services
             }
         }
 
-        public async Task<LendReportDto> GetLentReportAsync(DateTime date)
+        public async Task<LendReportDto> GetLentReport(DateTime date)
         {
-            var lentRecords = await _lentRecordRepository.GetAllLentRecordsAsync(date);
+            var lentRecords = await _lentRecordRepository.GetAllLentRecords(date);
 
             var pendingLent = lentRecords
                 .Where(r => r.ReturnDate == null )
