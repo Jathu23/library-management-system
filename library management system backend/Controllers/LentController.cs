@@ -70,7 +70,7 @@ namespace library_management_system.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+       
         [HttpGet("all-lent-All-records")]
         public async Task<IActionResult> GetAllLentRecords()
         {
@@ -82,7 +82,7 @@ namespace library_management_system.Controllers
 
             return Ok(result);
         }
-        [Authorize]
+       
         [HttpGet("lent-historys")]
         public async Task<IActionResult> GetAllRentHistory(int page=1, int pageSize=5)
         {
@@ -137,6 +137,27 @@ namespace library_management_system.Controllers
                 return StatusCode(500, new { Message = ex.Message });
             }
         }
+
+        [HttpGet("Lent-Report-ByUserid")]
+        public async Task<IActionResult> GetLentReportbyuserid([FromQuery] int userid)
+        {
+            try
+            {
+                var report = await _lentService.GetLentReportbyuserid(userid);
+                return Ok(report);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
+        }
+
+
+
+
+
+
+
 
         [HttpGet("lend-report")]
         public IActionResult GetLendReport()

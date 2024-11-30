@@ -43,8 +43,6 @@ export class RentService {
     
     .set('lentRecordId', lentId.toString())
     .set('ResiveAdminId', adminId.toString())
-  
-
   return this.http.post(url, null, { params });
   }
 
