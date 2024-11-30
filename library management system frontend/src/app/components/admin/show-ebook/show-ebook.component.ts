@@ -4,19 +4,21 @@ import { GetbooksService } from '../../../services/bookservice/getbooks.service'
 @Component({
   selector: 'app-show-ebook',
   templateUrl: './show-ebook.component.html',
-  styleUrl: './show-ebook.component.css'
+  styleUrls: ['./show-ebook.component.css'] 
 })
-export class ShowEbookComponent implements OnInit{
+export class ShowEbookComponent implements OnInit {
   isLoading = false;
-  currentPage = 1;
+  currentPage = 0;
   pageSize = 10;
   totalItems = 0;
-   ebooks: any[] = [];
+  ebooks: any[] = [];
+
+  expandedElementId: number | null = null;
 
   constructor(private getbookservice: GetbooksService) {}
 
   ngOnInit() {
-    this.loadEbooks(); // Load initial data
+    this.loadEbooks(); 
   }
 
   loadEbooks() {
@@ -27,24 +29,32 @@ export class ShowEbookComponent implements OnInit{
       (response) => {
         const result = response.data;
 
-        this.ebooks = [...this.ebooks, ...result.items];
+        this.ebooks = result.items; 
         this.totalItems = result.totalCount;
-        this.currentPage++;
         this.isLoading = false;
       },
       (error) => {
-        console.error('Error fetching audiobooks:', error);
+        console.error('Error fetching ebooks:', error);
         this.isLoading = false;
       }
     );
   }
 
-
-
-
-  expandedElementId: number | null = null;
-
   toggleRow(elementId: number): void {
     this.expandedElementId = this.expandedElementId === elementId ? null : elementId;
+  }
+
+ 
+  onPageChange(event: any): void {
+    const { pageIndex, pageSize } = event;
+
+    if (pageSize !== this.pageSize) {
+      this.currentPage = 0; 
+    } else {
+      this.currentPage = pageIndex; 
+    }
+
+    this.pageSize = pageSize;
+    this.loadEbooks(); 
   }
 }
