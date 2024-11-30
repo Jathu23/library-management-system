@@ -142,6 +142,47 @@ namespace library_management_system.Repositories
                 .Where(r => r.LendDate.Date < date.Date)
                 .ToListAsync();
         }
+        public async Task<List<RentHistory>> GetAllLentRecordsbyuserid(int userid)
+        {
+            return await _context.RentHistory
+                .Include(r => r.BookCopy)
+                .ThenInclude(bc => bc.Book)
+                .Include(r => r.User)
+                .Include(r => r.IssuingAdmin)
+                .Include(r => r.ReceivingAdmin)
+                .Where(r => r.UserId == userid)
+                .ToListAsync();
+        }
+
+        public async Task<List<NormalBook>> GetAllBooksWithLendingDetailsAsync()
+        {
+            return await _context.NormalBooks
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.User)
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.IssuingAdmin)
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.ReceivingAdmin)
+                .ToListAsync();
+        }
+
+        public async Task<NormalBook?> GetBookWithLendingDetailsAsync(int bookId)
+        {
+            return await _context.NormalBooks
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.User)
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.IssuingAdmin)
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.ReceivingAdmin)
+                .FirstOrDefaultAsync(b => b.Id == bookId);
+        }
 
     }
 }

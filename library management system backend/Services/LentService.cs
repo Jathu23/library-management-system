@@ -6,6 +6,8 @@ using System.Diagnostics.Eventing.Reader;
 using static System.Reflection.Metadata.BlobBuilder;
 using library_management_system.DTOs.Book;
 using library_management_system.DTOs.Ebook;
+using library_management_system.Migrations;
+using PdfSharp.Charting;
 
 namespace library_management_system.Services
 {
@@ -644,8 +646,98 @@ namespace library_management_system.Services
             };
         }
 
+        public async Task<LendReportDto> GetLentReportbyuserid(int userid)
+        {
+            var lentRecords = await _lentRecordRepository.GetAllLentRecordsbyuserid(userid);
+
+            var pendingLent = lentRecords
+                .Where(r => r.ReturnDate == null)
+                .Select(MapToLentRecordAdminDto)
+                .ToList();
+
+            var onTimeLent = lentRecords
+                .Where(r => r.ReturnDate != null && r.ReturnDate <= r.DueDate)
+                .Select(MapToLentRecordAdminDto)
+                .ToList();
+
+            var laterLent = lentRecords
+                .Where(r => r.ReturnDate != null && r.ReturnDate > r.DueDate)
+                .Select(MapToLentRecordAdminDto)
+                .ToList();
+
+            return new LendReportDto
+            {
+                Date = DateTime.UtcNow,
+                TotalRengings = lentRecords.Count,
+                Pending = pendingLent.Count,
+                OnTime = onTimeLent.Count,
+                Later = laterLent.Count,
+                PendingLent = pendingLent,
+                OnTimeLent = onTimeLent,
+                LaterLent = laterLent
+            };
+        }
+        public async Task<BookLendingReportsDto> GetBookLendingReportsAsync(int? bookId)
+        {
+            var reports = new List<AllBookRendingReportDto>();
+
+            if (bookId.HasValue)
+            {
+                var book = await _lentRecordRepository.GetBookWithLendingDetailsAsync(bookId.Value);
+                if (book == null)
+                    throw new Exception($"Book with ID {bookId.Value} not found.");
+
+                reports.Add(MapToDto(book));
+            }
+            else
+            {
+                var books = await _lentRecordRepository.GetAllBooksWithLendingDetailsAsync();
+                reports = books.Select(MapToDto).ToList();
+            }
+
+            return new BookLendingReportsDto
+            {
+                Created = DateTime.UtcNow,
+                Reports = reports
+            };
+        }
+
+        private AllBookRendingReportDto MapToDto(NormalBook book)
+        {
+            var rentDetails = book.BookCopies
+                .SelectMany(bc => bc.RentHistories)
+                .Select(rh => new AllBookRendingReportDto.BookRentdetial
+                {
+                    BookCopyId = rh.BookCopyId,
+                    UserName = $"{rh.User.FirstName} {rh.User.LastName}",
+                    IssuingAdmin = $"{rh.IssuingAdmin.FirstName} {rh.IssuingAdmin.LastName}",
+                    ReceivingAdmin = rh.ReceivingAdmin != null
+                        ? $"{rh.ReceivingAdmin.FirstName} {rh.ReceivingAdmin.LastName}"
+                        : null,
+                    LendDate = rh.LendDate,
+                    DueDate = rh.DueDate,
+                    ReturnDate = rh.ReturnDate
+                })
+                .ToList();
+
+            return new AllBookRendingReportDto
+            {
+                BookId = book.Id,
+                BookTitle = book.Title,
+                ISBN = book.ISBN,
+                Author = book.Author,
+                BookRentDetails = rentDetails
+            };
+        }
+
+
+
         private LentHistoryAdminDto MapToLentRecordAdminDto(RentHistory record)
         {
+            var currentDateTime = DateTime.UtcNow;
+          int  statusValue = (int)(record.DueDate - currentDateTime).TotalMinutes;
+          int  maxvalue = (int)(record.DueDate - record.LendDate).TotalMinutes;
+
             return new LentHistoryAdminDto
             {
                 Id = record.Id,
@@ -669,9 +761,14 @@ namespace library_management_system.Services
                 LentDate = record.LendDate,
                 DueDate = record.DueDate,
                 ReturnDate = record.ReturnDate,
-                Status = record.ReturnDate == null ? "Pending" : (record.ReturnDate <= record.DueDate ? "On Time" : "Later")
+                Status = record.ReturnDate == null ? statusValue > 0
+                            ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
+                            : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours overdue" : (record.ReturnDate <= record.DueDate ? "On Time" : "Later"),
+                StatusValue =statusValue,
+                MaxValue = maxvalue
             };
         }
+
 
 
     }

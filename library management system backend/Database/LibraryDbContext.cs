@@ -59,9 +59,15 @@
                 .HasForeignKey(rh => rh.RAdminId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<RentHistory>()
+               .HasOne(rh => rh.BookCopy)
+               .WithMany(bc => bc.RentHistories)
+               .HasForeignKey(rh => rh.BookCopyId);
+
             base.OnModelCreating(modelBuilder);
         }
 
+       
 
 
     }

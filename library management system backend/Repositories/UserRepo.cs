@@ -1,5 +1,6 @@
 ﻿using library_management_system.Database;
 using library_management_system.Database.Entiy;
+using library_management_system.DTOs.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using PdfSharp;
@@ -223,6 +224,25 @@ namespace library_management_system.Repositories
 
             return (users, totalCount);
         }
+
+        public async Task<OverallUserReportDto> GetUserStatistics()
+        {
+            int totalUsers = await _context.Users.CountAsync();
+            int activeUsers = await _context.Users.CountAsync(u => u.IsActive);
+            int nonActiveUsers = await _context.Users.CountAsync(u => !u.IsActive);
+            int subscribedUsers = await _context.Users.CountAsync(u => u.IsSubscribed);
+
+            return new OverallUserReportDto
+            {
+                Created = DateTime.UtcNow,
+                TotalUsers = totalUsers,
+                ActiveUsers = activeUsers,
+                NonActiveUsers = nonActiveUsers,
+                SubcribeUsers = subscribedUsers
+            };
+        }
+
+
 
     }
 }
