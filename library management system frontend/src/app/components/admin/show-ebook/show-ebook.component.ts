@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
 
 @Component({
   selector: 'app-show-ebook',
   templateUrl: './show-ebook.component.html',
-  styleUrls: ['./show-ebook.component.css'] 
+  styleUrls: ['./show-ebook.component.css'],
 })
 export class ShowEbookComponent implements OnInit {
   isLoading = false;
@@ -12,13 +13,16 @@ export class ShowEbookComponent implements OnInit {
   pageSize = 10;
   totalItems = 0;
   ebooks: any[] = [];
-
   expandedElementId: number | null = null;
+  selectedPdfPath: string | null = null;
 
-  constructor(private getbookservice: GetbooksService) {}
+  constructor(
+    private getbookservice: GetbooksService,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit() {
-    this.loadEbooks(); 
+    this.loadEbooks();
   }
 
   loadEbooks() {
@@ -29,7 +33,7 @@ export class ShowEbookComponent implements OnInit {
       (response) => {
         const result = response.data;
 
-        this.ebooks = result.items; 
+        this.ebooks = result.items;
         this.totalItems = result.totalCount;
         this.isLoading = false;
       },
@@ -41,20 +45,45 @@ export class ShowEbookComponent implements OnInit {
   }
 
   toggleRow(elementId: number): void {
-    this.expandedElementId = this.expandedElementId === elementId ? null : elementId;
+    this.expandedElementId =
+      this.expandedElementId === elementId ? null : elementId;
   }
 
- 
   onPageChange(event: any): void {
     const { pageIndex, pageSize } = event;
 
     if (pageSize !== this.pageSize) {
-      this.currentPage = 0; 
+      this.currentPage = 0;
     } else {
-      this.currentPage = pageIndex; 
+      this.currentPage = pageIndex;
     }
 
     this.pageSize = pageSize;
-    this.loadEbooks(); 
+    this.loadEbooks();
+  }
+
+  viewPdf(ebook: any) {
+    // Mark the PDF as read
+    this.markPdfAsRead(ebook.id);
+
+    // Update the selected PDF path for the embed tag
+    this.selectedPdfPath = this.sanitizer.bypassSecurityTrustResourceUrl(
+      ebook.filePath
+    ) as string;
+  }
+
+  markPdfAsRead(ebookId: number) {
+    this.getbookservice.markPdfAsRead(ebookId).subscribe(
+      (response) => {
+        console.log(`Ebook ${ebookId} marked as read.`);
+      },
+      (error) => {
+        console.error(`Failed to mark ebook ${ebookId} as read:`, error);
+      }
+    );
+  }
+
+  onPdfLoad(ebookId: number) {
+    console.log(`PDF for Ebook ID ${ebookId} has loaded.`);
   }
 }
