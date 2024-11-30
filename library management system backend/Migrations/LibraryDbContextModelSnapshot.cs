@@ -182,6 +182,9 @@ namespace library_management_system.Migrations
                     b.Property<DateTime?>("LastBorrowedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("lentcount")
+                        .HasColumnType("int");
+
                     b.HasKey("CopyId");
 
                     b.HasIndex("BookId");
@@ -594,7 +597,7 @@ namespace library_management_system.Migrations
             modelBuilder.Entity("library_management_system.Database.Entiy.RentHistory", b =>
                 {
                     b.HasOne("library_management_system.Database.Entiy.BookCopy", "BookCopy")
-                        .WithMany()
+                        .WithMany("RentHistories")
                         .HasForeignKey("BookCopyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -629,6 +632,11 @@ namespace library_management_system.Migrations
                 {
                     b.Navigation("Metadata")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.BookCopy", b =>
+                {
+                    b.Navigation("RentHistories");
                 });
 
             modelBuilder.Entity("library_management_system.Database.Entiy.Ebook", b =>

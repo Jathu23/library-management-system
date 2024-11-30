@@ -43,8 +43,16 @@ export class RentService {
     
     .set('lentRecordId', lentId.toString())
     .set('ResiveAdminId', adminId.toString())
-  
-
   return this.http.post(url, null, { params });
+  }
+
+  getUserLentRecords(userId: number): Observable<any> {
+    const url = `https://localhost:7261/api/Lent/user-lent-records?userId=${userId}`;
+    return this.http.get<any>(url);
+  }
+
+  getUserLendingHistory(userId: number): Observable<any> {
+    const url = `https://localhost:7261/api/Lent/user-rent-history?userId=${userId}`;
+    return this.http.get<any>(url);
   }
 }

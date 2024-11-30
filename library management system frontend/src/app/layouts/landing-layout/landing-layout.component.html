@@ -1,4 +1,14 @@
 <div class="container-fluid p-0">
+  <!-- loding -->
+<div *ngIf="isLoading" class="loading-overlay">
+  <img src="https://cdnl.iconscout.com/lottie/premium/thumb/login-9631530-7874173.gif" alt="Loading..." class="loading-spinner" />
+</div>
+<div *ngIf="isLoading2" class="loading-overlay">
+  <img src="https://www.mhxym.com/templets/tzsrsn-tuo/images/pic/loading.gif" alt="Loading..." class="loading-spinner" />
+</div>
+<div *ngIf="isLoading3" class="loading-overlay">
+  <img src="https://cdnl.iconscout.com/lottie/premium/thumb/successfully-send-6461954-5372873.gif" alt="Loading..." class="loading-spinner" />
+</div>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg fixed-top"
     style="background: rgba(255, 255, 255, 0.058); backdrop-filter: blur(10px);">
@@ -28,11 +38,6 @@
       </div>
     </div>
   </nav>
-
-<!-- loding -->
-<div *ngIf="isLoading" class="loading-overlay">
-  <img src="https://cdnl.iconscout.com/lottie/premium/thumb/login-9631530-7874173.gif" alt="Loading..." class="loading-spinner" />
-</div>
 
   <!-- login modal -->
   <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -168,7 +173,7 @@
                 Passwords do not match.
               </div>
             </div>
-            <button type="submit" class="btn btn-success w-100" [disabled]="signupForm.invalid">
+            <button type="submit" class="btn btn-success w-100" [disabled]="signupForm.invalid" data-bs-dismiss="modal">
               Sign Up
             </button>
           </form>

@@ -11,9 +11,11 @@ namespace library_management_system.Database.Entiy
         public string Condition { get; set; }         
         public DateTime AddedDate { get; set; }      
         public DateTime? LastBorrowedDate { get; set; }
+        public int lentcount { get; set; }
 
         // Navigation property
-        public NormalBook Book { get; set; }         
+        public NormalBook Book { get; set; }
+        public List<RentHistory> RentHistories { get; set; }
     }
 
 }

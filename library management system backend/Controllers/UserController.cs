@@ -44,10 +44,10 @@ namespace library_management_system.Controllers
                 };
                 return BadRequest(response1);
             }
-              var response = await _userService.CreateUser(userRequestDto);
+            var response = await _userService.CreateUser(userRequestDto);
 
-        if (!response.Success)
-            return BadRequest(response);
+            if (!response.Success)
+                return BadRequest(response);
 
 
             const string subject = "Account Created";
@@ -138,9 +138,9 @@ namespace library_management_system.Controllers
             }
         }
         [HttpGet("getSingleUserByNICorEmail")]
-        public async Task< IActionResult> GetUser(string emailorNic)
+        public async Task<IActionResult> GetUser(string emailorNic)
         {
-            var data =await _userService.GetUserByNICorEmail(emailorNic);
+            var data = await _userService.GetUserByNICorEmail(emailorNic);
             if (data == null)
             {
                 return BadRequest(Response);
@@ -172,7 +172,7 @@ namespace library_management_system.Controllers
                 response.Data
             });
         }
-    
+
         [HttpDelete("DeletePermanantly")]
         public async Task<IActionResult> DeleteUser(int id)
         {
@@ -183,7 +183,7 @@ namespace library_management_system.Controllers
 
             return Ok(new { message = response.Message, user = response.Data });
         }
-       
+
         [HttpPut("UpdateUser")]
         public async Task<IActionResult> UpdateUser(UserInfoUpdateDto userInfoUpdateDto)
         {
@@ -235,10 +235,10 @@ namespace library_management_system.Controllers
         [HttpGet("subscribed-users")]
         public async Task<IActionResult> GetSubscribedUsersWithPagination([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            
+
             var response = await _userService.GetSubscribedUsersWithPagination(pageNumber, pageSize);
 
-           
+
             if (!response.Success)
             {
                 return BadRequest(new
@@ -253,5 +253,55 @@ namespace library_management_system.Controllers
                 response.Data
             });
         }
+        [HttpGet("report")]
+        public async Task<IActionResult> GetOverallUserReport()
+        {
+            try
+            {
+                var report = await _userService.GetOverallUserReport();
+                return Ok(report);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
+        }
+
+        [HttpPost("sampleuseradd")]
+        public async Task<IActionResult> AddSampleUser([FromQuery] int howmany = 2)
+        {
+            try
+            {
+                for (int i = 0; i < howmany; i++)
+                {
+                    
+                    var newUser = new UserRequstModel()
+                    {
+                        UserNic = $"0{i + 1}", 
+                        FirstName = "User", 
+                        LastName = $"00{i + 1}",
+                        Email = $"user0{i + 1}@example.com",
+                        PhoneNumber = $"076814520{i}", 
+                        Address = $"Address00 {i + 1}",
+                        Password = "1", 
+                        ProfileImage = null
+                    };
+
+                  
+                    await _userService.CreateUser(newUser);
+                    Thread.Sleep(500);
+                   
+                }
+
+                return Ok($"Successfully created {howmany} users.");
+            }
+            catch (Exception ex)
+            {
+               
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+
     }
 }

@@ -626,6 +626,12 @@ namespace library_management_system.Services
             }
         }
 
+        public async Task<OverallUserReportDto> GetOverallUserReport()
+        {
+            return await _userRepo.GetUserStatistics();
+        }
+
+
 
     }
 

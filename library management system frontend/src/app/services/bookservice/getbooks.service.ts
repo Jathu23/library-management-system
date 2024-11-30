@@ -42,6 +42,9 @@ getNoramlbookbyId(bookid: number): Observable<any> {
   return this.http.get<any>(this.NormalBookUrl + `get-book?bookId=${bookid}`);
 }
 
+markPdfAsRead(ebookId: number): Observable<any> {
+  return this.http.post<any>(`${this.ebookUrl}MarkAsRead`, { ebookId });
+}
 
 
 

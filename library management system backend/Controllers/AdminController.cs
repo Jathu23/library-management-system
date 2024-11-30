@@ -70,32 +70,6 @@ namespace library_management_system.Controllers
         }
 
 
-        //[HttpPost("Aminlogin")]
-        //public async Task<IActionResult> LoginUser([FromBody] AdminLoginRequset adminLoginRequset)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        var response1 = new ApiResponse<string>
-        //        {
-        //            Success = false,
-        //            Message = "Validation failed.",
-        //            Errors = ModelState.Values
-        //                .SelectMany(v => v.Errors)
-        //                .Select(e => e.ErrorMessage)
-        //                .ToList()
-        //        };
-        //        return BadRequest(response1);
-        //    }
-
-        //    var response = await _adminServices.LoginAdmin(adminLoginRequset);
-
-        //    if (!response.Success)
-        //        return BadRequest(response);
-
-        //    return Ok(response);
-        //}
-
-
         [HttpGet("GetAllAdmins")]
         public async Task<IActionResult> GetAllAdmins()
         {
@@ -111,7 +85,7 @@ namespace library_management_system.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("byid")]
         public async Task<IActionResult> GetAdminById(int id)
         {
             var response = await _adminServices.GetAdminById(id);
@@ -126,7 +100,7 @@ namespace library_management_system.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("byid")]
         public async Task<IActionResult> DeleteAdminById(int id)
         {
             var response = await _adminServices.DeleteAdminById(id);
@@ -167,5 +141,38 @@ namespace library_management_system.Controllers
 
             return BadRequest(response);
         }
+
+        [HttpPost("addsampleadmin")]
+        public async Task<IActionResult> AddSampleAdmin([FromQuery] int howmany = 5)
+        {
+            try
+            {
+                for (int i = 0; i < howmany; i++)
+                {
+                    
+                    var newAdmin = new AdminRequstModel()
+                    {
+                        AdminNic = $"00{i + 1}v", 
+                        FirstName = "Admin", 
+                        LastName = $"00{i + 1}",
+                        Email = $"admin0{i + 1}@example.com",
+                        Password = "2", 
+                        ProfileImage = null 
+                    };
+
+                        await _adminServices.CreateAdmin(newAdmin);
+                    Thread.Sleep(500);
+                   
+                }
+
+                return Ok($"Successfully created {howmany} admins.");
+            }
+            catch (Exception ex)
+            {
+               
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
     }
 }
