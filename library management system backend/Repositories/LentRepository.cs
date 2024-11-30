@@ -116,6 +116,7 @@ namespace library_management_system.Repositories
                 .ToListAsync();
         }
 
+
         public async Task<List<RentHistory>> GetRentHistoryByUser(int userId)
         {
             var records = await _context.RentHistory
@@ -168,6 +169,7 @@ namespace library_management_system.Repositories
                         .ThenInclude(rh => rh.ReceivingAdmin)
                 .ToListAsync();
         }
+
 
         public async Task<NormalBook?> GetBookWithLendingDetailsAsync(int bookId)
         {

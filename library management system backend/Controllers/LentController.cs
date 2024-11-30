@@ -110,6 +110,7 @@ namespace library_management_system.Controllers
             return Ok(result);
         }
 
+
         [HttpGet("user-rent-history")]
         public async Task<IActionResult> GetRentHistoryByUser(int userId)
         {
@@ -205,6 +206,7 @@ namespace library_management_system.Controllers
             // Return as a downloadable file
             return File(pdfBytes, "application/pdf", "LendReport.pdf");
         }
+
 
     }
 }
