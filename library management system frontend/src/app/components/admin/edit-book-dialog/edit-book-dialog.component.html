@@ -2,41 +2,34 @@
 <form [formGroup]="editForm" (ngSubmit)="save()">
   <mat-form-field>
     <mat-label>ISBN</mat-label>
-    <input matInput formControlName="isbn">
+    <input matInput formControlName="ISBN">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Title</mat-label>
-    <input matInput formControlName="title">
+    <input matInput formControlName="Title">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Author</mat-label>
-    <input matInput formControlName="author">
+    <input matInput formControlName="Author">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Genre</mat-label>
-    <input matInput formControlName="genre">
+    <input matInput formControlName="Genre">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Publish Year</mat-label>
-    <input matInput formControlName="publishYear" type="number">
+    <input matInput formControlName="PublishYear" type="number">
   </mat-form-field>
   <mat-form-field>
     <mat-label>Shelf Location</mat-label>
-    <input matInput formControlName="shelfLocation">
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Total Copies</mat-label>
-    <input matInput formControlName="totalCopies" type="number">
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Available Copies</mat-label>
-    <input matInput formControlName="availableCopies" type="number">
+    <input matInput formControlName="ShelfLocation">
   </mat-form-field>
   <div mat-dialog-actions>
     <button mat-button (click)="cancel()">Cancel</button>
     <button mat-raised-button color="primary" type="submit">Save</button>
   </div>
 </form>
+
 
 
 

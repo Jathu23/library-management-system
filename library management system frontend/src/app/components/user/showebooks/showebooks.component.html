@@ -1,15 +1,8 @@
-
 <p>ebook works!</p>
 <div class="grid-container scroll-container">
-  <div 
-    class="grid-item" 
-    *ngFor="let ebook of ebooks" 
-    (click)="openEbookModal(ebook)">
-  <img 
-  [src]="'https://visme.co/blog/wp-content/uploads/2021/06/novel-book-cover-template-visme.jpg'" 
-  alt="{{ ebook.title }}" 
-  (error)="onImageError($event)" 
-/>
+  <div class="grid-item" *ngFor="let ebook of ebooks" (click)="openEbookModal(ebook)">
+    <img [src]="'https://visme.co/blog/wp-content/uploads/2021/06/novel-book-cover-template-visme.jpg'"
+      alt="{{ ebook.title }}" (error)="onImageError($event)" />
 
     <h3>{{ ebook.title }}</h3>
     <p>Author: {{ ebook.author }}</p>
@@ -29,5 +22,7 @@
     <p><strong>Genre:</strong> {{ selectedEbook?.genre }}</p>
     <p><strong>Publisher:</strong> {{ selectedEbook?.publisher }}</p>
     <p><strong>Publish Year:</strong> {{ selectedEbook?.publishYear }}</p>
+    <p><strong>Publish Year:</strong> {{ selectedEbook?.filePath }}</p>
+    <p><iframe [src]="sanitizedUrl" width="100%" height="600px"></iframe></p>
   </div>
 </div>
