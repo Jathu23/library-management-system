@@ -677,7 +677,7 @@ namespace library_management_system.Services
                 LaterLent = laterLent
             };
         }
-        public async Task<BookLendingReportsDto> GetBookLendingReportsAsync(int? bookId)
+        public async Task<BookLendingReportsDto> GetBookLendingReports(int? bookId)
         {
             var reports = new List<AllBookRendingReportDto>();
 
@@ -702,6 +702,44 @@ namespace library_management_system.Services
             };
         }
 
+
+        // Generate Lending Count Report
+        public async Task<LendingCountReportsDto> GetLendingCountReportsAsync(int? bookId = null)
+        {
+            List<BookCopy> bookCopies;
+
+            // Fetch data for all books or a single book
+            if (bookId.HasValue)
+            {
+                bookCopies = await _lentRecordRepository.GetBookCopiesByBookIdAsync(bookId.Value);
+            }
+            else
+            {
+                bookCopies = await _lentRecordRepository.GetAllBookCopiesAsync();
+            }
+
+            // Prepare the report
+            var report = new LendingCountReportsDto
+            {
+                Created = DateTime.Now,
+                CountReports = bookCopies
+                    .GroupBy(bc => bc.BookId)
+                    .Select(group => new LendingCountReportDto
+                    {
+                       
+                        BookID = group.Key,
+                        TotalRentCount = group.Sum(bc => bc.lentcount),
+                        induvalCopyrentcount = group.Select(bc => new LendingCountReportDto.InduvalCopyrentcount // Corrected reference
+                        {
+                            CoppyId = bc.CopyId,
+                            RentCount = bc.lentcount
+                        }).ToList()
+                    })
+                    .ToList()
+            };
+
+            return report;
+        }
         private AllBookRendingReportDto MapToDto(NormalBook book)
         {
             var rentDetails = book.BookCopies

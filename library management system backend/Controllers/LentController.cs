@@ -158,7 +158,7 @@ namespace library_management_system.Controllers
         {
             try
             {
-                var reports = await _lentService.GetBookLendingReportsAsync(bookId);
+                var reports = await _lentService.GetBookLendingReports(bookId);
                 return Ok(reports);
             }
             catch (Exception ex)
@@ -168,7 +168,12 @@ namespace library_management_system.Controllers
         }
 
 
-
+        [HttpGet("LendingCount-report")]
+        public async Task<IActionResult> GetLendingCountReport([FromQuery] int? bookId)
+        {
+            var report = await _lentService.GetLendingCountReportsAsync(bookId);
+            return Ok(report);
+        }
 
 
 

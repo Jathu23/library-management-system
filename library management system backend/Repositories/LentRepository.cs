@@ -184,5 +184,24 @@ namespace library_management_system.Repositories
                 .FirstOrDefaultAsync(b => b.Id == bookId);
         }
 
+         // Get all book copies with RentHistory
+    public async Task<List<BookCopy>> GetAllBookCopiesAsync()
+    {
+        return await _context.BookCopies
+            .Include(bc => bc.Book)
+            .Include(bc => bc.RentHistories)
+            .ToListAsync();
+    }
+
+    // Get book copies by Book ID
+    public async Task<List<BookCopy>> GetBookCopiesByBookIdAsync(int bookId)
+    {
+        return await _context.BookCopies
+            .Where(bc => bc.BookId == bookId)
+            .Include(bc => bc.Book)
+            .Include(bc => bc.RentHistories)
+            .ToListAsync();
+    }
+
     }
 }

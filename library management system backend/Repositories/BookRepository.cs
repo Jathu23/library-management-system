@@ -29,7 +29,8 @@ namespace library_management_system.Repositories
                     BookId = book.Id,             
                     IsAvailable = true,
                     Condition = "New",
-                    AddedDate = DateTime.Now
+                    AddedDate = DateTime.Now,
+                    lentcount = 0
                 };
                 await _context.BookCopies.AddAsync(bookCopy);
             }
