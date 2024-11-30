@@ -5,7 +5,7 @@
 namespace library_management_system.Migrations
 {
     /// <inheritdoc />
-    public partial class usersearchdto : Migration
+    public partial class updatedatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -1,72 +1,80 @@
 <table class="table table-bordered">
-    <thead>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>ISBN</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Genre</th>
+      <th>Publish Year</th>
+      <th>Language</th>
+      <th>Publisher</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Main rows -->
+    <ng-container *ngFor="let ebook of ebooks">
       <tr>
-        <th>ID</th>
-        <th>ISBN</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Genre</th>
-        <th>Publish Year</th>
-        <th>Language</th>
-        <th>Publisher</th>
-        <th>Actions</th>
+        <td>{{ ebook.id }}</td>
+        <td>{{ ebook.isbn }}</td>
+        <td>{{ ebook.title }}</td>
+        <td>{{ ebook.author }}</td>
+        <td>{{ ebook.genre }}</td>
+        <td>{{ ebook.publishYear }}</td>
+        <td>{{ ebook.metadata.language }}</td>
+        <td>{{ ebook.metadata.publisher }}</td>
+        <td>
+          <button (click)="toggleRow(ebook.id)">
+            {{ expandedElementId === ebook.id ? 'Hide' : 'View' }}
+          </button>
+        </td>
       </tr>
-    </thead>
-    <tbody>
-      <!-- Main rows -->
-      <ng-container *ngFor="let ebook of ebooks">
-        <tr>
-          <td>{{ ebook.id }}</td>
-          <td>{{ ebook.isbn }}</td>
-          <td>{{ ebook.title }}</td>
-          <td>{{ ebook.author }}</td>
-          <td>{{ ebook.genre }}</td>
-          <td>{{ ebook.publishYear }}</td>
-          <td>{{ ebook.metadata.language }}</td>
-          <td>{{ ebook.metadata.publisher }}</td>
-          <td>
-            <button (click)="toggleRow(ebook.id)">
-              {{ expandedElementId === ebook.id ? 'Hide' : 'View' }}
-            </button>
-          </td>
-        </tr>
-  
-        <!-- Expanded row -->
-        <tr *ngIf="expandedElementId === ebook.id">
-          <td colspan="9">
-            <div class="expanded-content">
-              <h4>Additional Information</h4>
-              <table class="table table-bordered">
-                <tr>
-                  <td><strong>File Path:</strong></td>
-                  <td><strong>Description:</strong></td>
-                  <td><strong>Publisher:</strong></td>
-                  <td><strong>File Size:</strong></td>
-                  <td><strong>Page Count:</strong></td>
-                  <td><strong>Digital Rights:</strong></td>
-                  <td><strong>View Count:</strong></td>
-                  <td><strong>Download Count:</strong></td>
-                  <td><strong>Language:</strong></td>
-                  <td><strong>Added Date:</strong></td>
-                 
-                </tr>
-                <tr>
-                  <td>{{ ebook.filePath }}</td>
-                  <td>{{ ebook.metadata.description }}</td>       
-                  <td>{{ ebook.metadata.publisher }}</td>                        
-                  <td>{{ ebook.metadata.fileSize | number: '1.2-2' }} MB</td>
-                  <td>{{ ebook.metadata.pageCount }}</td>
-                  <td>{{ ebook.metadata.digitalRights }}</td>
-                  <td>{{ ebook.metadata.viewCount }}</td>
-                  <td>{{ ebook.metadata.downloadCount }}</td>
-                  <td>{{ ebook.metadata.language }}</td>
-                  <td>{{ ebook.addedDate | date }}</td>
-                </tr>
-              </table>
-            </div>
-          </td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
-  
+
+      <!-- Expanded row -->
+      <tr *ngIf="expandedElementId === ebook.id">
+        <td colspan="9">
+          <div class="expanded-content">
+            <h4>Additional Information</h4>
+            <table class="table table-bordered">
+              <tr>
+                <td><strong>File Path:</strong></td>
+                <td><strong>Description:</strong></td>
+                <td><strong>Publisher:</strong></td>
+                <td><strong>File Size:</strong></td>
+                <td><strong>Page Count:</strong></td>
+                <td><strong>Digital Rights:</strong></td>
+                <td><strong>View Count:</strong></td>
+                <td><strong>Download Count:</strong></td>
+                <td><strong>Language:</strong></td>
+                <td><strong>Added Date:</strong></td>
+              </tr>
+              <tr>
+                <td>{{ ebook.filePath }}</td>
+                <td>{{ ebook.metadata.description }}</td>
+                <td>{{ ebook.metadata.publisher }}</td>
+                <td>{{ ebook.metadata.fileSize | number: '1.2-2' }} MB</td>
+                <td>{{ ebook.metadata.pageCount }}</td>
+                <td>{{ ebook.metadata.digitalRights }}</td>
+                <td>{{ ebook.metadata.viewCount }}</td>
+                <td>{{ ebook.metadata.downloadCount }}</td>
+                <td>{{ ebook.metadata.language }}</td>
+                <td>{{ ebook.addedDate | date }}</td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>
+
+<!-- Pagination -->
+<mat-paginator
+  [length]="totalItems"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[2,10, 17, 25, 50]"
+  showFirstLastButtons
+  (page)="onPageChange($event)"
+>
+</mat-paginator>
