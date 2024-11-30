@@ -10,7 +10,7 @@
         public int IAdminId { get; set; }
         public string IAdminName { get; set; }
         public int? RAdminId { get; set; }
-        public string RAdminName { get; set; }
+        public string? RAdminName { get; set; }
 
         public int BookId { get; set; }
         public string BookTitle { get; set; }
@@ -26,7 +26,7 @@
         public DateTime? ReturnDate { get; set; }
 
         public string Status { get; set; }
-        public int StatusValue { get; set; }
-        public int MaxValue { get; set; }
+        public int? StatusValue { get; set; }
+        public int? MaxValue { get; set; }
     }
 }

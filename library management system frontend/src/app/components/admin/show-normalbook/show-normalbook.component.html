@@ -1,6 +1,6 @@
-<div class="container mt-3">
+<div class="container mt-3" style="height: 90vh;">
   <p class="text-center mt-2"><strong>Book Management</strong></p>
-  <div class="table-responsive mt-3" style="border: 1px solid #ddd; border-radius: 5px;">
+  <div class="table-responsive mt-3" style="border: 1px solid #ddd; border-radius: 5px; height: 90%; overflow-y: auto;">
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -58,7 +58,6 @@
                       <th>Condition</th>
                       <th>Last Rent</th>
                       <th>Actions</th>
-                      
                     </tr>
                   </thead>
                   <tbody>
@@ -71,7 +70,6 @@
                         <button class="btn btn-primary">
                           <i class="bi bi-pencil"></i> 
                         </button>
-                      
                         <button class="btn btn-danger" (click)="deleteItem(nestedRow.copyId); $event.stopPropagation()">
                           <i class="bi bi-trash"></i> 
                         </button>
@@ -87,3 +85,13 @@
     </table>
   </div>
 </div>
+
+<!-- Pagination -->
+<mat-paginator
+  [length]="totalItems"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[10, 17, 25, 50]"
+  showFirstLastButtons
+  (page)="onPageChange($event)"
+>
+</mat-paginator>
