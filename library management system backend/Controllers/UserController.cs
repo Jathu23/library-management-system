@@ -253,5 +253,20 @@ namespace library_management_system.Controllers
                 response.Data
             });
         }
+        [HttpGet("report")]
+        public async Task<IActionResult> GetOverallUserReport()
+        {
+            try
+            {
+                var report = await _userService.GetOverallUserReport();
+                return Ok(report);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
+        }
+
+
     }
 }

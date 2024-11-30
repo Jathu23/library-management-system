@@ -153,6 +153,19 @@ namespace library_management_system.Controllers
         }
 
 
+        [HttpGet("Book-lending-report")]
+        public async Task<IActionResult> GetBookLendingReports([FromQuery] int? bookId)
+        {
+            try
+            {
+                var reports = await _lentService.GetBookLendingReportsAsync(bookId);
+                return Ok(reports);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { Message = ex.Message });
+            }
+        }
 
 
 

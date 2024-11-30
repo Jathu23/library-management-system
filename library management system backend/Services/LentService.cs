@@ -677,6 +677,61 @@ namespace library_management_system.Services
                 LaterLent = laterLent
             };
         }
+        public async Task<BookLendingReportsDto> GetBookLendingReportsAsync(int? bookId)
+        {
+            var reports = new List<AllBookRendingReportDto>();
+
+            if (bookId.HasValue)
+            {
+                var book = await _lentRecordRepository.GetBookWithLendingDetailsAsync(bookId.Value);
+                if (book == null)
+                    throw new Exception($"Book with ID {bookId.Value} not found.");
+
+                reports.Add(MapToDto(book));
+            }
+            else
+            {
+                var books = await _lentRecordRepository.GetAllBooksWithLendingDetailsAsync();
+                reports = books.Select(MapToDto).ToList();
+            }
+
+            return new BookLendingReportsDto
+            {
+                Created = DateTime.UtcNow,
+                Reports = reports
+            };
+        }
+
+        private AllBookRendingReportDto MapToDto(NormalBook book)
+        {
+            var rentDetails = book.BookCopies
+                .SelectMany(bc => bc.RentHistories)
+                .Select(rh => new AllBookRendingReportDto.BookRentdetial
+                {
+                    BookCopyId = rh.BookCopyId,
+                    UserName = $"{rh.User.FirstName} {rh.User.LastName}",
+                    IssuingAdmin = $"{rh.IssuingAdmin.FirstName} {rh.IssuingAdmin.LastName}",
+                    ReceivingAdmin = rh.ReceivingAdmin != null
+                        ? $"{rh.ReceivingAdmin.FirstName} {rh.ReceivingAdmin.LastName}"
+                        : null,
+                    LendDate = rh.LendDate,
+                    DueDate = rh.DueDate,
+                    ReturnDate = rh.ReturnDate
+                })
+                .ToList();
+
+            return new AllBookRendingReportDto
+            {
+                BookId = book.Id,
+                BookTitle = book.Title,
+                ISBN = book.ISBN,
+                Author = book.Author,
+                BookRentDetails = rentDetails
+            };
+        }
+
+
+
         private LentHistoryAdminDto MapToLentRecordAdminDto(RentHistory record)
         {
             var currentDateTime = DateTime.UtcNow;
@@ -713,6 +768,7 @@ namespace library_management_system.Services
                 MaxValue = maxvalue
             };
         }
+
 
 
     }

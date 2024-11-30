@@ -154,5 +154,35 @@ namespace library_management_system.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<NormalBook>> GetAllBooksWithLendingDetailsAsync()
+        {
+            return await _context.NormalBooks
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.User)
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.IssuingAdmin)
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.ReceivingAdmin)
+                .ToListAsync();
+        }
+
+        public async Task<NormalBook?> GetBookWithLendingDetailsAsync(int bookId)
+        {
+            return await _context.NormalBooks
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.User)
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.IssuingAdmin)
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.ReceivingAdmin)
+                .FirstOrDefaultAsync(b => b.Id == bookId);
+        }
+
     }
 }

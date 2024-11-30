@@ -13,7 +13,8 @@ namespace library_management_system.Database.Entiy
         public DateTime? LastBorrowedDate { get; set; }
 
         // Navigation property
-        public NormalBook Book { get; set; }         
+        public NormalBook Book { get; set; }
+        public List<RentHistory> RentHistories { get; set; }
     }
 
 }
