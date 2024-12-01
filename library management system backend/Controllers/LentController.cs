@@ -4,6 +4,7 @@ using library_management_system.Services;
 using library_management_system.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace library_management_system.Controllers
@@ -100,7 +101,7 @@ namespace library_management_system.Controllers
         [HttpGet("user-lent-records")]
         public async Task<IActionResult> GetLentRecordsByUserId(int userId)
         {
-            var result = await _lentService.GetLentRecordsByUserIdAsync(userId);
+            var result = await _lentService.GetLentRecordsByUserIdAsync(userId);       
 
             if (!result.Success)
             {
@@ -131,7 +132,11 @@ namespace library_management_system.Controllers
             try
             {
                 var report = await _lentService.GetLentReport(date);
-                return Ok(report);
+                var pdf =await _pdfGeneratorService.GenerateLendReportPdfAsync(report);
+               
+           
+                return File(pdf, "application/pdf", "LendReport.pdf");
+                return Ok(pdf);
             }
             catch (Exception ex)
             {
@@ -168,6 +173,14 @@ namespace library_management_system.Controllers
             }
         }
 
+        [HttpGet("download-lending-report")]
+        public async Task<IActionResult> DownloadLendingReport([FromQuery] int? bookId)
+        {
+            var report = await _lentService.GetBookLendingReports(bookId); // Fetch your data
+            var pdfBytes = await _pdfGeneratorService.GenerateBookLendingReportPdfAsync(report);
+
+            return File(pdfBytes, "application/pdf", "BookLendingReport.pdf");
+        }
 
         [HttpGet("LendingCount-report")]
         public async Task<IActionResult> GetLendingCountReport([FromQuery] int? bookId)
@@ -179,7 +192,7 @@ namespace library_management_system.Controllers
 
 
         [HttpGet("lend-report")]
-        public IActionResult GetLendReport()
+        public async Task<IActionResult> GetLendReport()
         {
             // Sample HTML content for the report
             var htmlContent = @"
@@ -201,11 +214,12 @@ namespace library_management_system.Controllers
             </html>";
 
             // Generate the PDF
-            var pdfBytes = _pdfGeneratorService.GeneratePdf(htmlContent);
+            var pdfBytes = await _pdfGeneratorService.GeneratePdfAsync(htmlContent);
 
             // Return as a downloadable file
             return File(pdfBytes, "application/pdf", "LendReport.pdf");
         }
+
 
 
     }

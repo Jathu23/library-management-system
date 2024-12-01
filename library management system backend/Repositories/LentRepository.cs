@@ -140,7 +140,7 @@ namespace library_management_system.Repositories
                 .Include(r => r.User)
                 .Include(r => r.IssuingAdmin)
                 .Include(r => r.ReceivingAdmin)
-                .Where(r => r.LendDate.Date < date.Date)
+             
                 .ToListAsync();
         }
         public async Task<List<RentHistory>> GetAllLentRecordsbyuserid(int userid)
