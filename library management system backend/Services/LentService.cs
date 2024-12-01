@@ -11,13 +11,17 @@ namespace library_management_system.Services
         private readonly UserRepo _userRepository;
         private readonly AdminRepo _adminRepository;
         private readonly BookRepository _bookRepository;
+        private readonly SubscriptionRepository _subscriptionRepository;
         
 
-        public LentService(LentRepository lentRecordRepository, UserRepo userRepository, AdminRepo adminRepository)
+
+        public LentService(LentRepository lentRecordRepository, UserRepo userRepository, AdminRepo adminRepository, BookRepository bookRepository, SubscriptionRepository subscriptionRepository)
         {
             _lentRecordRepository = lentRecordRepository;
             _userRepository = userRepository;
             _adminRepository = adminRepository;
+            _bookRepository = bookRepository;
+            _subscriptionRepository = subscriptionRepository;
         }
 
         public async Task<ApiResponse<bool>> LendNormalBook(LentRecordDto lentRecordDto)
@@ -119,12 +123,30 @@ namespace library_management_system.Services
 
         public async Task<ApiResponse<bool>> LendNormalBookByCopyId(LendByCopyIdDto lendByCopyIdDto)
         {
-           
-            var bookCopy = await _lentRecordRepository.GetBookCopyById(lendByCopyIdDto.BookCopyId);
-            var user = await _lentRecordRepository.GetUserById(lendByCopyIdDto.UserId);
-            var admin = await _lentRecordRepository.GetAdminById(lendByCopyIdDto.AdminId);
 
-          
+
+            var user = await _lentRecordRepository.GetUserById(lendByCopyIdDto.UserId);
+
+            if (user == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "User not found",
+                    Data = false
+                };
+            }
+            var canborrow = await CanUserBorrowBooks(lendByCopyIdDto.UserId);
+            if (!canborrow.CanBorrow)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = canborrow.Message,
+                    Data = false
+                };
+            }
+            var bookCopy = await _lentRecordRepository.GetBookCopyById(lendByCopyIdDto.BookCopyId);
             if (bookCopy == null)
             {
                 return new ApiResponse<bool>
@@ -134,6 +156,12 @@ namespace library_management_system.Services
                     Data = false
                 };
             }
+      
+           
+            var admin = await _lentRecordRepository.GetAdminById(lendByCopyIdDto.AdminId);
+
+          
+           
 
             
             if (!bookCopy.IsAvailable)
@@ -147,15 +175,6 @@ namespace library_management_system.Services
             }
 
            
-            if (user == null)
-            {
-                return new ApiResponse<bool>
-                {
-                    Success = false,
-                    Message = "User not found",
-                    Data = false
-                };
-            }
 
           
             if (admin == null)
@@ -167,8 +186,9 @@ namespace library_management_system.Services
                     Data = false
                 };
             }
+          
 
-        
+
             var book = await _lentRecordRepository.GetNormalBookWithCopies(bookCopy.BookId);
 
             if (book == null)
@@ -243,7 +263,7 @@ namespace library_management_system.Services
             {
                 
 
-                var currentDateTime = DateTime.UtcNow;
+                var currentDateTime = DateTime.Now;
                 var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
                 var maxvalue = (int)(lentRecord.DueDate-lentRecord.LentDate).TotalMinutes;
                 string status = statusValue > 0
@@ -306,7 +326,7 @@ namespace library_management_system.Services
             {
                 var book = await _lentRecordRepository.GetBookById(lentRecord.BookCopy.BookId);
 
-                var currentDateTime = DateTime.UtcNow;
+                var currentDateTime = DateTime.Now;  
                 var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
                 var maxvalue = (int)(lentRecord.DueDate - lentRecord.LentDate).TotalMinutes;
                 string status = statusValue > 0
@@ -374,7 +394,7 @@ namespace library_management_system.Services
                     int statusValue;
                     string status;
                     int maxvalue;
-                    var currentDateTime = DateTime.UtcNow;
+                    var currentDateTime = DateTime.Now;
 
                     // Calculate the status and status value
                     if (rec.ReturnDate == null)
@@ -486,7 +506,7 @@ namespace library_management_system.Services
                     }
 
 
-                    var currentDateTime = DateTime.UtcNow;
+                    var currentDateTime = DateTime.Now;
                     var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
 
                     string status = statusValue > 0
@@ -554,7 +574,7 @@ namespace library_management_system.Services
                 {
                     int statusValue;
                     string status;
-                    var currentDateTime = DateTime.UtcNow;
+                    var currentDateTime = DateTime.Now;
 
 
                     if (rec.ReturnDate == null)
@@ -661,7 +681,7 @@ namespace library_management_system.Services
 
             return new LendReportDto
             {
-                Date = DateTime.UtcNow,
+                Date = DateTime.Now,
                 TotalRengings = lentRecords.Count,
                 Pending = pendingLent.Count,
                 OnTime = onTimeLent.Count,
@@ -691,7 +711,7 @@ namespace library_management_system.Services
 
             return new BookLendingReportsDto
             {
-                Created = DateTime.UtcNow,
+                Created = DateTime.Now,
                 Reports = reports
             };
         }
@@ -734,6 +754,68 @@ namespace library_management_system.Services
 
             return report;
         }
+
+        public async Task<BorrowStatusDto> CanUserBorrowBooks(int userId)
+        {
+            var user = await _userRepository.Getuserid(userId);
+
+            if (user == null)
+                throw new Exception("User not found.");
+
+            // Check if the user is subscribed
+            if (!user.IsSubscribed)
+            {
+                // Free plan logic
+                var freePlan = await _subscriptionRepository.GetFreePlanAsync();
+                var booksBorrowedInLast30Days = await _lentRecordRepository.GetBorrowedCountInLastNDaysAsync(userId, 30);
+                return new BorrowStatusDto
+                {
+                    CanBorrow = booksBorrowedInLast30Days < freePlan.BorrowLimit,
+                    BorrowLimit = freePlan.BorrowLimit,
+                    BooksBorrowed = booksBorrowedInLast30Days,
+                    Message=$"free plan have {freePlan.BorrowLimit} borrow limit per month"
+                };
+            }
+
+            // Retrieve active subscription
+            var activeSubscription = await _subscriptionRepository.GetUserSubscriptionByUserIdAsync(userId);
+            if (activeSubscription == null || activeSubscription.Status != "Active")
+                throw new Exception("User does not have an active subscription.");
+
+            var paymentDuration = activeSubscription.PaymentDuration;
+            if (paymentDuration == null)
+                throw new Exception("Payment duration data is missing for the subscription.");
+
+            var borrowLimit = activeSubscription.SubscriptionPlan.BorrowLimit;
+            var totalMonths = paymentDuration.Duration;
+
+            // Calculate current cycle
+            var daysElapsed = (DateTime.Now - activeSubscription.StartDate).Days;
+            var currentCycle = (daysElapsed / 30) + 1;
+
+            if (currentCycle > totalMonths)
+                return new BorrowStatusDto
+                {
+                    CanBorrow = false,
+                    BorrowLimit = borrowLimit,
+                    BooksBorrowed = 0,
+                    Message = "Subscription period has ended."
+                };
+
+            // Calculate borrow count for the current cycle
+            var cycleStartDate = activeSubscription.StartDate.AddDays((currentCycle - 1) * 30);
+            var cycleEndDate = cycleStartDate.AddDays(30).AddTicks(-1);
+            var booksBorrowedInCycle = await _lentRecordRepository.GetBorrowedCountInDateRangeAsync(userId, cycleStartDate, cycleEndDate);
+
+            return new BorrowStatusDto
+            {
+                CanBorrow = booksBorrowedInCycle < borrowLimit,
+                BorrowLimit = borrowLimit,
+                BooksBorrowed = booksBorrowedInCycle
+            };
+        }
+
+
         private AllBookRendingReportDto MapToDto(NormalBook book)
         {
             var rentDetails = book.BookCopies
@@ -766,7 +848,7 @@ namespace library_management_system.Services
 
         private LentHistoryAdminDto MapToLentRecordAdminDto(RentHistory record)
         {
-            var currentDateTime = DateTime.UtcNow;
+            var currentDateTime = DateTime.Now;
           int  statusValue = (int)(record.DueDate - currentDateTime).TotalMinutes;
           int  maxvalue = (int)(record.DueDate - record.LendDate).TotalMinutes;
 

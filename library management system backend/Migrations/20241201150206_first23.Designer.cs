@@ -12,8 +12,8 @@ using library_management_system.Database;
 namespace library_management_system.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20241201135324_book serches")]
-    partial class bookserches
+    [Migration("20241201150206_first23")]
+    partial class first23
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -493,9 +493,8 @@ namespace library_management_system.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Duration")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Multiplier")
                         .HasColumnType("decimal(18,2)");
@@ -574,6 +573,9 @@ namespace library_management_system.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
@@ -648,6 +650,9 @@ namespace library_management_system.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("PaymentDurationId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
@@ -668,6 +673,8 @@ namespace library_management_system.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PaymentDurationId");
 
                     b.HasIndex("SubscriptionPlanId");
 
@@ -804,6 +811,12 @@ namespace library_management_system.Migrations
 
             modelBuilder.Entity("library_management_system.Database.Entiy.UserSubscription", b =>
                 {
+                    b.HasOne("library_management_system.Database.Entiy.PaymentDuration", "PaymentDuration")
+                        .WithMany()
+                        .HasForeignKey("PaymentDurationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("library_management_system.Database.Entiy.SubscriptionPlan", "SubscriptionPlan")
                         .WithMany()
                         .HasForeignKey("SubscriptionPlanId")
@@ -819,6 +832,8 @@ namespace library_management_system.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("PaymentDuration");
 
                     b.Navigation("SubscriptionPlan");
 

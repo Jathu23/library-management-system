@@ -647,6 +647,9 @@ namespace library_management_system.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("PaymentDurationId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
@@ -667,6 +670,8 @@ namespace library_management_system.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PaymentDurationId");
 
                     b.HasIndex("SubscriptionPlanId");
 
@@ -803,6 +808,12 @@ namespace library_management_system.Migrations
 
             modelBuilder.Entity("library_management_system.Database.Entiy.UserSubscription", b =>
                 {
+                    b.HasOne("library_management_system.Database.Entiy.PaymentDuration", "PaymentDuration")
+                        .WithMany()
+                        .HasForeignKey("PaymentDurationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("library_management_system.Database.Entiy.SubscriptionPlan", "SubscriptionPlan")
                         .WithMany()
                         .HasForeignKey("SubscriptionPlanId")
@@ -818,6 +829,8 @@ namespace library_management_system.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("PaymentDuration");
 
                     b.Navigation("SubscriptionPlan");
 

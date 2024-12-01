@@ -27,7 +27,9 @@ namespace library_management_system.Repositories
         public async Task<UserSubscription?> GetUserSubscriptionByUserIdAsync(int userId)
         {
             return await _context.UserSubscription
-                .FirstOrDefaultAsync(us => us.UserId == userId && us.Status == "Active");
+         .Include(us => us.SubscriptionPlan)
+         .Include(us => us.PaymentDuration)
+         .FirstOrDefaultAsync(us => us.UserId == userId && us.Status == "Active" && us.EndDate >= DateTime.UtcNow);
         }
       
         public async Task<bool> UpdateUserSubscriptionAsync(UserSubscription subscription)
@@ -54,5 +56,12 @@ namespace library_management_system.Repositories
             await _context.SaveChangesAsync();
             return payment;
         }
+
+        public async Task<SubscriptionPlan?> GetFreePlanAsync()
+        {
+            return await _context.SubscriptionPlan
+                .FirstOrDefaultAsync(sp => sp.Name == "Free");
+        }
+
     }
 }

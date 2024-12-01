@@ -3,6 +3,7 @@ using library_management_system.Database.Entiy;
 using library_management_system.DTOs;
 using library_management_system.DTOs.Subscription;
 using library_management_system.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 namespace library_management_system.Services
 {
@@ -80,6 +81,7 @@ namespace library_management_system.Services
             {
                 UserId = request.UserId,
                 SubscriptionPlanId = request.SubscriptionPlanId,
+                PaymentDurationId= request.PaymentDurationId,
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddMonths(paymentDuration.Duration), // Calculate end date based on the duration
                 Status = "Active",
@@ -108,14 +110,14 @@ namespace library_management_system.Services
             var user = await _userRepo.Getuserid(userId);
 
             // Get the active subscription
-            var activeSubscription = await _subscriptionRepository.GetUserSubscriptionByUserIdAsync(userId);
+            var activeSubscription = await _subscriptionRepository.GetUserSubscriptionByUserIdAsync( userId);
             if (activeSubscription == null)
                 throw new Exception("No active subscription found for this user.");
 
             // Update subscription status to 'Cancelled'
             user.IsSubscribed=false;
             activeSubscription.Status = "Cancelled";
-            activeSubscription.UpdatedDate = DateTime.UtcNow;
+            activeSubscription.UpdatedDate = DateTime.Now;
             await _userRepo.UpdateUser(user);
 
             return await _subscriptionRepository.UpdateUserSubscriptionAsync(activeSubscription);

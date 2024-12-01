@@ -190,6 +190,23 @@ namespace library_management_system.Controllers
         }
 
 
+        [HttpGet("can-borrow")]
+        public async Task<IActionResult> CanUserBorrow(int userId)
+        {
+            var borrowStatus = await _lentService.CanUserBorrowBooks(userId);
+
+            if (borrowStatus == null)
+            {
+                return NotFound(new { Message = "User not found or subscription details are missing." });
+            }
+
+            if (!borrowStatus.CanBorrow)
+            {
+                return BadRequest(new { Message = borrowStatus.Message });
+            }
+
+            return Ok(borrowStatus);
+        }
 
         [HttpGet("lend-report")]
         public async Task<IActionResult> GetLendReport()

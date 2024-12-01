@@ -8,6 +8,7 @@ namespace library_management_system.Database.Entiy
         public int Id { get; set; }                 // Primary key
         public int UserId { get; set; }            // Foreign key to User
         public int SubscriptionPlanId { get; set; } // Foreign key to SubscriptionPlan
+        public int PaymentDurationId { get; set; }
         public DateTime StartDate { get; set; }    // Subscription start date
         public DateTime EndDate { get; set; }      // Subscription end date
         public string Status { get; set; }         // Active, Expired, Cancelled, etc.
@@ -16,8 +17,9 @@ namespace library_management_system.Database.Entiy
 
 
         // Navigation properties
-        public User User { get; set; }
-        public SubscriptionPlan SubscriptionPlan { get; set; }
+        public User? User { get; set; }
+        public SubscriptionPlan? SubscriptionPlan { get; set; }
+        public PaymentDuration? PaymentDuration { get; set; }
     }
 
 }

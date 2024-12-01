@@ -1,6 +1,7 @@
 ﻿using library_management_system.Database;
 using library_management_system.Database.Entiy;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using static System.Reflection.Metadata.BlobBuilder;
 
 namespace library_management_system.Repositories
@@ -205,5 +206,24 @@ namespace library_management_system.Repositories
             .ToListAsync();
     }
 
+
+        public async Task<int> GetBorrowedCountInLastNDaysAsync(int userId, int days)
+        {
+            var startDate = DateTime.UtcNow.AddDays(-days);
+            return await _context.RentHistory
+                .Where(r => r.UserId == userId && r.LendDate >= startDate && r.ReturnDate == null)
+                .CountAsync();
+        }
+
+        public async Task<int> GetBorrowedCountInDateRangeAsync(int userId, DateTime startDate, DateTime endDate)
+        {
+            return await _context.RentHistory
+                .Where(r => r.UserId == userId && r.LendDate >= startDate && r.LendDate <= endDate && r.ReturnDate == null)
+                .CountAsync();
+        }
+
+
     }
 }
+
+

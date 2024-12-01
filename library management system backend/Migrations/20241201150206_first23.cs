@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace library_management_system.Migrations
 {
     /// <inheritdoc />
-    public partial class bookserches : Migration
+    public partial class first23 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -115,7 +115,7 @@ namespace library_management_system.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Duration = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Duration = table.Column<int>(type: "int", nullable: false),
                     Multiplier = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -132,6 +132,7 @@ namespace library_management_system.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     BorrowLimit = table.Column<int>(type: "int", nullable: false),
                     AccessEbooks = table.Column<bool>(type: "bit", nullable: false),
                     AccessAudiobooks = table.Column<bool>(type: "bit", nullable: false),
@@ -313,6 +314,7 @@ namespace library_management_system.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     SubscriptionPlanId = table.Column<int>(type: "int", nullable: false),
+                    PaymentDurationId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -323,6 +325,12 @@ namespace library_management_system.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserSubscription", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserSubscription_PaymentDuration_PaymentDurationId",
+                        column: x => x.PaymentDurationId,
+                        principalTable: "PaymentDuration",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserSubscription_SubscriptionPlan_SubscriptionPlanId",
                         column: x => x.SubscriptionPlanId,
@@ -488,6 +496,11 @@ namespace library_management_system.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserSubscription_PaymentDurationId",
+                table: "UserSubscription",
+                column: "PaymentDurationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserSubscription_SubscriptionPlanId",
                 table: "UserSubscription",
                 column: "SubscriptionPlanId");
@@ -537,13 +550,13 @@ namespace library_management_system.Migrations
                 name: "Ebooks");
 
             migrationBuilder.DropTable(
-                name: "PaymentDuration");
-
-            migrationBuilder.DropTable(
                 name: "Admins");
 
             migrationBuilder.DropTable(
                 name: "BookCopies");
+
+            migrationBuilder.DropTable(
+                name: "PaymentDuration");
 
             migrationBuilder.DropTable(
                 name: "SubscriptionPlan");

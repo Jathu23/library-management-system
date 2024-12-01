@@ -37,7 +37,7 @@ namespace library_management_system.Controllers
 
 
         [HttpPost("subscribe")]
-        public async Task<IActionResult> Subscribe([FromBody] SubscribeRequest model)
+        public async Task<IActionResult> Subscribe([FromQuery] SubscribeRequest model)
         {
             // Call service to handle the subscription process
             var result = await _subscriptionService.SubscribeAsync(model);

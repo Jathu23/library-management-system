@@ -77,6 +77,12 @@
               .WithMany()
               .HasForeignKey(us => us.SubscriptionPlanId);
 
+            modelBuilder.Entity<UserSubscription>()
+                 .HasOne(p => p.PaymentDuration)
+                .WithMany()
+                .HasForeignKey(p => p.PaymentDurationId);
+
+
             modelBuilder.Entity<Payment>()
                 .HasOne(p => p.SubscriptionPlan)
                 .WithMany()
