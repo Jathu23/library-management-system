@@ -1,52 +1,48 @@
 
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
 
 @Component({
   selector: 'app-showaudiobooks',
   templateUrl: './showaudiobooks.component.html',
-  styleUrl: './showaudiobooks.component.css'
+  styleUrls: ['./showaudiobooks.component.css']
 })
-
 export class ShowaudiobooksComponent implements OnInit {
   audiobooks: any[] = [];
-  isLoading = false;
+  filteredAudiobooks: any[] = [];
   currentPage = 1;
   pageSize = 10;
   totalItems = 0;
+  isLoading = false;
   isModalOpen = false;
   selectedAudiobook: any = null;
-  audioSrc: string = '';
-  backgroundPlay = false;
+  playingAudio: any = null;
+  audio = new Audio();
+  isPlaying = false;
+  progress: number = 0;
+  currentTime: string = '0:00';
+  duration: string = '0:00';
   searchQuery: string = '';
-  isSearchActive = false; // Tracks if the user is currently searching
 
   constructor(private getbookservice: GetbooksService) {}
 
   ngOnInit() {
-    this.loadAudiobooks(); // Load initial data
-
-    this.audio.addEventListener('loadedmetadata', () => {
-      this.duration = this.formatTime(this.audio.duration);
-    });
-
+    this.loadAudiobooks();
     this.audio.addEventListener('timeupdate', () => {
-      this.progress = (this.audio.currentTime / this.audio.duration) * 100;
-      this.currentTime = this.formatTime(this.audio.currentTime);
+      this.updateProgressDisplay();
     });
   }
 
   loadAudiobooks() {
     if (this.isLoading) return;
-
     this.isLoading = true;
+
     this.getbookservice.getaudiobooks(this.currentPage, this.pageSize).subscribe(
       (response) => {
         const result = response.data;
-
-        this.audiobooks = [...this.audiobooks, ...result.items];
+        this.audiobooks = result.items;
         this.totalItems = result.totalCount;
-        this.currentPage++;
+        this.filteredAudiobooks = this.audiobooks; 
         this.isLoading = false;
       },
       (error) => {
@@ -56,100 +52,35 @@ export class ShowaudiobooksComponent implements OnInit {
     );
   }
 
-  onSearch(): void {
-    if (this.isLoading) return;
-
-    // Reset pagination when starting a new search
-    this.isLoading = true;
-    this.currentPage = 1;
-    this.audiobooks = [];
-    this.isSearchActive = !!this.searchQuery; // Active only when searchQuery is not empty
-
-    if (this.searchQuery === '') {
-      this.loadAudiobooks(); // Fallback to normal load when searchQuery is cleared
-    } else {
-      this.getbookservice.searchAudiobooks(this.searchQuery, this.currentPage, this.pageSize).subscribe(
-        (response) => {
-          const result = response.data;
-
-          this.audiobooks = [...this.audiobooks, ...result.items];
-          this.totalItems = result.totalCount;
-          this.currentPage++;
-          this.isLoading = false;
-        },
-        (error) => {
-          console.error('Error searching audiobooks:', error);
-          this.isLoading = false;
-        }
-      );
-    }
+  filterAudiobooks() {
+    const query = this.searchQuery.toLowerCase();
+    this.filteredAudiobooks = this.audiobooks.filter((audiobook) =>
+      audiobook.title.toLowerCase().includes(query) ||
+      audiobook.author.toLowerCase().includes(query) ||
+      audiobook.genre.toLowerCase().includes(query)
+    );
   }
 
-  onScroll() {
-    const scrollContainer = document.querySelector('.scroll-container') as HTMLElement;
-    if (!scrollContainer) return;
-
-    const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-
-    if (scrollTop + clientHeight >= scrollHeight - 10 && this.audiobooks.length < this.totalItems) {
-      if (this.isSearchActive) {
-        this.onSearch(); // Continue search with infinite scrolling
-      } else {
-        this.loadAudiobooks(); // Load more audiobooks normally
-      }
-    }
-  }
-
-  openAudioPlayer(audiobook: any) {
+  openModal(audiobook: any) {
     this.selectedAudiobook = audiobook;
     this.isModalOpen = true;
-    this.audioSrc = `https://localhost:7261/${audiobook.filePath}`;
-
-    const audioElement = document.querySelector('audio');
-    if (audioElement) {
-      audioElement.src = this.audioSrc;
-      audioElement.play();
-    }
   }
 
   closeModal() {
-    if (!this.backgroundPlay) {
-      const audioElement = document.querySelector('audio');
-      if (audioElement) {
-        audioElement.pause();
-        audioElement.currentTime = 0;
-      }
-      this.audioSrc = '';
-    }
-
     this.isModalOpen = false;
-    this.selectedAudiobook = null;
   }
 
-  toggleBackgroundPlay() {
-    this.backgroundPlay = !this.backgroundPlay;
-  }
-  
-  audio = new Audio('https://localhost:7261/Audiobooks/a (4).mp3'); // Add your audio file path here
-  isPlaying: boolean = false;
-  progress: number = 0;
-  currentTime: string = '0:00';
-  duration: string = '0:00';
-  interval: any;
-
-  // ngOnInit() {
-  //   this.audio.addEventListener('loadedmetadata', () => {
-  //     this.duration = this.formatTime(this.audio.duration);
-  //   });
-
-  //   this.audio.addEventListener('timeupdate', () => {
-  //     this.progress = (this.audio.currentTime / this.audio.duration) * 100;
-  //     this.currentTime = this.formatTime(this.audio.currentTime);
-  //   });
-  // }
-
-  ngOnDestroy() {
-    clearInterval(this.interval);
+  playAudio(audiobook: any) {
+    if (this.playingAudio?.id !== audiobook.id || !this.isPlaying) {
+      this.stopAudio();
+      this.playingAudio = audiobook;
+      this.audio.src = `https://localhost:7261/${audiobook.filePath}`;
+      this.audio.play();
+      this.isPlaying = true;
+    } else {
+      this.audio.pause();
+      this.isPlaying = false;
+    }
   }
 
   togglePlay() {
@@ -165,24 +96,43 @@ export class ShowaudiobooksComponent implements OnInit {
     this.audio.currentTime = (event.target.value / 100) * this.audio.duration;
   }
 
+  stopAudio() {
+    if (this.audio) {
+      this.audio.pause();
+      this.audio.currentTime = 0;
+      this.isPlaying = false;
+    }
+  }
+
+  onPageChange(event: any) {
+    const { pageIndex, pageSize } = event;
+    this.currentPage = pageIndex + 1;
+    this.pageSize = pageSize;
+    this.loadAudiobooks();
+  }
+
   formatTime(seconds: number): string {
     const minutes = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
   }
 
+  skipTime(seconds: number) {
+    if (this.audio) {
+      const newTime = this.audio.currentTime + seconds;
+      if (newTime >= 0 && newTime <= this.audio.duration) {
+        this.audio.currentTime = newTime;
+        this.updateProgressDisplay();
+      }
+    }
+  }
+
+  updateProgressDisplay() {
+    this.progress = (this.audio.currentTime / this.audio.duration) * 100;
+    this.currentTime = this.formatTime(this.audio.currentTime);
+    this.duration = this.formatTime(this.audio.duration);
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
