@@ -29,8 +29,7 @@ namespace library_management_system.Repositories
                     BookId = book.Id,             
                     IsAvailable = true,
                     Condition = "New",
-                    AddedDate = DateTime.Now,
-                    lentcount = 0
+                    AddedDate = DateTime.Now
                 };
                 await _context.BookCopies.AddAsync(bookCopy);
             }
@@ -141,72 +140,67 @@ namespace library_management_system.Repositories
         }
 
 
-        //public async Task<(List<NormalBook>, int)> Categorization(string? genre, string? author, int? publishYear, int pageNumber, int pageSize)
-        //{
-        //    var query = _context.NormalBooks.Include(b => b.BookCopies).AsQueryable();
 
-        //    if (!string.IsNullOrEmpty(genre))
-        //    {
-        //        query = query.Where(b => b.Genre.Any(g => g.Contains(genre)));
-        //    }
-        //    if (!string.IsNullOrEmpty(author))
-        //    {
-        //        query = query.Where(b => b.Author.Contains(author));
-        //    }
-        //    if (publishYear.HasValue)
-        //    {
-        //        query = query.Where(b => b.PublishYear == publishYear.Value);
-        //    }
 
-        //    int totalRecords = await query.CountAsync();
-
-        //    var books = await query
-        //        .Skip((pageNumber - 1) * pageSize)
-        //        .Take(pageSize)
-        //        .ToListAsync();
-
-        //    return (books, totalRecords);
-        //}
-
-        public async Task<(List<NormalBook>, int)> Categorization(string? genre, string? author, int? publishYear, string? title, string? isbn, int pageNumber, int pageSize)
+        public async Task<(List<NormalBook>, int)> Categorization(string? genre, string? author, int? publishYear, int pageNumber, int pageSize)
         {
-            // Create query with base dataset
             var query = _context.NormalBooks.Include(b => b.BookCopies).AsQueryable();
 
-            // Filter by Genre
             if (!string.IsNullOrEmpty(genre))
             {
                 query = query.Where(b => b.Genre.Any(g => g.Contains(genre)));
             }
-
-            // Filter by Author
             if (!string.IsNullOrEmpty(author))
             {
                 query = query.Where(b => b.Author.Contains(author));
             }
-
-            // Filter by Publish Year
             if (publishYear.HasValue)
             {
                 query = query.Where(b => b.PublishYear == publishYear.Value);
             }
 
-            // Filter by Title
+            int totalRecords = await query.CountAsync();
+
+            var books = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (books, totalRecords);
+        }
+
+
+        public async Task<(List<NormalBook>, int)> Search(string? genre, string? author, int? publishYear, string? title, string? isbn, int pageNumber, int pageSize)
+        {
+            var query = _context.NormalBooks.Include(b => b.BookCopies).AsQueryable();
+
+            if (!string.IsNullOrEmpty(genre))
+            {
+                query = query.Where(b => b.Genre.Any(g => g.Contains(genre)));
+            }
+
+            if (!string.IsNullOrEmpty(author))
+            {
+                query = query.Where(b => b.Author.Contains(author));
+            }
+
+            if (publishYear.HasValue)
+            {
+                query = query.Where(b => b.PublishYear == publishYear.Value);
+            }
+
             if (!string.IsNullOrEmpty(title))
             {
                 query = query.Where(b => b.Title.Contains(title));
             }
 
-            // Filter by ISBN
             if (!string.IsNullOrEmpty(isbn))
             {
                 query = query.Where(b => b.ISBN.Contains(isbn));
             }
 
-            // Count total records
             int totalRecords = await query.CountAsync();
 
-            // Paginate and fetch results
             var books = await query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
@@ -217,29 +211,7 @@ namespace library_management_system.Repositories
 
 
 
-        public async Task<(List<NormalBook>, int)> SearchAsync(string searchString, int pageNumber, int pageSize)
-            {
-                var query = _context.NormalBooks.AsQueryable();
-
-                if (!string.IsNullOrEmpty(searchString))
-                {
-                    query = query.Where(b =>
-                        b.Title.Contains(searchString) ||
-                        b.Author.Contains(searchString) ||
-                        b.Genre.Any(g => g.Contains(searchString)));
-                }
-
-                int totalRecords = await query.CountAsync();
-
-                var books = await query
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
-
-                return (books, totalRecords);
-            }
-        
-
+       
 
 
     }

@@ -46,6 +46,4 @@ markPdfAsRead(ebookId: number): Observable<any> {
   return this.http.post<any>(`${this.ebookUrl}MarkAsRead`, { ebookId });
 }
 
-
-
 }

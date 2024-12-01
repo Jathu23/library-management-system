@@ -146,25 +146,24 @@ namespace library_management_system.Controllers
             return Ok(response);
         }
 
-
-        //[HttpGet("Categorize")]
-        //public async Task<IActionResult> Categorize(
-        //    [FromQuery] string? genre,
-        //    [FromQuery] string? author,
-        //    [FromQuery] int? publishYear,
-        //    [FromQuery] int pageNumber = 1,
-        //    [FromQuery] int pageSize = 10)
-        //{
-        //    var response = await _bookService.GetCategorizedBooks(genre, author, publishYear, pageNumber, pageSize);
-
-        //    if (!response.Success)
-        //    {
-        //        return BadRequest(response);
-        //    }
-        //    return Ok(response);
-        //}
-
         [HttpGet("Categorize")]
+        public async Task<IActionResult> Categorize(
+            [FromQuery] string? genre,
+            [FromQuery] string? author,
+            [FromQuery] int? publishYear,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            var response = await _bookService.GetCategorizedBooks(genre, author, publishYear, pageNumber, pageSize);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("Search")]
         public async Task<IActionResult> Categorize(
             [FromQuery] string? genre,
             [FromQuery] string? author,
@@ -174,7 +173,7 @@ namespace library_management_system.Controllers
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
         {
-            var response = await _bookService.GetCategorizedBooks(genre, author, publishYear, title, isbn, pageNumber, pageSize);
+            var response = await _bookService.GetSearchBooks(genre, author, publishYear, title, isbn, pageNumber, pageSize);
 
             if (!response.Success)
             {
@@ -182,19 +181,6 @@ namespace library_management_system.Controllers
             }
             return Ok(response);
         }
-
-
-        [HttpGet("Search")]
-          public async Task<IActionResult> Search(
-          [FromQuery] string searchString,
-          [FromQuery] int pageNumber = 1,
-          [FromQuery] int pageSize = 10)
-          {
-            var response = await _bookService.SearchBooksAsync(searchString, pageNumber, pageSize);
-            return Ok(response);
-          }
-
-
 
 
 
