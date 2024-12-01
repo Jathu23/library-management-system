@@ -456,12 +456,63 @@ namespace library_management_system.Services
         }
 
 
-        public async Task<ApiResponse<PaginatedResult<NormalBookDto>>> GetCategorizedBooks(string? genre,string? author,int? publishYear,int pageNumber,int pageSize)
+        //public async Task<ApiResponse<PaginatedResult<NormalBookDto>>> GetCategorizedBooks(string? genre,string? author,int? publishYear,int pageNumber,int pageSize)
+        //{
+        //    try
+        //    {
+        //        var (books, totalRecords) = await _bookRepository.Categorization(genre, author, publishYear, pageNumber, pageSize);
+
+        //        var bookDtos = books.Select(b => new NormalBookDto
+        //        {
+        //            Id = b.Id,
+        //            ISBN = b.ISBN,
+        //            Title = b.Title,
+        //            Author = b.Author,
+        //            Genre = b.Genre,
+        //            PublishYear = b.PublishYear,
+        //            AddedDate = b.AddedDate,
+        //            ShelfLocation = b.ShelfLocation,
+        //            RentCount = b.RentCount,
+        //            TotalCopies = b.TotalCopies,
+        //            AviableCopies = b.BookCopies.Count(bc => bc.IsAvailable),
+        //            CoverImagePath = b.CoverImagePath
+        //        }).ToList();
+
+        //        var paginatedResult = new PaginatedResult<NormalBookDto>
+        //        {
+        //            Items = bookDtos,
+        //            TotalCount = totalRecords,
+        //            CurrentPage = pageNumber,
+        //            PageSize = pageSize
+        //        };
+
+        //        return new ApiResponse<PaginatedResult<NormalBookDto>>
+        //        {
+        //            Success = true,
+        //            Message = "All books with copies retrieved successfully.",
+        //            Data = paginatedResult
+        //        };
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        return new ApiResponse<PaginatedResult<NormalBookDto>>
+        //        {
+        //            Success = false,
+        //            Message = $"An error occurred: {ex.Message}",
+        //            Errors = new List<string> { ex.Message }
+        //        };
+        //    }
+        //}
+
+        public async Task<ApiResponse<PaginatedResult<NormalBookDto>>> GetCategorizedBooks(string? genre, string? author, int? publishYear, string? title, string? isbn, int pageNumber, int pageSize)
         {
             try
             {
-                var (books, totalRecords) = await _bookRepository.Categorization(genre, author, publishYear, pageNumber, pageSize);
+                // Call repository to get filtered books and total record count
+                var (books, totalRecords) = await _bookRepository.Categorization(genre, author, publishYear, title, isbn, pageNumber, pageSize);
 
+                // Map books to DTOs
                 var bookDtos = books.Select(b => new NormalBookDto
                 {
                     Id = b.Id,
@@ -478,6 +529,7 @@ namespace library_management_system.Services
                     CoverImagePath = b.CoverImagePath
                 }).ToList();
 
+                // Prepare paginated result
                 var paginatedResult = new PaginatedResult<NormalBookDto>
                 {
                     Items = bookDtos,
@@ -489,13 +541,12 @@ namespace library_management_system.Services
                 return new ApiResponse<PaginatedResult<NormalBookDto>>
                 {
                     Success = true,
-                    Message = "All books with copies retrieved successfully.",
+                    Message = "Filtered books retrieved Not Found.",
                     Data = paginatedResult
                 };
             }
             catch (Exception ex)
             {
-                
                 return new ApiResponse<PaginatedResult<NormalBookDto>>
                 {
                     Success = false,
@@ -504,6 +555,8 @@ namespace library_management_system.Services
                 };
             }
         }
+
+
 
         private async Task<List<string>> SaveCoverImages(List<IFormFile> coverImages)
         {

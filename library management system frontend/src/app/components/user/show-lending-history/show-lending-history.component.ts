@@ -31,9 +31,9 @@ export class ShowLendingHistoryComponent implements OnInit {
       },
       (error) => {
         this.errorMessage = 'An error occurred while fetching the lending history.';
-        this.isLoading = false;
+        this.isLoading = false; 
         console.error('Error fetching user lending history:', error);
       }
     );
-  }
+  } 
 }
