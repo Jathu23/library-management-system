@@ -1,11 +1,10 @@
 <div class="audio-player-container">
   <!-- Audio Info Section -->
-  <div class="audio-info">
+  <div class="audio-info container">
     <img
       class="album-cover"
       [src]="playingAudio?.coverImagePath ? 'https://localhost:7261/' + playingAudio?.coverImagePath : 'side.jpg'"
       alt="Album Cover"
-     
     />
     <div class="song-info">
       <p class="song-title">{{ playingAudio?.title || 'No Song Playing' }}</p>
@@ -13,21 +12,21 @@
     </div>
   </div>
 
-  <!-- Controls Section -->
-<div class="controls">
-  <button class="prev" (click)="skipTime(-5)">
-    <i class="fas fa-backward"></i>
-  </button>
-  <button class="play-pause" (click)="togglePlay()">
-    <i [class.fas]="isPlaying" [class.fa-pause]="isPlaying" [class.fa-play]="!isPlaying"></i>
-  </button>
-  <button class="next" (click)="skipTime(5)">
-    <i class="fas fa-forward"></i>
-  </button>
-</div>
-
-
-  <!-- Progress Bar Section -->
+  <div style=" margin-top: 23px; align-items: center; margin-right: 20%;">
+    <!-- Controls Section -->
+  <div class="controls">
+    <button class="prev" (click)="skipTime(-5)">
+      <i class="fas fa-backward"></i>
+    </button>
+    <button class="play-pause" (click)="togglePlay()">
+      <i [class.fas]="isPlaying" [class.fa-pause]="isPlaying" [class.fa-play]="!isPlaying"></i>
+    </button>
+    <button class="next" (click)="skipTime(5)">
+      <i class="fas fa-forward"></i>
+    </button>
+     <!-- Progress Bar Section -->
+  
+  </div>
   <div class="progress-bar">
     <input
       type="range"
@@ -41,7 +40,10 @@
       <span class="duration">{{ duration }}</span>
     </div>
   </div>
+  </div>
+ 
 </div>
+
 
 <div class="search-container">
   <input
@@ -52,8 +54,8 @@
     (input)="filterAudiobooks()"
   />
 </div>
-
-<!-- Grid View for Audiobooks -->
+<div class="main container">
+  <!-- Grid View for Audiobooks -->
 <div class="grid-container">
   <div
     class="grid-item"
@@ -69,6 +71,8 @@
     <h3>{{ audiobook.title }}</h3>
     <p>Author: {{ audiobook.author }}</p>
   </div>
+</div>
+
 </div>
 
 <mat-paginator
