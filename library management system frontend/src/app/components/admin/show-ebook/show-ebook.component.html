@@ -1,96 +1,104 @@
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>ISBN</th>
-      <th>Title</th>
-      <th>Author</th>
-      <th>Genre</th>
-      <th>Publish Year</th>
-      <th>Language</th>
-      <th>Publisher</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- Main rows -->
-    <ng-container *ngFor="let ebook of ebooks">
-      <tr>
-        <td>{{ ebook.id }}</td>
-        <td>{{ ebook.isbn }}</td>
-        <td>{{ ebook.title }}</td>
-        <td>{{ ebook.author }}</td>
-        <td>{{ ebook.genre }}</td>
-        <td>{{ ebook.publishYear }}</td>
-        <td>{{ ebook.metadata.language }}</td>
-        <td>{{ ebook.metadata.publisher }}</td>
-        <td>
-          <button (click)="toggleRow(ebook.id)">
-            {{ expandedElementId === ebook.id ? 'Hide' : 'View' }}
-          </button>
-        </td>
-      </tr>
+<div class="container mt-3" style="height: 90vh; display: flex; flex-direction: column;">
+  <p class="text-center mt-2"><strong>Ebook List</strong></p>
 
-      <!-- Expanded row -->
-      <tr *ngIf="expandedElementId === ebook.id">
-        <td colspan="9">
-          <div class="expanded-content">
-            <h4>Additional Information</h4>
-            <table class="table table-bordered">
-              <tr>
-                <td><strong>File Path:</strong></td>
-                <td><strong>Description:</strong></td>
-                <td><strong>Publisher:</strong></td>
-                <td><strong>File Size:</strong></td>
-                <td><strong>Page Count:</strong></td>
-                <td><strong>Digital Rights:</strong></td>
-                <td><strong>View Count:</strong></td>
-                <td><strong>Download Count:</strong></td>
-                <td><strong>Language:</strong></td>
-                <td><strong>Added Date:</strong></td>
-              </tr>
-              <tr>
-                <td>{{ ebook.filePath }}</td>
-                <td>{{ ebook.metadata.description }}</td>
-                <td>{{ ebook.metadata.publisher }}</td>
-                <td>{{ ebook.metadata.fileSize | number: '1.2-2' }} MB</td>
-                <td>{{ ebook.metadata.pageCount }}</td>
-                <td>{{ ebook.metadata.digitalRights }}</td>
-                <td>{{ ebook.metadata.viewCount }}</td>
-                <td>{{ ebook.metadata.downloadCount }}</td>
-                <td>{{ ebook.metadata.language }}</td>
-                <td>{{ ebook.addedDate | date }}</td>
-              </tr>
-            </table>
+  <!-- Table Wrapper with scroll -->
+  <div class="table-responsive mt-3" style="border: 1px solid #ddd; border-radius: 5px; flex-grow: 1; overflow-y: auto;">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>ISBN</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Genre</th>
+          <th>Publish Year</th>
+          <th>Language</th>
+          <th>Publisher</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let ebook of ebooks">
+          <tr>
+            <td>{{ ebook.id }}</td>
+            <td>{{ ebook.isbn }}</td>
+            <td>{{ ebook.title }}</td>
+            <td>{{ ebook.author }}</td>
+            <td>{{ ebook.genre }}</td>
+            <td>{{ ebook.publishYear }}</td>
+            <td>{{ ebook.metadata.language }}</td>
+            <td>{{ ebook.metadata.publisher }}</td>
+            <td>
+              <button class="btn btn-danger" (click)="deleteEbook(ebook.id)">Delete</button>
+              <button class="btn btn-info" (click)="toggleRow(ebook.id)">
+                {{ expandedElementId === ebook.id ? 'Hide' : 'View' }}
+              </button>
+            </td>
+          </tr>
 
-            <!-- PDF Viewer -->
-            <button (click)="viewPdf(ebook)" class="btn btn-primary">
-              View PDF
-            </button>
+          <!-- Expanded row -->
+          <tr *ngIf="expandedElementId === ebook.id">
+            <td colspan="9">
+              <div class="expanded-content">
+                <h4>Additional Information</h4>
+                <table class="table table-bordered">
+                  <tr>
+                    <td><strong>File Path:</strong></td>
+                    <td><strong>Description:</strong></td>
+                    <td><strong>Publisher:</strong></td>
+                    <td><strong>File Size:</strong></td>
+                    <td><strong>Page Count:</strong></td>
+                    <td><strong>Digital Rights:</strong></td>
+                    <td><strong>View Count:</strong></td>
+                    <td><strong>Download Count:</strong></td>
+                    <td><strong>Language:</strong></td>
+                    <td><strong>Added Date:</strong></td>
+                  </tr>
+                  <tr>
+                    <td>{{ ebook.filePath }}</td>
+                    <td>{{ ebook.metadata.description }}</td>
+                    <td>{{ ebook.metadata.publisher }}</td>
+                    <td>{{ ebook.metadata.fileSize | number: '1.2-2' }} MB</td>
+                    <td>{{ ebook.metadata.pageCount }}</td>
+                    <td>{{ ebook.metadata.digitalRights }}</td>
+                    <td>{{ ebook.metadata.viewCount }}</td>
+                    <td>{{ ebook.metadata.downloadCount }}</td>
+                    <td>{{ ebook.metadata.language }}</td>
+                    <td>{{ ebook.addedDate | date }}</td>
+                  </tr>
+                </table>
 
-            <!-- Embed the PDF -->
-            <div *ngIf="selectedPdfPath">
-              <embed
-                [src]="selectedPdfPath"
-                width="100%"
-                height="600px"
-                type="application/pdf"
-                (load)="onPdfLoad(ebook.id)"
-              />
-            </div>
-          </div>
-        </td>
-      </tr>
-    </ng-container>
-  </tbody>
-</table>
+                <!-- PDF Viewer -->
+                <button class="btn btn-primary" (click)="viewPdf(ebook)">View PDF</button>
 
-<!-- Pagination -->
-<mat-paginator
-  [length]="totalItems"
-  [pageSize]="pageSize"
-  [pageSizeOptions]="[2, 10, 17, 25, 50]"
-  showFirstLastButtons
-  (page)="onPageChange($event)"
->
-</mat-paginator>
+                <!-- Embed the PDF -->
+                <div *ngIf="selectedPdfPath">
+                  <embed
+                    [src]="selectedPdfPath"
+                    width="100%"
+                    height="600px"
+                    type="application/pdf"
+                    (load)="onPdfLoad(ebook.id)"
+                  />
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination at the bottom -->
+  <div style="margin-top: 10px; padding-bottom: 10px;">
+    <mat-paginator
+      [length]="totalItems"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="[10, 17, 25, 50]"
+      showFirstLastButtons
+      (page)="onPageChange($event)"
+      style="margin-left: 0; display: block; width: 100%;"
+    >
+    </mat-paginator>
+  </div>
+</div>
