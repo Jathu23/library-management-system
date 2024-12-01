@@ -19,7 +19,7 @@
           <select
             class="form-select"
             [(ngModel)]="selectedOption"
-            name="selectedOption"   
+            name="selectedOption"
             (change)="onOptionChange(selectedOption)"
           >
             <option value="active">Active Members</option>
@@ -33,7 +33,7 @@
         <input
           class="form-control me-2"
           [(ngModel)]="searchQuery"
-          name="searchQuery"  
+          name="searchQuery"
           placeholder="Search"
           aria-label="Search"
         />
@@ -94,10 +94,11 @@
     </tbody>
   </table>
 
+  <!-- Pagination -->
   <mat-paginator
     [length]="totalItems"
     [pageSize]="pageSize"
-    [pageSizeOptions]="[1,2,10, 17, 25, 50]"
+    [pageSizeOptions]="[2, 10, 17, 25, 50]"
     showFirstLastButtons
     (page)="onPageChange($event)"
     [pageIndex]="currentPage - 1"

@@ -4,7 +4,6 @@
   margin: 0 auto;
   padding: 20px;
 }
-
 /* Search Bar */
 .search-bar,
 .search-input {
@@ -15,7 +14,6 @@
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-
 /* Grid Container with Scroll */
 .grid-container {
   display: grid;
@@ -25,7 +23,6 @@
   max-height: 100vh; 
   overflow-y: auto; /* Enable vertical scrolling */
 }
-
 /* Grid Item */
 .grid-item {
   text-align: center;
@@ -66,7 +63,7 @@
 }
 
 .modal-content {
-  background-color: #fff;
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
   width: 80%;
@@ -74,42 +71,14 @@
   text-align: center;
 }
 
-.modal-image {
-  width: 100%;
-  height: auto;
-  margin-bottom: 20px;
-}
-
 /* Audio Player Container */
 .audio-player-container {
   width: 100%;
   display: flex;
   justify-content: center;
-  background-color: #000;
+  background-color: #723980;
   padding: 10px;
 }
-
-.audio-player {
-  width: 100%;
-  max-width: 1000px; /* Max width to control the size */
-  padding: 10px 20px;
-  background-color: #1c1c1c;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: white;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-}
-
-/* Audio Info Section */
-.audio-info {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 15px;
-}
-
 .album-cover {
   width: 60px;
   height: 60px;
@@ -161,8 +130,7 @@ button:hover {
 .progress-bar {
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  
 }
 
 input[type="range"] {
@@ -211,17 +179,11 @@ input[type="range"]::-webkit-slider-thumb {
   font-size: 22px;
 }
 
-.play-pause i {
-  font-size: 22px;
-}
 
 .fas.fa-play, .fas.fa-pause {
   transition: transform 0.2s;
 }
 
-.play-pause i {
-  font-size: 22px;
-}
 
 /* Skip Buttons */
 .prev, .next {
@@ -230,11 +192,36 @@ input[type="range"]::-webkit-slider-thumb {
   cursor: pointer;
 }
 
-/* Audio Control Slider */
-input[type="range"] {
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  max-height: 400px;  /* Limit the height to a specific value */
+  overflow-y: auto;  /* Enables vertical scrolling */
+  overflow-x: hidden;  /* Hides horizontal scrolling */
+  padding-right: 10px;  /* Prevents content from being cut off due to scroll bar */
+}
+
+.grid-container::-webkit-scrollbar {
+  display: none;  /* Hides the scrollbar */
+}
+
+.grid-item {
+  text-align: center;
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.audio-cover {
   width: 100%;
-  background: #444;
-  border-radius: 5px;
-  height: 5px;
+  height: auto;
+  border-radius: 10px;
+}
+
+h3, p {
+  margin: 5px 0;
+  font-size: 14px;
 }
 

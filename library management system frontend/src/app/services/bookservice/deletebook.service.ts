@@ -9,6 +9,7 @@ export class BookDeleteServicesService {
 
   private normalBookDeleteUrl = `https://localhost:7261/api/Books`;
   private normalMainBookDeleteUrl = `https://localhost:7261/api/Books`;
+  private deleteEBookUrl = `https://localhost:7261/api/Ebook/DeleteEbook?id`
 
 
   constructor(private http: HttpClient) { }
@@ -20,6 +21,11 @@ export class BookDeleteServicesService {
 
   deleteMainBook(id: number): Observable<void> {
     return this.http.delete<void>(`${this.normalMainBookDeleteUrl}/delete-book?bookId=${id}`);
+
+  }
+  deleteEBook(id: number): Observable<void> {
+
+    return this.http.delete<void>(`${this.deleteEBookUrl}=${id}`);
 
   }
 
