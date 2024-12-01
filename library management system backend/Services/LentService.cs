@@ -2,12 +2,6 @@
 using library_management_system.DTOs.LentRecord;
 using library_management_system.DTOs;
 using library_management_system.Repositories;
-using System.Diagnostics.Eventing.Reader;
-using static System.Reflection.Metadata.BlobBuilder;
-using library_management_system.DTOs.Book;
-using library_management_system.DTOs.Ebook;
-using library_management_system.Migrations;
-using PdfSharp.Charting;
 
 namespace library_management_system.Services
 {
