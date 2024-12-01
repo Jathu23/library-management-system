@@ -7,6 +7,7 @@ namespace library_management_system.Database.Entiy
         [Key]
         public int Id { get; set; }                 // Primary key
         public string Name { get; set; }           // Plan name (Free, Standard, Premium)
+        public decimal Price { get; set; }
         public int BorrowLimit { get; set; }       // Max books per 30 days
         public bool AccessEbooks { get; set; }     // Access to e-books
         public bool AccessAudiobooks { get; set; } // Access to audiobooks

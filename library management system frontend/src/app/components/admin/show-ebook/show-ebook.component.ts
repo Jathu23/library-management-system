@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
+import { ViewportScrollPosition } from '@angular/cdk/scrolling';
+import { BookDeleteServicesService } from '../../../services/bookservice/deletebook.service';
 
 @Component({
   selector: 'app-show-ebook',
@@ -18,7 +20,8 @@ export class ShowEbookComponent implements OnInit {
 
   constructor(
     private getbookservice: GetbooksService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private EbookDelete:BookDeleteServicesService,
   ) {}
 
   ngOnInit() {
@@ -85,5 +88,23 @@ export class ShowEbookComponent implements OnInit {
 
   onPdfLoad(ebookId: number) {
     console.log(`PDF for Ebook ID ${ebookId} has loaded.`);
+  }
+
+  // deleting functions for E_Books
+
+  deleteEbook(id: number) {
+    if(confirm("Do you want to delete ")){
+      this.EbookDelete.deleteEBook(id).subscribe(
+        response => {
+          console.log('Ebook deleted successfully');
+          alert('Ebook deleted successfully!');
+          // Additional actions on success, such as refreshing the list
+        },
+        error => {
+          console.error('Error deleting ebook', error);
+          alert('Error deleting ebook');
+        }
+      );
+    }
   }
 }
