@@ -13,6 +13,7 @@ namespace library_management_system.Database.Entiy
         public bool AccessAudiobooks { get; set; } // Access to audiobooks
         public DateTime CreatedDate { get; set; } // When the plan was created
         public DateTime UpdatedDate { get; set; } // When the plan was last updated
+
         public List<UserSubscription> UserSubscriptions { get; set; } // Navigation
     }
 

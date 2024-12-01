@@ -29,6 +29,12 @@ namespace library_management_system.Repositories
             return await _context.UserSubscription
                 .FirstOrDefaultAsync(us => us.UserId == userId && us.Status == "Active");
         }
+      
+        public async Task<bool> UpdateUserSubscriptionAsync(UserSubscription subscription)
+        {
+            _context.UserSubscription.Update(subscription);
+            return await _context.SaveChangesAsync() > 0;
+        }
 
         public async Task<UserSubscription> AddUserSubscriptionAsync(UserSubscription userSubscription)
         {

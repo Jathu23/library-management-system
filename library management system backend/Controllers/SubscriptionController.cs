@@ -23,16 +23,16 @@ namespace library_management_system.Controllers
             return Ok(plans);
         }
 
-        [HttpGet("plans/{id}")]
-        public async Task<IActionResult> GetSubscriptionPlanById(int id)
-        {
-            var plan = await _subscriptionService.GetSubscriptionPlanByIdAsync(id);
-            if (plan == null)
-            {
-                return NotFound("Subscription plan not found.");
-            }
-            return Ok(plan);
-        }
+        //[HttpGet("plans")]
+        //public async Task<IActionResult> GetSubscriptionPlanById(int id)
+        //{
+        //    var plan = await _subscriptionService.GetSubscriptionPlanByIdAsync(id);
+        //    if (plan == null)
+        //    {
+        //        return NotFound("Subscription plan not found.");
+        //    }
+        //    return Ok(plan);
+        //}
 
 
 
@@ -48,8 +48,26 @@ namespace library_management_system.Controllers
             }
             else
             {
-                return BadRequest(new { message = result.Errors });
+                return BadRequest(result);
             }
+        }
+
+        [HttpPost("cancel")]
+        public async Task<IActionResult> CancelSubscription([FromQuery] int userId)
+        {
+          
+                var result = await _subscriptionService.CancelSubscriptionAsync(userId);
+
+            if (result)
+            {
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result);
+            }
+
+
         }
     }
 }

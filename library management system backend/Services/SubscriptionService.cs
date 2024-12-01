@@ -1,4 +1,5 @@
-﻿using library_management_system.Database.Entiy;
+﻿using Azure.Core;
+using library_management_system.Database.Entiy;
 using library_management_system.DTOs;
 using library_management_system.DTOs.Subscription;
 using library_management_system.Repositories;
@@ -100,6 +101,24 @@ namespace library_management_system.Services
             response.Message = "successful, create a subscription";
             response.Data = paymentResult;
             return response;
+        }
+
+        public async Task<bool> CancelSubscriptionAsync(int userId)
+        {
+            var user = await _userRepo.Getuserid(userId);
+
+            // Get the active subscription
+            var activeSubscription = await _subscriptionRepository.GetUserSubscriptionByUserIdAsync(userId);
+            if (activeSubscription == null)
+                throw new Exception("No active subscription found for this user.");
+
+            // Update subscription status to 'Cancelled'
+            user.IsSubscribed=false;
+            activeSubscription.Status = "Cancelled";
+            activeSubscription.UpdatedDate = DateTime.UtcNow;
+            await _userRepo.UpdateUser(user);
+
+            return await _subscriptionRepository.UpdateUserSubscriptionAsync(activeSubscription);
         }
     }
 }
