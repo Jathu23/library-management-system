@@ -11,7 +11,7 @@ namespace library_management_system.DTOs.User
         public required string PhoneNumber { get; set; }
         public required string Address { get; set; }
         public required string Password { get; set; } 
-        public required IFormFile? ProfileImage { get; set; }
+        public  IFormFile? ProfileImage { get; set; }
        
     }
 }

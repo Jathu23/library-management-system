@@ -116,6 +116,7 @@ namespace library_management_system.Repositories
                 .ToListAsync();
         }
 
+
         public async Task<List<RentHistory>> GetRentHistoryByUser(int userId)
         {
             var records = await _context.RentHistory
@@ -129,6 +130,80 @@ namespace library_management_system.Repositories
 
             return records;
         }
+
+
+        public async Task<List<RentHistory>> GetAllLentRecords(DateTime date)
+        {
+            return await _context.RentHistory
+                .Include(r => r.BookCopy)
+                .ThenInclude(bc => bc.Book)
+                .Include(r => r.User)
+                .Include(r => r.IssuingAdmin)
+                .Include(r => r.ReceivingAdmin)
+             
+                .ToListAsync();
+        }
+        public async Task<List<RentHistory>> GetAllLentRecordsbyuserid(int userid)
+        {
+            return await _context.RentHistory
+                .Include(r => r.BookCopy)
+                .ThenInclude(bc => bc.Book)
+                .Include(r => r.User)
+                .Include(r => r.IssuingAdmin)
+                .Include(r => r.ReceivingAdmin)
+                .Where(r => r.UserId == userid)
+                .ToListAsync();
+        }
+
+        public async Task<List<NormalBook>> GetAllBooksWithLendingDetailsAsync()
+        {
+            return await _context.NormalBooks
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.User)
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.IssuingAdmin)
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.ReceivingAdmin)
+                .ToListAsync();
+        }
+
+
+        public async Task<NormalBook?> GetBookWithLendingDetailsAsync(int bookId)
+        {
+            return await _context.NormalBooks
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.User)
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.IssuingAdmin)
+                .Include(b => b.BookCopies)
+                    .ThenInclude(bc => bc.RentHistories)
+                        .ThenInclude(rh => rh.ReceivingAdmin)
+                .FirstOrDefaultAsync(b => b.Id == bookId);
+        }
+
+         // Get all book copies with RentHistory
+    public async Task<List<BookCopy>> GetAllBookCopiesAsync()
+    {
+        return await _context.BookCopies
+            .Include(bc => bc.Book)
+            .Include(bc => bc.RentHistories)
+            .ToListAsync();
+    }
+
+    // Get book copies by Book ID
+    public async Task<List<BookCopy>> GetBookCopiesByBookIdAsync(int bookId)
+    {
+        return await _context.BookCopies
+            .Where(bc => bc.BookId == bookId)
+            .Include(bc => bc.Book)
+            .Include(bc => bc.RentHistories)
+            .ToListAsync();
+    }
 
     }
 }

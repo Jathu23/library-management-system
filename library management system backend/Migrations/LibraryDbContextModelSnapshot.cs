@@ -182,6 +182,9 @@ namespace library_management_system.Migrations
                     b.Property<DateTime?>("LastBorrowedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("lentcount")
+                        .HasColumnType("int");
+
                     b.HasKey("CopyId");
 
                     b.HasIndex("BookId");
@@ -426,6 +429,82 @@ namespace library_management_system.Migrations
                     b.ToTable("NormalBooks");
                 });
 
+            modelBuilder.Entity("library_management_system.Database.Entiy.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("AmountPaid")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PaymentDurationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SubscriptionPlanId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TransactionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentDurationId");
+
+                    b.HasIndex("SubscriptionPlanId");
+
+                    b.ToTable("Payment");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.PaymentDuration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Duration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Multiplier")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentDuration");
+                });
+
             modelBuilder.Entity("library_management_system.Database.Entiy.RentHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -466,6 +545,38 @@ namespace library_management_system.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RentHistory");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.SubscriptionPlan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("AccessAudiobooks")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AccessEbooks")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("BorrowLimit")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SubscriptionPlan");
                 });
 
             modelBuilder.Entity("library_management_system.Database.Entiy.User", b =>
@@ -518,6 +629,50 @@ namespace library_management_system.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.UserSubscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SubscriptionPlanId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SubscriptionPlanId1")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubscriptionPlanId");
+
+                    b.HasIndex("SubscriptionPlanId1");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserSubscription");
                 });
 
             modelBuilder.Entity("library_management_system.Database.Entiy.AudiobookMetadata", b =>
@@ -591,10 +746,29 @@ namespace library_management_system.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("library_management_system.Database.Entiy.Payment", b =>
+                {
+                    b.HasOne("library_management_system.Database.Entiy.PaymentDuration", "PaymentDuration")
+                        .WithMany()
+                        .HasForeignKey("PaymentDurationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("library_management_system.Database.Entiy.SubscriptionPlan", "SubscriptionPlan")
+                        .WithMany()
+                        .HasForeignKey("SubscriptionPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PaymentDuration");
+
+                    b.Navigation("SubscriptionPlan");
+                });
+
             modelBuilder.Entity("library_management_system.Database.Entiy.RentHistory", b =>
                 {
                     b.HasOne("library_management_system.Database.Entiy.BookCopy", "BookCopy")
-                        .WithMany()
+                        .WithMany("RentHistories")
                         .HasForeignKey("BookCopyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -625,10 +799,38 @@ namespace library_management_system.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("library_management_system.Database.Entiy.UserSubscription", b =>
+                {
+                    b.HasOne("library_management_system.Database.Entiy.SubscriptionPlan", "SubscriptionPlan")
+                        .WithMany()
+                        .HasForeignKey("SubscriptionPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("library_management_system.Database.Entiy.SubscriptionPlan", null)
+                        .WithMany("UserSubscriptions")
+                        .HasForeignKey("SubscriptionPlanId1");
+
+                    b.HasOne("library_management_system.Database.Entiy.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SubscriptionPlan");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("library_management_system.Database.Entiy.Audiobook", b =>
                 {
                     b.Navigation("Metadata")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.BookCopy", b =>
+                {
+                    b.Navigation("RentHistories");
                 });
 
             modelBuilder.Entity("library_management_system.Database.Entiy.Ebook", b =>
@@ -640,6 +842,11 @@ namespace library_management_system.Migrations
             modelBuilder.Entity("library_management_system.Database.Entiy.NormalBook", b =>
                 {
                     b.Navigation("BookCopies");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.SubscriptionPlan", b =>
+                {
+                    b.Navigation("UserSubscriptions");
                 });
 #pragma warning restore 612, 618
         }

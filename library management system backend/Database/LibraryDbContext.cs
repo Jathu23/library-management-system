@@ -26,6 +26,11 @@
         public DbSet<LentRecord> LentRecords { get; set; }
         public DbSet<RentHistory> RentHistory { get; set; }
 
+        public DbSet<SubscriptionPlan> SubscriptionPlan { get; set; }
+        public DbSet<UserSubscription> UserSubscription { get; set; }
+        public DbSet<PaymentDuration> PaymentDuration { get; set; }
+        public DbSet<Payment> Payment { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Define relationship between BookCopy and NormalBook
@@ -59,9 +64,35 @@
                 .HasForeignKey(rh => rh.RAdminId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<RentHistory>()
+               .HasOne(rh => rh.BookCopy)
+               .WithMany(bc => bc.RentHistories)
+               .HasForeignKey(rh => rh.BookCopyId);
+
+
+
+
+            modelBuilder.Entity<UserSubscription>()
+              .HasOne(us => us.SubscriptionPlan)
+              .WithMany()
+              .HasForeignKey(us => us.SubscriptionPlanId);
+
+            modelBuilder.Entity<Payment>()
+                .HasOne(p => p.SubscriptionPlan)
+                .WithMany()
+                .HasForeignKey(p => p.SubscriptionPlanId);
+
+            modelBuilder.Entity<Payment>()
+                .HasOne(p => p.PaymentDuration)
+                .WithMany()
+                .HasForeignKey(p => p.PaymentDurationId);
+
+
+
             base.OnModelCreating(modelBuilder);
         }
 
+       
 
 
     }

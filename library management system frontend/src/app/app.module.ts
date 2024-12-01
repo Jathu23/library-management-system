@@ -74,7 +74,7 @@ import { ShowLendingHistoryComponent } from './components/user/show-lending-hist
     EditBookDialogComponent,
     MembersComponent,
     ShowLentRecodesComponent,
-    ShowLendingHistoryComponent
+    ShowLendingHistoryComponent,
 
    
 
