@@ -210,8 +210,29 @@ namespace library_management_system.Repositories
         }
 
 
+        public async Task<int> UpdateCustomData()
+        {
+            var books = _context.NormalBooks.ToList();
 
-       
+            foreach (var item in books)
+            {
+               
+                item.CoverImagePath = new List<string>
+        {
+            "BookCoverImages/a (1).jpeg",
+            "BookCoverImages/a (2).jpeg",
+            "BookCoverImages/a (3).jpeg"
+        };
+                Thread.Sleep(100);
+            }
+
+           
+            _context.NormalBooks.UpdateRange(books);
+
+           _context.SaveChanges();
+            return 1;
+        }
+
 
 
     }

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { RentService } from '../../../services/lent-service/rent.service';
 import { UserService } from '../../../services/user-service/user.service';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
+import { environment } from '../../../../environments/environment.testing';
 
 @Component({
   selector: 'app-show-lent-rec',
@@ -21,11 +22,15 @@ export class ShowLentRecComponent implements OnInit {
   relatedTextArray: string[] = [];
   bookId: any;
   bookInfo: any = null;
-  adminId: number = 1;
+  curentAdminId: number= 0;
   selectedDuesday: number = 2;
-  duesdays: number[] = [2, 3, 4, 5, 6, 7, 10];
+  duesdays: number[] = [1,2, 3, 4, 5, 6, 7, 10];
 
-  constructor(private lentService: RentService, private userservice: UserService, private bookservice: GetbooksService) { }
+  constructor(private lentService: RentService, private userservice: UserService, private bookservice: GetbooksService) { 
+    const tokendata = environment.getTokenData();
+    this.curentAdminId= Number(tokendata.ID);
+    console.log(tokendata);
+  }
 
   onSearch() {
     if (this.searchQuery.trim().length > 0) {
@@ -122,7 +127,7 @@ export class ShowLentRecComponent implements OnInit {
    
     if (this.userInfo && this.bookId) {
       this.isLoading=true;
-      this.lentService.rentnormalbookbycopyid(this.bookId, this.userInfo.id, this.adminId, this.selectedDuesday).subscribe(
+      this.lentService.rentnormalbookbycopyid(this.bookId, this.userInfo.id, this.curentAdminId, this.selectedDuesday).subscribe(
         (response:any) => {
           if (response.success) {
             this.isLoading=false;

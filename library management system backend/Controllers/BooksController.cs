@@ -4,6 +4,7 @@ using library_management_system.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Azure;
+using library_management_system.Repositories;
 
 namespace library_management_system.Controllers
 {
@@ -12,6 +13,7 @@ namespace library_management_system.Controllers
     public class BooksController : ControllerBase
     {
         private readonly BookService _bookService;
+        private readonly BookRepository _bookRepository;
 
         public BooksController(BookService bookService)
         {
@@ -228,10 +230,16 @@ namespace library_management_system.Controllers
                 Thread.Sleep(200);
             }
 
+
             return count;
 
         }
 
-
+        [HttpPost("bookimageupdate")]
+        public async Task<int> updatebookimage()
+        {
+           
+              return await _bookRepository.UpdateCustomData();
+        }
     }
 }

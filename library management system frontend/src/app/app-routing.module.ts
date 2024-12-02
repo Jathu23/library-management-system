@@ -49,7 +49,6 @@ const routes: Routes = [
       {path:'show-rent-rec',component:ShowLentRecComponent},
       {path:'show-rent-his',component:ShowLentHistoryComponent},
       {path:'members',component:MembersComponent}
-
     ]
   },
   {
@@ -65,7 +64,6 @@ const routes: Routes = [
       {path: 'view-lend-records' , component:ShowLentRecodesComponent },
       {path: 'view-lend-history' , component:ShowLendingHistoryComponent },
       {path:'user-profile',component:UserprofileComponent}
-   
     ]
   }
 ];

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RentService } from '../../../services/lent-service/rent.service';
+import { environment } from '../../../../environments/environment.testing';
 
 @Component({
   selector: 'app-show-lending-history',
@@ -10,11 +11,15 @@ export class ShowLendingHistoryComponent implements OnInit {
   lendingHistory: any[] = [];
   isLoading: boolean = false;
   errorMessage: string = '';
+curentUserId:number =0;
+  constructor(private rentService: RentService) {
+    const tokendata = environment.getTokenData();
+    this.curentUserId= Number(tokendata.ID);
 
-  constructor(private rentService: RentService) {}
+  }
 
   ngOnInit(): void {
-    this.fetchUserLendingHistory(1); 
+    this.fetchUserLendingHistory(this.curentUserId); 
   }
 
   fetchUserLendingHistory(userId: number): void {

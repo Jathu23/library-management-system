@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RentService } from '../../../services/lent-service/rent.service';
+import { environment } from '../../../../environments/environment.testing';
 
 @Component({
   selector: 'app-show-lent-recodes',
@@ -10,11 +11,14 @@ export class ShowLentRecodesComponent implements OnInit {
   lentRecords: any[] = [];
   isLoading: boolean = false;
   errorMessage: string = '';
-
-  constructor(private rentService: RentService) {}
+  curentUserId:number =0;
+  constructor(private rentService: RentService) {
+    const tokendata = environment.getTokenData();
+    this.curentUserId= Number(tokendata.ID);
+  }
 
   ngOnInit(): void {
-    this.fetchUserLendingRecords(1); // Replace '1' with the actual userId dynamically
+    this.fetchUserLendingRecords(this.curentUserId); // Replace '1' with the actual userId dynamically
   }
 
   fetchUserLendingRecords(userId: number): void {
