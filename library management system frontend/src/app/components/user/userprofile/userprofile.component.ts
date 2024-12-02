@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { jwtDecode } from 'jwt-decode'; // Corrected import
+import { UserService } from '../../../services/user-service/user.service';
 
 @Component({
   selector: 'app-userprofile',
@@ -9,6 +10,8 @@ import { jwtDecode } from 'jwt-decode'; // Corrected import
 export class UserprofileComponent implements OnInit {
   tokenData: any = null;
   user: any = {};
+
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.getTokenData();
@@ -31,21 +34,42 @@ export class UserprofileComponent implements OnInit {
   }
 
   setUserProfile() {
-    if (this.tokenData) {
-      // Set the user object based on decoded token
-      this.user = {
-        fullName: this.tokenData.FullName || 'John Doe', // Use the correct field names from token
-        email: this.tokenData.Email || 'No email available',
-        phone: this.tokenData.Phone || 'No phone available',
-        UserNic: this.tokenData.UserNic || 'No UserNic available',
-        address: this.tokenData.Address || 'No address available',
-        profileImage: this.tokenData.ProfileImage || 'https://bootdey.com/img/Content/avatar/avatar7.png', // Default image
-        aud: this.tokenData.aud || 'Full Stack Developer', // Default job title
-        location: this.tokenData.Location || 'Bay Area, San Francisco, CA' // Default location
-      };
+    // Fetch user details by UserNic or Email
+    const userIdentifier = this.tokenData.UserNic || this.tokenData.Email;
 
-      // Log the user profile to the console for debugging
-      console.log(this.user);
+    if (userIdentifier) {
+      this.userService.GetUserByEmailorNic(userIdentifier).subscribe(
+        (userData) => {
+          console.log('Fetched user data:', userData); // Log the fetched data
+          const data = userData.data;
+          console.log(data);
+          console.log(data.profileImage);
+          
+
+          // Update the user object with the fetched data
+          this.user = {
+            fullName: data.fullName || 'John Doe', // Use the fetched full name
+            firstName: data.firstName || 'John Doe',
+            lastName: data.lastName || 'John Doe',
+            email: data.email || 'No email available',
+            phone: data.phoneNumber || 'No phone available', // Use phoneNumber from fetched data
+            UserNic: data.userNic || 'No UserNic available', // Use userNic from fetched data
+            address: data.address || 'No address available', // Use address from fetched data
+            profileImage: data.profileImage ? `https://localhost:7261/${data.profileImage}` : 'https://bootdey.com/img/Content/avatar/avatar7.png',
+
+            aud: this.tokenData.aud || 'Full Stack Developer', // Use the aud field from the token
+            registrationDate: data.registrationDate || 'Not available' // Use registrationDate from fetched data
+          };
+
+          // Log the updated user profile to the console for debugging
+          console.log(this.user);
+        },
+        (error) => {
+          console.error('Error fetching user data:', error);
+        }
+      );
+    } else {
+      console.log('No valid UserNic or Email found to fetch user data');
     }
   }
 }
