@@ -12,7 +12,7 @@
   <div class="grid-item" *ngFor="let book of Normalbooks" (click)="openModal(book)">
     <div class="card">
       <div class="card-images">
-        <img *ngIf="book.coverImagePath?.length" [src]="'https://visme.co/blog/wp-content/uploads/2021/06/fiction-book-cover-template-visme-313x500.jpg'" [alt]="book.title" />
+        <img *ngIf="book.coverImagePath?.length" [src]="'https://localhost:7261'+book.coverImagePath[0]" [alt]="book.title" />
       </div>
       <h3>{{ book.title }}</h3>
       <p>Author: {{ book.author }}</p>
@@ -35,7 +35,7 @@
       <button class="prev" (click)="prevImage()">&#10094;</button>
       <img
         *ngIf="selectedBook?.coverImagePath?.length"
-        [src]="selectedBook.coverImagePath[currentImageIndex]"
+        [src]="'https://localhost:7261'+selectedBook.coverImagePath[currentImageIndex]"
         [alt]="selectedBook.title"
       />
       <button class="next" (click)="nextImage()">&#10095;</button>

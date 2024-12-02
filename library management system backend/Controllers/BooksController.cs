@@ -15,9 +15,10 @@ namespace library_management_system.Controllers
         private readonly BookService _bookService;
         private readonly BookRepository _bookRepository;
 
-        public BooksController(BookService bookService)
+        public BooksController(BookService bookService, BookRepository bookRepository)
         {
             _bookService = bookService;
+            _bookRepository = bookRepository;
         }
 
         [HttpPost("add")]

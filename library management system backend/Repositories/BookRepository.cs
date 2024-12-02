@@ -229,7 +229,7 @@ namespace library_management_system.Repositories
            
             _context.NormalBooks.UpdateRange(books);
 
-           _context.SaveChanges();
+          await _context.SaveChangesAsync();
             return 1;
         }
 
