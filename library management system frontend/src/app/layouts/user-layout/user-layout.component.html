@@ -72,8 +72,11 @@
         </li>
 
         <li class="sidebar-footer mt-5">
-          <a href="#" style="font-size: 20px; " class="sidebar-link"><i class="bi bi-box-arrow-left p-3 "></i>LogOut</a>
+          <a href="#" (click)="logout(); $event.preventDefault()" style="font-size: 20px;" class="sidebar-link">
+            <i class="bi bi-box-arrow-left p-3"></i>LogOut
+          </a>
         </li>
+        
       </ul>
     </div>
   </aside>
