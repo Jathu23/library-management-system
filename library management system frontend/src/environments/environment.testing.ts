@@ -1,3 +1,5 @@
+import { jwtDecode } from "jwt-decode";
+
 // src/environments/environment.testing.ts
 export const environment = {
     production: false,
@@ -14,6 +16,23 @@ export const environment = {
       } catch (error) {
         console.error('Error decoding token', error);
         return null;
+      }
+    },
+
+    getTokenData(): any {
+      const token = localStorage.getItem('token');
+    
+      if (!token) {
+        console.warn('No token found in localStorage');
+        return null; 
+      }
+    
+      try {
+        const decodedData = jwtDecode<any>(token); 
+        return decodedData;
+      } catch (error) {
+        console.error('Error decoding the token:', error);
+        return null; 
       }
     }
     

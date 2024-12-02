@@ -42,7 +42,7 @@ namespace library_management_system.Utilities
 
             // Optional claims based on user properties
             claimsList.Add(new Claim("IsActive", user.IsActive.ToString()));
-            claimsList.Add(new Claim("IsSubscribed", user.IsSubscribed.ToString()));
+           
 
             // Create security key and signing credentials
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_secretKey));

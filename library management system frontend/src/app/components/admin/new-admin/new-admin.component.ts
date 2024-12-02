@@ -17,11 +17,11 @@ export class NewAdminComponent {
   ismaster:any;
 
   constructor(private fb: FormBuilder, private adminService: AdminService,  private router: Router) {
-    const token = localStorage.getItem("token");
-    
-    const tokendata = environment.decodeTokenManually(token);
+    const tokendata = environment.getTokenData();
     this.ismaster = tokendata.IsMaster;
     this.curentAdminId= Number(tokendata.ID);
+    console.log(tokendata);
+    
   }
 
   ngOnInit(): void {

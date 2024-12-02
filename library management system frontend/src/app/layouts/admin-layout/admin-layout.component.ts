@@ -14,10 +14,7 @@ export class AdminLayoutComponent {
   isExpanded = false;
 
   constructor() {
-    const token = localStorage.getItem("token");
-    
-    const tokendata = environment.decodeTokenManually(token);
-    console.log(tokendata);
+   
     
   }
 
