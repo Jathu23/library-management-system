@@ -3,7 +3,7 @@
   <div class="audio-info container">
     <img
       class="album-cover"
-      [src]="playingAudio?.coverImagePath ? 'https://localhost:7261/' + playingAudio?.coverImagePath : 'side.jpg'"
+      [src]="playingAudio?.coverImagePath ? 'https://localhost:7261/' + playingAudio?.coverImagePath : ''"
       alt="Album Cover"
     />
     <div class="song-info">
@@ -64,7 +64,7 @@
   >
     <img style="width: 200px; height: 300px;"
       class="audio-cover"
-      [src]="audiobook.coverImagePath ? 'https://localhost:7261/' + audiobook.coverImagePath : 'side.jpg'"
+      [src]="audiobook.coverImagePath ? 'https://localhost:7261/' + audiobook.coverImagePath : ''"
       alt="{{ audiobook.title }}"
       
     />
@@ -88,9 +88,9 @@
 <div class="modal" [class.show]="isModalOpen">
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
-    <img style="width: 100%; height: 80%;"
+    <img style="width: 100%; height: 60%;"
       class="modal-image"
-      [src]="selectedAudiobook?.coverImagePath ? 'https://localhost:7261/' + selectedAudiobook?.coverImagePath : 'side.jpg'"
+      [src]="selectedAudiobook?.coverImagePath ? 'https://localhost:7261/' + selectedAudiobook?.coverImagePath : ''"
       alt="Audiobook Cover"
       
     />
