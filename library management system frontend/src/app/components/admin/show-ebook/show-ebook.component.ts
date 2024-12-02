@@ -3,6 +3,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
 import { ViewportScrollPosition } from '@angular/cdk/scrolling';
 import { BookDeleteServicesService } from '../../../services/bookservice/deletebook.service';
+import { MatDialog } from '@angular/material/dialog';
+
+import { EditEbookDialogComponent } from '../edit-ebook-dialog/edit-ebook-dialog.component';
+
+import {MainBookUpdateService} from '../../../services/bookservice/main-book-update.service'
 
 @Component({
   selector: 'app-show-ebook',
@@ -22,6 +27,8 @@ export class ShowEbookComponent implements OnInit {
     private getbookservice: GetbooksService,
     private sanitizer: DomSanitizer,
     private EbookDelete:BookDeleteServicesService,
+    private dialog: MatDialog,
+    private EbookUpdate:MainBookUpdateService
   ) {}
 
   ngOnInit() {
@@ -107,4 +114,31 @@ export class ShowEbookComponent implements OnInit {
       );
     }
   }
+
+  // edit functions are here
+  openEditDialog(ebook: any): void {
+    const dialogRef = this.dialog.open(EditEbookDialogComponent, {
+      width: '500px',
+      data: { ...ebook }, // Pass a copy of the ebook to prevent direct modifications
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.EbookUpdate.updateEbook(result).subscribe(
+          (response) => {
+            console.log('Ebook updated successfully:', response);
+            alert('Ebook updated successfully!');
+            // Optionally update local data
+            const index = this.ebooks.findIndex((e) => e.id === result.id);
+            if (index !== -1) this.ebooks[index] = result;
+          },
+          (error) => {
+            console.error('Failed to update ebook:', error);
+            alert('Failed to update ebook. Please try again.');
+          }
+        );
+      }
+    });
+  }
 }
+
