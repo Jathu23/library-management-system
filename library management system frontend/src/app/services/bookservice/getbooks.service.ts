@@ -2,48 +2,102 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.testing';
+import { tap } from 'rxjs/operators'; // Importing tap operator
 
 @Injectable({
   providedIn: 'root'
 })
 export class GetbooksService {
   private baseurl = environment.apiBaseUrl;
+
   constructor(private http: HttpClient) {}
 
-private ebookUrl = `${this.baseurl}/Ebook/`;
+  private ebookUrl = `${this.baseurl}/Ebook/`;
+  private audiobookUrl = `${this.baseurl}/Audiobook/`;
+  private NormalBookUrl = `${this.baseurl}/Books/`;
+  private UserNormalBookUrl = `${this.baseurl}/Books/get-all-books`;
 
-private audiobookUrl = `${this.baseurl}/Audiobook/`;
+  // Log API call for showing books to users
+  showBookstoUser(currentPage: number, pageSize: number): Observable<any> {
+    const url = `${this.UserNormalBookUrl}?page=${currentPage}&pageSize=${pageSize}`;
+    console.log(`[API Request] GET: ${url}`);
+    return this.http.get<any>(url).pipe(
+      tap(
+        (response) => console.log(`[API Response] GET: ${url}`, response),
+        (error) => console.error(`[API Error] GET: ${url}`, error)
+      )
+    );
+  }
 
-private NormalBookUrl = `${this.baseurl}/Books/`
+  // Log API call for fetching audiobooks
+  getaudiobooks(currentPage: number, pageSize: number): Observable<any> {
+    const url = `${this.audiobookUrl}GetAudiobooks?page=${currentPage}&pageSize=${pageSize}`;
+    console.log(`[API Request] GET: ${url}`);
+    return this.http.get<any>(url).pipe(
+      tap(
+        (response) => console.log(`[API Response] GET: ${url}`, response),
+        (error) => console.error(`[API Error] GET: ${url}`, error)
+      )
+    );
+  }
 
-private UserNormalBookUrl =`${this.baseurl}/Books/get-all-books`;
+  // Log API call for searching audiobooks
+  searchAudiobooks(searchString: string, currentPage: number, pageSize: number): Observable<any> {
+    const url = `${this.audiobookUrl}Search?searchString=${searchString}&page=${currentPage}&pageSize=${pageSize}`;
+    console.log(`[API Request] GET: ${url}`);
+    return this.http.get<any>(url).pipe(
+      tap(
+        (response) => console.log(`[API Response] GET: ${url}`, response),
+        (error) => console.error(`[API Error] GET: ${url}`, error)
+      )
+    );
+  }
 
-showBookstoUser(currentPage:number,pageSize:number):Observable<any>{
-  return this.http.get<any>(this.UserNormalBookUrl+`?page=${currentPage}&pageSize=${pageSize}`);
-}
+  // Log API call for fetching ebooks
+  getebooks(currentPage: number, pageSize: number): Observable<any> {
+    const url = `${this.ebookUrl}GetEbooks?page=${currentPage}&pageSize=${pageSize}`;
+    console.log(`[API Request] GET: ${url}`);
+    return this.http.get<any>(url).pipe(
+      tap(
+        (response) => console.log(`[API Response] GET: ${url}`, response),
+        (error) => console.error(`[API Error] GET: ${url}`, error)
+      )
+    );
+  }
 
-getaudiobooks(currentPage:number,pageSize:number): Observable<any> {
-  return this.http.get<any>(this.audiobookUrl + `GetAudiobooks?page=${currentPage}&pageSize=${pageSize}`);
-}
+  // Log API call for fetching normal books
+  getNoramlbooks(currentPage: number, pageSize: number): Observable<any> {
+    const url = `${this.NormalBookUrl}get-all-books-with-copies/?page=${currentPage}&pageSize=${pageSize}`;
+    console.log(`[API Request] GET: ${url}`);
+    return this.http.get<any>(url).pipe(
+      tap(
+        (response) => console.log(`[API Response] GET: ${url}`, response),
+        (error) => console.error(`[API Error] GET: ${url}`, error)
+      )
+    );
+  }
 
-searchAudiobooks(searchString: string,currentPage: number,pageSize: number): Observable<any> {
-  return this.http.get<any>( this.audiobookUrl +`Search?searchString=${searchString}&page=${currentPage}&pageSize=${pageSize}`);
-}
+  // Log API call for fetching normal book by ID
+  getNoramlbookbyId(bookid: number): Observable<any> {
+    const url = `${this.NormalBookUrl}get-book?bookId=${bookid}`;
+    console.log(`[API Request] GET: ${url}`);
+    return this.http.get<any>(url).pipe(
+      tap(
+        (response) => console.log(`[API Response] GET: ${url}`, response),
+        (error) => console.error(`[API Error] GET: ${url}`, error)
+      )
+    );
+  }
 
-
-getebooks(currentPage: number, pageSize: number): Observable<any> {
-  return this.http.get<any>(this.ebookUrl + `GetEbooks?page=${currentPage}&pageSize=${pageSize}`);
-}
-
-getNoramlbooks(currentPage: number, pageSize: number): Observable<any> {
-  return this.http.get<any>(this.NormalBookUrl + `get-all-books-with-copies/?page=${currentPage}&pageSize=${pageSize}`);
-}
-getNoramlbookbyId(bookid: number): Observable<any> {
-  return this.http.get<any>(this.NormalBookUrl + `get-book?bookId=${bookid}`);
-}
-
-markPdfAsRead(ebookId: number): Observable<any> {
-  return this.http.post<any>(`${this.ebookUrl}MarkAsRead`, { ebookId });
-}
-
+  // Log API call for marking a PDF as read
+  markPdfAsRead(ebookId: number): Observable<any> {
+    const url = `${this.ebookUrl}MarkAsRead`;
+    console.log(`[API Request] POST: ${url}`, { ebookId });
+    return this.http.post<any>(url, { ebookId }).pipe(
+      tap(
+        (response) => console.log(`[API Response] POST: ${url}`, response),
+        (error) => console.error(`[API Error] POST: ${url}`, error)
+      )
+    );
+  }
 }

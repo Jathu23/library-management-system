@@ -37,6 +37,7 @@ import { MembersComponent } from './components/admin/members/members.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ShowLentRecodesComponent } from './components/user/show-lent-recodes/show-lent-recodes.component';
 import { ShowLendingHistoryComponent } from './components/user/show-lending-history/show-lending-history.component';
+import { UserprofileComponent } from './components/user/userprofile/userprofile.component';
 
 
 
@@ -75,6 +76,7 @@ import { ShowLendingHistoryComponent } from './components/user/show-lending-hist
     MembersComponent,
     ShowLentRecodesComponent,
     ShowLendingHistoryComponent,
+    UserprofileComponent,
 
    
 
