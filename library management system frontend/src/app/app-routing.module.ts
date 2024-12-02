@@ -36,7 +36,7 @@ const routes: Routes = [
     path: 'admin',
     component: AdminLayoutComponent,
     canActivate:[authGuard],
-    data:{roles:["admin"]},
+    data:{roles:["Admin"]},
     children: [
      
       { path: 'add-normal-book', component: AddbookComponent },
@@ -56,7 +56,7 @@ const routes: Routes = [
     path: 'user',
     component: UserLayoutComponent,
     canActivate:[authGuard],
-    data:{roles:['users']},
+    data:{roles:['user']},
     children: [
       { path: '', component: UserDashboardComponent },
       { path: 'view-normal-books', component: ShowbooksComponent },

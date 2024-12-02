@@ -11,7 +11,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
-    const userRole = payload.aud;
+    const userRole = payload.role;
     const allowedRoles = route.data['roles'] as Array<string>;
 
     if (allowedRoles.includes(userRole)) {
