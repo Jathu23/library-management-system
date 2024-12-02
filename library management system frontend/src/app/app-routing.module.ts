@@ -21,6 +21,7 @@ import { MembersComponent } from './components/admin/members/members.component';
 import { ShowLentRecodesComponent } from './components/user/show-lent-recodes/show-lent-recodes.component';
 import { ShowLendingHistoryComponent } from './components/user/show-lending-history/show-lending-history.component';
 import { UserprofileComponent } from './components/user/userprofile/userprofile.component';
+import { authGuard } from './guards/auth.guard';
 
 
 const routes: Routes = [
@@ -34,6 +35,8 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
+    canActivate:[authGuard],
+    data:{roles:["Admin"]},
     children: [
      
       { path: 'add-normal-book', component: AddbookComponent },
@@ -52,6 +55,8 @@ const routes: Routes = [
   {
     path: 'user',
     component: UserLayoutComponent,
+    canActivate:[authGuard],
+    data:{roles:['user']},
     children: [
       { path: '', component: UserDashboardComponent },
       { path: 'view-normal-books', component: ShowbooksComponent },

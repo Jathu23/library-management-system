@@ -19,4 +19,8 @@ export class UserService {
     return this.http.get<any>(this.Url + `getSingleUserByNICorEmail?emailorNic=${emaiornic}`);
   }
 
+
+  UpdateUser(userData: any): Observable<any> {
+    return this.http.put<any>(`${this.Url}UpdateUser`, userData);
+  }
 }

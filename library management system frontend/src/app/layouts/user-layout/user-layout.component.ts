@@ -21,4 +21,10 @@ export class UserLayoutComponent {
   isMenuExpanded(menuKey: string): boolean {
     return this.menuStates[menuKey] || false;
   }
+  constructor(private router: Router) {}
+
+  logout() {
+    localStorage.removeItem('token'); // Remove the token from localStorage
+    this.router.navigate(['/login']); // Redirect to the login page
+  }
 }

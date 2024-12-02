@@ -106,9 +106,8 @@
        
       </ul>
       <div class="sidebar-footer" style="margin-bottom: 10px;">
-        <a href="#" class="sidebar-link">
-          <i class="icon bi bi-box-arrow-right"></i>
-          <span>Logout</span>
+        <a href="#" (click)="logout(); $event.preventDefault()" style="font-size: 20px;" class="sidebar-link">
+          <i class="bi bi-box-arrow-left p-3"></i>LogOut
         </a>
       </div>
     </aside>
