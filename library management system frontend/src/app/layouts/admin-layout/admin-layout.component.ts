@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { environment } from '../../../environments/environment.testing';
+import { Router } from '@angular/router';
 // import * as jwt_decode from 'jwt-decode';  // Correct import if default import fails
 
 @Component({
@@ -13,7 +14,7 @@ export class AdminLayoutComponent {
 
   isExpanded = false;
 
-  constructor() {
+  constructor( private router:Router) {
     const token = localStorage.getItem("token");
     
     const tokendata = environment.decodeTokenManually(token);
@@ -26,7 +27,12 @@ export class AdminLayoutComponent {
     this.isExpanded = !this.isExpanded;
   }
 
+ 
 
+  logout() {
+    localStorage.removeItem('token'); // Remove the token from localStorage
+    this.router.navigate(['/login']); // Redirect to the login page
+  }
   
 }
 
