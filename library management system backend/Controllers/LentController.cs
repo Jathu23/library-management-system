@@ -36,19 +36,7 @@ namespace library_management_system.Controllers
             return Ok(response);
         }
 
-        
-        [HttpGet("lent-records-id")]
-        public async Task<IActionResult> GetLentRecordForAdmin(int Userid)
-        {
-            var response = await _lentService.GetLentRecordForAdminAsync(Userid);
-
-            if (!response.Success)
-                return NotFound(response);
-
-            return Ok(response);
-        }
-
-        [HttpPost("lend-by-copy-id")]
+        [HttpPost("lend-by-book-copyid")]
         public async Task<IActionResult> LendNormalBookByCopyId([FromQuery] LendByCopyIdDto lendByCopyIdDto)
         {
             if (!ModelState.IsValid)
@@ -71,8 +59,18 @@ namespace library_management_system.Controllers
             return Ok(result);
         }
 
-       
-        [HttpGet("all-lent-All-records")]
+        [HttpGet("get-records-by-userid-admin")]
+        public async Task<IActionResult> GetLentRecordForAdmin(int Userid)
+        {
+            var response = await _lentService.GetLentRecordForAdminAsync(Userid);
+
+            if (!response.Success)
+                return NotFound(response);
+
+            return Ok(response);
+        }
+
+        [HttpGet("get-all-records-admin")]
         public async Task<IActionResult> GetAllLentRecords()
         {
             var result = await _lentService.GetAllLentRecordsAsync();
@@ -83,8 +81,22 @@ namespace library_management_system.Controllers
 
             return Ok(result);
         }
-       
-        [HttpGet("lent-historys")]
+        [HttpGet("lent-records-by-userid-user")]
+        public async Task<IActionResult> GetLentRecordsByUserId(int userId)
+        {
+            var result = await _lentService.GetLentRecordsByUserIdAsync(userId);
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+
+
+        [HttpGet("get-all-historys-admin")]
         public async Task<IActionResult> GetAllRentHistory(int page=1, int pageSize=5)
         {
             var result = await _lentService.GetAllRentHistory(page, pageSize);
@@ -98,21 +110,10 @@ namespace library_management_system.Controllers
             return Ok(result);
         }
 
-        [HttpGet("user-lent-records")]
-        public async Task<IActionResult> GetLentRecordsByUserId(int userId)
-        {
-            var result = await _lentService.GetLentRecordsByUserIdAsync(userId);       
-
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-
-            return Ok(result);
-        }
+      
 
 
-        [HttpGet("user-rent-history")]
+        [HttpGet("rent-history-by-userid")]
         public async Task<IActionResult> GetRentHistoryByUser(int userId)
         {
             var result = await _lentService.GetRentHistoryByUser(userId);

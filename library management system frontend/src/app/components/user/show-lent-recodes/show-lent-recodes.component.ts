@@ -14,7 +14,7 @@ export class ShowLentRecodesComponent implements OnInit {
   constructor(private rentService: RentService) {}
 
   ngOnInit(): void {
-    this.fetchUserLendingRecords(5); // Replace '1' with the actual userId dynamically
+    this.fetchUserLendingRecords(1); // Replace '1' with the actual userId dynamically
   }
 
   fetchUserLendingRecords(userId: number): void {

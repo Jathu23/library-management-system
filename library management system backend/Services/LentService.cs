@@ -2,6 +2,7 @@
 using library_management_system.DTOs.LentRecord;
 using library_management_system.DTOs;
 using library_management_system.Repositories;
+using System.Diagnostics.Eventing.Reader;
 
 namespace library_management_system.Services
 {
@@ -257,7 +258,7 @@ namespace library_management_system.Services
             }
 
             var lentRecordDtos = new List<LentRecordAdminDto>();
-            var book = await _lentRecordRepository.GetBookById(lentRecords[0].BookCopy.BookId);
+            //var book = await _lentRecordRepository.GetBookById(lentRecords[0].BookCopy.BookId);
 
             foreach (var lentRecord in lentRecords)
             {
@@ -278,12 +279,12 @@ namespace library_management_system.Services
                     UserEmail = lentRecord.User.Email,
                     AdminId = lentRecord.AdminId,
                     AdminName = lentRecord.Admin.FullName,
-                    BookId = book.Id,
-                    BookTitle = book.Title,
-                    BookISBN = book.ISBN,
-                    BookAuthor = book.Author,
-                    BookGenre = string.Join(", ", book.Genre),
-                    BookPublishYear = book.PublishYear,
+                    BookId = lentRecord.BookCopy.Book.Id,
+                    BookTitle = lentRecord.BookCopy.Book.Title,
+                    BookISBN = lentRecord.BookCopy.Book.ISBN,
+                    BookAuthor = lentRecord.BookCopy.Book.Author,
+                    BookGenre = string.Join(", ", lentRecord.BookCopy.Book.Genre),
+                    BookPublishYear = lentRecord.BookCopy.Book.PublishYear,
                     BookCopyId = lentRecord.BookCopyId,
                     BookCondition = lentRecord.BookCopy.Condition,
                     LentDate = lentRecord.LentDate,
@@ -324,7 +325,7 @@ namespace library_management_system.Services
 
             foreach (var lentRecord in lentRecords)
             {
-                var book = await _lentRecordRepository.GetBookById(lentRecord.BookCopy.BookId);
+                //var book = await _lentRecordRepository.GetBookById(lentRecord.BookCopy.BookId);
 
                 var currentDateTime = DateTime.Now;  
                 var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
@@ -341,12 +342,12 @@ namespace library_management_system.Services
                     UserEmail = lentRecord.User.Email,
                     AdminId = lentRecord.AdminId,
                     AdminName = lentRecord.Admin.FullName,
-                    BookId = book.Id,
-                    BookTitle = book.Title,
-                    BookISBN = book.ISBN,
-                    BookAuthor = book.Author,
-                    BookGenre = string.Join(", ", book.Genre),
-                    BookPublishYear = book.PublishYear,
+                    BookId = lentRecord.BookCopy.Book.Id,
+                    BookTitle = lentRecord.BookCopy.Book.Title,
+                    BookISBN = lentRecord.BookCopy.Book.ISBN,
+                    BookAuthor = lentRecord.BookCopy.Book.Author,
+                    BookGenre = string.Join(", ", lentRecord.BookCopy.Book.Genre),
+                    BookPublishYear = lentRecord.BookCopy.Book.PublishYear,
                     BookCopyId = lentRecord.BookCopyId,
                     BookCondition = lentRecord.BookCopy.Condition,
                     LentDate = lentRecord.LentDate,
@@ -374,7 +375,7 @@ namespace library_management_system.Services
             {
                 // Fetch rent history records from the repository
                 var (records, totalRecords) = await _lentRecordRepository.GetAllRentHistory(page, pageSize);
-                var Book = await _lentRecordRepository.GetBookById(records[0].BookCopy.BookId);
+                //var Book = await _lentRecordRepository.GetBookById(records[0].BookCopy.BookId);
 
 
                 if (records == null || !records.Any())
@@ -424,11 +425,11 @@ namespace library_management_system.Services
                         IAdminName = rec.IssuingAdmin?.FullName,  // Get Issuing Admin Name
                         RAdminName = rec.ReceivingAdmin?.FullName, // Get Receiving Admin Name
                         BookId = rec.BookCopy.BookId,
-                        BookTitle = Book.Title,
-                        BookISBN = Book.ISBN,
-                        BookAuthor =Book.Author,
-                        BookGenre = string.Join(", ", Book.Genre),
-                        BookPublishYear = Book.PublishYear,
+                        BookTitle = rec.BookCopy.Book.Title,
+                        BookISBN = rec.BookCopy.Book.ISBN,
+                        BookAuthor = rec.BookCopy.Book.Author,
+                        BookGenre = string.Join(", ", rec.BookCopy.Book.Genre),
+                        BookPublishYear = rec.BookCopy.Book.PublishYear,
                         BookCopyId = rec.BookCopyId,
                         BookCondition = rec.BookCopy.Condition,
                         LentDate = rec.LendDate,
@@ -556,7 +557,7 @@ namespace library_management_system.Services
             {
 
                 var records = await _lentRecordRepository.GetRentHistoryByUser(userId);
-                var Book = await _lentRecordRepository.GetBookById(records[0].BookCopy.BookId);
+             
 
                 if (records == null || !records.Any())
                 {
@@ -595,8 +596,8 @@ namespace library_management_system.Services
                     {
                         Id = rec.Id,
                         BookId = rec.BookCopy.BookId,
-                        BookTitle = Book.Title,
-                        BookAuthor = Book.Author,
+                        BookTitle = rec.BookCopy.Book.Title,
+                        BookAuthor = rec.BookCopy.Book.Author,
                         BookCopyId = rec.BookCopyId,
                         LentDate = rec.LendDate,
                         DueDate = rec.DueDate,

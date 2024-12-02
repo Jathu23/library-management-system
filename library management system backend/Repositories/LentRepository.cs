@@ -59,29 +59,41 @@ namespace library_management_system.Repositories
         }
 
 
-        public async Task<LentRecord?> GetLentRecordWithDetailsAsync(int userid)
-        {
-            return await _context.LentRecords
-                .Include(lr => lr.BookCopy) // Include the BookCopy related to the LentRecord
-      
-                .Include(lr => lr.User) // Include the User related to the LentRecord
+        //public async Task<LentRecord?> GetLentRecordWithDetailsAsync(int userid)
+        //{
+        //    return await _context.LentRecords
+        //        .Include(lr => lr.BookCopy) // Include the BookCopy related to the LentRecord
+        //         .ThenInclude(lr => lr.Book)
+        //        .Include(lr => lr.User) // Include the User related to the LentRecord
                
-                .FirstOrDefaultAsync(lr => lr.UserId == userid);
-        }
+        //        .FirstOrDefaultAsync(lr => lr.UserId == userid);
+        //}
 
         public async Task<List<LentRecord>?> GetLentRecordWithDetailsbyuserid(int userid)
         {
             return await _context.LentRecords
                 .Include(lr => lr.BookCopy)
+                  .ThenInclude(lr => lr.Book)
                 .Include(lr => lr.User)
                 .Include(lr => lr.Admin)
                 .Where(lr => lr.UserId == userid)
+                .ToListAsync();
+        }
+
+        public async Task<List<LentRecord>?> GetAllLentRecordsWithDetailsAsync()
+        {
+            return await _context.LentRecords
+                .Include(lr => lr.BookCopy)
+                  .ThenInclude(lr => lr.Book)
+                .Include(lr => lr.User)     // Include User details
+                .Include(lr => lr.Admin)    // Include Admin details
                 .ToListAsync();
         }
         public async Task<(List<RentHistory>?, int)> GetAllRentHistory(int page, int pageSize)
         {
             var query = _context.RentHistory
                 .Include(rh => rh.BookCopy)
+                .ThenInclude(rh => rh.Book)
                 .Include(rh => rh.User)
                 .Include(rh => rh.IssuingAdmin)  // Include Issuing Admin
                 .Include(rh => rh.ReceivingAdmin) // Include Receiving Admin
@@ -99,14 +111,7 @@ namespace library_management_system.Repositories
         }
 
 
-        public async Task<List<LentRecord>?> GetAllLentRecordsWithDetailsAsync()
-        {
-            return await _context.LentRecords
-                .Include(lr => lr.BookCopy) 
-                .Include(lr => lr.User)     // Include User details
-                .Include(lr => lr.Admin)    // Include Admin details
-                .ToListAsync();
-        }
+       
 
         public async Task<List<LentRecord>> GetLentRecordsByUserIdAsync(int userId)
         {
@@ -122,6 +127,7 @@ namespace library_management_system.Repositories
         {
             var records = await _context.RentHistory
                 .Include(rh => rh.BookCopy)
+                   .ThenInclude(rh => rh.Book)
                 .Include(rh => rh.User)
                 .Include(rh => rh.IssuingAdmin)
                 .Include(rh => rh.ReceivingAdmin)

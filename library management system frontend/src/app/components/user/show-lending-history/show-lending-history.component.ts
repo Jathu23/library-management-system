@@ -14,7 +14,7 @@ export class ShowLendingHistoryComponent implements OnInit {
   constructor(private rentService: RentService) {}
 
   ngOnInit(): void {
-    this.fetchUserLendingHistory(5); 
+    this.fetchUserLendingHistory(1); 
   }
 
   fetchUserLendingHistory(userId: number): void {
