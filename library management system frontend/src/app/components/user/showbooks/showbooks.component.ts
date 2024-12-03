@@ -22,6 +22,8 @@ export class ShowbooksComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadNormalBooks();
+   
+    
   }
 
   loadNormalBooks(): void {
@@ -33,7 +35,7 @@ export class ShowbooksComponent implements OnInit {
         if (response.success) {
           const result = response.data;
 
-          // Ensure coverImagePath is treated as an array and resolve paths
+          this.Normalbooks = 
           this.Normalbooks = [
             ...this.Normalbooks,
             ...result.items.map((book: any) => ({
@@ -47,6 +49,7 @@ export class ShowbooksComponent implements OnInit {
           this.currentPage++;
           this.isLoading = false;
         }
+
       },
       (error) => {
         console.error('Error fetching normal books:', error);
@@ -129,6 +132,6 @@ export class ShowbooksComponent implements OnInit {
     if (!path) {
       return 'assets/images/defaultcover.jpg'; // Fallback to default cover
     }
-    return path.startsWith('http') ? path : `assets/images/${path}`;
+    return path.startsWith('http') ? path : `https://localhost:7261/${path}`;
   }
 }
