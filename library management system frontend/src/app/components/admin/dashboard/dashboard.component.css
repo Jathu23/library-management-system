@@ -1,0 +1,22 @@
+/* styles.css */
+text {
+    font-family: 'Arial, sans-serif';
+    font-size: 14px;
+    fill: #444;
+  }
+  
+  .ngx-charts-tooltip-content {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .ngx-charts-legend {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  
+  

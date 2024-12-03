@@ -22,7 +22,7 @@ export class RentService {
     return this.http.get<any>(this.rentUrl + `get-all-records-admin`);
   }
   rentnormalbookbycopyid(bcopyid:number,userid:number,adminid:number,duedays:number){
-    const url = `${this.rentUrl}lend-by-copy-id`;
+    const url = `${this.rentUrl}lend-by-book-copyid`;
   const params = new HttpParams()
     .set('BookCopyId', bcopyid.toString())
     .set('UserId', userid.toString())

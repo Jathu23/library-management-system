@@ -22,6 +22,7 @@ import { ShowLentRecodesComponent } from './components/user/show-lent-recodes/sh
 import { ShowLendingHistoryComponent } from './components/user/show-lending-history/show-lending-history.component';
 import { UserprofileComponent } from './components/user/userprofile/userprofile.component';
 import { authGuard } from './guards/auth.guard';
+import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 
 
 const routes: Routes = [
@@ -38,7 +39,7 @@ const routes: Routes = [
     canActivate:[authGuard],
     data:{roles:["Admin"]},
     children: [
-     
+      { path: '', component: DashboardComponent },
       { path: 'add-normal-book', component: AddbookComponent },
       { path: 'add-e-book', component: AddebookComponent },
       { path: 'add-audio-book', component: AddAudiobookComponent },
@@ -48,7 +49,8 @@ const routes: Routes = [
       {path:'show-e-Books',component:ShowEbookComponent},
       {path:'show-rent-rec',component:ShowLentRecComponent},
       {path:'show-rent-his',component:ShowLentHistoryComponent},
-      {path:'members',component:MembersComponent}
+      {path:'members',component:MembersComponent},
+      {path:'dashboard',component:DashboardComponent},
     ]
   },
   {
