@@ -1,4 +1,8 @@
 <div class="container mt-5">
+  <div *ngIf="ismaster == 'False'">
+    <h4>This Is Not A Master Account</h4>
+  </div>
+  
   <div class="card shadow-lg border-0 rounded-2 mb-5">
     <div class="card-header text-white text-center" style="background-color: #6d1b7b;">
       <h3>Manage Admin Controls</h3>

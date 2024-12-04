@@ -23,35 +23,60 @@
     <!-- User Information Card -->
     <div *ngIf="userInfo" class="col-md-6 mb-4">
       <div class="card h-100 shadow-sm">
-        <img
-          [src]="'assets/' + userInfo.profileImage"
-          class="card-img-top profile-img"
-          alt="User Profile"
-        />
         <div class="card-body">
-          <h5 class="card-title text-primary">{{ userInfo.fullName }}</h5>
-          <p class="card-text mb-1">
-            <strong>Email:</strong> {{ userInfo.email }}
-          </p>
-          <p class="card-text mb-1">
-            <strong>Phone:</strong> {{ userInfo.phoneNumber }}
-          </p>
-          <p class="card-text mb-1">
-            <strong>Address:</strong> {{ userInfo.address }}
-          </p>
-          <p class="card-text mb-1">
-            <strong>Registration Date:</strong>
-            {{ userInfo.registrationDate | date: 'medium' }}
-          </p>
-          <p class="card-text">
-            <strong>Status:</strong>
-            <span class="badge" [ngClass]="userInfo.isActive ? 'bg-success' : 'bg-secondary'">
-              {{ userInfo.isActive ? 'Active' : 'Inactive' }}
-            </span>
-          </p>
+          <!-- Profile Image -->
+          <div class="text-center mb-4">
+            <img
+              [src]="'https://bootdey.com/img/Content/avatar/avatar7.png'"
+              class="rounded-circle profile-img img-fluid"
+              alt="User Profile"
+              style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #007bff;"
+            />
+          </div>
+          <!-- User Details -->
+          <div class="mb-4">
+            <h5 class="card-title text-center text-primary">{{ userInfo.fullName }}</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <strong>Email:</strong> {{ userInfo.email }}
+              </li>
+              <li class="list-group-item">
+                <strong>Phone:</strong> {{ userInfo.phoneNumber }}
+              </li>
+              <li class="list-group-item">
+                <strong>Address:</strong> {{ userInfo.address }}
+              </li>
+              <li class="list-group-item">
+                <strong>Registration Date:</strong>
+                {{ userInfo.registrationDate | date: 'medium' }}
+              </li>
+              <li class="list-group-item">
+                <strong>Status:</strong>
+                <span class="badge" [ngClass]="userInfo.isActive ? 'bg-success' : 'bg-secondary'">
+                  {{ userInfo.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </li>
+            </ul>
+          </div>
+          <!-- Borrow Status -->
+          <div>
+            <h5 class="text-center text-primary mb-3">Borrow Status</h5>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <strong>Can Borrow:</strong> {{ userInfo.borrowStatus.canBorrow ? 'Yes' : 'No' }}
+              </li>
+              <li class="list-group-item">
+                <strong>Borrow Limit:</strong> {{ userInfo.borrowStatus.borrowLimit }}
+              </li>
+              <li class="list-group-item">
+                {{ userInfo.borrowStatus.booksBorrowed }} books borrowed this month
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
+    
 
     <!-- Pending Books Card -->
     <div *ngIf="pendingBooks.length > 0" class="col-md-6 mb-4">

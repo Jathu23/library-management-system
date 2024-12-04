@@ -1,11 +1,12 @@
-
+/* Search Container */
 .search-container {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
 }
-
-.search-bar {
+/* Search Bar */
+.search-bar,
+.search-input {
   width: 100%;
   padding: 10px;
   font-size: 16px;
@@ -13,35 +14,38 @@
   border: 1px solid #ccc;
   border-radius: 5px;
 }
-
 /* Grid Container with Scroll */
-.grid-container.scroll-container {
+.grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive Grid */
   gap: 16px;
   padding: 16px;
   max-height: 100vh; 
-  width: 100%;/* Set a fixed height for the scroll container */
-  
   overflow-y: auto; /* Enable vertical scrolling */
 }
-
 /* Grid Item */
 .grid-item {
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
   border: 1px solid #ddd;
   border-radius: 8px;
-  text-align: center;
   padding: 16px;
   background-color: #f9f9f9;
-  cursor: pointer;
-  transition: transform 0.2s;
 }
 
 .grid-item:hover {
   transform: scale(1.05);
 }
 
-/* Modal Window */
+/* Audio Cover */
+.audio-cover {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Modal Styles */
 .modal {
   display: none;
   position: fixed;
@@ -52,7 +56,6 @@
   background-color: rgba(0, 0, 0, 0.7);
   justify-content: center;
   align-items: center;
-  z-index: 1000;
 }
 
 .modal.show {
@@ -60,84 +63,22 @@
 }
 
 .modal-content {
-  background-color: #fff;
-  padding: 24px;
+  background-color: #ffffff;
+  padding: 20px;
   border-radius: 8px;
+  width: 80%;
   max-width: 600px;
-  width: 90%;
   text-align: center;
-  position: relative;
 }
 
-.modal-content .close {
-  position: absolute;
-  top: 8px;
-  right: 16px;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-
-.audio-cover {
-  width: 100px;
-  height: 110px;
-  border-radius: 10px;
-  margin-right: 20px;
-}
-
-
-audio {
-  width: 100%;
-  margin-top: 16px;
-}
-
-label {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-  font-size: 16px;
-  background-color: burlywood;
-}
-
-input[type='checkbox'] {
-  margin-right: 8px;
-  transform: scale(1.2);
- 
-}
-
-
-
-/* Full-width container */
+/* Audio Player Container */
 .audio-player-container {
   width: 100%;
   display: flex;
   justify-content: center;
-  background-color: #000;
+  background-color: #723980;
   padding: 10px;
 }
-
-/* Audio player itself */
-.audio-player {
-  width: 100%;
-  max-width: 1000px; /* Max width to control the size */
-  padding: 10px 20px;
-  background-color: #1c1c1c;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: white;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-}
-
-/* Audio info section */
-.audio-info {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 15px;
-}
-
 .album-cover {
   width: 60px;
   height: 60px;
@@ -163,7 +104,7 @@ input[type='checkbox'] {
   margin: 0;
 }
 
-/* Control buttons */
+/* Control Buttons */
 .controls {
   display: flex;
   align-items: center;
@@ -185,11 +126,11 @@ button:hover {
   opacity: 0.7;
 }
 
+/* Progress Bar */
 .progress-bar {
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  
 }
 
 input[type="range"] {
@@ -219,3 +160,68 @@ input[type="range"]::-webkit-slider-thumb {
 .current-time {
   margin-right: 5px;
 }
+
+.duration {
+  margin-left: 5px;
+}
+
+/* Modal Close Button */
+.modal-content .close {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Play/Pause Button */
+.play-pause {
+  font-size: 22px;
+}
+
+
+.fas.fa-play, .fas.fa-pause {
+  transition: transform 0.2s;
+}
+
+
+/* Skip Buttons */
+.prev, .next {
+  font-size: 22px;
+  margin: 0 15px;
+  cursor: pointer;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  max-height: 400px;  /* Limit the height to a specific value */
+  overflow-y: auto;  /* Enables vertical scrolling */
+  overflow-x: hidden;  /* Hides horizontal scrolling */
+  padding-right: 10px;  /* Prevents content from being cut off due to scroll bar */
+}
+
+.grid-container::-webkit-scrollbar {
+  display: none;  /* Hides the scrollbar */
+}
+
+.grid-item {
+  text-align: center;
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.audio-cover {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+h3, p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+

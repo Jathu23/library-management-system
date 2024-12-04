@@ -16,13 +16,13 @@ export class RentService {
   constructor(private http: HttpClient) {}
 
   getlentrecByuserid(id:number): Observable<any> {
-    return this.http.get<any>(this.rentUrl + `lent-records-id?Userid=${id}`);
+    return this.http.get<any>(this.rentUrl + `get-records-by-userid-admin?Userid=${id}`);
   }
   getallrentrecods():Observable<any> {
-    return this.http.get<any>(this.rentUrl + `all-lent-All-records`);
+    return this.http.get<any>(this.rentUrl + `get-all-records-admin`);
   }
   rentnormalbookbycopyid(bcopyid:number,userid:number,adminid:number,duedays:number){
-    const url = `${this.rentUrl}lend-by-copy-id`;
+    const url = `${this.rentUrl}lend-by-book-copyid`;
   const params = new HttpParams()
     .set('BookCopyId', bcopyid.toString())
     .set('UserId', userid.toString())
@@ -33,7 +33,7 @@ export class RentService {
   }
 
   getrenthistory(currentPage:number,pageSize:number):Observable<any> {
-      return this.http.get<any>(this.rentUrl + `lent-historys?page=${currentPage}&pageSize=${pageSize}`);
+      return this.http.get<any>(this.rentUrl + `get-all-historys-admin?page=${currentPage}&pageSize=${pageSize}`);
   }
 
   returnNormalbook(lentId:number,adminId:number){
@@ -47,12 +47,12 @@ export class RentService {
   }
 
   getUserLentRecords(userId: number): Observable<any> {
-    const url = `https://localhost:7261/api/Lent/user-lent-records?userId=${userId}`;
-    return this.http.get<any>(url);
+
+    return this.http.get<any>(this.rentUrl+ `lent-records-by-userid-user?userId=${userId}`);
   }
 
   getUserLendingHistory(userId: number): Observable<any> {
-    const url = `https://localhost:7261/api/Lent/user-rent-history?userId=${userId}`;
-    return this.http.get<any>(url);
+    
+    return this.http.get<any>(this.rentUrl+ `rent-history-by-userid?userId=${userId}`);
   }
 }

@@ -1,0 +1,50 @@
+<ngx-charts-bar-vertical
+  [view]="view"
+  [scheme]="colorScheme"
+  [results]="chartData"
+  [gradient]="false"
+  [xAxis]="true"
+  [yAxis]="true"
+  [legend]="true"
+  [legendPosition]="legendPosition"  
+  [animations]="true"
+  [showXAxisLabel]="true"
+  [xAxisLabel]="'Months'"
+  [showYAxisLabel]="true"
+  [yAxisLabel]="'Revenue'"
+  [tooltipTemplate]="customTooltip">
+</ngx-charts-bar-vertical>
+
+<ng-template #customTooltip let-model="model">
+  <div style="background: white; padding: 5px; border: 1px solid #ccc;">
+    <strong>{{ model.name }}</strong>: {{ model.value | currency }}
+  </div>
+</ng-template>
+
+
+<div>
+  <ngx-charts-number-card
+    [view2]="view2"
+    [results]="cardData"
+    [scheme2]="colorScheme"
+    [animations]="true">
+  </ngx-charts-number-card>
+</div>
+
+<div>
+  <ngx-charts-line-chart
+    [view]="view3"
+    [scheme]="colorScheme"
+    [results]="lineChartData"
+    [gradient]="gradient"
+    [xAxis]="showXAxis"
+    [yAxis]="showYAxis"
+    [legend]="showLegend"
+    [showXAxisLabel]="showXAxisLabel"
+    [xAxisLabel]="xAxisLabel"
+    [showYAxisLabel]="showYAxisLabel"
+    [yAxisLabel]="yAxisLabel"
+    [autoScale]="autoScale"
+    [animations]="true">
+  </ngx-charts-line-chart>
+</div>

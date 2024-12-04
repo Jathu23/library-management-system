@@ -19,18 +19,22 @@ namespace library_management_system.Services
         private readonly BCryptService _bCryptService;
         private readonly JwtService _jwtService;
         private readonly LoginRepository _loginRepository;
+        private readonly LentService _lentService;
 
-        public UserServices(UserRepo userRepo,
-                            ImageService imageService,
-                            BCryptService bCryptService,
-                            JwtService jwtService,
-                            LoginRepository loginRepository)
+        public UserServices(
+            UserRepo userRepo,
+            ImageService imageService,
+            BCryptService bCryptService,
+            JwtService jwtService,
+            LoginRepository loginRepository,
+            LentService lentService)
         {
             _userRepo = userRepo;
             _imageService = imageService;
             _bCryptService = bCryptService;
             _jwtService = jwtService;
             _loginRepository = loginRepository;
+            _lentService = lentService;
         }
 
         public async Task<ApiResponse<AuthResponse>> CreateUser(UserRequstModel userRequestDto)
@@ -263,9 +267,9 @@ namespace library_management_system.Services
                 return response;
             }
         }
-        public async Task<ApiResponse<User>> GetUserByNICorEmail(string emailOrNic)
+        public async Task<ApiResponse<UserDetialDto>> GetUserByNICorEmail(string emailOrNic)
         {
-            var response = new ApiResponse<User>();
+            var response = new ApiResponse<UserDetialDto>();
 
             if (string.IsNullOrWhiteSpace(emailOrNic))
             {
@@ -286,17 +290,32 @@ namespace library_management_system.Services
                     return response;
                 }
 
-                if (user.IsActive)
+                var userdetial = new UserDetialDto() 
                 {
-                    response.Success = true;
+                    Id=user.Id,
+                    UserNic =user.UserNic,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    FullName = user.FullName,   
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    Address = user.Address,
+                    ProfileImage = user.ProfileImage,
+                    RegistrationDate = user.RegistrationDate,
+                    IsActive = user.IsActive,
+                    IsSubscribed= user.IsSubscribed,
+                    BorrowStatus = await _lentService.CanUserBorrowBooks(user.Id)
+
+                    
+                };
+
+
+
+                response.Success = true;
                     response.Message = "User retrieved successfully.";
-                    response.Data = user;
-                }
-                else
-                {
-                    response.Success = false;
-                    response.Message = "User is not active.";
-                }
+                    response.Data = userdetial;
+                
+               
             }
             catch (Exception ex)
             {

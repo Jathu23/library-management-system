@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RentService } from '../../../services/lent-service/rent.service';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
 import { UserService } from '../../../services/user-service/user.service';
+import { environment } from '../../../../environments/environment.testing';
 
 @Component({
   selector: 'app-show-lent-history',
@@ -20,9 +21,13 @@ export class ShowLentHistoryComponent implements OnInit {
   userInfo: any = null;
   pendingBooks: any[] = [];
   relatedTextArray: string[] = [];
-  adminId: number = 2;
+  curentAdminId: number = 0;
 
-  constructor(private rentservice: RentService, private lentService: RentService, private userservice: UserService, private bookservice: GetbooksService) { }
+  constructor(private rentservice: RentService, private lentService: RentService, private userservice: UserService, private bookservice: GetbooksService) { 
+    const tokendata = environment.getTokenData();
+    this.curentAdminId= Number(tokendata.ID);
+    console.log(tokendata);
+  }
   ngOnInit(): void {
     this.loadrecods();
   }
@@ -98,9 +103,9 @@ export class ShowLentHistoryComponent implements OnInit {
   }
 
   onReturnClick(rentId: any) {
-    if (rentId && this.adminId > 0) {
+    if (rentId && this.curentAdminId > 0) {
       this.isLoading = true;
-      this.lentService.returnNormalbook(rentId, this.adminId).subscribe(
+      this.lentService.returnNormalbook(rentId, this.curentAdminId).subscribe(
         (response: any) => {
           if (response.success) {
             this.isLoading = false;

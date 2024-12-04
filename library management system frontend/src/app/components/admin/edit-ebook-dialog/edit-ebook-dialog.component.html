@@ -1,0 +1,58 @@
+<h2 mat-dialog-title>Edit Ebook</h2>
+<div mat-dialog-content>
+  <form>
+    <!-- Title -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Title</mat-label>
+      <input matInput [(ngModel)]="ebook.title" name="title" />
+    </mat-form-field>
+
+    <!-- Author -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Author</mat-label>
+      <input matInput [(ngModel)]="ebook.author" name="author" />
+    </mat-form-field>
+
+    <!-- Genre -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Genre</mat-label>
+      <input matInput [(ngModel)]="ebook.genre" name="genre" />
+    </mat-form-field>
+
+    <!-- Publish Year -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Publish Year</mat-label>
+      <input matInput type="number" [(ngModel)]="ebook.publishYear" name="publishYear" />
+    </mat-form-field>
+
+    <!-- Publisher -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Publisher</mat-label>
+      <input matInput [(ngModel)]="ebook.metadata.publisher" name="publisher" />
+    </mat-form-field>
+
+    <!-- Language -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Language</mat-label>
+      <input matInput [(ngModel)]="ebook.metadata.language" name="language" />
+    </mat-form-field>
+
+    <!-- Description -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Description</mat-label>
+      <textarea matInput [(ngModel)]="ebook.metadata.description" name="description"></textarea>
+    </mat-form-field>
+
+    <!-- Digital Rights -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Digital Rights</mat-label>
+      <input matInput [(ngModel)]="ebook.metadata.digitalRights" name="digitalRights" />
+    </mat-form-field>
+  </form>
+</div>
+
+<!-- Dialog Actions -->
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-button color="primary" (click)="saveChanges()">Save</button>
+</div>

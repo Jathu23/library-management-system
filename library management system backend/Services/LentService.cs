@@ -3,11 +3,6 @@ using library_management_system.DTOs.LentRecord;
 using library_management_system.DTOs;
 using library_management_system.Repositories;
 using System.Diagnostics.Eventing.Reader;
-using static System.Reflection.Metadata.BlobBuilder;
-using library_management_system.DTOs.Book;
-using library_management_system.DTOs.Ebook;
-using library_management_system.Migrations;
-using PdfSharp.Charting;
 
 namespace library_management_system.Services
 {
@@ -17,13 +12,17 @@ namespace library_management_system.Services
         private readonly UserRepo _userRepository;
         private readonly AdminRepo _adminRepository;
         private readonly BookRepository _bookRepository;
+        private readonly SubscriptionRepository _subscriptionRepository;
         
 
-        public LentService(LentRepository lentRecordRepository, UserRepo userRepository, AdminRepo adminRepository)
+
+        public LentService(LentRepository lentRecordRepository, UserRepo userRepository, AdminRepo adminRepository, BookRepository bookRepository, SubscriptionRepository subscriptionRepository)
         {
             _lentRecordRepository = lentRecordRepository;
             _userRepository = userRepository;
             _adminRepository = adminRepository;
+            _bookRepository = bookRepository;
+            _subscriptionRepository = subscriptionRepository;
         }
 
         public async Task<ApiResponse<bool>> LendNormalBook(LentRecordDto lentRecordDto)
@@ -125,12 +124,30 @@ namespace library_management_system.Services
 
         public async Task<ApiResponse<bool>> LendNormalBookByCopyId(LendByCopyIdDto lendByCopyIdDto)
         {
-           
-            var bookCopy = await _lentRecordRepository.GetBookCopyById(lendByCopyIdDto.BookCopyId);
-            var user = await _lentRecordRepository.GetUserById(lendByCopyIdDto.UserId);
-            var admin = await _lentRecordRepository.GetAdminById(lendByCopyIdDto.AdminId);
 
-          
+
+            var user = await _lentRecordRepository.GetUserById(lendByCopyIdDto.UserId);
+
+            if (user == null)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "User not found",
+                    Data = false
+                };
+            }
+            var canborrow = await CanUserBorrowBooks(lendByCopyIdDto.UserId);
+            if (!canborrow.CanBorrow)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = canborrow.Message,
+                    Data = false
+                };
+            }
+            var bookCopy = await _lentRecordRepository.GetBookCopyById(lendByCopyIdDto.BookCopyId);
             if (bookCopy == null)
             {
                 return new ApiResponse<bool>
@@ -140,6 +157,12 @@ namespace library_management_system.Services
                     Data = false
                 };
             }
+      
+           
+            var admin = await _lentRecordRepository.GetAdminById(lendByCopyIdDto.AdminId);
+
+          
+           
 
             
             if (!bookCopy.IsAvailable)
@@ -153,15 +176,6 @@ namespace library_management_system.Services
             }
 
            
-            if (user == null)
-            {
-                return new ApiResponse<bool>
-                {
-                    Success = false,
-                    Message = "User not found",
-                    Data = false
-                };
-            }
 
           
             if (admin == null)
@@ -173,8 +187,9 @@ namespace library_management_system.Services
                     Data = false
                 };
             }
+          
 
-        
+
             var book = await _lentRecordRepository.GetNormalBookWithCopies(bookCopy.BookId);
 
             if (book == null)
@@ -243,13 +258,13 @@ namespace library_management_system.Services
             }
 
             var lentRecordDtos = new List<LentRecordAdminDto>();
-            var book = await _lentRecordRepository.GetBookById(lentRecords[0].BookCopy.BookId);
+            //var book = await _lentRecordRepository.GetBookById(lentRecords[0].BookCopy.BookId);
 
             foreach (var lentRecord in lentRecords)
             {
                 
 
-                var currentDateTime = DateTime.UtcNow;
+                var currentDateTime = DateTime.Now;
                 var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
                 var maxvalue = (int)(lentRecord.DueDate-lentRecord.LentDate).TotalMinutes;
                 string status = statusValue > 0
@@ -264,12 +279,12 @@ namespace library_management_system.Services
                     UserEmail = lentRecord.User.Email,
                     AdminId = lentRecord.AdminId,
                     AdminName = lentRecord.Admin.FullName,
-                    BookId = book.Id,
-                    BookTitle = book.Title,
-                    BookISBN = book.ISBN,
-                    BookAuthor = book.Author,
-                    BookGenre = string.Join(", ", book.Genre),
-                    BookPublishYear = book.PublishYear,
+                    BookId = lentRecord.BookCopy.Book.Id,
+                    BookTitle = lentRecord.BookCopy.Book.Title,
+                    BookISBN = lentRecord.BookCopy.Book.ISBN,
+                    BookAuthor = lentRecord.BookCopy.Book.Author,
+                    BookGenre = string.Join(", ", lentRecord.BookCopy.Book.Genre),
+                    BookPublishYear = lentRecord.BookCopy.Book.PublishYear,
                     BookCopyId = lentRecord.BookCopyId,
                     BookCondition = lentRecord.BookCopy.Condition,
                     LentDate = lentRecord.LentDate,
@@ -310,9 +325,9 @@ namespace library_management_system.Services
 
             foreach (var lentRecord in lentRecords)
             {
-                var book = await _lentRecordRepository.GetBookById(lentRecord.BookCopy.BookId);
+                //var book = await _lentRecordRepository.GetBookById(lentRecord.BookCopy.BookId);
 
-                var currentDateTime = DateTime.UtcNow;
+                var currentDateTime = DateTime.Now;  
                 var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
                 var maxvalue = (int)(lentRecord.DueDate - lentRecord.LentDate).TotalMinutes;
                 string status = statusValue > 0
@@ -327,12 +342,12 @@ namespace library_management_system.Services
                     UserEmail = lentRecord.User.Email,
                     AdminId = lentRecord.AdminId,
                     AdminName = lentRecord.Admin.FullName,
-                    BookId = book.Id,
-                    BookTitle = book.Title,
-                    BookISBN = book.ISBN,
-                    BookAuthor = book.Author,
-                    BookGenre = string.Join(", ", book.Genre),
-                    BookPublishYear = book.PublishYear,
+                    BookId = lentRecord.BookCopy.Book.Id,
+                    BookTitle = lentRecord.BookCopy.Book.Title,
+                    BookISBN = lentRecord.BookCopy.Book.ISBN,
+                    BookAuthor = lentRecord.BookCopy.Book.Author,
+                    BookGenre = string.Join(", ", lentRecord.BookCopy.Book.Genre),
+                    BookPublishYear = lentRecord.BookCopy.Book.PublishYear,
                     BookCopyId = lentRecord.BookCopyId,
                     BookCondition = lentRecord.BookCopy.Condition,
                     LentDate = lentRecord.LentDate,
@@ -360,7 +375,7 @@ namespace library_management_system.Services
             {
                 // Fetch rent history records from the repository
                 var (records, totalRecords) = await _lentRecordRepository.GetAllRentHistory(page, pageSize);
-                var Book = await _lentRecordRepository.GetBookById(records[0].BookCopy.BookId);
+                //var Book = await _lentRecordRepository.GetBookById(records[0].BookCopy.BookId);
 
 
                 if (records == null || !records.Any())
@@ -380,7 +395,7 @@ namespace library_management_system.Services
                     int statusValue;
                     string status;
                     int maxvalue;
-                    var currentDateTime = DateTime.UtcNow;
+                    var currentDateTime = DateTime.Now;
 
                     // Calculate the status and status value
                     if (rec.ReturnDate == null)
@@ -410,11 +425,11 @@ namespace library_management_system.Services
                         IAdminName = rec.IssuingAdmin?.FullName,  // Get Issuing Admin Name
                         RAdminName = rec.ReceivingAdmin?.FullName, // Get Receiving Admin Name
                         BookId = rec.BookCopy.BookId,
-                        BookTitle = Book.Title,
-                        BookISBN = Book.ISBN,
-                        BookAuthor =Book.Author,
-                        BookGenre = string.Join(", ", Book.Genre),
-                        BookPublishYear = Book.PublishYear,
+                        BookTitle = rec.BookCopy.Book.Title,
+                        BookISBN = rec.BookCopy.Book.ISBN,
+                        BookAuthor = rec.BookCopy.Book.Author,
+                        BookGenre = string.Join(", ", rec.BookCopy.Book.Genre),
+                        BookPublishYear = rec.BookCopy.Book.PublishYear,
                         BookCopyId = rec.BookCopyId,
                         BookCondition = rec.BookCopy.Condition,
                         LentDate = rec.LendDate,
@@ -492,7 +507,7 @@ namespace library_management_system.Services
                     }
 
 
-                    var currentDateTime = DateTime.UtcNow;
+                    var currentDateTime = DateTime.Now;
                     var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
 
                     string status = statusValue > 0
@@ -542,7 +557,7 @@ namespace library_management_system.Services
             {
 
                 var records = await _lentRecordRepository.GetRentHistoryByUser(userId);
-                var Book = await _lentRecordRepository.GetBookById(records[0].BookCopy.BookId);
+             
 
                 if (records == null || !records.Any())
                 {
@@ -560,7 +575,7 @@ namespace library_management_system.Services
                 {
                     int statusValue;
                     string status;
-                    var currentDateTime = DateTime.UtcNow;
+                    var currentDateTime = DateTime.Now;
 
 
                     if (rec.ReturnDate == null)
@@ -581,8 +596,8 @@ namespace library_management_system.Services
                     {
                         Id = rec.Id,
                         BookId = rec.BookCopy.BookId,
-                        BookTitle = Book.Title,
-                        BookAuthor = Book.Author,
+                        BookTitle = rec.BookCopy.Book.Title,
+                        BookAuthor = rec.BookCopy.Book.Author,
                         BookCopyId = rec.BookCopyId,
                         LentDate = rec.LendDate,
                         DueDate = rec.DueDate,
@@ -667,7 +682,7 @@ namespace library_management_system.Services
 
             return new LendReportDto
             {
-                Date = DateTime.UtcNow,
+                Date = DateTime.Now,
                 TotalRengings = lentRecords.Count,
                 Pending = pendingLent.Count,
                 OnTime = onTimeLent.Count,
@@ -697,7 +712,7 @@ namespace library_management_system.Services
 
             return new BookLendingReportsDto
             {
-                Created = DateTime.UtcNow,
+                Created = DateTime.Now,
                 Reports = reports
             };
         }
@@ -740,6 +755,68 @@ namespace library_management_system.Services
 
             return report;
         }
+
+        public async Task<BorrowStatusDto> CanUserBorrowBooks(int userId)
+        {
+            var user = await _userRepository.Getuserid(userId);
+
+            if (user == null)
+                throw new Exception("User not found.");
+
+            // Check if the user is subscribed
+            if (!user.IsSubscribed)
+            {
+                // Free plan logic
+                var freePlan = await _subscriptionRepository.GetFreePlanAsync();
+                var booksBorrowedInLast30Days = await _lentRecordRepository.GetBorrowedCountInLastNDaysAsync(userId, 30);
+                return new BorrowStatusDto
+                {
+                    CanBorrow = booksBorrowedInLast30Days < freePlan.BorrowLimit,
+                    BorrowLimit = freePlan.BorrowLimit,
+                    BooksBorrowed = booksBorrowedInLast30Days,
+                    Message=$"free plan have {freePlan.BorrowLimit} borrow limit per month"
+                };
+            }
+
+            // Retrieve active subscription
+            var activeSubscription = await _subscriptionRepository.GetUserSubscriptionByUserIdAsync(userId);
+            if (activeSubscription == null || activeSubscription.Status != "Active")
+                throw new Exception("User does not have an active subscription.");
+
+            var paymentDuration = activeSubscription.PaymentDuration;
+            if (paymentDuration == null)
+                throw new Exception("Payment duration data is missing for the subscription.");
+
+            var borrowLimit = activeSubscription.SubscriptionPlan.BorrowLimit;
+            var totalMonths = paymentDuration.Duration;
+
+            // Calculate current cycle
+            var daysElapsed = (DateTime.Now - activeSubscription.StartDate).Days;
+            var currentCycle = (daysElapsed / 30) + 1;
+
+            if (currentCycle > totalMonths)
+                return new BorrowStatusDto
+                {
+                    CanBorrow = false,
+                    BorrowLimit = borrowLimit,
+                    BooksBorrowed = 0,
+                    Message = "Subscription period has ended."
+                };
+
+            // Calculate borrow count for the current cycle
+            var cycleStartDate = activeSubscription.StartDate.AddDays((currentCycle - 1) * 30);
+            var cycleEndDate = cycleStartDate.AddDays(30).AddTicks(-1);
+            var booksBorrowedInCycle = await _lentRecordRepository.GetBorrowedCountInDateRangeAsync(userId, cycleStartDate, cycleEndDate);
+
+            return new BorrowStatusDto
+            {
+                CanBorrow = booksBorrowedInCycle < borrowLimit,
+                BorrowLimit = borrowLimit,
+                BooksBorrowed = booksBorrowedInCycle
+            };
+        }
+
+
         private AllBookRendingReportDto MapToDto(NormalBook book)
         {
             var rentDetails = book.BookCopies
@@ -772,7 +849,7 @@ namespace library_management_system.Services
 
         private LentHistoryAdminDto MapToLentRecordAdminDto(RentHistory record)
         {
-            var currentDateTime = DateTime.UtcNow;
+            var currentDateTime = DateTime.Now;
           int  statusValue = (int)(record.DueDate - currentDateTime).TotalMinutes;
           int  maxvalue = (int)(record.DueDate - record.LendDate).TotalMinutes;
 
@@ -807,83 +884,7 @@ namespace library_management_system.Services
             };
         }
 
-        public async Task<ApiResponse<List<LentRecordUserDto>>> GetLentRecordsByUserIdAsync(int userId)
-        {
-            try
-            {
-
-                var lentRecords = await _lentRecordRepository.GetLentRecordsByUserIdAsync(userId);
-
-                if (lentRecords == null || !lentRecords.Any())
-                {
-                    return new ApiResponse<List<LentRecordUserDto>>
-                    {
-                        Success = false,
-                        Message = "No lent records found for this user",
-                        Data = null
-                    };
-                }
-
-                var lentRecordDtos = new List<LentRecordUserDto>();
-
-                foreach (var lentRecord in lentRecords)
-                {
-
-                    var book = await _lentRecordRepository.GetBookById(lentRecord.BookCopy.BookId);
-
-                    if (book == null)
-                    {
-                        return new ApiResponse<List<LentRecordUserDto>>
-                        {
-                            Success = false,
-                            Message = $"Book details not found for Book ID: {lentRecord.BookCopy.BookId}",
-                            Data = null
-                        };
-                    }
-
-
-                    var currentDateTime = DateTime.UtcNow;
-                    var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
-
-                    string status = statusValue > 0
-                        ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
-                        : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours overdue";
-
-
-                    var lentRecordDto = new LentRecordUserDto
-                    {
-                        Id = lentRecord.Id,
-                        BookId = book.Id,
-                        BookTitle = book.Title,
-                        BookCopyId = lentRecord.BookCopyId,
-                        BookAuthor = book.Author,
-                        LentDate = lentRecord.LentDate,
-                        DueDate = lentRecord.DueDate,
-                        Status = status,
-                        StatusValue = statusValue
-                    };
-
-                    lentRecordDtos.Add(lentRecordDto);
-                }
-
-                return new ApiResponse<List<LentRecordUserDto>>
-                {
-                    Success = true,
-                    Message = "User-specific lent records retrieved successfully",
-                    Data = lentRecordDtos
-                };
-            }
-            catch (Exception ex)
-            {
-                return new ApiResponse<List<LentRecordUserDto>>
-                {
-                    Success = false,
-                    Message = "An error occurred while retrieving user-specific lent records",
-                    Errors = new List<string> { ex.Message },
-                    Data = null
-                };
-            }
-        }
+       
 
 
 

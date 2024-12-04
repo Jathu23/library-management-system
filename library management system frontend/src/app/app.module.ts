@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -37,6 +37,10 @@ import { MembersComponent } from './components/admin/members/members.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ShowLentRecodesComponent } from './components/user/show-lent-recodes/show-lent-recodes.component';
 import { ShowLendingHistoryComponent } from './components/user/show-lending-history/show-lending-history.component';
+import { EditEbookDialogComponent } from './components/admin/edit-ebook-dialog/edit-ebook-dialog.component';
+import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 
 
 
@@ -75,6 +79,8 @@ import { ShowLendingHistoryComponent } from './components/user/show-lending-hist
     MembersComponent,
     ShowLentRecodesComponent,
     ShowLendingHistoryComponent,
+    EditEbookDialogComponent,
+    DashboardComponent,
 
    
 
@@ -89,11 +95,12 @@ import { ShowLendingHistoryComponent } from './components/user/show-lending-hist
     CommonModule,
     MatPaginatorModule,
     MatTableModule,
-    
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatDialogModule,
+    NgxChartsModule
+    
 
      
   ],
@@ -106,7 +113,7 @@ import { ShowLendingHistoryComponent } from './components/user/show-lending-hist
     },
 
   ],
-  bootstrap: [AppComponent]
-  
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]  // Add this to bypass the error
 })
 export class AppModule { }

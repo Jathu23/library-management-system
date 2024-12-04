@@ -4,6 +4,7 @@ using library_management_system.Services;
 using library_management_system.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace library_management_system.Controllers
@@ -35,19 +36,7 @@ namespace library_management_system.Controllers
             return Ok(response);
         }
 
-        
-        [HttpGet("lent-records-id")]
-        public async Task<IActionResult> GetLentRecordForAdmin(int Userid)
-        {
-            var response = await _lentService.GetLentRecordForAdminAsync(Userid);
-
-            if (!response.Success)
-                return NotFound(response);
-
-            return Ok(response);
-        }
-
-        [HttpPost("lend-by-copy-id")]
+        [HttpPost("lend-by-book-copyid")]
         public async Task<IActionResult> LendNormalBookByCopyId([FromQuery] LendByCopyIdDto lendByCopyIdDto)
         {
             if (!ModelState.IsValid)
@@ -70,8 +59,18 @@ namespace library_management_system.Controllers
             return Ok(result);
         }
 
-       
-        [HttpGet("all-lent-All-records")]
+        [HttpGet("get-records-by-userid-admin")]
+        public async Task<IActionResult> GetLentRecordForAdmin(int Userid)
+        {
+            var response = await _lentService.GetLentRecordForAdminAsync(Userid);
+
+            if (!response.Success)
+                return NotFound(response);
+
+            return Ok(response);
+        }
+
+        [HttpGet("get-all-records-admin")]
         public async Task<IActionResult> GetAllLentRecords()
         {
             var result = await _lentService.GetAllLentRecordsAsync();
@@ -82,22 +81,7 @@ namespace library_management_system.Controllers
 
             return Ok(result);
         }
-       
-        [HttpGet("lent-historys")]
-        public async Task<IActionResult> GetAllRentHistory(int page=1, int pageSize=5)
-        {
-            var result = await _lentService.GetAllRentHistory(page, pageSize);
-
-
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
-
-            return Ok(result);
-        }
-
-        [HttpGet("user-lent-records")]
+        [HttpGet("lent-records-by-userid-user")]
         public async Task<IActionResult> GetLentRecordsByUserId(int userId)
         {
             var result = await _lentService.GetLentRecordsByUserIdAsync(userId);
@@ -111,7 +95,25 @@ namespace library_management_system.Controllers
         }
 
 
-        [HttpGet("user-rent-history")]
+
+        [HttpGet("get-all-historys-admin")]
+        public async Task<IActionResult> GetAllRentHistory(int page=1, int pageSize=5)
+        {
+            var result = await _lentService.GetAllRentHistory(page, pageSize);
+
+
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+      
+
+
+        [HttpGet("rent-history-by-userid")]
         public async Task<IActionResult> GetRentHistoryByUser(int userId)
         {
             var result = await _lentService.GetRentHistoryByUser(userId);
@@ -131,7 +133,11 @@ namespace library_management_system.Controllers
             try
             {
                 var report = await _lentService.GetLentReport(date);
-                return Ok(report);
+                var pdf =await _pdfGeneratorService.GenerateLendReportPdfAsync(report);
+               
+           
+                return File(pdf, "application/pdf", "LendReport.pdf");
+                return Ok(pdf);
             }
             catch (Exception ex)
             {
@@ -168,6 +174,14 @@ namespace library_management_system.Controllers
             }
         }
 
+        [HttpGet("download-lending-report")]
+        public async Task<IActionResult> DownloadLendingReport([FromQuery] int? bookId)
+        {
+            var report = await _lentService.GetBookLendingReports(bookId); // Fetch your data
+            var pdfBytes = await _pdfGeneratorService.GenerateBookLendingReportPdfAsync(report);
+
+            return File(pdfBytes, "application/pdf", "BookLendingReport.pdf");
+        }
 
         [HttpGet("LendingCount-report")]
         public async Task<IActionResult> GetLendingCountReport([FromQuery] int? bookId)
@@ -177,9 +191,26 @@ namespace library_management_system.Controllers
         }
 
 
+        [HttpGet("can-borrow")]
+        public async Task<IActionResult> CanUserBorrow(int userId)
+        {
+            var borrowStatus = await _lentService.CanUserBorrowBooks(userId);
+
+            if (borrowStatus == null)
+            {
+                return NotFound(new { Message = "User not found or subscription details are missing." });
+            }
+
+            if (!borrowStatus.CanBorrow)
+            {
+                return BadRequest(new { Message = borrowStatus.Message });
+            }
+
+            return Ok(borrowStatus);
+        }
 
         [HttpGet("lend-report")]
-        public IActionResult GetLendReport()
+        public async Task<IActionResult> GetLendReport()
         {
             // Sample HTML content for the report
             var htmlContent = @"
@@ -201,11 +232,12 @@ namespace library_management_system.Controllers
             </html>";
 
             // Generate the PDF
-            var pdfBytes = _pdfGeneratorService.GeneratePdf(htmlContent);
+            var pdfBytes = await _pdfGeneratorService.GeneratePdfAsync(htmlContent);
 
             // Return as a downloadable file
             return File(pdfBytes, "application/pdf", "LendReport.pdf");
         }
+
 
 
     }

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from '../../../services/admin-services/admin.service';
+import { environment } from '../../../../environments/environment.testing';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-admin',
@@ -11,9 +13,16 @@ export class NewAdminComponent {
   adminForm!: FormGroup;
   adminsList: any[] = [];
   selectedAdminId: number | null = 0;
-  curentAdminId: number= 1005;
+  curentAdminId: number= 0;
+  ismaster:any;
 
-  constructor(private fb: FormBuilder, private adminService: AdminService) {}
+  constructor(private fb: FormBuilder, private adminService: AdminService,  private router: Router) {
+    const tokendata = environment.getTokenData();
+    this.ismaster = tokendata.IsMaster;
+    this.curentAdminId= Number(tokendata.ID);
+    console.log(tokendata);
+    
+  }
 
   ngOnInit(): void {
     this.adminForm = this.fb.group({
@@ -24,7 +33,10 @@ export class NewAdminComponent {
       Password: ['', [Validators.required, Validators.minLength(6)]],
     });
 
-    this.fetchAdmins();
+    if(this.ismaster == "True"){
+
+      this.fetchAdmins();
+    }
   }
 
   fetchAdmins(): void {
@@ -43,7 +55,7 @@ export class NewAdminComponent {
   }
 
   onSubmit(): void {
-    if (this.adminForm.valid) {
+    if (this.adminForm.valid && this.ismaster =="True") {
       const newAdmin = this.adminForm.value;
       this.adminService.addAdmin(newAdmin).subscribe({
         next: (res) => {
@@ -59,11 +71,15 @@ export class NewAdminComponent {
   }
 
   transferMasterControl(): void {
-    if (this.selectedAdminId) {
+    if (this.selectedAdminId && this.ismaster =="True") {
       this.adminService.transferMasterControl(this.curentAdminId,this.selectedAdminId).subscribe({
         next: (res) => {
           alert(res.message);
           this.selectedAdminId=0;
+          localStorage.setItem("token","");
+          setTimeout(() => {
+            this.router.navigate(['']); 
+          }, 1000);
         },
         error: (err) => {
           console.error(err);

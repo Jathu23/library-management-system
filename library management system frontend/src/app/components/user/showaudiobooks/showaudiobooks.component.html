@@ -1,91 +1,107 @@
 <div class="audio-player-container">
-  <div class="audio-player">
-    <!-- Audio Info Section -->
-    <div class="audio-info">
-      <img class="album-cover" src='https://visme.co/blog/wp-content/uploads/2021/06/recipe-book-cover-template-visme-642x1024.jpg' alt="Album Cover">
-      <div class="song-info">
-        <p class="song-title">Ennavale Ennavale</p>
-        <p class="artist">Mano and Anuradha Sriram</p>
-      </div>
-    </div>
-
-    <!-- Controls Section -->
-    <div class="controls">
-      <button class="prev"><i class="fas fa-backward"></i></button>
-      <button class="play-pause" (click)="togglePlay()">
-        <i [class.fas]="isPlaying" [class.fa-pause]="isPlaying" [class.fa-play]="!isPlaying"></i>
-      </button>
-      <button class="next"><i class="fas fa-forward"></i></button>
-    </div>
-
-    <!-- Progress Bar Section -->
-    <div class="progress-bar">
-      <input type="range" class="progress" [value]="progress" (input)="updateProgress($event)">
-      <div class="time">
-        <span class="current-time">{{ currentTime }}</span>
-        <span class="duration">{{ duration }}</span>
-      </div>
+  <!-- Audio Info Section -->
+  <div class="audio-info container">
+    <img
+      class="album-cover"
+      [src]="playingAudio?.coverImagePath ? 'https://localhost:7261/' + playingAudio?.coverImagePath : ''"
+      alt="Album Cover"
+    />
+    <div class="song-info">
+      <p class="song-title">{{ playingAudio?.title || 'No Song Playing' }}</p>
+      <p class="artist">{{ playingAudio?.author || 'Unknown Author' }}</p>
     </div>
   </div>
+
+  <div style=" margin-top: 23px; align-items: center; margin-right: 20%;">
+    <!-- Controls Section -->
+  <div class="controls">
+    <button class="prev" (click)="skipTime(-5)">
+      <i class="fas fa-backward"></i>
+    </button>
+    <button class="play-pause" (click)="togglePlay()">
+      <i [class.fas]="isPlaying" [class.fa-pause]="isPlaying" [class.fa-play]="!isPlaying"></i>
+    </button>
+    <button class="next" (click)="skipTime(5)">
+      <i class="fas fa-forward"></i>
+    </button>
+     <!-- Progress Bar Section -->
+  
+  </div>
+  <div class="progress-bar">
+    <input
+      type="range"
+      class="progress"
+      [value]="progress"
+      (input)="updateProgress($event)"
+      [max]="audio.duration"
+    />
+    <div class="time">
+      <span class="current-time">{{ currentTime }}</span>
+      <span class="duration">{{ duration }}</span>
+    </div>
+  </div>
+  </div>
+ 
 </div>
 
 
-
-<p>show audio books works!</p>
 <div class="search-container">
   <input
     type="text"
-    placeholder="Search audiobooks (title, author, year)..."
+    class="search-input"
     [(ngModel)]="searchQuery"
-    (input)="onSearch()"
-    class="search-bar"
+    placeholder="Search for audiobooks..."
+    (input)="filterAudiobooks()"
   />
-  
-<div class="mt-2">
-  <label>
-    <input
-      type="checkbox"
-      [(ngModel)]="backgroundPlay"
-      (change)="toggleBackgroundPlay()"
-    />
-  Background Playback
-  </label>
 </div>
-
-
-
-<div class="grid-container scroll-container" (scroll)="onScroll()">
-  <!-- Display Audiobooks in Grid -->
-  <div class="grid-item" *ngFor="let audiobook of audiobooks" (click)="openAudioPlayer(audiobook)">
-    <img class="audio-cover" [src]="'https://visme.co/blog/wp-content/uploads/2021/06/recipe-book-cover-template-visme-642x1024.jpg'" alt="{{ audiobook.title }}" />
+<div class="main container">
+  <!-- Grid View for Audiobooks -->
+<div class="grid-container">
+  <div
+    class="grid-item"
+    *ngFor="let audiobook of filteredAudiobooks"
+    (click)="openModal(audiobook)"
+  >
+    <img style="width: 200px; height: 300px;"
+      class="audio-cover"
+      [src]="audiobook.coverImagePath ? 'https://localhost:7261/' + audiobook.coverImagePath : ''"
+      alt="{{ audiobook.title }}"
+      
+    />
     <h3>{{ audiobook.title }}</h3>
     <p>Author: {{ audiobook.author }}</p>
   </div>
-
+</div>
 
 </div>
 
+<mat-paginator
+  [length]="totalItems"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[2,4,10, 15, 25, 50]"
+  showFirstLastButtons
+  (page)="onPageChange($event)"
+  [pageIndex]="currentPage - 1"
+></mat-paginator>
 
-
-
-
-<!-- Modal with Audio Player -->
+<!-- Modal with Audio Details -->
 <div class="modal" [class.show]="isModalOpen">
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
+    <img style="width: 100%; height: 60%;"
+      class="modal-image"
+      [src]="selectedAudiobook?.coverImagePath ? 'https://localhost:7261/' + selectedAudiobook?.coverImagePath : ''"
+      alt="Audiobook Cover"
+      
+    />
     <h2>{{ selectedAudiobook?.title }}</h2>
-
-   <!-- Audio Player -->
-   <audio controls [src]="">
-    Your browser does not support the audio element.
-  </audio>
-  
-
     <p><strong>Author:</strong> {{ selectedAudiobook?.author }}</p>
     <p><strong>Genre:</strong> {{ selectedAudiobook?.genre }}</p>
     <p><strong>Publisher:</strong> {{ selectedAudiobook?.publisher }}</p>
     <p><strong>Publish Year:</strong> {{ selectedAudiobook?.publishYear }}</p>
-
- 
+    <button class="play" (click)="playAudio(selectedAudiobook)" style="color: black;">
+      <i class="fas" [class.fa-pause]="isPlaying" [class.fa-play]="!isPlaying"></i>
+      {{ isPlaying ? 'Pause' : 'Play' }}
+    </button>
   </div>
 </div>

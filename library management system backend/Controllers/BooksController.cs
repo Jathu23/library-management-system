@@ -4,6 +4,7 @@ using library_management_system.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Azure;
+using library_management_system.Repositories;
 
 namespace library_management_system.Controllers
 {
@@ -12,10 +13,12 @@ namespace library_management_system.Controllers
     public class BooksController : ControllerBase
     {
         private readonly BookService _bookService;
+        private readonly BookRepository _bookRepository;
 
-        public BooksController(BookService bookService)
+        public BooksController(BookService bookService, BookRepository bookRepository)
         {
             _bookService = bookService;
+            _bookRepository = bookRepository;
         }
 
         [HttpPost("add")]
@@ -146,7 +149,6 @@ namespace library_management_system.Controllers
             return Ok(response);
         }
 
-
         [HttpGet("Categorize")]
         public async Task<IActionResult> Categorize(
             [FromQuery] string? genre,
@@ -165,16 +167,23 @@ namespace library_management_system.Controllers
         }
 
         [HttpGet("Search")]
-          public async Task<IActionResult> Search(
-          [FromQuery] string searchString,
-          [FromQuery] int pageNumber = 1,
-          [FromQuery] int pageSize = 10)
-          {
-            var response = await _bookService.SearchBooksAsync(searchString, pageNumber, pageSize);
+        public async Task<IActionResult> Categorize(
+            [FromQuery] string? genre,
+            [FromQuery] string? author,
+            [FromQuery] int? publishYear,
+            [FromQuery] string? title,
+            [FromQuery] string? isbn,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            var response = await _bookService.GetSearchBooks(genre, author, publishYear, title, isbn, pageNumber, pageSize);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
             return Ok(response);
-          }
-
-
+        }
 
 
 
@@ -222,10 +231,16 @@ namespace library_management_system.Controllers
                 Thread.Sleep(200);
             }
 
+
             return count;
 
         }
 
-
+        [HttpPost("bookimageupdate")]
+        public async Task<int> updatebookimage()
+        {
+           
+              return await _bookRepository.UpdateCustomData();
+        }
     }
 }

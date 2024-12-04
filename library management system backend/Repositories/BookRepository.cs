@@ -29,8 +29,7 @@ namespace library_management_system.Repositories
                     BookId = book.Id,             
                     IsAvailable = true,
                     Condition = "New",
-                    AddedDate = DateTime.Now,
-                    lentcount = 0
+                    AddedDate = DateTime.Now
                 };
                 await _context.BookCopies.AddAsync(bookCopy);
             }
@@ -141,6 +140,8 @@ namespace library_management_system.Repositories
         }
 
 
+
+
         public async Task<(List<NormalBook>, int)> Categorization(string? genre, string? author, int? publishYear, int pageNumber, int pageSize)
         {
             var query = _context.NormalBooks.Include(b => b.BookCopies).AsQueryable();
@@ -169,30 +170,68 @@ namespace library_management_system.Repositories
         }
 
 
-      
+        public async Task<(List<NormalBook>, int)> Search(string? genre, string? author, int? publishYear, string? title, string? isbn, int pageNumber, int pageSize)
+        {
+            var query = _context.NormalBooks.Include(b => b.BookCopies).AsQueryable();
 
-            public async Task<(List<NormalBook>, int)> SearchAsync(string searchString, int pageNumber, int pageSize)
+            if (!string.IsNullOrEmpty(genre))
             {
-                var query = _context.NormalBooks.AsQueryable();
-
-                if (!string.IsNullOrEmpty(searchString))
-                {
-                    query = query.Where(b =>
-                        b.Title.Contains(searchString) ||
-                        b.Author.Contains(searchString) ||
-                        b.Genre.Any(g => g.Contains(searchString)));
-                }
-
-                int totalRecords = await query.CountAsync();
-
-                var books = await query
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToListAsync();
-
-                return (books, totalRecords);
+                query = query.Where(b => b.Genre.Any(g => g.Contains(genre)));
             }
-        
+
+            if (!string.IsNullOrEmpty(author))
+            {
+                query = query.Where(b => b.Author.Contains(author));
+            }
+
+            if (publishYear.HasValue)
+            {
+                query = query.Where(b => b.PublishYear == publishYear.Value);
+            }
+
+            if (!string.IsNullOrEmpty(title))
+            {
+                query = query.Where(b => b.Title.Contains(title));
+            }
+
+            if (!string.IsNullOrEmpty(isbn))
+            {
+                query = query.Where(b => b.ISBN.Contains(isbn));
+            }
+
+            int totalRecords = await query.CountAsync();
+
+            var books = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (books, totalRecords);
+        }
+
+
+        public async Task<int> UpdateCustomData()
+        {
+            var books = _context.NormalBooks.ToList();
+
+            foreach (var item in books)
+            {
+               
+                item.CoverImagePath = new List<string>
+        {
+            "BookCoverImages/a (1).jpeg",
+            "BookCoverImages/a (2).jpeg",
+            "BookCoverImages/a (3).jpeg"
+        };
+                Thread.Sleep(100);
+            }
+
+           
+            _context.NormalBooks.UpdateRange(books);
+
+          await _context.SaveChangesAsync();
+            return 1;
+        }
 
 
 

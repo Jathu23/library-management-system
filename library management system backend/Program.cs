@@ -97,6 +97,11 @@ builder.Services.AddScoped<ReturnRepository>();
 builder.Services.AddScoped<LoginService>();
 builder.Services.AddScoped<LoginRepository>();
 
+builder.Services.AddScoped<SubscriptionService>();
+builder.Services.AddScoped<SubscriptionRepository>();
+
+builder.Services.AddScoped< ChartRepository>();
+builder.Services.AddScoped< ChartService>();
 
 
 builder.Services.AddScoped<JwtService>();

@@ -20,6 +20,9 @@ import { ShowLentHistoryComponent } from './components/admin/show-lent-history/s
 import { MembersComponent } from './components/admin/members/members.component';
 import { ShowLentRecodesComponent } from './components/user/show-lent-recodes/show-lent-recodes.component';
 import { ShowLendingHistoryComponent } from './components/user/show-lending-history/show-lending-history.component';
+import { UserprofileComponent } from './components/user/userprofile/userprofile.component';
+import { authGuard } from './guards/auth.guard';
+import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 
 
 const routes: Routes = [
@@ -33,8 +36,10 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
+    canActivate:[authGuard],
+    data:{roles:["Admin"]},
     children: [
-     
+      { path: '', component: DashboardComponent },
       { path: 'add-normal-book', component: AddbookComponent },
       { path: 'add-e-book', component: AddebookComponent },
       { path: 'add-audio-book', component: AddAudiobookComponent },
@@ -44,21 +49,23 @@ const routes: Routes = [
       {path:'show-e-Books',component:ShowEbookComponent},
       {path:'show-rent-rec',component:ShowLentRecComponent},
       {path:'show-rent-his',component:ShowLentHistoryComponent},
-      {path:'members',component:MembersComponent}
-
+      {path:'members',component:MembersComponent},
+      {path:'dashboard',component:DashboardComponent},
     ]
   },
   {
     path: 'user',
     component: UserLayoutComponent,
+    canActivate:[authGuard],
+    data:{roles:['user']},
     children: [
       { path: '', component: UserDashboardComponent },
       { path: 'view-normal-books', component: ShowbooksComponent },
       { path: 'view-audio-books', component: ShowaudiobooksComponent },
       {path: 'view-e-books' , component:ShowebooksComponent },
       {path: 'view-lend-records' , component:ShowLentRecodesComponent },
-      {path: 'view-lend-history' , component:ShowLendingHistoryComponent }
-   
+      {path: 'view-lend-history' , component:ShowLendingHistoryComponent },
+      {path:'user-profile',component:UserprofileComponent}
     ]
   }
 ];

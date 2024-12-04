@@ -1,0 +1,213 @@
+<div class="container">
+  <div class="main-body">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="main-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page"> Profile</li>
+      </ol>
+    </nav>
+    <!-- /Breadcrumb -->
+
+    <div class="row gutters-sm">
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-column align-items-center text-center">
+              <img [src]="user?.profileImage || 'https://bootdey.com/img/Content/avatar/avatar7.png'" alt="User" class="rounded-circle" width="150">
+              <div class="mt-3">
+                <h4>{{ user.fullName|| 'John Doe' }}</h4>
+                <p class="text-secondary mb-1">{{ user?.aud || 'member' }}</p>
+                <p class="text-muted font-size-sm">{{ user?.address || 'Bay Area, San Francisco, CA' }}</p>
+                <button class="btn btn-danger">Deactive account</button>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card mt-3">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+              <h6 class="mb-0">Website</h6>
+              <span class="text-secondary">{{ tokenData?.website || 'https://bootdey.com' }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+              <h6 class="mb-0">Github</h6>
+              <span class="text-secondary">{{ tokenData?.github || 'bootdey' }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+              <h6 class="mb-0">Twitter</h6>
+              <span class="text-secondary">{{ tokenData?.twitter || '@bootdey' }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+              <h6 class="mb-0">Instagram</h6>
+              <span class="text-secondary">{{ tokenData?.instagram || 'bootdey' }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+              <h6 class="mb-0">Facebook</h6>
+              <span class="text-secondary">{{ tokenData?.facebook || 'bootdey' }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="col-md-8">
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">First Name</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{ user.firstName || 'Saruja Thooyamani' }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Last Name</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{ user.lastName || 'Saruja Thooyamani' }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Email</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{ user?.email || 'ut01372tic2024@gmail.com' }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Phone</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{ user?.phone || '(239) 816-9029' }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">UserNic</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{ user?.UserNic || '(320) 380-4539' }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Address</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{ user?.address || 'Bay Area, San Francisco, CA' }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">User NIC</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{ tokenData?.userNic || '998121548v' }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0">Is Active</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{ tokenData?.isActive || 'True' }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <h6 class="mb-0"> Subscribed</h6>
+              </div>
+              <div class="col-sm-9 text-secondary">
+                {{ tokenData?.isSubscribed || 'False' }}
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-12">
+                <button class="btn btn-info" (click)="openEditModal()">Edit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row gutters-sm">
+          <div class="col-sm-6 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h6 class="d-flex align-items-center mb-3"><i class="material-icons text-info mr-2">assignment</i>Activity Status</h6>
+                <small>Book Lending</small>
+                <div class="progress mb-3" style="height: 5px">
+                  <div class="progress-bar bg-primary" role="progressbar" [style.width]="tokenData?.projects?.webDesign || 80 + '%'" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <small>Book returning</small>
+                <div class="progress mb-3" style="height: 5px">
+                  <div class="progress-bar bg-primary" role="progressbar" [style.width]="tokenData?.projects?.websiteMarkup || 72 + '%'" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <small>One Page</small>
+                <div class="progress mb-3" style="height: 5px">
+                  <div class="progress-bar bg-primary" role="progressbar" [style.width]="tokenData?.projects?.onePage || 89 + '%'" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <small>Mobile Template</small>
+                <div class="progress mb-3" style="height: 5px">
+                  <div class="progress-bar bg-primary" role="progressbar" [style.width]="tokenData?.projects?.mobileTemplate || 55 + '%'" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <small>Backend API</small>
+                <div class="progress mb-3" style="height: 5px">
+                  <div class="progress-bar bg-primary" role="progressbar" [style.width]="tokenData?.projects?.backendAPI || 66 + '%'" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Edit Profile Modal -->
+<!-- <div id="editProfileModal" class="modal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="saveUser()">
+          <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstName" ngModel="user.firstName" name="firstName" >
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="lastName" [(ngModel) ="user.lastName" name="lastName" >
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" (ngModel) ="user.email" name="email" >
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input type="text" class="form-control" id="phone" (ngModel) ="user.phone" name="phone" >
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" (ngModel) ="user.address" name="address" >
+          </div>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> -->

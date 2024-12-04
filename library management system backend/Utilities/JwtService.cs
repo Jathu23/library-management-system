@@ -29,7 +29,10 @@ namespace library_management_system.Utilities
             var claimsList = new List<Claim>
     {
         new Claim("FullName", user.FullName),
-        new Claim("Email", user.Email)
+         new Claim("ID", user.Id.ToString()),
+        new Claim("Email", user.Email),
+        new Claim("role", "user"),
+        new Claim("IsSubscribed", user.IsSubscribed.ToString())
     };
 
             if (!string.IsNullOrEmpty(user.UserNic))
@@ -39,7 +42,7 @@ namespace library_management_system.Utilities
 
             // Optional claims based on user properties
             claimsList.Add(new Claim("IsActive", user.IsActive.ToString()));
-            claimsList.Add(new Claim("IsSubscribed", user.IsSubscribed.ToString()));
+           
 
             // Create security key and signing credentials
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_secretKey));
@@ -60,10 +63,15 @@ namespace library_management_system.Utilities
 
         public string GenerateAdminToken(Admin admin)
         {
+
             var claimsList = new List<Claim>
     {
         new Claim("FullName", admin.FullName),
         new Claim("Email", admin.Email),
+        new Claim("role", "Admin"), 
+        new Claim("IsMaster", admin.IsMaster.ToString()),
+        new Claim("ID", admin.id.ToString()),
+    
         
     };
 

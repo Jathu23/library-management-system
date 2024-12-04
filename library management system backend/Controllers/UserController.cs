@@ -76,33 +76,6 @@ namespace library_management_system.Controllers
 
 
         }
-
-        //[HttpPost("login")]
-        //public async Task<IActionResult> LoginUser([FromBody] LoginRequest loginRequest)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        var response1 = new ApiResponse<string>
-        //        {
-        //            Success = false,
-        //            Message = "Validation failed.",
-        //            Errors = ModelState.Values
-        //                .SelectMany(v => v.Errors)
-        //                .Select(e => e.ErrorMessage)
-        //                .ToList()
-        //        };
-        //        return BadRequest(response1);
-        //    }
-
-        //    var response = await _userService.LoginUser(loginRequest);
-
-        //    if (!response.Success)
-        //        return BadRequest(response);
-
-        //    return Ok(response);
-        //}
-
-
         [HttpGet("GetAllActiveUsers")]
         public async Task<IActionResult> GetAllActiveUsersWithPagination([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
