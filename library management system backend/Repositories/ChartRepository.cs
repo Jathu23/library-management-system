@@ -1,4 +1,5 @@
 ﻿using library_management_system.Database;
+using library_management_system.Database.Entiy;
 using library_management_system.DTOs.Chart;
 using Microsoft.EntityFrameworkCore;
 
@@ -60,6 +61,23 @@ namespace library_management_system.Repositories
                     Value = group.Count()
                 })
                 .ToList();
+        }
+
+        public async Task<List<RentHistory>> GetRentHistoryForYearAsync(int year)
+        {
+            return await _libraryDbContext.RentHistory
+                .Where(r => r.LendDate.Year == year)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetMinYearAsync()
+        {
+            return await _libraryDbContext.RentHistory.MinAsync(r => r.LendDate.Year);
+        }
+
+        public async Task<int> GetMaxYearAsync()
+        {
+            return await _libraryDbContext.RentHistory.MaxAsync(r => r.LendDate.Year);
         }
 
     }

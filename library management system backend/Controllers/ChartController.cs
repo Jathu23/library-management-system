@@ -23,6 +23,13 @@ namespace library_management_system.Controllers
             var data = _chartService.GetBorrowingTrends();
             return Ok(data);
         }
+
+        [HttpGet("all-borrowing-trends")]
+        public async Task<IActionResult> GetBorrowingTrendsForAllYears()
+        {
+            var data = await _chartService.GetBorrowingTrendsForAllYears();
+            return Ok(data);
+        }
     }
 
 

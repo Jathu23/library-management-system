@@ -1,5 +1,6 @@
 ﻿using library_management_system.DTOs.Chart;
 using library_management_system.Repositories;
+using System.Globalization;
 
 namespace library_management_system.Services
 {
@@ -45,6 +46,41 @@ namespace library_management_system.Services
                 Series = mergedData
             }
         };
+        }
+
+
+        public async Task<List<ChartData>> GetBorrowingTrendsForAllYears()
+        {
+            var minYear = await _chartRepository.GetMinYearAsync();
+            var maxYear = await _chartRepository.GetMaxYearAsync();
+            var years = Enumerable.Range(minYear, maxYear - minYear + 1);
+
+            var result = new List<ChartData>();
+
+            foreach (var year in years)
+            {
+                var rentHistory = await _chartRepository.GetRentHistoryForYearAsync(year);
+                var monthlyData = rentHistory
+                    .GroupBy(r => r.LendDate.Month)
+                    .Select(g => new { Month = g.Key, BorrowCount = g.Count() })
+                    .ToList();
+
+                var series = Enumerable.Range(1, 12)
+                    .Select(month => new ChartSeries
+                    {
+                        Name = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month),
+                        Value = monthlyData.FirstOrDefault(d => d.Month == month)?.BorrowCount ?? 0
+                    })
+                    .ToList();
+
+                result.Add(new ChartData
+                {
+                    Name = $"year {year}",
+                    Series = series
+                });
+            }
+
+            return result;
         }
     }
 }

@@ -62,7 +62,7 @@ export class DashboardComponent {
   // Data for the Line Chart
   lineChartData = [
     {
-      "name": "Books Borrowed",
+      "name": "year 2023",
       "series": [
         { "name": "January", "value": 50 },
         { "name": "February", "value": 65 },
@@ -77,7 +77,24 @@ export class DashboardComponent {
         { "name": "November", "value": 100 },
         { "name": "December", "value": 120 }
       ]
-    }
+    },
+    {
+      "name": "year 2024",
+      "series": [
+          { "name": "January", "value": 0 },
+          { "name": "February", "value": 0 },
+          { "name": "March", "value": 0 },
+          { "name": "April", "value": 0 },
+          { "name": "May", "value": 70 },
+          { "name": "June", "value": 95 },
+          { "name": "July", "value": 0 },
+          { "name": "August", "value": 0 },
+          { "name": "September", "value": 0 },
+          { "name": "October", "value": 0 },
+          { "name": "November", "value": 0 },
+          { "name": "December", "value": 0 }
+      ]
+  }
   ];
 
   colorScheme3 = {
