@@ -40,6 +40,7 @@ import { ShowLendingHistoryComponent } from './components/user/show-lending-hist
 import { EditEbookDialogComponent } from './components/admin/edit-ebook-dialog/edit-ebook-dialog.component';
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { LockScreenComponent } from './components/lock-screen/lock-screen.component';
 
 
 
@@ -81,6 +82,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     ShowLendingHistoryComponent,
     EditEbookDialogComponent,
     DashboardComponent,
+    LockScreenComponent,
 
    
 
@@ -99,7 +101,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     MatInputModule,
     MatButtonModule,
     MatDialogModule,
-    NgxChartsModule
+    NgxChartsModule,
+    
     
 
      

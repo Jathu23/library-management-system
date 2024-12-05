@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { environment } from '../../../environments/environment.testing';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { LockScreenComponent } from '../../components/lock-screen/lock-screen.component';
 // import * as jwt_decode from 'jwt-decode';  // Correct import if default import fails
 
 @Component({
@@ -11,10 +13,10 @@ import { Router } from '@angular/router';
 export class AdminLayoutComponent {
   decodedToken: any;
   tokenExpired: boolean = false;
-
+  private timeoutId: any;
   isExpanded = false;
 
-  constructor( private router:Router) {
+  constructor( private router:Router,private dialog: MatDialog) {
     const token = localStorage.getItem("token");
     
     const tokendata = environment.decodeTokenManually(token);
@@ -22,12 +24,54 @@ export class AdminLayoutComponent {
     
   }
 
+  ngOnInit(): void {
+    // this.checkLockStatus();
+  }
+
+  // @HostListener('document:mousemove')
+  // @HostListener('document:keydown')
+  resetTimeout() {
+    clearTimeout(this.timeoutId);
+    this.startInactivityTimer();
+  }
+
+  startInactivityTimer() {
+    this.timeoutId = setTimeout(() => {
+      localStorage.setItem('isLocked', 'true');
+      this.openLockScreen();
+    }, 0.2 * 60 * 1000); // 2 minutes
+  }
+
+  checkLockStatus() {
+    const isLocked = localStorage.getItem('isLocked');
+    if (isLocked === 'true') {
+      this.openLockScreen();
+    } else {
+      this.startInactivityTimer();
+    }
+  }
+
+  openLockScreen() {
+    const dialogRef = this.dialog.open(LockScreenComponent, {
+      disableClose: true, // Prevent closing modal without entering PIN
+      width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      localStorage.setItem('isLocked', 'false');
+      this.startInactivityTimer();
+    });
+  }
+
+
+
+
+
+  
   // Toggle sidebar
   toggleSidebar() {
     this.isExpanded = !this.isExpanded;
   }
-
- 
 
   logout() {
     localStorage.removeItem('token'); // Remove the token from localStorage
