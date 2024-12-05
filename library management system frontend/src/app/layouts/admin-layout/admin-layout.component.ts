@@ -30,10 +30,10 @@ export class AdminLayoutComponent {
 
   // @HostListener('document:mousemove')
   // @HostListener('document:keydown')
-  resetTimeout() {
-    clearTimeout(this.timeoutId);
-    this.startInactivityTimer();
-  }
+  // resetTimeout() {
+  //   clearTimeout(this.timeoutId);
+  //   this.startInactivityTimer();
+  // }
 
   startInactivityTimer() {
     this.timeoutId = setTimeout(() => {
@@ -51,20 +51,21 @@ export class AdminLayoutComponent {
     }
   }
 
+
+
   openLockScreen() {
     const dialogRef = this.dialog.open(LockScreenComponent, {
-      disableClose: true, // Prevent closing modal without entering PIN
-      width: '400px',
+      disableClose: true, // Prevent closing without entering PIN
+      panelClass: 'full-screen-dialog', // Ensure full-screen
     });
-
-    dialogRef.afterClosed().subscribe(() => {
-      localStorage.setItem('isLocked', 'false');
-      this.startInactivityTimer();
-    });
+  
+    // dialogRef.afterClosed().subscribe(() => {
+    //   localStorage.setItem('isLocked', 'false');
+    //   this.startInactivityTimer();
+    // });
   }
-
-
-
+  
+  
 
 
   

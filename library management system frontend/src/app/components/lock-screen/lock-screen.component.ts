@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -7,8 +7,10 @@ import { MatDialogRef } from '@angular/material/dialog';
   templateUrl: './lock-screen.component.html',
   styleUrls: ['./lock-screen.component.css'],
 })
-export class LockScreenComponent {
+export class LockScreenComponent implements OnInit {
   pinForm: FormGroup;
+  time: string = '';
+  date: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -16,6 +18,25 @@ export class LockScreenComponent {
   ) {
     this.pinForm = this.fb.group({
       pin: ['', [Validators.required, Validators.minLength(4)]],
+    });
+  }
+
+  ngOnInit(): void {
+    this.updateDateTime();
+    setInterval(() => this.updateDateTime(), 60000); // Update every second
+  }
+
+  updateDateTime(): void {
+    const now = new Date();
+    this.time = now.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+    this.date = now.toLocaleDateString('en-US', {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
     });
   }
 
