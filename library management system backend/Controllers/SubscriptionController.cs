@@ -22,6 +22,16 @@ namespace library_management_system.Controllers
             var plans = await _subscriptionService.GetAllSubscriptionPlansAsync();
             return Ok(plans);
         }
+        [HttpGet("durations")]
+        public async Task<IActionResult> GetDurations()
+        {
+            var durations = await _subscriptionService.GetDurationsAsync();
+            if (durations == null || durations.Count == 0)
+            {
+                return NotFound("No payment durations found.");
+            }
+            return Ok(durations);
+        }
 
         //[HttpGet("plans")]
         //public async Task<IActionResult> GetSubscriptionPlanById(int id)

@@ -1,1 +1,88 @@
-<p>subscription works!</p>
+<div class="container mt-4">
+    <!-- Current Subscription -->
+    <div class="card mb-3">
+      <div class="card-header">
+        <h5>Current Subscription</h5>
+      </div>
+      <div class="card-body">
+        <p *ngIf="currentSubscription; else noSubscription">
+        </p>
+          <strong>Plan:</strong> {{ currentSubscription.planName }} <br />
+          <strong>Status:</strong> {{ currentSubscription.status }} <br />
+          <strong>Remaining Time:</strong>
+          <span [class.text-danger]="remainingTime === 'Expired'">{{ remainingTime }}</span>
+          <div class="progress mt-3">
+            <div
+              class="progress-bar"
+              [style.width]="currentSubscription.progress + '%'"
+              [class.bg-danger]="remainingTime === 'Expired'"
+              role="progressbar"
+            >
+              {{ currentSubscription.progress }}%
+            </div>
+          </div>
+ 
+        <ng-template #noSubscription>
+          <p>No active subscription found.</p>
+        </ng-template>
+      </div>
+    </div>
+  
+    <!-- Subscription History -->
+    <div class="card mb-3">
+      <div class="card-header">
+        <h5>Subscription History</h5>
+      </div>
+      <div class="card-body">
+        <ul class="list-group">
+          <li *ngFor="let history of subscriptionHistory" class="list-group-item">
+            <strong>{{ history.planName }}</strong> | {{ history.startDate | date }} - {{ history.endDate | date }} |
+            Status: {{ history.status }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  
+    <!-- New Subscription Form -->
+    <div class="text-center">
+      <button class="btn btn-primary" (click)="toggleSubscriptionForm()">sub
+        {{ showSubscriptionForm ? 'Cancel' : 'New Subscription' }}
+      </button>
+    </div>
+    
+    <div *ngIf="showSubscriptionForm" class="card mt-3">
+      <div class="card-header">
+        <h5>Subscribe to a New Plan</h5>
+      </div>
+      <div class="card-body">
+        <form>
+          <div class="mb-3">
+            <label for="plan" class="form-label">Plan</label>
+            <select
+              id="plan"
+              class="form-select"
+              [(ngModel)]="newSubscription.planId"
+              name="plan"
+            >
+              <option *ngFor="let plan of plans" [value]="plan.id">{{ plan.name }} - {{ plan.price | currency }}</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="duration" class="form-label">Duration</label>
+            <select
+              id="duration"
+              class="form-select"
+              [(ngModel)]="newSubscription.durationId"
+              name="duration"
+            >
+              <option *ngFor="let duration of durations" [value]="duration.id">
+                {{ duration.duration }} Months
+              </option>
+            </select>
+          </div>
+          <button type="button" class="btn btn-success" (click)="subscribe()">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  

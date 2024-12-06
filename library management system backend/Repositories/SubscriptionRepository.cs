@@ -50,6 +50,11 @@ namespace library_management_system.Repositories
             return await _context.PaymentDuration
                 .FirstOrDefaultAsync(pd => pd.Id == id);
         }
+
+        public async Task<List<PaymentDuration>> GetDurationsAsync()
+        {
+            return await _context.PaymentDuration.ToListAsync();
+        }
         public async Task<Payment> AddPaymentAsync(Payment payment)
         {
             await _context.Payment.AddAsync(payment);

@@ -24,6 +24,7 @@ import { UserprofileComponent } from './components/user/userprofile/userprofile.
 import { authGuard } from './guards/auth.guard';
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 import { LockScreenComponent } from './components/lock-screen/lock-screen.component';
+import { SubscriptionComponent } from './components/user/subscription/subscription.component';
 
 
 const routes: Routes = [
@@ -67,7 +68,8 @@ const routes: Routes = [
       {path: 'view-e-books' , component:ShowebooksComponent },
       {path: 'view-lend-records' , component:ShowLentRecodesComponent },
       {path: 'view-lend-history' , component:ShowLendingHistoryComponent },
-      {path:'user-profile',component:UserprofileComponent}
+      {path:'user-profile',component:UserprofileComponent},
+      {path:'subscription-u',component:SubscriptionComponent}
     ]
   }
 ];

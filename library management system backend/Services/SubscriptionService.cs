@@ -27,6 +27,10 @@ namespace library_management_system.Services
         {
             return await _subscriptionRepository.GetSubscriptionPlanByIdAsync(id);
         }
+        public async Task<List<PaymentDuration>> GetDurationsAsync()
+        {
+            return await _subscriptionRepository.GetDurationsAsync();
+        }
 
         public async Task<ApiResponse<Payment>> SubscribeAsync(SubscribeRequest request)
         {   
