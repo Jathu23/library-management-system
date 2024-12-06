@@ -23,7 +23,7 @@ export class LockScreenComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateDateTime();
-    setInterval(() => this.updateDateTime(), 60000); // Update every second
+    setInterval(() => this.updateDateTime(), 1000); // Update every second
   }
 
   updateDateTime(): void {
@@ -31,6 +31,7 @@ export class LockScreenComponent implements OnInit {
     this.time = now.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
+      second: '2-digit',
       hour12: true,
     });
     this.date = now.toLocaleDateString('en-US', {
