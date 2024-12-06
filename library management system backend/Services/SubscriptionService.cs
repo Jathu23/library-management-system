@@ -32,6 +32,11 @@ namespace library_management_system.Services
             return await _subscriptionRepository.GetDurationsAsync();
         }
 
+        public async Task<List<UserSubscription>> GetSubscriptionHistory(int? userId)
+        {
+            return await _subscriptionRepository.GetSubscriptionHistory(userId);
+        }
+
         public async Task<ApiResponse<Payment>> SubscribeAsync(SubscribeRequest request)
         {   
             var response = new ApiResponse<Payment>();

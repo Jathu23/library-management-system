@@ -79,5 +79,17 @@ namespace library_management_system.Controllers
 
 
         }
+        [HttpGet("history")]
+        public async Task<IActionResult> GetSubscriptionHistory([FromQuery] int? userId)
+        {
+            var subscriptionHistory = await _subscriptionService.GetSubscriptionHistory(userId);
+
+            if (subscriptionHistory == null || subscriptionHistory.Count == 0)
+            {
+                return NotFound("No subscription history found.");
+            }
+
+            return Ok(subscriptionHistory);
+        }
     }
 }

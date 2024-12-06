@@ -67,6 +67,23 @@ namespace library_management_system.Repositories
             return await _context.SubscriptionPlan
                 .FirstOrDefaultAsync(sp => sp.Name == "Free");
         }
+        public async Task<List<UserSubscription>> GetSubscriptionHistory(int? userId = null)
+        {
+            var query = _context.UserSubscription
+                .Include(us => us.SubscriptionPlan)
+                .Include(us => us.PaymentDuration)
+                 .Include(us => us.User)
+                .AsQueryable();
+
+            if (userId.HasValue)
+            {
+                query = query.Where(us => us.UserId == userId.Value);
+            }
+
+            return await query
+                .OrderByDescending(us => us.StartDate) // Sort by most recent
+                .ToListAsync();
+        }
 
     }
 }
