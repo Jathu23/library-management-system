@@ -72,7 +72,8 @@ namespace library_management_system.Repositories
             var query = _context.UserSubscription
                 .Include(us => us.SubscriptionPlan)
                 .Include(us => us.PaymentDuration)
-                 .Include(us => us.User)
+                .Include(us => us.User)
+                //.Where(us => us.Status != "Active" )
                 .AsQueryable();
 
             if (userId.HasValue)
@@ -83,6 +84,21 @@ namespace library_management_system.Repositories
             return await query
                 .OrderByDescending(us => us.StartDate) // Sort by most recent
                 .ToListAsync();
+        }
+        public async Task<List<UserSubscription>> GetActiveSubscriptionsWithDurationAsync(int? userId = null)
+        {
+            var query = _context.UserSubscription
+                .Include(us => us.SubscriptionPlan)
+                .Include(us => us.PaymentDuration)
+                .Where(us => us.Status == "Active" && us.EndDate > DateTime.Now)
+                .AsQueryable();
+
+            if (userId.HasValue)
+            {
+                query = query.Where(us => us.UserId == userId.Value);
+            }
+
+            return await query.ToListAsync();
         }
 
     }

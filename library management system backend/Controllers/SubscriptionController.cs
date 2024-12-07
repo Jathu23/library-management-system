@@ -91,5 +91,18 @@ namespace library_management_system.Controllers
 
             return Ok(subscriptionHistory);
         }
+
+        [HttpGet("active")]
+        public async Task<IActionResult> GetActiveSubscriptionsWithDetails([FromQuery] int? userId)
+        {
+            var activeSubscriptions = await _subscriptionService.GetActiveSubscriptionsWithDetailsAsync(userId);
+
+            if (activeSubscriptions == null || !activeSubscriptions.Any())
+            {
+                return NotFound("No active subscriptions found.");
+            }
+
+            return Ok(activeSubscriptions);
+        }
     }
 }
