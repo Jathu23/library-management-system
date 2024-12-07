@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using library_management_system.Database;
 
@@ -11,9 +12,11 @@ using library_management_system.Database;
 namespace library_management_system.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241207162728_review")]
+    partial class review
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -357,6 +360,9 @@ namespace library_management_system.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LikeDislikeId"));
 
+                    b.Property<int>("AudioBookId")
+                        .HasColumnType("int");
+
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
@@ -367,15 +373,25 @@ namespace library_management_system.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EBookId")
+                        .HasColumnType("int");
+
                     b.Property<bool?>("IsLike")
                         .HasColumnType("bit");
+
+                    b.Property<int>("NormalBookId")
+                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("LikeDislikeId");
 
-                    b.HasIndex("BookId");
+                    b.HasIndex("AudioBookId");
+
+                    b.HasIndex("EBookId");
+
+                    b.HasIndex("NormalBookId");
 
                     b.HasIndex("UserId");
 
@@ -587,6 +603,9 @@ namespace library_management_system.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"));
 
+                    b.Property<int>("AudioBookId")
+                        .HasColumnType("int");
+
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
@@ -596,6 +615,12 @@ namespace library_management_system.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EBookId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NormalBookId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
@@ -609,7 +634,11 @@ namespace library_management_system.Migrations
 
                     b.HasKey("ReviewId");
 
-                    b.HasIndex("BookId");
+                    b.HasIndex("AudioBookId");
+
+                    b.HasIndex("EBookId");
+
+                    b.HasIndex("NormalBookId");
 
                     b.HasIndex("UserId");
 
@@ -827,24 +856,21 @@ namespace library_management_system.Migrations
                 {
                     b.HasOne("library_management_system.Database.Entiy.Audiobook", "AudioBook")
                         .WithMany()
-                        .HasForeignKey("BookId")
+                        .HasForeignKey("AudioBookId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_LikeDislikes_Audiobook");
+                        .IsRequired();
 
                     b.HasOne("library_management_system.Database.Entiy.Ebook", "EBook")
                         .WithMany()
-                        .HasForeignKey("BookId")
+                        .HasForeignKey("EBookId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_LikeDislikes_Ebook");
+                        .IsRequired();
 
                     b.HasOne("library_management_system.Database.Entiy.NormalBook", "NormalBook")
                         .WithMany()
-                        .HasForeignKey("BookId")
+                        .HasForeignKey("NormalBookId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_LikeDislikes_NormalBook");
+                        .IsRequired();
 
                     b.HasOne("library_management_system.Database.Entiy.User", "User")
                         .WithMany()
@@ -918,24 +944,21 @@ namespace library_management_system.Migrations
                 {
                     b.HasOne("library_management_system.Database.Entiy.Audiobook", "AudioBook")
                         .WithMany()
-                        .HasForeignKey("BookId")
+                        .HasForeignKey("AudioBookId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Reviews_Audiobook");
+                        .IsRequired();
 
                     b.HasOne("library_management_system.Database.Entiy.Ebook", "EBook")
                         .WithMany()
-                        .HasForeignKey("BookId")
+                        .HasForeignKey("EBookId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Reviews_Ebook");
+                        .IsRequired();
 
                     b.HasOne("library_management_system.Database.Entiy.NormalBook", "NormalBook")
                         .WithMany()
-                        .HasForeignKey("BookId")
+                        .HasForeignKey("NormalBookId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Reviews_NormalBook");
+                        .IsRequired();
 
                     b.HasOne("library_management_system.Database.Entiy.User", "User")
                         .WithMany()
