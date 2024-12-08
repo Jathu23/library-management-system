@@ -10,11 +10,12 @@
         public int PublishYear { get; set; }        
         public DateTime AddedDate { get; set; }     
         public string FilePath { get; set; }      
-        public string CoverImagePath { get; set; }  
-       
+        public string CoverImagePath { get; set; }
 
-       
-        public EbookMetadata Metadata { get; set; } 
+     
+
+        public EbookMetadata Metadata { get; set; }
+      
     }
 
 }

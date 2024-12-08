@@ -1,9 +1,11 @@
 ﻿using library_management_system.Database;
 using library_management_system.Database.Entiy;
+using library_management_system.Database.Entiy.ReviewEntitys;
 using Microsoft.EntityFrameworkCore;
 
 namespace library_management_system.Repositories
 {
+
     public class ReviewRepository
     {
         private readonly LibraryDbContext _context;
@@ -13,36 +15,56 @@ namespace library_management_system.Repositories
             _context = context;
         }
 
-        public async Task<Review?> GetByUserAndBookAsync(int userId, int bookId, string bookType)
+        // Add Normal Book Review
+        public async Task<bool> AddNormalBookReviewAsync(NormalBookReview review)
         {
-            return await _context.Reviews
-                .FirstOrDefaultAsync(r => r.UserId == userId && r.BookId == bookId && r.BookType == bookType);
+            await _context.NormalBookReviews.AddAsync(review);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public async Task<List<Review>> GetByBookAsync(int bookId, string bookType)
+        // Add Ebook Review
+        public async Task<bool> AddEbookReviewAsync(EbookReview review)
         {
-            return await _context.Reviews
-                .Where(r => r.BookId == bookId && r.BookType == bookType)
+            await _context.EbookReviews.AddAsync(review);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        // Add Audiobook Review
+        public async Task<bool> AddAudiobookReviewAsync(AudiobookReview review)
+        {
+            await _context.AudiobookReviews.AddAsync(review);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        // Get Reviews for Normal Book
+        public async Task<List<NormalBookReview>> GetNormalBookReviewsAsync(int bookId)
+        {
+            return await _context.NormalBookReviews
+                .Where(r => r.BookId == bookId)
                 .ToListAsync();
         }
 
-        public async Task AddOrUpdateAsync(Review review)
+        // Get Reviews for Ebook
+        public async Task<List<EbookReview>> GetEbookReviewsAsync(int bookId)
         {
-            var existingReview = await GetByUserAndBookAsync(review.UserId, review.BookId, review.BookType);
-
-            if (existingReview != null)
-            {
-                existingReview.ReviewText = review.ReviewText;
-                existingReview.Rating = review.Rating;
-                existingReview.CreatedDate = DateTime.Now;
-                _context.Reviews.Update(existingReview);
-            }
-            else
-            {
-                _context.Reviews.Add(review);
-            }
-
-            await _context.SaveChangesAsync();
+            return await _context.EbookReviews
+                .Where(r => r.BookId == bookId)
+                .ToListAsync();
         }
+
+        // Get Reviews for Audiobook
+        public async Task<List<AudiobookReview>> GetAudiobookReviewsAsync(int bookId)
+        {
+            return await _context.AudiobookReviews
+                .Where(r => r.BookId == bookId)
+                .ToListAsync();
+        }
+
+
     }
+
+
 }
