@@ -9,6 +9,8 @@ namespace library_management_system.Database.Entiy.LikeDisLike
 
         // Navigation Property for User
         public User User { get; set; }
+
+        // Navigation Property for Ebook
         public Ebook Ebook { get; set; }
     }
 }

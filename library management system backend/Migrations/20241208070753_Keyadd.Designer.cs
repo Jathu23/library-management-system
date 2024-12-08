@@ -12,8 +12,8 @@ using library_management_system.Database;
 namespace library_management_system.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20241208061715_seprateformatlike")]
-    partial class seprateformatlike
+    [Migration("20241208070753_Keyadd")]
+    partial class Keyadd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -392,6 +392,9 @@ namespace library_management_system.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
+                    b.Property<int>("EbookId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsLiked")
                         .HasColumnType("bit");
 
@@ -400,7 +403,7 @@ namespace library_management_system.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId");
+                    b.HasIndex("EbookId");
 
                     b.HasIndex("UserId");
 
@@ -960,9 +963,9 @@ namespace library_management_system.Migrations
 
             modelBuilder.Entity("library_management_system.Database.Entiy.LikeDisLike.EbookLikeDislike", b =>
                 {
-                    b.HasOne("library_management_system.Database.Entiy.Ebook", "Book")
+                    b.HasOne("library_management_system.Database.Entiy.Ebook", "Ebook")
                         .WithMany()
-                        .HasForeignKey("BookId")
+                        .HasForeignKey("EbookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -972,7 +975,7 @@ namespace library_management_system.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Book");
+                    b.Navigation("Ebook");
 
                     b.Navigation("User");
                 });

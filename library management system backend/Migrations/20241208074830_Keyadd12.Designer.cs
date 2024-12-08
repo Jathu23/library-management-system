@@ -12,8 +12,8 @@ using library_management_system.Database;
 namespace library_management_system.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20241208042518_seprateformat")]
-    partial class seprateformat
+    [Migration("20241208074830_Keyadd12")]
+    partial class Keyadd12
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -350,6 +350,84 @@ namespace library_management_system.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("LentRecords");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.LikeDisLike.AudiobookLikeDislike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsLiked")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AudiobookLikeDislikes");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.LikeDisLike.EbookLikeDislike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsLiked")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EbookLikeDislikes");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.LikeDisLike.NormalBookLikeDislike", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsLiked")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("NormalBookLikeDislikes");
                 });
 
             modelBuilder.Entity("library_management_system.Database.Entiy.LoginT", b =>
@@ -851,6 +929,63 @@ namespace library_management_system.Migrations
                     b.Navigation("Admin");
 
                     b.Navigation("BookCopy");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.LikeDisLike.AudiobookLikeDislike", b =>
+                {
+                    b.HasOne("library_management_system.Database.Entiy.Audiobook", "Audiobook")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("library_management_system.Database.Entiy.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Audiobook");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.LikeDisLike.EbookLikeDislike", b =>
+                {
+                    b.HasOne("library_management_system.Database.Entiy.Ebook", "Ebook")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("library_management_system.Database.Entiy.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ebook");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.LikeDisLike.NormalBookLikeDislike", b =>
+                {
+                    b.HasOne("library_management_system.Database.Entiy.NormalBook", "NormalBook")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("library_management_system.Database.Entiy.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NormalBook");
 
                     b.Navigation("User");
                 });

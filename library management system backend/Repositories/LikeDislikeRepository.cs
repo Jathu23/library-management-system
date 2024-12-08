@@ -17,13 +17,8 @@ namespace library_management_system.Repositories
         // Add Normal Book Like/Dislike
         public async Task<bool> AddNormalBookLikeDislikeAsync(NormalBookLikeDislike likeDislike)
         {
-            var likedata = new NormalBookLikeDislike
-            {
-                BookId = 1,
-                UserId = 1,
-                IsLiked = true
-            };
-            await _context.NormalBookLikeDislikes.AddAsync(likedata);
+          
+            await _context.NormalBookLikeDislikes.AddAsync(likeDislike);
             await _context.SaveChangesAsync();
             return true;
         }

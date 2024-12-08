@@ -107,7 +107,46 @@
 
 
 
-  
+
+            // Configure EbookLikeDislike
+            modelBuilder.Entity<EbookLikeDislike>()
+                .HasOne(el => el.Ebook)  // Navigation property
+                .WithMany()              // Assuming Ebook doesn't track its LikeDislikes
+                .HasForeignKey(el => el.BookId)  // Use BookId as the foreign key
+                .OnDelete(DeleteBehavior.Cascade);  // Define delete behavior
+
+            modelBuilder.Entity<EbookLikeDislike>()
+                .HasOne(el => el.User)  // Navigation property for User
+                .WithMany()             // Assuming User doesn't track EbookLikeDislikes
+                .HasForeignKey(el => el.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Configure AudiobookLikeDislike
+            modelBuilder.Entity<AudiobookLikeDislike>()
+                .HasOne(al => al.Audiobook)  // Navigation property
+                .WithMany()                  // Assuming Audiobook doesn't track LikeDislikes
+                .HasForeignKey(al => al.BookId)  // Use BookId as the foreign key
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<AudiobookLikeDislike>()
+                .HasOne(al => al.User)  // Navigation property for User
+                .WithMany()             // Assuming User doesn't track AudiobookLikeDislikes
+                .HasForeignKey(al => al.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Configure NormalBookLikeDislike
+            modelBuilder.Entity<NormalBookLikeDislike>()
+                .HasOne(nbl => nbl.NormalBook)  // Navigation property
+                .WithMany()                    // Assuming NormalBook doesn't track LikeDislikes
+                .HasForeignKey(nbl => nbl.BookId)  // Use BookId as the foreign key
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<NormalBookLikeDislike>()
+                .HasOne(nbl => nbl.User)  // Navigation property for User
+                .WithMany()               // Assuming User doesn't track NormalBookLikeDislikes
+                .HasForeignKey(nbl => nbl.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
 
 
             base.OnModelCreating(modelBuilder);

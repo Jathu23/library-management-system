@@ -357,9 +357,6 @@ namespace library_management_system.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AudiobookId")
-                        .HasColumnType("int");
-
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
@@ -371,7 +368,7 @@ namespace library_management_system.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AudiobookId");
+                    b.HasIndex("BookId");
 
                     b.HasIndex("UserId");
 
@@ -389,9 +386,6 @@ namespace library_management_system.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EbookId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsLiked")
                         .HasColumnType("bit");
 
@@ -400,7 +394,7 @@ namespace library_management_system.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EbookId");
+                    b.HasIndex("BookId");
 
                     b.HasIndex("UserId");
 
@@ -421,15 +415,12 @@ namespace library_management_system.Migrations
                     b.Property<bool>("IsLiked")
                         .HasColumnType("bit");
 
-                    b.Property<int>("NormalBookId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NormalBookId");
+                    b.HasIndex("BookId");
 
                     b.HasIndex("UserId");
 
@@ -943,7 +934,7 @@ namespace library_management_system.Migrations
                 {
                     b.HasOne("library_management_system.Database.Entiy.Audiobook", "Audiobook")
                         .WithMany()
-                        .HasForeignKey("AudiobookId")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -962,7 +953,7 @@ namespace library_management_system.Migrations
                 {
                     b.HasOne("library_management_system.Database.Entiy.Ebook", "Ebook")
                         .WithMany()
-                        .HasForeignKey("EbookId")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -981,7 +972,7 @@ namespace library_management_system.Migrations
                 {
                     b.HasOne("library_management_system.Database.Entiy.NormalBook", "NormalBook")
                         .WithMany()
-                        .HasForeignKey("NormalBookId")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
