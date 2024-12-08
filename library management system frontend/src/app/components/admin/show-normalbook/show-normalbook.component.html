@@ -1,5 +1,6 @@
 <div class="container mt-3" style="height: 90vh;">
   <p class="text-center mt-2"><strong>Book Management</strong></p>
+  
   <div class="table-responsive mt-3" style="border: 1px solid #ddd; border-radius: 5px; height: 90%; overflow-y: auto; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
     <table class="table table-bordered table-striped">
       <thead class="table-dark">
@@ -30,7 +31,11 @@
             <td>{{ Nbook.shelfLocation }}</td>
             <td>{{ Nbook.totalCopies }}</td>
             <td>{{ Nbook.availableCopies }}</td>
-            <td>Image</td>
+            <td>
+              <!-- Image column -->
+              <img *ngIf="Nbook.imageUrl" [src]="Nbook.imageUrl" alt="{{ Nbook.title }}" style="width: 50px; height: 70px; object-fit: cover;" />
+              <span *ngIf="!Nbook.imageUrl">No Image</span>
+            </td>
             <td>
               <div class="action-buttons d-flex gap-1 justify-content-center">
                 <button class="btn btn-success" (click)="addNewBook(); $event.stopPropagation()" title="Add New Book">
@@ -45,6 +50,7 @@
               </div>
             </td>
           </tr>
+          
           <!-- Expanded row -->
           <tr *ngIf="expandedElementId === Nbook.id">
             <td colspan="12">
@@ -92,6 +98,5 @@
   [pageSize]="pageSize"
   [pageSizeOptions]="[10, 17, 25, 50]"
   showFirstLastButtons
-  (page)="onPageChange($event)"
->
+  (page)="onPageChange($event)">
 </mat-paginator>
