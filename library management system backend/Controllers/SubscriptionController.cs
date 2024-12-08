@@ -22,6 +22,16 @@ namespace library_management_system.Controllers
             var plans = await _subscriptionService.GetAllSubscriptionPlansAsync();
             return Ok(plans);
         }
+        [HttpGet("durations")]
+        public async Task<IActionResult> GetDurations()
+        {
+            var durations = await _subscriptionService.GetDurationsAsync();
+            if (durations == null || durations.Count == 0)
+            {
+                return NotFound("No payment durations found.");
+            }
+            return Ok(durations);
+        }
 
         //[HttpGet("plans")]
         //public async Task<IActionResult> GetSubscriptionPlanById(int id)
@@ -68,6 +78,31 @@ namespace library_management_system.Controllers
             }
 
 
+        }
+        [HttpGet("history")]
+        public async Task<IActionResult> GetSubscriptionHistory([FromQuery] int? userId)
+        {
+            var subscriptionHistory = await _subscriptionService.GetSubscriptionHistory(userId);
+
+            if (subscriptionHistory == null || subscriptionHistory.Count == 0)
+            {
+                return NotFound("No subscription history found.");
+            }
+
+            return Ok(subscriptionHistory);
+        }
+
+        [HttpGet("active")]
+        public async Task<IActionResult> GetActiveSubscriptionsWithDetails([FromQuery] int? userId)
+        {
+            var activeSubscriptions = await _subscriptionService.GetActiveSubscriptionsWithDetailsAsync(userId);
+
+            if (activeSubscriptions == null || !activeSubscriptions.Any())
+            {
+                return NotFound("No active subscriptions found.");
+            }
+
+            return Ok(activeSubscriptions);
         }
     }
 }

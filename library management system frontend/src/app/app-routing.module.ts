@@ -23,6 +23,8 @@ import { ShowLendingHistoryComponent } from './components/user/show-lending-hist
 import { UserprofileComponent } from './components/user/userprofile/userprofile.component';
 import { authGuard } from './guards/auth.guard';
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
+import { LockScreenComponent } from './components/lock-screen/lock-screen.component';
+import { SubscriptionComponent } from './components/user/subscription/subscription.component';
 
 
 const routes: Routes = [
@@ -40,6 +42,7 @@ const routes: Routes = [
     data:{roles:["Admin"]},
     children: [
       { path: '', component: DashboardComponent },
+      { path: 'lock', component: LockScreenComponent },
       { path: 'add-normal-book', component: AddbookComponent },
       { path: 'add-e-book', component: AddebookComponent },
       { path: 'add-audio-book', component: AddAudiobookComponent },
@@ -65,7 +68,8 @@ const routes: Routes = [
       {path: 'view-e-books' , component:ShowebooksComponent },
       {path: 'view-lend-records' , component:ShowLentRecodesComponent },
       {path: 'view-lend-history' , component:ShowLendingHistoryComponent },
-      {path:'user-profile',component:UserprofileComponent}
+      {path:'user-profile',component:UserprofileComponent},
+      {path:'subscription-u',component:SubscriptionComponent}
     ]
   }
 ];

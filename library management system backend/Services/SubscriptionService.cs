@@ -27,6 +27,15 @@ namespace library_management_system.Services
         {
             return await _subscriptionRepository.GetSubscriptionPlanByIdAsync(id);
         }
+        public async Task<List<PaymentDuration>> GetDurationsAsync()
+        {
+            return await _subscriptionRepository.GetDurationsAsync();
+        }
+
+        public async Task<List<UserSubscription>> GetSubscriptionHistory(int? userId)
+        {
+            return await _subscriptionRepository.GetSubscriptionHistory(userId);
+        }
 
         public async Task<ApiResponse<Payment>> SubscribeAsync(SubscribeRequest request)
         {   
@@ -121,6 +130,38 @@ namespace library_management_system.Services
             await _userRepo.UpdateUser(user);
 
             return await _subscriptionRepository.UpdateUserSubscriptionAsync(activeSubscription);
+        }
+
+        public async Task<List<dynamic>> GetActiveSubscriptionsWithDetailsAsync(int? userId)
+        {
+            var activeSubscriptions = await _subscriptionRepository.GetActiveSubscriptionsWithDurationAsync(userId);
+            var result = new List<dynamic>();
+
+            foreach (var subscription in activeSubscriptions)
+            {
+                var remainingTime = subscription.EndDate - DateTime.Now;
+                var statusValue = (int)remainingTime.TotalMinutes;
+
+                result.Add(new
+                {
+                    subscription.Id,
+                    subscription.UserId,
+                    subscription.SubscriptionPlan.Name,
+                    Duration = subscription.PaymentDuration?.Duration ?? 0,
+                    subscription.StartDate,
+                    subscription.EndDate,
+                    Status = $"{remainingTime.Days} days {remainingTime.Hours} hours more",
+                    StatusValue = statusValue,
+                    PlanDetails = new
+                    {
+                        subscription.SubscriptionPlan.BorrowLimit,
+                        subscription.SubscriptionPlan.AccessEbooks,
+                        subscription.SubscriptionPlan.AccessAudiobooks
+                    }
+                });
+            }
+
+            return result;
         }
     }
 }

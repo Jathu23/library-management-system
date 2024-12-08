@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
 using VersOne.Epub.Schema;
+using PdfSharp.Charting;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -102,6 +103,12 @@ builder.Services.AddScoped<SubscriptionRepository>();
 
 builder.Services.AddScoped< ChartRepository>();
 builder.Services.AddScoped< ChartService>();
+
+builder.Services.AddScoped< LikeDislikeRepository>();
+builder.Services.AddScoped< ReviewRepository>();
+
+builder.Services.AddScoped<LikeDislikeService>();
+builder.Services.AddScoped<ReviewService>();
 
 
 builder.Services.AddScoped<JwtService>();

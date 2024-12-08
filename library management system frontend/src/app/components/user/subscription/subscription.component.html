@@ -1,1 +1,123 @@
-<p>subscription works!</p>
+<div class="container mt-4">
+  <!-- Current Subscription -->
+  <div class="card mb-3">
+    <div class="card-header bg-primary text-white">
+      <h5>Current Subscription</h5>
+    </div>
+    <div class="card-body">
+    <p><strong>Plan:</strong> {{ currentSubscription.name}}</p>
+      <p><strong>Status:</strong> {{ currentSubscription.status}}</p> 
+    </div>
+  </div>
+
+  <!-- Subscription History -->
+  <div class="card mb-3">
+    <div class="card-header bg-secondary text-white">
+      <h5>Subscription History</h5>
+    </div>
+    <div class="card-body">
+      <ul class="list-group">
+        <li
+          *ngFor="let history of subscriptionHistory"
+          class="list-group-item d-flex justify-content-between align-items-center"
+        >
+          <span><strong>{{ history.subscriptionPlan.name }}</strong></span>
+        
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- New Subscription Button -->
+  <div class="text-center mt-4">
+    <button
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#newSubscriptionModal"
+    >
+      New Subscription
+    </button>
+  </div>
+
+  <!-- New Subscription Modal -->
+  <div
+    class="modal fade"
+    id="newSubscriptionModal"
+    tabindex="-1"
+    aria-labelledby="newSubscriptionModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="newSubscriptionModalLabel">
+            Subscribe to a New Plan
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="plan" class="form-label">Plan</label>
+              <select
+                id="plan"
+                class="form-select"
+                [(ngModel)]="newSubscription.planId"
+                name="plan"
+                (change)="findTotal()"
+              >
+                <option *ngFor="let plan of plans" [value]="plan.id">
+                  {{ plan.name }} - {{ plan.price | currency }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="duration" class="form-label">Duration</label>
+              <select
+                id="duration"
+                class="form-select"
+                [(ngModel)]="newSubscription.durationId"
+                name="duration"
+                (change)="findTotal()"
+              >
+                <option *ngFor="let duration of durations" [value]="duration.id">
+                  {{ duration.duration }} Months
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="paymethod" class="form-label">Payment Method</label>
+              <select
+                id="paymethod"
+                class="form-select"
+                [(ngModel)]="newSubscription.method"
+                name="method"
+              >
+                <option value="card">Card</option>
+              </select>
+            </div>
+          
+            <!-- Display Total Price -->
+            <div class="mb-3">
+              <p><strong>Total Price: </strong> {{ total | currency }}</p>
+            </div>
+          
+            <button
+              type="button"
+              class="btn btn-success w-100"
+              (click)="subscribe()"
+            >
+              Subscribe
+            </button>
+          </form>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

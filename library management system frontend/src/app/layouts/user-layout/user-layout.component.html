@@ -42,14 +42,14 @@
           <a [routerLink]="['/user/view-lend-history']"  style="font-size: 20px; " class="sidebar-link"><i class="bi bi-activity p-3"></i>Activity History</a>
         </li>
         <li class="sidebar-item">
-          <a href="#" style="font-size: 20px; " class="sidebar-link"><i class="bi bi-coin p-3"></i>Subscription</a>
+          <a [routerLink]="['/user/subscription-u']" style="font-size: 20px; " class="sidebar-link"><i class="bi bi-coin p-3"></i>Subscription</a>
         </li>
         <li class="sidebar-item">
-          <a href="#" style="font-size: 20px; " class="sidebar-link"><i class="bi bi-bell p-3"></i>Notification</a>
+          <a  style="font-size: 20px; " class="sidebar-link"><i class="bi bi-bell p-3"></i>Notification</a>
         </li>
 
         <li class="sidebar-item">
-          <a href="#" style="font-size: 20px; "
+          <a  style="font-size: 20px; "
              class="sidebar-link" 
              (click)="toggleMenu('reports'); $event.preventDefault()" 
              [attr.aria-expanded]="isMenuExpanded('reports')"><i class="bi bi-bar-chart-line p-3"></i>
@@ -59,20 +59,20 @@
               class="sidebar-dropdown list-unstyled collapse" 
               [class.show]="isMenuExpanded('reports')">
             <li class="sidebar-item">
-              <a href="#" class="sidebar-link"><i class="bi bi-cash-coin p-3"></i>Subscription </a>
+              <a [routerLink]="['/user/subscription-u']" class="sidebar-link"><i class="bi bi-cash-coin p-3"></i>Subscription </a>
             </li>
             <li class="sidebar-item">
-              <a href="#" class="sidebar-link"><i class="bi bi-calendar-date p-3"></i>Activity </a>
+              <a class="sidebar-link"><i class="bi bi-calendar-date p-3"></i>Activity </a>
             </li>
           </ul>
         </li>
 
         <li class="sidebar-item">
-          <a href="#" style="font-size: 20px; " [routerLink]="['/user/user-profile']" class="sidebar-link"><i class="bi bi-person-bounding-box p-3" ></i>Profile</a>
+          <a  style="font-size: 20px; " [routerLink]="['/user/user-profile']" class="sidebar-link"><i class="bi bi-person-bounding-box p-3" ></i>Profile</a>
         </li>
 
         <li class="sidebar-footer mt-5">
-          <a href="#" (click)="logout(); $event.preventDefault()" style="font-size: 20px;" class="sidebar-link">
+          <a (click)="logout(); $event.preventDefault()" style="font-size: 20px;" class="sidebar-link">
             <i class="bi bi-box-arrow-left p-3"></i>LogOut
           </a>
         </li>

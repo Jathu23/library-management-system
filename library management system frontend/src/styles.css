@@ -1,25 +1,28 @@
-/* You can add global styles to this file, and also import other style files */
-.landing-page {
-    text-align: center;
-    margin-top: 50px;
-  }
-  
-  .admin-layout, .user-layout {
-    padding: 20px;
-  }
-  
-  header {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px;
-    text-align: center;
-  }
-  
-  nav a {
-    margin: 0 15px;
-    color: white;
-    text-decoration: none;
-  }
-  
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.full-screen-dialog .mat-mdc-dialog-container {
+  position: fixed !important; /* Ensure it occupies the whole screen */
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important; /* Full viewport width */
+  height: 100vh !important; /* Full viewport height */
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 !important; /* Remove rounded corners */
+  background: linear-gradient(to bottom, #1e3c72, #2a5298) !important; /* Windows 11 gradient */
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 1050 !important; /* Ensure it stays above everything */
+  overflow: hidden !important; /* Prevent scrollbars */
+}
+
+.full-screen-dialog .mat-mdc-dialog-surface {
+  width: 100% !important;
+  height: 100% !important;
+  box-shadow: none !important; /* Remove shadow */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important; /* Match parent background */
+}
+

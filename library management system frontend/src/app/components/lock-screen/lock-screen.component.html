@@ -1,0 +1,29 @@
+<div class="lock-screen-modal">
+
+  <div class="time-section">
+    
+    <div class="clock">{{ time }}</div>
+    <br>
+    <br>
+    <div class="date">{{ date }}</div>
+   
+  </div>
+
+  <div class="lock-message">
+    <p>Screen is locked</p>
+
+    <form [formGroup]="pinForm" (ngSubmit)="unlock()">
+      <mat-form-field appearance="fill">
+        <mat-label>Enter PIN</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="pin"
+          placeholder="Enter PIN"
+        />
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">Unlock</button>
+    </form>
+  </div>
+  
+</div>
