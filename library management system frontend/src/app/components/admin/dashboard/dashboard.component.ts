@@ -1,12 +1,72 @@
-import { Component } from '@angular/core';
+import { Component,OnInit  } from '@angular/core';
 import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
+import { UserService } from '../../../services/user-service/user.service'
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'], // Fixed `styleUrl` to `styleUrls`
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+
+  constructor(private userService:UserService) {
+    
+  }
+
+  pieData: { name: string; value: number }[] = []; // Explicitly define the type of pieData
+
+  totalUsers: number | null = null;
+  activeUsers: number | null = null;
+  NonActiveUsers: number | null = null;
+  Subscribed: number | null = null;
+
+ ngOnInit(): void {
+  this.loadUserCounts();
+}
+
+
+
+loadUserCounts(): void {
+  // Fetch total user count
+  this.userService.getTotalUserCount().subscribe({
+    next: (count) => {
+      this.totalUsers = count;
+      this.updatePieData(); // Update the pie chart after getting the data
+    },
+    error: (err) => console.error('Failed to fetch total user count', err),
+  });
+
+  // Fetch active user count
+  this.userService.getActiveUserCount().subscribe({
+    next: (count) => {
+      this.activeUsers = count;
+      this.updatePieData(); // Update the pie chart after getting the data
+    },
+    error: (err) => console.error('Failed to fetch active user count', err),
+  });
+
+  // Fetch non-active user count
+  this.userService.getNonActiveUserCount().subscribe({
+    next: (count) => {
+      this.NonActiveUsers = count;
+      this.updatePieData(); // Update the pie chart after getting the data
+    },
+    error: (err) => console.error('Failed to fetch non-active user count', err),
+  });
+
+  // Fetch subscribed user count
+  this.userService.getSubscribedUserCount().subscribe({
+    next: (count) => {
+      this.Subscribed = count;
+      this.updatePieData(); // Update the pie chart after getting the data
+    },
+    error: (err) => console.error('Failed to fetch subscribed user count', err),
+  });
+}
+  
+
+  // -------------
+
   // chartData = [
   //   { name: 'January', value: 5000 },
   //   { name: 'February', value: 7200 },
@@ -21,7 +81,7 @@ export class DashboardComponent {
   //   { name: 'November', value: 8800 },
   //   { name: 'December', value: 9800 }
   // ];
-  
+
 
   // view: [number, number] = [1200, 500];
 
@@ -114,21 +174,21 @@ export class DashboardComponent {
 
 
 
-  // new dash board
+  // new dash board -----------------------------------------------------------------------
 
   barData = [
     { name: 'Jan', value: 1000 },
-        { name: 'Feb', value: 1500 },
-        { name: 'March', value: 1700 },
-        { name: 'Apirl', value: 1600 },
-        { name: 'May', value: 1900 },
-        { name: 'June', value: 1000 },
-        { name: 'July', value: 1500 },
-        { name: 'Aug', value: 1700 },
-        { name: 'Sep', value: 1900 },
-        { name: 'Oct', value: 1600 },
-        { name: 'Nov', value: 1000 },
-        { name: 'Dec', value: 5000 }
+    { name: 'Feb', value: 1500 },
+    { name: 'March', value: 1700 },
+    { name: 'Apirl', value: 1600 },
+    { name: 'May', value: 1900 },
+    { name: 'June', value: 1000 },
+    { name: 'July', value: 1500 },
+    { name: 'Aug', value: 1700 },
+    { name: 'Sep', value: 1900 },
+    { name: 'Oct', value: 1600 },
+    { name: 'Nov', value: 1000 },
+    { name: 'Dec', value: 5000 }
   ];
 
   // Data for Line Chart
@@ -153,10 +213,37 @@ export class DashboardComponent {
   ];
 
   // Data for Pie Chart
-  pieData = [
-    { name: 'All Users', value: 5000 },
-    { name: 'Active Users', value: 3000 },
-    { name: 'Non Active Users', value: 2000 },
-    { name: 'Subscribed USers', value: 1000 }
-  ];
+
+  
+
+  // pieData = [
+  //   { name: 'All Users', value: 5000 },
+  //   { name: 'Active Users', value: 3000 },
+  //   { name: 'Non Active Users', value: 2000 },
+  //   { name: 'Subscribed USers', value: 1000 }
+  // ];
+
+  // pieData = [
+  //   { name: 'All Users', value: this.totalUsers },
+  //   { name: 'Active Users', value: this.activeUsers },
+  //   { name: 'Non Active Users', value: this.NonActiveUsers },
+  //   { name: 'Subscribed USers', value: this.Subscribed }
+  // ];
+  updatePieData(): void {
+    if (
+      this.totalUsers !== null &&
+      this.activeUsers !== null &&
+      this.NonActiveUsers !== null &&
+      this.Subscribed !== null
+    ) {
+      this.pieData = [
+        { name: 'All Users', value: this.totalUsers },
+        { name: 'Active Users', value: this.activeUsers },
+        { name: 'Non Active Users', value: this.NonActiveUsers },
+        { name: 'Subscribed Users', value: this.Subscribed },
+      ];
+    }
+  }
+  
+
 }

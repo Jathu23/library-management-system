@@ -7,6 +7,7 @@ using library_management_system.Services;
 using library_management_system.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using VersOne.Epub.Schema;
 
 namespace library_management_system.Controllers
@@ -276,5 +277,65 @@ namespace library_management_system.Controllers
         }
 
 
-    }
+
+		//Functions for dashboard
+
+		[HttpGet("count-all-users")]
+		public async Task<IActionResult> GetUserCountAsync()
+		{
+			try
+			{
+				int userCount = await _userService.GetAllUsersCountAsync();
+				return Ok(userCount);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, $"Internal server error: {ex.Message}");
+			}
+		}
+
+		[HttpGet("active-count")]
+		public async Task<IActionResult> GetActiveUserCountAsync()
+		{
+			try
+			{
+				int activeUserCount = await _userService.GetActiveUserCountAsync();
+				return Ok(activeUserCount);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, $"Internal server error: {ex.Message}");
+			}
+		}
+
+		[HttpGet("non-active-count")]
+		public async Task<IActionResult> GetNonActiveUserCountAsync()
+		{
+			try
+			{
+				int activeUserCount = await _userService.GetNonActiveUserCountAsync();
+				return Ok(activeUserCount);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, $"Internal server error: {ex.Message}");
+			}
+		}
+
+		[HttpGet("subscribed-user-count")]
+		public async Task<IActionResult> GetSubscribedUserCountAsync()
+		{
+			try
+			{
+				int activeUserCount = await _userService.GetSubscribedUserCountAsync();
+				return Ok(activeUserCount);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, $"Internal server error: {ex.Message}");
+			}
+		}
+
+
+	}
 }

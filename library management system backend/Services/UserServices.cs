@@ -651,8 +651,29 @@ namespace library_management_system.Services
         }
 
 
+        //funcionjs for dashboard
 
-    }
+		public async Task<int> GetAllUsersCountAsync()
+		{
+			return await _userRepo.GetAllUserCountAsync();
+		}
+
+		public async Task<int> GetActiveUserCountAsync()
+		{
+            return await _userRepo.GetActiveUserCountAsync();
+		}
+
+		public async Task<int> GetNonActiveUserCountAsync()
+		{
+			return await _userRepo.GetNonActiveUserCountAsync();
+		}
+
+		public async Task<int> GetSubscribedUserCountAsync()
+		{
+            return await _userRepo.GetSubscribedUserCountAsync();
+		}
+
+	}
 
 }
 
