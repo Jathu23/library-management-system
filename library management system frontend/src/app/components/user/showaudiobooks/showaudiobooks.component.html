@@ -1,32 +1,36 @@
 <div class="audio-player-container">
   <!-- Audio Info Section -->
-  <div class="audio-info container">
+  <div class="audio-info">
     <img
       class="album-cover"
-      [src]="playingAudio?.coverImagePath ? 'https://localhost:7261/' + playingAudio?.coverImagePath : ''"
+      [src]="'https://localhost:7261/' + playingAudio?.coverImagePath || ''"
       alt="Album Cover"
+      onerror="this.src='th.jpg'"
     />
     <div class="song-info">
-      <p class="song-title">{{ playingAudio?.title || 'No Song Playing' }}</p>
-      <p class="artist">{{ playingAudio?.author || 'Unknown Author' }}</p>
+      <p class="song-title">{{ playingAudio?.title || "No Song Playing" }}</p>
+      <p class="artist">{{ playingAudio?.author || "Unknown Author" }}</p>
     </div>
   </div>
 
-  <div style=" margin-top: 23px; align-items: center; margin-right: 20%;">
-    <!-- Controls Section -->
+  <!-- Controls Section -->
   <div class="controls">
-    <button class="prev" (click)="skipTime(-5)">
+    <button class="prev" (click)="skipBackward()">
       <i class="fas fa-backward"></i>
     </button>
     <button class="play-pause" (click)="togglePlay()">
-      <i [class.fas]="isPlaying" [class.fa-pause]="isPlaying" [class.fa-play]="!isPlaying"></i>
+      <i
+        [class.fas]="isPlaying"
+        [class.fa-pause]="isPlaying"
+        [class.fa-play]="!isPlaying"
+      ></i>
     </button>
-    <button class="next" (click)="skipTime(5)">
+    <button class="next" (click)="skipForward()">
       <i class="fas fa-forward"></i>
     </button>
-     <!-- Progress Bar Section -->
-  
   </div>
+
+  <!-- Progress Bar Section -->
   <div class="progress-bar">
     <input
       type="range"
@@ -40,11 +44,7 @@
       <span class="duration">{{ duration }}</span>
     </div>
   </div>
-  </div>
- 
 </div>
-
-
 <div class="search-container">
   <input
     type="text"
@@ -54,54 +54,217 @@
     (input)="filterAudiobooks()"
   />
 </div>
-<div class="main container">
-  <!-- Grid View for Audiobooks -->
+<!-- Grid View for Audiobooks -->
 <div class="grid-container">
   <div
     class="grid-item"
     *ngFor="let audiobook of filteredAudiobooks"
     (click)="openModal(audiobook)"
   >
-    <img style="width: 200px; height: 300px;"
+    <img
       class="audio-cover"
-      [src]="audiobook.coverImagePath ? 'https://localhost:7261/' + audiobook.coverImagePath : ''"
+      [src]="'https://localhost:7261/' + audiobook.coverImagePath"
       alt="{{ audiobook.title }}"
-      
     />
     <h3>{{ audiobook.title }}</h3>
     <p>Author: {{ audiobook.author }}</p>
   </div>
 </div>
 
-</div>
-
 <mat-paginator
   [length]="totalItems"
   [pageSize]="pageSize"
-  [pageSizeOptions]="[2,4,10, 15, 25, 50]"
+  [pageSizeOptions]="[10, 15, 25, 50]"
   showFirstLastButtons
   (page)="onPageChange($event)"
   [pageIndex]="currentPage - 1"
 ></mat-paginator>
 
 <!-- Modal with Audio Details -->
-<div class="modal" [class.show]="isModalOpen">
-  <div class="modal-content">
+<div class="modal" [class.show]="isModalOpen" >
+  <div class="modal-content" >
     <span class="close" (click)="closeModal()">&times;</span>
-    <img style="width: 100%; height: 60%;"
-      class="modal-image"
-      [src]="selectedAudiobook?.coverImagePath ? 'https://localhost:7261/' + selectedAudiobook?.coverImagePath : ''"
-      alt="Audiobook Cover"
-      
-    />
-    <h2>{{ selectedAudiobook?.title }}</h2>
-    <p><strong>Author:</strong> {{ selectedAudiobook?.author }}</p>
-    <p><strong>Genre:</strong> {{ selectedAudiobook?.genre }}</p>
-    <p><strong>Publisher:</strong> {{ selectedAudiobook?.publisher }}</p>
-    <p><strong>Publish Year:</strong> {{ selectedAudiobook?.publishYear }}</p>
-    <button class="play" (click)="playAudio(selectedAudiobook)" style="color: black;">
-      <i class="fas" [class.fa-pause]="isPlaying" [class.fa-play]="!isPlaying"></i>
-      {{ isPlaying ? 'Pause' : 'Play' }}
-    </button>
+    <div
+      style="
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        margin-bottom: 20px;
+      "
+    >
+      <div style="flex: 1; padding: 10px ;max-width: 185px; max-height: 210px; margin-right: 20px;">
+        <img
+          style="width: 100%; height: auto; "
+          class="modal-image"
+          [src]="
+            'https://localhost:7261/' + selectedAudiobook?.coverImagePath || ''
+          "
+          alt="Audiobook Cover"
+        />
+      </div>
+      <div style="flex: 2; padding: 10px">
+        <h2>{{ selectedAudiobook?.title }}</h2>
+        <p><strong>Author:</strong> {{ selectedAudiobook?.author }}</p>
+        <p><strong>Genre:</strong> {{ selectedAudiobook?.genre }}</p>
+        <p><strong>Publisher:</strong> {{ selectedAudiobook?.publisher }}</p>
+        <p>
+          <strong>Publish Year:</strong> {{ selectedAudiobook?.publishYear }}
+        </p>
+        <p><strong>Description</strong>{{selectedAudiobook?.description}}</p>
+        <button
+          class="play"
+          (click)="playAudio(selectedAudiobook)"
+          style="color: black"
+        >
+          <i
+            class="fas"
+            [class.fa-pause]="isPlaying"
+            [class.fa-play]="!isPlaying"
+          ></i>
+          {{ isPlaying ? "Pause" : "Play" }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Thumbs Up, Thumbs Down, and Comment Buttons -->
+    <!-- Action Buttons Container -->
+    <div
+      class="d-flex justify-content-start align-items-center gap-3 mt-4 flex-wrap"
+    >
+      <button
+        class="btn btn-outline-dark d-flex align-items-center"
+        [ngClass]="{ 'text-primary': isThumbsUp }"
+        (click)="toggleThumbsUp()"
+      >
+        <i class="bi bi-hand-thumbs-up-fill me-2"></i> 
+        
+      </button><span class="ms-1">213</span>
+
+      <button
+        class="btn btn-outline-dark d-flex align-items-center"
+        [ngClass]="{ 'text-primary': isThumbsDown }"
+        (click)="toggleThumbsDown()"
+      >
+        <i class="bi bi-hand-thumbs-down-fill me-2"></i> 
+        
+      </button><span class="ms-1">213</span>
+
+      <button
+        class="btn btn-outline-dark d-flex align-items-center"
+        (click)="toggleCommentBox()"
+      >
+        <i class="bi bi-chat-right-text-fill me-2"></i> 
+        
+      </button><span class="ms-1"> 243</span>
+    </div>
+
+    <!-- Comment Box -->
+    <div *ngIf="showCommentBox" class="w-100 mt-3 d-flex" style="max-width: 600px;">
+      <textarea
+        class="form-control mb-2 flex-grow-1"
+        rows="2"
+        placeholder="Add a comment..."
+      ></textarea>
+      <button class="btn btn-primary">Post</button>
+    </div>
+    
+
+    <div class="container mt-5">
+      <div class="row d-flex   ">
+        <div class="col-md-8 scrollable-container">
+          <div class="card p-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="user d-flex flex-row align-items-center">
+                <img
+                  src="https://i.imgur.com/hczKIze.jpg"
+                  width="30"
+                  class="user-img rounded-circle mr-2"
+                />
+                <span>
+                  <small class="font-weight-bold text-primary"
+                    >james_olesenn</small
+                  >
+                  <small class="font-weight-bold"
+                    >Hmm, This poster looks cool</small
+                  >
+                </span>
+              </div>
+
+              <small>2 days ago</small>
+            </div>
+
+            <div
+              class="action d-flex justify-content-between mt-2 align-items-center"
+            >
+              
+
+              <div class="icons align-items-center">
+                <i class="fa fa-star text-warning"></i>
+                <i class="fa fa-check-circle-o check-icon"></i>
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="card p-3 mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="user d-flex flex-row align-items-center">
+                <img
+                  src="https://i.imgur.com/hczKIze.jpg"
+                  width="30"
+                  class="user-img rounded-circle mr-2"
+                />
+                <span>
+                  <small class="font-weight-bold text-primary">john_doe</small>
+                  <small class="font-weight-bold"
+                    >Great work on this project!</small
+                  >
+                </span>
+              </div>
+              <small>1 day ago</small>
+            </div>
+          </div>
+
+        
+          <div class="card p-3 mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="user d-flex flex-row align-items-center">
+                <img
+                  src="https://i.imgur.com/hczKIze.jpg"
+                  width="30"
+                  class="user-img rounded-circle mr-2"
+                />
+                <span>
+                  <small class="font-weight-bold text-primary">john_doe</small>
+                  <small class="font-weight-bold"
+                    >Great work on this project!</small
+                  >
+                </span>
+              </div>
+              <small>1 day ago</small>
+            </div>
+          </div>
+
+          <div class="card p-3 mt-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="user d-flex flex-row align-items-center">
+                <img
+                  src="https://i.imgur.com/hczKIze.jpg"
+                  width="30"
+                  class="user-img rounded-circle mr-2"
+                />
+                <span>
+                  <small class="font-weight-bold text-primary">john_doe</small>
+                  <small class="font-weight-bold"
+                    >Great work on this project!</small
+                  >
+                </span>
+              </div>
+              <small>1 day ago</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -12,6 +12,7 @@
         public string Language { get; set; }
         public string Narrator { get; set; }
         public string Publisher { get; set; }
+        public string description { get; set; }
     }
 
 }
