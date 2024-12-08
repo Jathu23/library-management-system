@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
-import { ReviewService } from '../../../services/bookservice/review.service';
+import { ReviewRequest, ReviewResponse, ReviewService } from '../../../services/bookservice/review.service';
+import { LikeanddislikeService } from '../../../services/bookservice/likeanddislike.service';
+import { environment } from '../../../../environments/environment.testing';
 
 @Component({
   selector: 'app-showaudiobooks',
@@ -24,33 +26,40 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
   searchQuery: string = '';
   isAudiobooksLoaded = false; // Prevent multiple API calls
   reviews: any[] = []; // Store fetched reviews here
+  reviewText: string ='';
+  currentUserId: number=0;
+  rating: number=1;
 
-  constructor(private getbookservice: GetbooksService , private reviewservice:ReviewService) { 
-  
+  constructor(private getbookservice: GetbooksService , private reviewservice:ReviewService, private likedislikeservice:LikeanddislikeService) { 
+    const tokendata = environment.getTokenData();
+    this.currentUserId= Number(tokendata.ID);
   }
 
   ngOnInit() {
-    this.fetchAudiobookReviews(1);
-    // this.loadAudiobooks();
+    // this.fetchAudiobookReviews(1);
+    // this.fetchDislikeAndLike(1,true);
+    // this.fetchDislikeAndLike(1,false);
 
-    // // Event listener for when audio metadata is loaded
-    // this.audio.addEventListener('loadedmetadata', () => {
-    //   this.duration = this.formatTime(this.audio.duration);
-    // });
+    this.loadAudiobooks();
 
-    // // Event listener for when audio time updates (for progress bar)
-    // this.audio.addEventListener('timeupdate', () => {
-    //   this.progress = (this.audio.currentTime / this.audio.duration) * 100;
-    //   this.currentTime = this.formatTime(this.audio.currentTime);
-    // });
+    // Event listener for when audio metadata is loaded
+    this.audio.addEventListener('loadedmetadata', () => {
+      this.duration = this.formatTime(this.audio.duration);
+    });
 
-    // // Event listener for when audio finishes playing
-    // this.audio.addEventListener('ended', () => {
-    //   this.isPlaying = false;
-    // });
+    // Event listener for when audio time updates (for progress bar)
+    this.audio.addEventListener('timeupdate', () => {
+      this.progress = (this.audio.currentTime / this.audio.duration) * 100;
+      this.currentTime = this.formatTime(this.audio.currentTime);
+    });
 
-    // // Restore audio state if available
-    // this.restoreAudioState();
+    // Event listener for when audio finishes playing
+    this.audio.addEventListener('ended', () => {
+      this.isPlaying = false;
+    });
+
+    // Restore audio state if available
+    this.restoreAudioState();
   }
 
   ngOnDestroy() {
@@ -252,8 +261,80 @@ fetchAudiobookReviews(bookId: number): void {
   );
 }
 
-fetchdislikeandlike(){
-  
+submitAudiobookReview() {
+  // Validate input fields
+  if (!this.selectedAudiobook ) {
+    alert('Please provide a valid rating (1-5) and a review text.');
+    return;
+  }
+
+  // Prepare the review request
+  const review: ReviewRequest = {
+    userId: this.currentUserId, // Replace with actual logged-in user ID
+    bookId: this.selectedAudiobook.id,
+    reviewText: this.reviewText,
+    rating: this.rating
+  };
+
+  // Call the service method to submit the review
+  this.reviewservice.addAudiobookReview(review).subscribe({
+    next: (response: ReviewResponse<any>) => {
+      if (response.success) {
+        alert('Review submitted successfully.');
+        this.fetchAudiobookReviews(this.selectedAudiobook.id); // Refresh the review list
+        this.reviewText = ''; // Clear the review text input
+        this.rating = 1; // Reset the rating input
+        this.fetchAudiobookReviews(this.selectedAudiobook.id);
+      } else {
+        alert(`Failed to submit review: ${response.message}`);
+      }
+    },
+    error: (error) => {
+      console.error('Error submitting review:', error);
+      alert('An error occurred while submitting the review. Please try again later.');
+    }
+  });
+}
+
+
+
+fetchDislikeAndLike(bookId: number, isLiked: boolean): void {
+  this.likedislikeservice.getAudiobookLikeDislikeCount(bookId, isLiked).subscribe({
+    next: (response) => {
+      if (response.success) {
+        console.log(
+          `${isLiked ? 'Like' : 'Dislike'} count for Audiobook (ID: ${bookId}):`,
+          response.data
+        );
+      } else {
+        console.warn('Failed to fetch like/dislike count for audiobook:', response.message);
+      }
+    },
+    error: (error) => {
+      console.error('Error fetching like/dislike count for audiobook:', error);
+    },
+  });
+}
+
+likeAudiobook(bookId: number, userId: number,like:boolean): void {
+  const likeDislikeRequest = {
+    bookId: bookId,
+    userId: userId,
+    isLiked: like,
+  };
+
+  this.likedislikeservice.addAudiobookLikeDislike(likeDislikeRequest).subscribe({
+    next: (response) => {
+      if (response.success) {
+        console.log(`Audiobook (ID: ${bookId}) liked successfully by User (ID: ${userId}).`);
+      } else {
+        console.warn(`Failed to like audiobook: ${response.message}`);
+      }
+    },
+    error: (error) => {
+      console.error('Error liking audiobook:', error);
+    },
+  });
 }
 
 
