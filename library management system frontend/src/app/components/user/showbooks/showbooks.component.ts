@@ -17,13 +17,16 @@ export class ShowbooksComponent implements OnInit {
   isModalOpen = false;
   selectedBook: any = null;
   currentImageIndex = 0;
+  isThumbsUp = false;
+  isThumbsDown = false;
+  showCommentBox = false;
+  commentText = '';
+  comments: any[] = [];
 
   constructor(private getbookservice: GetbooksService) {}
 
   ngOnInit(): void {
     this.loadNormalBooks();
-   
-    
   }
 
   loadNormalBooks(): void {
@@ -35,7 +38,6 @@ export class ShowbooksComponent implements OnInit {
         if (response.success) {
           const result = response.data;
 
-          this.Normalbooks = 
           this.Normalbooks = [
             ...this.Normalbooks,
             ...result.items.map((book: any) => ({
@@ -49,7 +51,6 @@ export class ShowbooksComponent implements OnInit {
           this.currentPage++;
           this.isLoading = false;
         }
-
       },
       (error) => {
         console.error('Error fetching normal books:', error);
@@ -110,6 +111,11 @@ export class ShowbooksComponent implements OnInit {
     this.selectedBook = book;
     this.isModalOpen = true;
     this.currentImageIndex = 0; // Reset slider index when opening the modal
+    this.isThumbsUp = false;
+    this.isThumbsDown = false;
+    this.showCommentBox = false;
+    this.commentText = '';
+    this.comments = [];
   }
 
   closeModal(): void {
@@ -133,5 +139,38 @@ export class ShowbooksComponent implements OnInit {
       return 'assets/images/defaultcover.jpg'; // Fallback to default cover
     }
     return path.startsWith('http') ? path : `https://localhost:7261/${path}`;
+  }
+
+  // Thumbs Up Functionality
+  toggleThumbsUp(): void {
+    this.isThumbsUp = !this.isThumbsUp;
+    if (this.isThumbsUp) {
+      this.isThumbsDown = false; // Uncheck thumbs down if thumbs up is checked
+    }
+  }
+
+  // Thumbs Down Functionality
+  toggleThumbsDown(): void {
+    this.isThumbsDown = !this.isThumbsDown;
+    if (this.isThumbsDown) {
+      this.isThumbsUp = false; // Uncheck thumbs up if thumbs down is checked
+    }
+  }
+
+  // Comment Box Functionality
+  toggleCommentBox(): void {
+    this.showCommentBox = !this.showCommentBox;
+  }
+
+  // Add Comment Functionality
+  addComment(): void {
+    if (this.commentText.trim()) {
+      this.comments.push({
+        user: 'user', // Replace with actual user info
+        text: this.commentText,
+        time: 'Just now', // Replace with actual timestamp
+      });
+      this.commentText = ''; // Clear the text input
+    }
   }
 }

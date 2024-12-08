@@ -1,11 +1,33 @@
+/* General Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f7f6f6;
+}
+
+.card {
+  border: none;
+  box-shadow: 5px 6px 6px 2px #e9ecef;
+  border-radius: 4px;
+}
+
+.form-check-input:focus {
+  box-shadow: none;
+}
+
+.icons i {
+  margin-left: 8px;
+}
+
 /* Search Container */
 .search-container {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
 }
-/* Search Bar */
-.search-bar,
+
 .search-input {
   width: 100%;
   padding: 10px;
@@ -14,16 +36,24 @@
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+
 /* Grid Container with Scroll */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive Grid */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 16px;
   padding: 16px;
-  max-height: 100vh; 
-  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 400px;
+  overflow-y: scroll; /* Allow scrolling */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
 }
-/* Grid Item */
+
+/* Hide the scrollbar */
+.grid-container::-webkit-scrollbar {
+  display: none;
+}
+
+
 .grid-item {
   text-align: center;
   cursor: pointer;
@@ -38,7 +68,6 @@
   transform: scale(1.05);
 }
 
-/* Audio Cover */
 .audio-cover {
   width: 100%;
   height: auto;
@@ -53,9 +82,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(255, 255, 255, 0.7);
   justify-content: center;
   align-items: center;
+  z-index: 2000;
 }
 
 .modal.show {
@@ -69,16 +99,45 @@
   width: 80%;
   max-width: 600px;
   text-align: center;
+  overflow-y: auto; /* Allow vertical scrolling */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  max-height: 85vh;
+}
+
+/* Hide the scrollbar */
+.modal-content::-webkit-scrollbar {
+  display: none; /* Hides the scrollbar */
+}
+
+.modal-content {
+  -ms-overflow-style: none;  /* For Internet Explorer */
+  scrollbar-width: none; /* For Firefox */
+}
+.modal-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.modal-content .close {
+  position: absolute;
+  top: 28px;
+  right: 16px;
+  font-size: 44px;
+  cursor: pointer;
+  color: red;
 }
 
 /* Audio Player Container */
 .audio-player-container {
-  width: 100%;
+  width: 95%;
   display: flex;
   justify-content: center;
-  background-color: #723980;
+  background-color: #000000;
   padding: 10px;
+  max-height: fit-content	;
 }
+
 .album-cover {
   width: 60px;
   height: 60px;
@@ -116,21 +175,16 @@
 button {
   background-color: transparent;
   border: none;
-  color: white;
+  color: rgb(156, 229, 249);
   font-size: 22px;
   margin: 0 15px;
   cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.7;
 }
 
 /* Progress Bar */
 .progress-bar {
   width: 100%;
   display: flex;
-  
 }
 
 input[type="range"] {
@@ -165,25 +219,14 @@ input[type="range"]::-webkit-slider-thumb {
   margin-left: 5px;
 }
 
-/* Modal Close Button */
-.modal-content .close {
-  position: absolute;
-  top: 8px;
-  right: 16px;
-  font-size: 24px;
-  cursor: pointer;
-}
-
 /* Play/Pause Button */
 .play-pause {
   font-size: 22px;
 }
 
-
 .fas.fa-play, .fas.fa-pause {
   transition: transform 0.2s;
 }
-
 
 /* Skip Buttons */
 .prev, .next {
@@ -192,36 +235,72 @@ input[type="range"]::-webkit-slider-thumb {
   cursor: pointer;
 }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
-  max-height: 400px;  /* Limit the height to a specific value */
-  overflow-y: auto;  /* Enables vertical scrolling */
-  overflow-x: hidden;  /* Hides horizontal scrolling */
-  padding-right: 10px;  /* Prevents content from being cut off due to scroll bar */
+/* Thumbs Up, Thumbs Down, Comment Buttons */
+button {
+  background-color: transparent;
+  border: none;
+  color: #333;
+  font-size: 18px;
+  cursor: pointer;
 }
 
-.grid-container::-webkit-scrollbar {
-  display: none;  /* Hides the scrollbar */
+button:hover {
+  opacity: 0.7;
 }
 
-.grid-item {
-  text-align: center;
-  background-color: #f1f1f1;
-  border-radius: 10px;
-  padding: 10px;
+/* Comment Section */
+.comments-container {
+  margin-top: 20px;
+  max-height: 400px;
+  overflow-y: auto; /* Enables vertical scrolling */
+  padding-right: 10px; /* Prevent content being cut off by scrollbar */
+}
+
+.comment-card {
+  background-color: #f9f9f9;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.audio-cover {
+.user-img {
+  margin-top: 4px;
+}
+
+.comment-card .user {
+  display: flex;
+  align-items: center;
+}
+
+.comment-card .user img {
+  margin-right: 10px;
+}
+
+.comment-card .user small {
+  color: #555;
+}
+
+textarea {
   width: 100%;
-  height: auto;
-  border-radius: 10px;
+  resize: none;
 }
 
-h3, p {
-  margin: 5px 0;
-  font-size: 14px;
-}
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 90%;
+  }
+  
+  .modal-image {
+    width: 100%;
+    max-width: 120px;
+  }
 
+  .comments-container {
+    margin-top: 10px;
+  }
+}
+.audio-info{
+  min-width: 30%;
+}
