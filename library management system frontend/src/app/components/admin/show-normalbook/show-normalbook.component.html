@@ -4,7 +4,6 @@
     <table class="table table-bordered table-striped">
       <thead class="table-dark">
         <tr>
-          <th>#</th> <!-- Index Column -->
           <th>ID</th>
           <th>ISBN</th>
           <th>Title</th>
@@ -22,7 +21,6 @@
         <!-- Main rows -->
         <ng-container *ngFor="let Nbook of Nbooks; let i = index">
           <tr (click)="toggleRow(Nbook.id)" [class.expanded]="expandedElementId === Nbook.id">
-            <td>{{ i + 1 }}</td> <!-- Display Index -->
             <td>{{ Nbook.id }}</td>
             <td>{{ Nbook.isbn }}</td>
             <td>{{ Nbook.title }}</td>
