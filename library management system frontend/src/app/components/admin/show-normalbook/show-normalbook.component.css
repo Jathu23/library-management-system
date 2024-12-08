@@ -1,32 +1,54 @@
-thead th {
-  position: sticky;
-  top: 0;
-  background-color: #f8f9fa;
-  font-weight: bold;
-  text-align: center;
+/* Custom Styles for Buttons */
+.btn {
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
-.table {
-  overflow-y: auto; /* Allow vertical scrolling */
-  max-height: 800px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  width: 100%;
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
 }
 
-.action-buttons button {
-  padding: 5px 8px;
-  font-size: 14px;
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
   justify-content: center;
 }
 
+/* Hover effect on table rows */
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
 
-
-  
-
-
-
-
-
-
-
+/* Striped table rows */
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}

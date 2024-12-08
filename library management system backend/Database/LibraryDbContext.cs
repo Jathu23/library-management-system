@@ -1,8 +1,11 @@
 ﻿namespace library_management_system.Database
 {
     using library_management_system.Database.Entiy;
+    using library_management_system.Database.Entiy.LikeDisLike;
+    using library_management_system.Database.Entiy.ReviewEntitys;
     using Microsoft.EntityFrameworkCore;
     using System.Diagnostics.Eventing.Reader;
+    using static library_management_system.Controllers.LikeDislikeController;
 
     public class LibraryDbContext : DbContext
     {
@@ -31,8 +34,14 @@
         public DbSet<PaymentDuration> PaymentDuration { get; set; }
         public DbSet<Payment> Payment { get; set; }
 
-        public DbSet<LikeDislike> LikeDislikes { get; set; }
-        public DbSet<Review> Reviews { get; set; }
+        public DbSet<NormalBookReview> NormalBookReviews { get; set; }
+        public DbSet<EbookReview> EbookReviews { get; set; }
+        public DbSet<AudiobookReview> AudiobookReviews { get; set; }
+
+
+        public DbSet<NormalBookLikeDislike> NormalBookLikeDislikes { get; set; }
+        public DbSet<EbookLikeDislike> EbookLikeDislikes { get; set; }
+        public DbSet<AudiobookLikeDislike> AudiobookLikeDislikes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -97,49 +106,47 @@
                 .HasForeignKey(p => p.PaymentDurationId);
 
 
-            // Configure relationships for LikeDislike
-            modelBuilder.Entity<LikeDislike>()
-                .HasOne(ld => ld.NormalBook)
-                .WithMany()
-                .HasForeignKey(ld => ld.BookId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_LikeDislikes_NormalBook");
 
-            modelBuilder.Entity<LikeDislike>()
-                .HasOne(ld => ld.EBook)
-                .WithMany()
-                .HasForeignKey(ld => ld.BookId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_LikeDislikes_Ebook");
 
-            modelBuilder.Entity<LikeDislike>()
-                .HasOne(ld => ld.AudioBook)
-                .WithMany()
-                .HasForeignKey(ld => ld.BookId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_LikeDislikes_Audiobook");
+            // Configure EbookLikeDislike
+            modelBuilder.Entity<EbookLikeDislike>()
+                .HasOne(el => el.Ebook)  // Navigation property
+                .WithMany()              // Assuming Ebook doesn't track its LikeDislikes
+                .HasForeignKey(el => el.BookId)  // Use BookId as the foreign key
+                .OnDelete(DeleteBehavior.Cascade);  // Define delete behavior
 
-            // Configure relationships for Review
-            modelBuilder.Entity<Review>()
-                .HasOne(r => r.NormalBook)
-                .WithMany()
-                .HasForeignKey(r => r.BookId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_Reviews_NormalBook");
+            modelBuilder.Entity<EbookLikeDislike>()
+                .HasOne(el => el.User)  // Navigation property for User
+                .WithMany()             // Assuming User doesn't track EbookLikeDislikes
+                .HasForeignKey(el => el.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Review>()
-                .HasOne(r => r.EBook)
-                .WithMany()
-                .HasForeignKey(r => r.BookId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_Reviews_Ebook");
+            // Configure AudiobookLikeDislike
+            modelBuilder.Entity<AudiobookLikeDislike>()
+                .HasOne(al => al.Audiobook)  // Navigation property
+                .WithMany()                  // Assuming Audiobook doesn't track LikeDislikes
+                .HasForeignKey(al => al.BookId)  // Use BookId as the foreign key
+                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Review>()
-                .HasOne(r => r.AudioBook)
-                .WithMany()
-                .HasForeignKey(r => r.BookId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_Reviews_Audiobook");
+            modelBuilder.Entity<AudiobookLikeDislike>()
+                .HasOne(al => al.User)  // Navigation property for User
+                .WithMany()             // Assuming User doesn't track AudiobookLikeDislikes
+                .HasForeignKey(al => al.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Configure NormalBookLikeDislike
+            modelBuilder.Entity<NormalBookLikeDislike>()
+                .HasOne(nbl => nbl.NormalBook)  // Navigation property
+                .WithMany()                    // Assuming NormalBook doesn't track LikeDislikes
+                .HasForeignKey(nbl => nbl.BookId)  // Use BookId as the foreign key
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<NormalBookLikeDislike>()
+                .HasOne(nbl => nbl.User)  // Navigation property for User
+                .WithMany()               // Assuming User doesn't track NormalBookLikeDislikes
+                .HasForeignKey(nbl => nbl.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
 
 
             base.OnModelCreating(modelBuilder);

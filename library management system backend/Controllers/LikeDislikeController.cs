@@ -1,4 +1,5 @@
-﻿using library_management_system.DTOs.LikeandReview;
+﻿using library_management_system.Database;
+using library_management_system.DTOs.LikeandReview;
 using library_management_system.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,32 +17,74 @@ namespace library_management_system.Controllers
             _likeDislikeService = likeDislikeService;
         }
 
-        [HttpPost("AddOrUpdate")]
-        public async Task<IActionResult> AddOrUpdateLikeDislike([FromQuery] LikeDislikeRequest model)
-        {
-            if (model == null || model.UserId <= 0 || model.BookId <= 0)
-                return BadRequest("Invalid data.");
 
-            try
-            {
-                await _likeDislikeService.AddOrUpdateLikeDislikeAsync(model.UserId, model.BookId, model.BookType, model.IsLike);
-                return Ok("Like/Dislike action recorded successfully.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+        // Like/Dislike Normal Book
+        [HttpPost("normalbook")]
+        public async Task<IActionResult> AddNormalBookLikeDislike([FromQuery] NormalBookLikeDislikeDto likeDislike)
+        {
+            var response = await _likeDislikeService.AddNormalBookLikeDislikeAsync(likeDislike);
+            return Ok(response);
         }
 
-        [HttpGet("GetByUserAndBook")]
-        public async Task<IActionResult> GetLikeDislike(int userId, int bookId, string bookType)
+        // Get Normal Book Like/Dislike count
+        [HttpGet("normalbook-count-bookId")]
+        public async Task<IActionResult> GetNormalBookLikeDislikeCount([FromQuery] int bookId, [FromQuery] bool isLiked)
         {
-            var likeDislike = await _likeDislikeService.GetLikeDislikeAsync(userId, bookId, bookType);
-
-            if (likeDislike == null)
-                return NotFound("No like/dislike found for this user and book.");
-
-            return Ok(likeDislike);
+            var response = await _likeDislikeService.GetNormalBookLikeDislikeCountAsync(bookId, isLiked);
+            return Ok(response);
         }
+
+        // Add Ebook Like/Dislike
+        [HttpPost("ebook")]
+        public async Task<IActionResult> AddEbookLikeDislike([FromQuery] EbookLikeDislikeDto likeDislike)
+        {
+            var response = await _likeDislikeService.AddEbookLikeDislikeAsync(likeDislike);
+            return Ok(response);
+        }
+
+        // Get Ebook Like/Dislike count
+        [HttpGet("ebook-count-bookId")]
+        public async Task<IActionResult> GetEbookLikeDislikeCount([FromQuery] int bookId, [FromQuery] bool isLiked)
+        {
+            var response = await _likeDislikeService.GetEbookLikeDislikeCountAsync(bookId, isLiked);
+            return Ok(response);
+        }
+
+        // Add Audiobook Like/Dislike
+        [HttpPost("audiobook")]
+        public async Task<IActionResult> AddAudiobookLikeDislike([FromQuery] AudiobookLikeDislikeDto likeDislike)
+        {
+            var response = await _likeDislikeService.AddAudiobookLikeDislikeAsync(likeDislike);
+            return Ok(response);
+        }
+
+        // Get Audiobook Like/Dislike count
+        [HttpGet("audiobook-count-bookId")]
+        public async Task<IActionResult> GetAudiobookLikeDislikeCount([FromQuery] int bookId, [FromQuery] bool isLiked)
+        {
+            var response = await _likeDislikeService.GetAudiobookLikeDislikeCountAsync(bookId, isLiked);
+            return Ok(response);
+        }
+
+        public class NormalBookLikeDislikeDto
+        {
+            public int BookId { get; set; }  // The ID of the normal book
+            public int UserId { get; set; }  // The ID of the user performing the like or dislike
+            public bool IsLiked { get; set; }  // true for like, false for dislike
+        }
+        public class EbookLikeDislikeDto
+        {
+            public int BookId { get; set; }  // The ID of the ebook
+            public int UserId { get; set; }  // The ID of the user performing the like or dislike
+            public bool IsLiked { get; set; }  // true for like, false for dislike
+        }
+        public class AudiobookLikeDislikeDto
+        {
+            public int BookId { get; set; }  // The ID of the audiobook
+            public int UserId { get; set; }  // The ID of the user performing the like or dislike
+            public bool IsLiked { get; set; }  // true for like, false for dislike
+        }
+
     }
+
 }

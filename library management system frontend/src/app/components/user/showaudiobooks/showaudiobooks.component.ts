@@ -1,15 +1,22 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
+import { ReviewRequest, ReviewResponse, ReviewService } from '../../../services/bookservice/review.service';
+import { LikeanddislikeService } from '../../../services/bookservice/likeanddislike.service';
+import { environment } from '../../../../environments/environment.testing';
 
 @Component({
   selector: 'app-showaudiobooks',
   templateUrl: './showaudiobooks.component.html',
-  styleUrls: ['./showaudiobooks.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush, // Improve rendering performance
+  styleUrls: ['./showaudiobooks.component.css']
 })
-export class ShowaudiobooksComponent implements OnInit {
-  audiobooksCache: Map<number, any[]> = new Map(); // Cache for paginated data
-  filteredAudiobooks: any[] = [];
+export class ShowaudiobooksComponent implements OnInit, OnDestroy {
+  audiobooks: any[] = []; // Store all fetched audiobooks
+  filteredAudiobooks: any[] = []; // Store audiobooks after filtering
+  currentPage = 1;
+  pageSize = 10;
+  totalItems = 0;
+  isModalOpen = false;
+  selectedAudiobook: any = null;
   playingAudio: any = null;
   audio = new Audio();
   isPlaying = false;
@@ -17,75 +24,118 @@ export class ShowaudiobooksComponent implements OnInit {
   currentTime: string = '0:00';
   duration: string = '0:00';
   searchQuery: string = '';
-  currentPage = 1;
-  pageSize = 10;
-  totalItems = 0;
-  isLoading = false;
-  isModalOpen = false;
-  selectedAudiobook: any = null;
-  cachedAudioFiles: Map<string, string> = new Map(); // Cache for audio file paths
-  private debounceTimer: any;
+  isAudiobooksLoaded = false; // Prevent multiple API calls
+  reviews: any[] = []; // Store fetched reviews here
+  reviewText: string ='';
+  currentUserId: number=0;
+  rating: number=1;
+  likeCount:number=0;
+  dislikeCount:number=0;
 
-  constructor(private getbookservice: GetbooksService) {}
+  constructor(private getbookservice: GetbooksService , private reviewservice:ReviewService, private likedislikeservice:LikeanddislikeService) { 
+    const tokendata = environment.getTokenData();
+    this.currentUserId= Number(tokendata.ID);
+  }
 
   ngOnInit() {
-    // Trigger audiobook loading on page load
+    // this.fetchAudiobookReviews(1);
+    // this.fetchDislikeAndLike(1,true);
+    // this.fetchDislikeAndLike(1,false);
+
     this.loadAudiobooks();
 
-    this.audio.addEventListener('timeupdate', () => {
-      this.updateProgressDisplay();
+    // Event listener for when audio metadata is loaded
+    this.audio.addEventListener('loadedmetadata', () => {
+      this.duration = this.formatTime(this.audio.duration);
     });
 
+    // Event listener for when audio time updates (for progress bar)
+    this.audio.addEventListener('timeupdate', () => {
+      this.progress = (this.audio.currentTime / this.audio.duration) * 100;
+      this.currentTime = this.formatTime(this.audio.currentTime);
+    });
+
+    // Event listener for when audio finishes playing
     this.audio.addEventListener('ended', () => {
       this.isPlaying = false;
     });
+
+    // Restore audio state if available
+    this.restoreAudioState();
+  }
+
+  ngOnDestroy() {
+    this.saveAudioState();
+    this.stopAudio(); // Ensure audio stops when navigating away
+  }
+
+  saveAudioState() {
+    const audioState = {
+      id: this.playingAudio ? this.playingAudio.id : null,
+      currentTime: this.audio.currentTime,
+      isPlaying: this.isPlaying,
+    };
+    localStorage.setItem('audioState', JSON.stringify(audioState));
+  }
+
+  restoreAudioState() {
+    const audioState = localStorage.getItem('audioState');
+    if (audioState) {
+      const state = JSON.parse(audioState);
+      if (state.id) {
+        const savedAudiobook = this.audiobooks.find(a => a.id === state.id);
+        if (savedAudiobook) {
+          this.playingAudio = savedAudiobook;
+          this.audio.src = `https://localhost:7261/${savedAudiobook.filePath}`;
+          this.audio.currentTime = state.currentTime;
+          this.progress = (this.audio.currentTime / this.audio.duration) * 100;
+          this.currentTime = this.formatTime(this.audio.currentTime);
+          this.duration = this.formatTime(this.audio.duration);
+
+          if (state.isPlaying) {
+            this.audio.play();
+            this.isPlaying = true;
+          }
+        }
+      }
+    }
   }
 
   loadAudiobooks() {
-    // Prevent duplicate requests if loading is already in progress or data is already cached
-    if (this.isLoading || this.audiobooksCache.has(this.currentPage)) {
-      this.filteredAudiobooks = this.audiobooksCache.get(this.currentPage) || [];
-      return; // Use cached data
+    // Only call the API if data has not been loaded
+    if (!this.isAudiobooksLoaded) {
+      this.getbookservice.getaudiobooks(this.currentPage, this.pageSize).subscribe(
+        (response) => {
+          console.log('API Response:', response);
+          const result = response.data;
+          this.audiobooks = result.items;
+          this.totalItems = result.totalCount;
+          this.filteredAudiobooks = [...this.audiobooks]; // Initially show all audiobooks
+          this.isAudiobooksLoaded = true; // Mark data as loaded
+          this.restoreAudioState(); // Restore the state after loading audiobooks
+        },
+        (error) => {
+          console.error('Error fetching audiobooks:', error);
+        }
+      );
     }
-
-    this.isLoading = true;
-    this.getbookservice.getaudiobooks(this.currentPage, this.pageSize).subscribe(
-      (response) => {
-        const result = response.data;
-        const audiobooks = result.items;
-
-        // Cache data based on the current page
-        this.audiobooksCache.set(this.currentPage, audiobooks);
-
-        this.totalItems = result.totalCount;
-        this.filteredAudiobooks = audiobooks;
-        this.isLoading = false;
-      },
-      (error) => {
-        console.error('Error fetching audiobooks:', error);
-        this.isLoading = false;
-      }
-    );
   }
 
   filterAudiobooks() {
-    // Debounce search input
-    clearTimeout(this.debounceTimer);
-    this.debounceTimer = setTimeout(() => {
-      const query = this.searchQuery.toLowerCase();
-      const allAudiobooks = Array.from(this.audiobooksCache.values()).flat();
-      this.filteredAudiobooks = allAudiobooks.filter(
-        (audiobook) =>
-          audiobook.title.toLowerCase().includes(query) ||
-          audiobook.author.toLowerCase().includes(query) ||
-          audiobook.genre.toLowerCase().includes(query)
-      );
-    }, 300); // Debounce for 300ms
+    const query = this.searchQuery.toLowerCase();
+    this.filteredAudiobooks = this.audiobooks.filter((audiobook) =>
+      audiobook.title.toLowerCase().includes(query) ||
+      audiobook.author.toLowerCase().includes(query) ||
+      audiobook.genre.toLowerCase().includes(query)
+    );
   }
 
   openModal(audiobook: any) {
     this.selectedAudiobook = audiobook;
     this.isModalOpen = true;
+    this.fetchAudiobookReviews(audiobook.id);
+    this.fetchDislikeAndLike(audiobook.id,true);
+    this.fetchDislikeAndLike(audiobook.id,false);
   }
 
   closeModal() {
@@ -94,20 +144,16 @@ export class ShowaudiobooksComponent implements OnInit {
 
   playAudio(audiobook: any) {
     if (this.playingAudio?.id !== audiobook.id || !this.isPlaying) {
+      // Stop the currently playing audio if any
       this.stopAudio();
+
+      // Set the new audio track and play it
       this.playingAudio = audiobook;
-
-      if (this.cachedAudioFiles.has(audiobook.id)) {
-        this.audio.src = this.cachedAudioFiles.get(audiobook.id)!;
-      } else {
-        const audioPath = `https://localhost:7261/${audiobook.filePath}`;
-        this.cachedAudioFiles.set(audiobook.id, audioPath);
-        this.audio.src = audioPath;
-      }
-
+      this.audio.src = `https://localhost:7261/${audiobook.filePath}`;
       this.audio.play();
       this.isPlaying = true;
     } else {
+      // If the same audio is already playing, pause it
       this.audio.pause();
       this.isPlaying = false;
     }
@@ -122,29 +168,23 @@ export class ShowaudiobooksComponent implements OnInit {
     this.isPlaying = !this.isPlaying;
   }
 
-  stopAudio() {
-    this.audio.pause();
-    this.audio.currentTime = 0;
-    this.isPlaying = false;
-  }
-
   updateProgress(event: any) {
     this.audio.currentTime = (event.target.value / 100) * this.audio.duration;
   }
 
-  skipTime(seconds: number) {
-    const newTime = this.audio.currentTime + seconds;
-    if (newTime >= 0 && newTime <= this.audio.duration) {
-      this.audio.currentTime = newTime;
+  stopAudio() {
+    if (this.audio) {
+      this.audio.pause();
+      this.audio.currentTime = 0;
+      this.isPlaying = false;
     }
   }
 
-  updateProgressDisplay() {
-    if (this.audio.duration) {
-      this.progress = (this.audio.currentTime / this.audio.duration) * 100;
-      this.currentTime = this.formatTime(this.audio.currentTime);
-      this.duration = this.formatTime(this.audio.duration);
-    }
+  onPageChange(event: any) {
+    const { pageIndex, pageSize } = event;
+    this.currentPage = pageIndex + 1;
+    this.pageSize = pageSize;
+    this.loadAudiobooks();
   }
 
   formatTime(seconds: number): string {
@@ -153,13 +193,156 @@ export class ShowaudiobooksComponent implements OnInit {
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
   }
 
-  onPageChange(event: any) {
-    // Update pagination parameters
-    const { pageIndex, pageSize } = event;
-    this.currentPage = pageIndex + 1;
-    this.pageSize = pageSize;
-
-    this.loadAudiobooks();
-   
+  skipForward() {
+    this.audio.currentTime += 5;
+    if (this.audio.currentTime > this.audio.duration) {
+      this.audio.currentTime = this.audio.duration;
+    }
+    this.updateProgressBar();
   }
+
+  skipBackward() {
+    this.audio.currentTime -= 5;
+    if (this.audio.currentTime < 0) {
+      this.audio.currentTime = 0;
+    }
+    this.updateProgressBar();
+  }
+
+  updateProgressBar() {
+    this.progress = (this.audio.currentTime / this.audio.duration) * 100;
+    this.currentTime = this.formatTime(this.audio.currentTime);
+  }
+
+
+
+
+
+
+
+// State Variables
+isThumbsUp = false;
+isThumbsDown = false;
+showCommentBox = false;
+
+// Toggle Thumbs Up
+toggleThumbsUp() {
+  this.isThumbsUp = !this.isThumbsUp;
+  if (this.isThumbsUp && this.isThumbsDown) {
+    this.isThumbsDown = false; // Ensure only one is active
+  }
+}
+
+// Toggle Thumbs Down
+toggleThumbsDown() {
+  this.isThumbsDown = !this.isThumbsDown;
+  if (this.isThumbsDown && this.isThumbsUp) {
+    this.isThumbsUp = false; // Ensure only one is active
+  }
+}
+
+// Toggle Comment Box
+toggleCommentBox() {
+  this.showCommentBox = !this.showCommentBox;
+}
+
+
+fetchAudiobookReviews(bookId: number): void {
+  this.reviewservice.getAudiobookReviews(bookId).subscribe(
+    (response) => {
+      if (response.success) {
+        console.log('Audiobook Reviews:', response.data);
+        // Handle success: e.g., assign data to a local variable
+        this.reviews = response.data; // Assuming `reviews` is a component property
+      } else {
+        console.error('Failed to fetch reviews:', response.message);
+        // Optionally display an error message to the user
+      }
+    },
+    (error) => {
+      console.error('Error fetching reviews:', error);
+      // Handle network or server errors
+    }
+  );
+}
+
+submitAudiobookReview() {
+  // Validate input fields
+  if (!this.selectedAudiobook ) {
+    alert('Please provide a valid rating (1-5) and a review text.');
+    return;
+  }
+
+  // Prepare the review request
+  const review: ReviewRequest = {
+    userId: this.currentUserId, // Replace with actual logged-in user ID
+    bookId: this.selectedAudiobook.id,
+    reviewText: this.reviewText,
+    rating: this.rating
+  };
+
+  // Call the service method to submit the review
+  this.reviewservice.addAudiobookReview(review).subscribe({
+    next: (response: ReviewResponse<any>) => {
+      if (response.success) {
+        alert('Review submitted successfully.');
+        this.fetchAudiobookReviews(this.selectedAudiobook.id); // Refresh the review list
+        this.reviewText = ''; // Clear the review text input
+        this.rating = 1; // Reset the rating input
+        this.fetchAudiobookReviews(this.selectedAudiobook.id);
+      } else {
+        alert(`Failed to submit review: ${response.message}`);
+      }
+    },
+    error: (error) => {
+      console.error('Error submitting review:', error);
+      alert('An error occurred while submitting the review. Please try again later.');
+    }
+  });
+}
+
+
+
+fetchDislikeAndLike(bookid:number, isLiked: boolean): void {
+  this.likedislikeservice.getAudiobookLikeDislikeCount(bookid, isLiked).subscribe({
+    next: (response) => {
+      if (response.success) {
+        if (isLiked) {
+          this.likeCount = response.data;
+        }else{
+          this.dislikeCount = response.data;
+        }
+        
+      } else {
+        console.warn('Failed to fetch like/dislike count for audiobook:', response.message);
+      }
+    },
+    error: (error) => {
+      console.error('Error fetching like/dislike count for audiobook:', error);
+    },
+  });
+}
+
+likeAudiobook(bookId: number, userId: number,like:boolean): void {
+  const likeDislikeRequest = {
+    bookId: bookId,
+    userId: userId,
+    isLiked: like,
+  };
+
+  this.likedislikeservice.addAudiobookLikeDislike(likeDislikeRequest).subscribe({
+    next: (response) => {
+      if (response.success) {
+        console.log(`Audiobook (ID: ${bookId}) liked successfully by User (ID: ${userId}).`);
+      } else {
+        console.warn(`Failed to like audiobook: ${response.message}`);
+      }
+    },
+    error: (error) => {
+      console.error('Error liking audiobook:', error);
+    },
+  });
+}
+
+
 }

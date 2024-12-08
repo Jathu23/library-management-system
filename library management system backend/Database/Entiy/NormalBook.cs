@@ -15,11 +15,15 @@
         public List<string> CoverImagePath { get; set; }
 
 
+
         // Navigation property for book copies
         public List<BookCopy> BookCopies { get; set; }
 
-
+       
     }
 
 
 }
+
+
+

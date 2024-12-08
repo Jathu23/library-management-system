@@ -166,7 +166,8 @@ namespace library_management_system.Services
                 PublishYear = a.PublishYear,
                 Language = a.Metadata.Language,
                 Narrator = a.Metadata.Narrator,
-                Publisher = a.Metadata.Publisher
+                Publisher = a.Metadata.Publisher,
+                description=a.Metadata.Description,
             }).ToList();
 
             // Prepare paginated result

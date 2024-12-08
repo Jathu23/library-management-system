@@ -663,7 +663,40 @@ body {
 
 
 
+/* navbar css */
+.uniform-button {
+  width: 110px;
+  height: 45px;
+  border-radius: 25px;          
+  font-size: 16px;            
+  font-family: 'Roboto', sans-serif; 
+  font-weight: bold;           
+  letter-spacing: 0.5px;    
+  text-transform: uppercase;   
+  text-align: center;
+  padding: 8px 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
 
 
+.btn-outline-light {
+  border: 2px solid #ffffff;
+  color: #ffffffe3;
+}
 
+.btn-outline-light:hover {
+  background-color: #ffffff;
+  color: #000;
+}
 
+.navbar-brand {
+  font-size: 1.5rem;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
