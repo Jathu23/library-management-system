@@ -341,7 +341,7 @@ like_or_dislikeAudiobook(like:boolean): void {
         
        }else{
         this.fetchDislikeAndLike(this.selectedAudiobook.id,like);
-        if (response.success){
+        if (!response.success){
           this.toggleThumbsDown(); 
         }
        

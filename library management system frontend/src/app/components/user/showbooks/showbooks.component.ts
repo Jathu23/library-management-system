@@ -125,6 +125,8 @@ export class ShowbooksComponent implements OnInit {
     this.isThumbsDown = false;
     this.showCommentBox = false;
     this.fetchNormalbookReviews(book.id);
+    this.fetchDislikeAndLike(book.id,true);
+    this.fetchDislikeAndLike(book.id,false);
   
   }
 
@@ -224,6 +226,59 @@ submitNormalbookReview() {
       console.error('Error submitting review:', error);
       alert('An error occurred while submitting the review. Please try again later.');
     }
+  });
+}
+fetchDislikeAndLike(bookid:number, isLiked: boolean): void {
+  this.likedislikeservice.getNormalBookLikeDislikeCount(bookid, isLiked).subscribe({
+    next: (response) => {
+      if (response.success) {
+        if (isLiked) {
+          this.likeCount = response.data;
+        }else{
+          this.dislikeCount = response.data;
+        }
+        
+      } else {
+        console.warn('Failed to fetch like/dislike count for audiobook:', response.message);
+      }
+    },
+    error: (error) => {
+      console.error('Error fetching like/dislike count for audiobook:', error);
+    },
+  });
+}
+
+like_or_dislikeAudiobook(like:boolean): void {
+  const likeDislikeRequest = {
+    bookId: this.selectedBook.id,
+    userId: this.currentUserId,
+    isLiked: like,
+  };
+
+  this.likedislikeservice.addNormalBookLikeDislike(likeDislikeRequest).subscribe({
+    next: (response) => {
+      if (response.success) {
+       alert(response.message);
+       if (like) {
+        this.fetchDislikeAndLike( this.selectedBook.id,like);
+        // if (!response.success){
+        //   this.toggleThumbsUp(); 
+        // }
+        
+       }else{
+        this.fetchDislikeAndLike( this.selectedBook.id,like);
+        // if (!response.success){
+        //   this.toggleThumbsDown(); 
+        // }
+       
+       }
+      } else {
+        console.warn(`Failed to like audiobook: ${response.message}`);
+      }
+    },
+    error: (error) => {
+      console.error('Error liking audiobook:', error);
+    },
   });
 }
 
