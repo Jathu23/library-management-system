@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
+import { LikeanddislikeService } from '../../../services/bookservice/likeanddislike.service';
+import { ReviewService } from '../../../services/bookservice/review.service';
 
 @Component({
   selector: 'app-showbooks',
@@ -20,10 +22,16 @@ export class ShowbooksComponent implements OnInit {
   isThumbsUp = false;
   isThumbsDown = false;
   showCommentBox = false;
-  commentText = '';
-  comments: any[] = [];
+  reviews: any[] = []; // Store fetched reviews here
+  reviewText: string ='';
+  currentUserId: number=0;
+  rating: number=1;
+  likeCount:number=0;
+  dislikeCount:number=0;
 
-  constructor(private getbookservice: GetbooksService) {}
+  constructor(private getbookservice: GetbooksService, private reviewservice:ReviewService, private likedislikeservice:LikeanddislikeService) {
+
+  }
 
   ngOnInit(): void {
     this.loadNormalBooks();
@@ -114,8 +122,8 @@ export class ShowbooksComponent implements OnInit {
     this.isThumbsUp = false;
     this.isThumbsDown = false;
     this.showCommentBox = false;
-    this.commentText = '';
-    this.comments = [];
+    this.fetchNormalbookReviews(book.id);
+  
   }
 
   closeModal(): void {
@@ -162,15 +170,25 @@ export class ShowbooksComponent implements OnInit {
     this.showCommentBox = !this.showCommentBox;
   }
 
-  // Add Comment Functionality
-  addComment(): void {
-    if (this.commentText.trim()) {
-      this.comments.push({
-        user: 'user', // Replace with actual user info
-        text: this.commentText,
-        time: 'Just now', // Replace with actual timestamp
-      });
-      this.commentText = ''; // Clear the text input
+
+  
+fetchNormalbookReviews(bookId: number): void {
+  this.reviewservice.getNormalBookReviews(bookId).subscribe(
+    (response) => {
+      if (response.success) {
+        console.log('Audiobook Reviews:', response.data);
+        
+        this.reviews = response.data; // Assuming `reviews` is a component property
+      } else {
+        console.error('Failed to fetch reviews:', response.message);
+        // Optionally display an error message to the user
+      }
+    },
+    (error) => {
+      console.error('Error fetching reviews:', error);
+      // Handle network or server errors
     }
-  }
+  );
+}
+
 }
