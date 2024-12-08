@@ -1,6 +1,7 @@
 ﻿namespace library_management_system.Database
 {
     using library_management_system.Database.Entiy;
+    using library_management_system.Database.Entiy.ReviewEntitys;
     using Microsoft.EntityFrameworkCore;
     using System.Diagnostics.Eventing.Reader;
 
@@ -31,8 +32,9 @@
         public DbSet<PaymentDuration> PaymentDuration { get; set; }
         public DbSet<Payment> Payment { get; set; }
 
-        public DbSet<LikeDislike> LikeDislikes { get; set; }
-        public DbSet<Review> Reviews { get; set; }
+        public DbSet<NormalBookReview> NormalBookReviews { get; set; }
+        public DbSet<EbookReview> EbookReviews { get; set; }
+        public DbSet<AudiobookReview> AudiobookReviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -97,49 +99,8 @@
                 .HasForeignKey(p => p.PaymentDurationId);
 
 
-            // Configure relationships for LikeDislike
-            modelBuilder.Entity<LikeDislike>()
-                .HasOne(ld => ld.NormalBook)
-                .WithMany()
-                .HasForeignKey(ld => ld.BookId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_LikeDislikes_NormalBook");
 
-            modelBuilder.Entity<LikeDislike>()
-                .HasOne(ld => ld.EBook)
-                .WithMany()
-                .HasForeignKey(ld => ld.BookId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_LikeDislikes_Ebook");
-
-            modelBuilder.Entity<LikeDislike>()
-                .HasOne(ld => ld.AudioBook)
-                .WithMany()
-                .HasForeignKey(ld => ld.BookId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_LikeDislikes_Audiobook");
-
-            // Configure relationships for Review
-            modelBuilder.Entity<Review>()
-                .HasOne(r => r.NormalBook)
-                .WithMany()
-                .HasForeignKey(r => r.BookId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_Reviews_NormalBook");
-
-            modelBuilder.Entity<Review>()
-                .HasOne(r => r.EBook)
-                .WithMany()
-                .HasForeignKey(r => r.BookId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_Reviews_Ebook");
-
-            modelBuilder.Entity<Review>()
-                .HasOne(r => r.AudioBook)
-                .WithMany()
-                .HasForeignKey(r => r.BookId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_Reviews_Audiobook");
+  
 
 
             base.OnModelCreating(modelBuilder);

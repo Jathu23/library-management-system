@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace library_management_system.Migrations
 {
     /// <inheritdoc />
-    public partial class first23 : Migration
+    public partial class seprateformat : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -283,6 +283,64 @@ namespace library_management_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AudiobookReviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    BookId = table.Column<int>(type: "int", nullable: false),
+                    ReviewText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    ReviewDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AudiobookReviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AudiobookReviews_Audiobooks_BookId",
+                        column: x => x.BookId,
+                        principalTable: "Audiobooks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AudiobookReviews_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EbookReviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    BookId = table.Column<int>(type: "int", nullable: false),
+                    ReviewText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    ReviewDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EbookReviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EbookReviews_Ebooks_BookId",
+                        column: x => x.BookId,
+                        principalTable: "Ebooks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EbookReviews_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "globalSubscriptions",
                 columns: table => new
                 {
@@ -300,6 +358,35 @@ namespace library_management_system.Migrations
                     table.PrimaryKey("PK_globalSubscriptions", x => x.Id);
                     table.ForeignKey(
                         name: "FK_globalSubscriptions_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NormalBookReviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    BookId = table.Column<int>(type: "int", nullable: false),
+                    ReviewText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    ReviewDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NormalBookReviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_NormalBookReviews_NormalBooks_BookId",
+                        column: x => x.BookId,
+                        principalTable: "NormalBooks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_NormalBookReviews_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -435,6 +522,16 @@ namespace library_management_system.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_AudiobookReviews_BookId",
+                table: "AudiobookReviews",
+                column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AudiobookReviews_UserId",
+                table: "AudiobookReviews",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BookCopies_BookId",
                 table: "BookCopies",
                 column: "BookId");
@@ -444,6 +541,16 @@ namespace library_management_system.Migrations
                 table: "EbookMetadatas",
                 column: "EbookId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EbookReviews_BookId",
+                table: "EbookReviews",
+                column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EbookReviews_UserId",
+                table: "EbookReviews",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_globalSubscriptions_UserId",
@@ -463,6 +570,16 @@ namespace library_management_system.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_LentRecords_UserId",
                 table: "LentRecords",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NormalBookReviews_BookId",
+                table: "NormalBookReviews",
+                column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NormalBookReviews_UserId",
+                table: "NormalBookReviews",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -523,7 +640,13 @@ namespace library_management_system.Migrations
                 name: "AudiobookMetadatas");
 
             migrationBuilder.DropTable(
+                name: "AudiobookReviews");
+
+            migrationBuilder.DropTable(
                 name: "EbookMetadatas");
+
+            migrationBuilder.DropTable(
+                name: "EbookReviews");
 
             migrationBuilder.DropTable(
                 name: "globalSubscriptions");
@@ -533,6 +656,9 @@ namespace library_management_system.Migrations
 
             migrationBuilder.DropTable(
                 name: "LoginPort");
+
+            migrationBuilder.DropTable(
+                name: "NormalBookReviews");
 
             migrationBuilder.DropTable(
                 name: "Payment");
