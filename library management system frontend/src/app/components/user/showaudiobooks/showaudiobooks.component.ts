@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
+import { ReviewService } from '../../../services/bookservice/review.service';
 
 @Component({
   selector: 'app-showaudiobooks',
@@ -22,30 +23,34 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
   duration: string = '0:00';
   searchQuery: string = '';
   isAudiobooksLoaded = false; // Prevent multiple API calls
+  reviews: any[] = []; // Store fetched reviews here
 
-  constructor(private getbookservice: GetbooksService) { }
+  constructor(private getbookservice: GetbooksService , private reviewservice:ReviewService) { 
+  
+  }
 
   ngOnInit() {
-    this.loadAudiobooks();
+    this.fetchAudiobookReviews(1);
+    // this.loadAudiobooks();
 
-    // Event listener for when audio metadata is loaded
-    this.audio.addEventListener('loadedmetadata', () => {
-      this.duration = this.formatTime(this.audio.duration);
-    });
+    // // Event listener for when audio metadata is loaded
+    // this.audio.addEventListener('loadedmetadata', () => {
+    //   this.duration = this.formatTime(this.audio.duration);
+    // });
 
-    // Event listener for when audio time updates (for progress bar)
-    this.audio.addEventListener('timeupdate', () => {
-      this.progress = (this.audio.currentTime / this.audio.duration) * 100;
-      this.currentTime = this.formatTime(this.audio.currentTime);
-    });
+    // // Event listener for when audio time updates (for progress bar)
+    // this.audio.addEventListener('timeupdate', () => {
+    //   this.progress = (this.audio.currentTime / this.audio.duration) * 100;
+    //   this.currentTime = this.formatTime(this.audio.currentTime);
+    // });
 
-    // Event listener for when audio finishes playing
-    this.audio.addEventListener('ended', () => {
-      this.isPlaying = false;
-    });
+    // // Event listener for when audio finishes playing
+    // this.audio.addEventListener('ended', () => {
+    //   this.isPlaying = false;
+    // });
 
-    // Restore audio state if available
-    this.restoreAudioState();
+    // // Restore audio state if available
+    // this.restoreAudioState();
   }
 
   ngOnDestroy() {
@@ -225,6 +230,30 @@ toggleThumbsDown() {
 // Toggle Comment Box
 toggleCommentBox() {
   this.showCommentBox = !this.showCommentBox;
+}
+
+
+fetchAudiobookReviews(bookId: number): void {
+  this.reviewservice.getAudiobookReviews(bookId).subscribe(
+    (response) => {
+      if (response.success) {
+        console.log('Audiobook Reviews:', response.data);
+        // Handle success: e.g., assign data to a local variable
+        this.reviews = response.data; // Assuming `reviews` is a component property
+      } else {
+        console.error('Failed to fetch reviews:', response.message);
+        // Optionally display an error message to the user
+      }
+    },
+    (error) => {
+      console.error('Error fetching reviews:', error);
+      // Handle network or server errors
+    }
+  );
+}
+
+fetchdislikeandlike(){
+  
 }
 
 
