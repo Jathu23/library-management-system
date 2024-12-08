@@ -2,6 +2,7 @@ import { Component,OnInit  } from '@angular/core';
 import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
 import { UserService } from '../../../services/user-service/user.service'
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -244,6 +245,41 @@ loadUserCounts(): void {
       ];
     }
   }
+
+  // range
+
+  
+  view: [number, number] = [700, 400];
+  colorScheme: Color = {
+    name: 'customScheme',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA', '#1F77B4'],
+  };
+
+  // Sample Top 10 data
+  top10Data = [
+    { name: 'Item 1', value: 70 },
+    { name: 'Item 2', value: 85 },
+    { name: 'Item 3', value: 55 },
+    { name: 'Item 4', value: 90 },
+    { name: 'Item 5', value: 40 },
+    { name: 'Item 6', value: 60 },
+    { name: 'Item 7', value: 75 },
+    { name: 'Item 8', value: 80 },
+    { name: 'Item 9', value: 65 },
+    { name: 'Item 10', value: 50 },
+  ];
+
+  // Chart data
+  chartData = [...this.top10Data];
+
+  // Update chart when range slider changes
+  updateChart(): void {
+    // Re-sort the data based on updated values
+    this.chartData = [...this.top10Data].sort((a, b) => b.value - a.value);
+  }
+}
   
 
-}
+

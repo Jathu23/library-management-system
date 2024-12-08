@@ -48,7 +48,6 @@ import { LockScreenComponent } from './components/lock-screen/lock-screen.compon
 
 
 
-
 @NgModule({
   declarations: [
     AppComponent,

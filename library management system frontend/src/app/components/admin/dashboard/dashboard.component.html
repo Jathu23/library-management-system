@@ -1,53 +1,119 @@
-<!-- <ngx-charts-bar-vertical
-  [view]="view"
-  [scheme]="colorScheme"
-  [results]="chartData"
-  [gradient]="false"
-  [xAxis]="true"
-  [yAxis]="true"
-  [legend]="true"
-  [legendPosition]="legendPosition"  
-  [animations]="true"
-  [showXAxisLabel]="true"
-  [xAxisLabel]="'Months'"
-  [showYAxisLabel]="true"
-  [yAxisLabel]="'Revenue'"
-  [tooltipTemplate]="customTooltip">
-</ngx-charts-bar-vertical>
+<div class="static_bar_container">
+  <div class="static-bar">
+    <!-- Left Section -->
+    <div class="left-content">
+      <span>Hello, <strong>Name</strong></span>
 
-<ng-template #customTooltip let-model="model">
-  <div style="background: white; padding: 5px; border: 1px solid #ccc;">
-    <strong>{{ model.name }}</strong>: {{ model.value | currency }}
+    </div>
+
+    <!-- Right Section -->
+    <div class="profile">
+      <div class="notification">
+        <i class="bell-icon">🔔</i>
+        <span class="notification-badge">3</span>
+      </div>
+      <span>Profile</span>
+      <img src="https://via.placeholder.com/40" alt="Profile Picture">
+    </div>
   </div>
-</ng-template>
 
 
-<div>
-  <ngx-charts-number-card
-    [view2]="view2"
-    [results]="cardData"
-    [scheme2]="colorScheme"
-    [animations]="true">
-  </ngx-charts-number-card>
 </div>
 
-<div>
-  <ngx-charts-line-chart
-    [view]="view3"
-    [scheme]="colorScheme"
-    [results]="lineChartData"
-    [gradient]="gradient"
-    [xAxis]="showXAxis"
-    [yAxis]="showYAxis"
-    [legend]="showLegend"
-    [showXAxisLabel]="showXAxisLabel"
-    [xAxisLabel]="xAxisLabel"
-    [showYAxisLabel]="showYAxisLabel"
-    [yAxisLabel]="yAxisLabel"
-    [autoScale]="autoScale"
-    [animations]="true">
-  </ngx-charts-line-chart>
-</div> -->
+
+<!-- Trendings -->
+
+<div class="trendings">
+  <div class="section-trendings">
+    <div class="wrapper-trending-items">
+      <!-- Header Section -->
+      <header class="header-trendings">
+        <h1 class="headline-trendings">
+          Most Trendings <span class="icon-trending"></span>
+        </h1>
+        <nav class="navigation-trendings">
+          <a href="#" class="nav-item active-trending">Popular Audio Books</a>
+          <a href="#" class="nav-item">Most Viewed Books</a>
+          <a href="#" class="nav-item">Trending Lendings</a>
+        </nav>
+      </header>
+  
+      <!-- Cards Section -->
+      <div class="cards-wrapper-trending">
+        <!-- Card 1 -->
+        <div class="card-trending">
+          <img src="https://via.placeholder.com/300x180" alt="Popular Audio Book" class="card-thumbnail">
+          <div class="card-details">
+            <h3 class="card-title-trending">Mt. Merbabu</h3>
+            <p class="card-location-trending">Semarang, Indonesia</p>
+            <p class="card-cost">$450/day</p>
+            <span class="card-favorite">❤️</span>
+          </div>
+        </div>
+  
+        <!-- Card 2 -->
+        <div class="card-trending">
+          <img src="https://via.placeholder.com/300x180" alt="Most Viewed Book" class="card-thumbnail">
+          <div class="card-details">
+            <h3 class="card-title-trending">Mt. Mandala</h3>
+            <p class="card-location-trending">Papua, Indonesia</p>
+            <p class="card-cost">$570/day</p>
+            <span class="card-favorite">❤️</span>
+          </div>
+        </div>
+  
+        <!-- Card 3 -->
+        <div class="card-trending">
+          <img src="https://via.placeholder.com/300x180" alt="Trending Lending" class="card-thumbnail">
+          <div class="card-details">
+            <h3 class="card-title-trending">Mt. Semeru</h3>
+            <p class="card-location-trending">Malang, Indonesia</p>
+            <p class="card-cost">$690/day</p>
+            <span class="card-favorite">❤️</span>
+          </div>
+        </div>
+
+        <div class="card-trending">
+          <div class="card_chart">
+            <div class="rating-container">
+              <h2>Top 10 Ratings</h2>
+            
+              <!-- Range Slider Input -->
+              <div *ngFor="let item of top10Data; let i = index" class="rating-item">
+                <label>{{ item.name }}</label>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  [(ngModel)]="item.value"
+                  class="rating-slider"
+                  (change)="updateChart()"
+                />
+                <span>{{ item.value }}%</span>
+              </div>
+            
+              <!-- Bar Chart -->
+              <!-- <ngx-charts-bar-vertical
+                [view]="view"
+                [results]="chartData"
+                [scheme]="colorScheme"
+                [xAxis]="true"
+                [yAxis]="true"
+                [barPadding]="10"
+                [roundEdges]="true"
+              >
+              </ngx-charts-bar-vertical> -->
+            </div>
+
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <!-- new dashboard -->
@@ -99,26 +165,26 @@
 
   </div>
 
-<div class="user_charts">
-      <!-- Bar Chart Section -->
-      <div class="card shadow-sm mb-4 border-light rounded">
-        <div class="card-body">
-          <h5 class="card-title text-center text-dark">User Counts</h5>
-          <ngx-charts-bar-vertical [view]="[700, 400]" [results]="barData" [xAxis]="true" [yAxis]="true" [legend]="true"
-            [xAxisLabel]="'Days'" [yAxisLabel]="'Sales'" [animations]="true" class="chart-container">
-          </ngx-charts-bar-vertical>
-        </div>
+  <div class="user_charts">
+    <!-- Bar Chart Section -->
+    <div class="card shadow-sm mb-4 border-light rounded">
+      <div class="cardbody">
+        <h5 class="cardtitle text-center text-dark">User Counts</h5>
+        <ngx-charts-bar-vertical [view]="[700, 400]" [results]="barData" [xAxis]="true" [yAxis]="true" [legend]="true"
+          [xAxisLabel]="'Days'" [yAxisLabel]="'Sales'" [animations]="true" class="chart-container">
+        </ngx-charts-bar-vertical>
       </div>
-  
+    </div>
+
     <!-- Pie Chart Section -->
-  
+
     <div class="card shadow-sm mb-4 border-light rounded" id="pie_chart">
-      <div class="card-body">
-        <h5 class="card-title text-center text-dark">User Details</h5>
+      <div class="cardbody">
+        <h5 class="cardtitle text-center text-dark">User Details</h5>
         <ngx-charts-pie-chart [view]="[700, 400]" [results]="pieData" [legend]="true" [doughnut]="true" [labels]="true"
-          class="chart-container">
+          class="chartcontainer">
         </ngx-charts-pie-chart>
       </div>
     </div>
-    
-</div>
+
+  </div>
