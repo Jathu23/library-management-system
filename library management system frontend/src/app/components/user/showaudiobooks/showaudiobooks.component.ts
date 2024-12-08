@@ -289,7 +289,6 @@ submitAudiobookReview() {
         this.fetchAudiobookReviews(this.selectedAudiobook.id); // Refresh the review list
         this.reviewText = ''; // Clear the review text input
         this.rating = 1; // Reset the rating input
-        this.fetchAudiobookReviews(this.selectedAudiobook.id);
       } else {
         alert(`Failed to submit review: ${response.message}`);
       }

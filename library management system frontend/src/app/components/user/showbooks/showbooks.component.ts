@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
 import { LikeanddislikeService } from '../../../services/bookservice/likeanddislike.service';
-import { ReviewService } from '../../../services/bookservice/review.service';
+import { ReviewRequest, ReviewResponse, ReviewService } from '../../../services/bookservice/review.service';
+import { environment } from '../../../../environments/environment.testing';
 
 @Component({
   selector: 'app-showbooks',
@@ -30,7 +31,8 @@ export class ShowbooksComponent implements OnInit {
   dislikeCount:number=0;
 
   constructor(private getbookservice: GetbooksService, private reviewservice:ReviewService, private likedislikeservice:LikeanddislikeService) {
-
+    const tokendata = environment.getTokenData();
+    this.currentUserId= Number(tokendata.ID);
   }
 
   ngOnInit(): void {
@@ -190,5 +192,40 @@ fetchNormalbookReviews(bookId: number): void {
     }
   );
 }
+submitNormalbookReview() {
+  // Validate input fields
+  if (!this.selectedBook ) {
+    alert('Please provide a valid rating (1-5) and a review text.');
+    return;
+  }
+
+  // Prepare the review request
+  const review: ReviewRequest = {
+    userId: this.currentUserId, // Replace with actual logged-in user ID
+    bookId: this.selectedBook.id,
+    reviewText: this.reviewText,
+    rating: this.rating
+  };
+
+  // Call the service method to submit the review
+  this.reviewservice.addNormalBookReview(review).subscribe({
+    next: (response: ReviewResponse<any>) => {
+      if (response.success) {
+        alert('Review submitted successfully.');
+        this.fetchNormalbookReviews(this.selectedBook.id); // Refresh the review list
+        this.reviewText = ''; // Clear the review text input
+        this.rating = 1; // Reset the rating input
+        
+      } else {
+        alert(`Failed to submit review: ${response.message}`);
+      }
+    },
+    error: (error) => {
+      console.error('Error submitting review:', error);
+      alert('An error occurred while submitting the review. Please try again later.');
+    }
+  });
+}
+
 
 }
