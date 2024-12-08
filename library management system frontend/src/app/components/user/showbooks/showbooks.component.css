@@ -88,7 +88,7 @@
     background-color: rgba(0, 0, 0, 0.7);
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 2000;
   }
   
   .modal.show {
@@ -150,3 +150,41 @@
   .slider-container .next {
     right: 10px;
   }
+
+/* Comment Section */
+.comments-container {
+  margin-top: 20px;
+  max-height: 400px;
+  overflow-y: auto; /* Enables vertical scrolling */
+  padding-right: 10px; /* Prevent content being cut off by scrollbar */
+}
+
+.comment-card {
+  background-color: #f9f9f9;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.user-img {
+  margin-top: 4px;
+}
+
+.comment-card .user {
+  display: flex;
+  align-items: center;
+}
+
+.comment-card .user img {
+  margin-right: 10px;
+}
+
+.comment-card .user small {
+  color: #555;
+}
+
+textarea {
+  width: 100%;
+  resize: none;
+}
