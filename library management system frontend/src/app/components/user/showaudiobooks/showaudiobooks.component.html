@@ -116,7 +116,7 @@
       <button
         class="btn btn-outline-dark d-flex align-items-center"
         [ngClass]="{ 'text-primary': isThumbsUp }"
-        (click)="toggleThumbsUp()"
+        (click)="toggleThumbsUp();  like_or_dislikeAudiobook(true);"
       >
         <i class="bi bi-hand-thumbs-up-fill me-2"></i>
       </button>
@@ -125,7 +125,7 @@
       <button
         class="btn btn-outline-dark d-flex align-items-center"
         [ngClass]="{ 'text-primary': isThumbsDown }"
-        (click)="toggleThumbsDown()"
+        (click)="toggleThumbsDown(); like_or_dislikeAudiobook(false);"
       >
         <i class="bi bi-hand-thumbs-down-fill me-2"></i>
       </button>

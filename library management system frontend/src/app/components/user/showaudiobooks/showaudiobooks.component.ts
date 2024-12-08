@@ -323,17 +323,30 @@ fetchDislikeAndLike(bookid:number, isLiked: boolean): void {
   });
 }
 
-likeAudiobook(bookId: number, userId: number,like:boolean): void {
+like_or_dislikeAudiobook(like:boolean): void {
   const likeDislikeRequest = {
-    bookId: bookId,
-    userId: userId,
+    bookId: this.selectedAudiobook.id,
+    userId: this.currentUserId,
     isLiked: like,
   };
 
   this.likedislikeservice.addAudiobookLikeDislike(likeDislikeRequest).subscribe({
     next: (response) => {
       if (response.success) {
-        console.log(`Audiobook (ID: ${bookId}) liked successfully by User (ID: ${userId}).`);
+       alert(response.message);
+       if (like) {
+        this.fetchDislikeAndLike(this.selectedAudiobook.id,like);
+        if (!response.success){
+          this.toggleThumbsUp(); 
+        }
+        
+       }else{
+        this.fetchDislikeAndLike(this.selectedAudiobook.id,like);
+        if (response.success){
+          this.toggleThumbsDown(); 
+        }
+       
+       }
       } else {
         console.warn(`Failed to like audiobook: ${response.message}`);
       }
