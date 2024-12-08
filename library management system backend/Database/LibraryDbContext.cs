@@ -1,9 +1,11 @@
 ﻿namespace library_management_system.Database
 {
     using library_management_system.Database.Entiy;
+    using library_management_system.Database.Entiy.LikeDisLike;
     using library_management_system.Database.Entiy.ReviewEntitys;
     using Microsoft.EntityFrameworkCore;
     using System.Diagnostics.Eventing.Reader;
+    using static library_management_system.Controllers.LikeDislikeController;
 
     public class LibraryDbContext : DbContext
     {
@@ -35,6 +37,11 @@
         public DbSet<NormalBookReview> NormalBookReviews { get; set; }
         public DbSet<EbookReview> EbookReviews { get; set; }
         public DbSet<AudiobookReview> AudiobookReviews { get; set; }
+
+
+        public DbSet<NormalBookLikeDislike> NormalBookLikeDislikes { get; set; }
+        public DbSet<EbookLikeDislike> EbookLikeDislikes { get; set; }
+        public DbSet<AudiobookLikeDislike> AudiobookLikeDislikes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

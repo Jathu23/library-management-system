@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using library_management_system.Database;
 
@@ -11,9 +12,11 @@ using library_management_system.Database;
 namespace library_management_system.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    partial class LibraryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241208061715_seprateformatlike")]
+    partial class seprateformatlike
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -389,9 +392,6 @@ namespace library_management_system.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EbookId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsLiked")
                         .HasColumnType("bit");
 
@@ -400,7 +400,7 @@ namespace library_management_system.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EbookId");
+                    b.HasIndex("BookId");
 
                     b.HasIndex("UserId");
 
@@ -960,9 +960,9 @@ namespace library_management_system.Migrations
 
             modelBuilder.Entity("library_management_system.Database.Entiy.LikeDisLike.EbookLikeDislike", b =>
                 {
-                    b.HasOne("library_management_system.Database.Entiy.Ebook", "Ebook")
+                    b.HasOne("library_management_system.Database.Entiy.Ebook", "Book")
                         .WithMany()
-                        .HasForeignKey("EbookId")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -972,7 +972,7 @@ namespace library_management_system.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Ebook");
+                    b.Navigation("Book");
 
                     b.Navigation("User");
                 });
