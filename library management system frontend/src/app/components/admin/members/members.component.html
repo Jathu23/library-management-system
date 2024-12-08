@@ -88,9 +88,9 @@
             </ng-template>
           </td>
           <td *ngIf="selectedOption === 'search'">
-            <span class="text-success" *ngIf="user.isActive; else inactive">Active</span>
+            <span class="text-success" style="font-weight: bold;"  *ngIf="user.isActive; else inactive">Active</span>
             <ng-template #inactive>
-              <span class="text-danger">Inactive</span>
+              <span class="text-danger" style="font-weight: bold;">Inactive</span>
             </ng-template>
           </td>
           <td *ngIf="selectedOption === 'search'">

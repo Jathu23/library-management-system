@@ -1,9 +1,10 @@
 <div class="container mt-3" style="height: 90vh;">
   <p class="text-center mt-2"><strong>Book Management</strong></p>
-  <div class="table-responsive mt-3" style="border: 1px solid #ddd; border-radius: 5px; height: 90%; overflow-y: auto;">
-    <table class="table table-bordered">
-      <thead>
+  <div class="table-responsive mt-3" style="border: 1px solid #ddd; border-radius: 5px; height: 90%; overflow-y: auto; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
         <tr>
+          <th>#</th> <!-- Index Column -->
           <th>ID</th>
           <th>ISBN</th>
           <th>Title</th>
@@ -19,8 +20,9 @@
       </thead>
       <tbody>
         <!-- Main rows -->
-        <ng-container *ngFor="let Nbook of Nbooks">
+        <ng-container *ngFor="let Nbook of Nbooks; let i = index">
           <tr (click)="toggleRow(Nbook.id)" [class.expanded]="expandedElementId === Nbook.id">
+            <td>{{ i + 1 }}</td> <!-- Display Index -->
             <td>{{ Nbook.id }}</td>
             <td>{{ Nbook.isbn }}</td>
             <td>{{ Nbook.title }}</td>
@@ -32,14 +34,14 @@
             <td>{{ Nbook.availableCopies }}</td>
             <td>Image</td>
             <td>
-              <div class="action-buttons d-flex gap-1">
-                <button class="btn btn-success" (click)="addNewBook(); $event.stopPropagation()">
+              <div class="action-buttons d-flex gap-1 justify-content-center">
+                <button class="btn btn-success" (click)="addNewBook(); $event.stopPropagation()" title="Add New Book">
                   <i class="bi bi-plus-circle"></i>
                 </button>
-                <button class="btn btn-primary" (click)="openEditDialog(Nbook); $event.stopPropagation()">
+                <button class="btn btn-primary" (click)="openEditDialog(Nbook); $event.stopPropagation()" title="Edit Book">
                   <i class="bi bi-pencil"></i>
                 </button>
-                <button class="btn btn-danger" (click)="deleteMainBook(Nbook.id); $event.stopPropagation()">
+                <button class="btn btn-danger" (click)="deleteMainBook(Nbook.id); $event.stopPropagation()" title="Delete Book">
                   <i class="bi bi-trash"></i>
                 </button>
               </div>
@@ -47,7 +49,7 @@
           </tr>
           <!-- Expanded row -->
           <tr *ngIf="expandedElementId === Nbook.id">
-            <td colspan="11">
+            <td colspan="12">
               <div class="expanded-content">
                 <h4>Additional Information</h4>
                 <table class="additional-info-table table table-bordered">
@@ -66,12 +68,12 @@
                       <td>{{ nestedRow.isAvailable }}</td>
                       <td>{{ nestedRow.condition }}</td>
                       <td>{{ nestedRow.lastBorrowedDate }}</td>
-                      <td class="action-buttons d-flex gap-1">
-                        <button class="btn btn-primary">
-                          <i class="bi bi-pencil"></i> 
+                      <td class="action-buttons d-flex gap-1 justify-content-center">
+                        <button class="btn btn-primary" title="Edit Copy">
+                          <i class="bi bi-pencil"></i>
                         </button>
-                        <button class="btn btn-danger" (click)="deleteItem(nestedRow.copyId); $event.stopPropagation()">
-                          <i class="bi bi-trash"></i> 
+                        <button class="btn btn-danger" (click)="deleteItem(nestedRow.copyId); $event.stopPropagation()" title="Delete Copy">
+                          <i class="bi bi-trash"></i>
                         </button>
                       </td>
                     </tr>
