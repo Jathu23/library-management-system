@@ -243,6 +243,28 @@ namespace library_management_system.Repositories
         }
 
 
+		//Functions for dashboard
 
-    }
+		public async Task<int> GetAllUserCountAsync()
+		{
+			return await _context.Users.CountAsync(); 
+		}
+
+		public async Task<int> GetActiveUserCountAsync()
+		{
+			return await _context.Users.CountAsync(user => user.IsActive); // Filter active users
+		}
+		public async Task<int> GetNonActiveUserCountAsync()
+		{
+			return await _context.Users.CountAsync(user => !user.IsActive); // Filter active users
+		}
+
+		public async Task<int> GetSubscribedUserCountAsync()
+		{
+			return await _context.Users.CountAsync(user => user.IsSubscribed); // Filter active users
+		}
+
+
+
+	}
 }

@@ -23,4 +23,26 @@ export class UserService {
   UpdateUser(userData: any): Observable<any> {
     return this.http.put<any>(`${this.Url}UpdateUser`, userData);
   }
+
+  // functions for dasboard-users
+
+  private countUrl=`https://localhost:7261/api/User`;
+
+  // Get total user count
+  getTotalUserCount(): Observable<number> {
+    return this.http.get<number>(`${this.countUrl}/count-all-users`);
+  }
+
+  // Get active user count
+  getActiveUserCount(): Observable<number> {
+    return this.http.get<number>(`${this.countUrl}/active-count`);
+  }
+
+  getNonActiveUserCount(): Observable<number> {
+    return this.http.get<number>(`${this.countUrl}/non-active-count`);
+  }
+
+  getSubscribedUserCount(): Observable<number> {
+    return this.http.get<number>(`${this.countUrl}/subscribed-user-count`);
+  }
 }

@@ -18,5 +18,157 @@ text {
     font-weight: bold;
   }
 
+
+  /* new Css */
+
+  .container {
+    max-width: 1200px;
+    margin: auto;
+    padding-top: 40px;
+}
+
+
+
+/* Card Styling */
+.card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #666;
+}
+
+.card .text-success {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.card .text-danger {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Chart Containers */
+.chart-container {
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.chart-container ngx-charts-bar-vertical,
+.chart-container ngx-charts-line-chart,
+.chart-container ngx-charts-pie-chart {
+    border-radius: 10px;
+    background-color: #ffffff;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+/* Responsive Design for Small Screens */
+@media (max-width: 768px) {
+    .col-md-3 {
+        width: 100% !important;
+    }
+
+    .row {
+        flex-direction: column;
+    }
+}
+
+
+.container{
+    height: 100;
+}
+
+#Heading{
+    font-size: 30px;
+    font-weight: bold;
+    font-family:Arial, Helvetica, sans-serif ;
+}
+
+
+.main_card {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sub_card {
+    height: 100px;
+    width: 20%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#user_count {
+    background: linear-gradient(to right, rgb(12, 211, 205), rgb(39, 237, 138));
+}
+
+#active_count {
+    background: linear-gradient(to right, rgb(47, 219, 17), rgb(6, 164, 132));
+}
+
+#primier_count {
+    background: linear-gradient(to right, rgb(154, 6, 122), rgb(151, 19, 212));
+}
+
+#average_count {
+    background: linear-gradient(to right, rgb(199, 88, 14), rgb(213, 223, 37));
+}
+
+
+.icon {
+    margin-top: 15px;
+    margin-left: 15px;
+}
+
+#user_icon {
+    color: white;
+    width: 206px;
+}
+
+i {
+
+    font-size: 50px;
+    color: white;
+}
+
+.detals p {
+    color: white;
+    font-size: 20px;
+    text-align: right;
+}
+
+.detals h2{
+    margin-top: 5px;
+    color: black;
+    font-size: 30px;
+}
+
+.detals {
+    text-align: right;
+}
+
+.user_charts {
+    margin-top:50px;
+    display: flex;
+    justify-content: space-around;
+}
   
   

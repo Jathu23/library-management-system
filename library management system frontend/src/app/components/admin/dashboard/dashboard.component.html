@@ -1,4 +1,4 @@
-<ngx-charts-bar-vertical
+<!-- <ngx-charts-bar-vertical
   [view]="view"
   [scheme]="colorScheme"
   [results]="chartData"
@@ -47,4 +47,78 @@
     [autoScale]="autoScale"
     [animations]="true">
   </ngx-charts-line-chart>
+</div> -->
+
+
+<!-- new dashboard -->
+
+<div class="container my-5">
+  <!-- Dashboard Header -->
+
+  <!-- Statistics Cards -->
+
+  <h1 style="color: rgb(86, 3, 68);" id="Heading">User Details</h1>
+
+  <div class="main_card">
+    <div class="sub_card" id="user_count">
+      <div class="icon">
+        <i class="bi bi-person-bounding-box" id="user_icon"></i>
+      </div>
+      <div class="detals">
+        <h2>{{totalUsers}}</h2>
+        <p>All Users</p>
+      </div>
+    </div>
+    <div class="sub_card" id="active_count">
+      <div class="icon">
+        <i class="bi bi-person-fill-check"></i>
+      </div>
+      <div class="detals">
+        <h2>{{activeUsers}}</h2>
+        <p>Active Users</p>
+      </div>
+    </div>
+    <div class="sub_card" id="average_count">
+      <div class="icon">
+        <i class="bi bi-person-fill-x"></i>
+      </div>
+      <div class="detals">
+        <h2>{{NonActiveUsers}}</h2>
+        <p>Non Active</p>
+      </div>
+    </div>
+    <div class="sub_card" id="primier_count">
+      <div class="icon">
+        <i class="bi bi-check2-circle"></i>
+      </div>
+      <div class="detals">
+        <h2>{{Subscribed}}</h2>
+        <p>Subscribed Users</p>
+      </div>
+    </div>
+
+  </div>
+
+<div class="user_charts">
+      <!-- Bar Chart Section -->
+      <div class="card shadow-sm mb-4 border-light rounded">
+        <div class="card-body">
+          <h5 class="card-title text-center text-dark">User Counts</h5>
+          <ngx-charts-bar-vertical [view]="[700, 400]" [results]="barData" [xAxis]="true" [yAxis]="true" [legend]="true"
+            [xAxisLabel]="'Days'" [yAxisLabel]="'Sales'" [animations]="true" class="chart-container">
+          </ngx-charts-bar-vertical>
+        </div>
+      </div>
+  
+    <!-- Pie Chart Section -->
+  
+    <div class="card shadow-sm mb-4 border-light rounded" id="pie_chart">
+      <div class="card-body">
+        <h5 class="card-title text-center text-dark">User Details</h5>
+        <ngx-charts-pie-chart [view]="[700, 400]" [results]="pieData" [legend]="true" [doughnut]="true" [labels]="true"
+          class="chart-container">
+        </ngx-charts-pie-chart>
+      </div>
+    </div>
+    
 </div>
