@@ -107,8 +107,18 @@ namespace library_management_system.Repositories
             return (audioBooks, totalRecords);
         }
 
+		//DbFunctions to get 3 books from the Audio table -------------------------------------------
+		public async Task<List<Audiobook>> GetTopAudiobooksAsync(int count)
+		{
+			return await _context.Audiobooks
+				.Include(a => a.Metadata) // Include related Metadata
+				.OrderByDescending(a => a.AddedDate) 
+				.Take(count) // Get the top 3 audiobooks
+				.ToListAsync();
+		}
 
 
 
-    }
+
+	}
 }

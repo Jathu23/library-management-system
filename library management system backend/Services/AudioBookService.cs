@@ -3,6 +3,7 @@ using library_management_system.DTOs.AudioBook;
 using library_management_system.DTOs;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace library_management_system.Services
 {
@@ -234,5 +235,15 @@ namespace library_management_system.Services
             }
         }
 
-    }
+		//Displaying 3 audio books-----------------------------------------------------------------------
+
+		public async Task<List<Audiobook>> GetTopAudiobooksAsync(int count)
+		{
+            return await _audioBookRepository.GetTopAudiobooksAsync( count);
+
+		}
+
+
+
+	}
 }
