@@ -29,6 +29,8 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
   reviewText: string ='';
   currentUserId: number=0;
   rating: number=1;
+  likeCount:number=0;
+  dislikeCount:number=0;
 
   constructor(private getbookservice: GetbooksService , private reviewservice:ReviewService, private likedislikeservice:LikeanddislikeService) { 
     const tokendata = environment.getTokenData();
@@ -131,6 +133,9 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
   openModal(audiobook: any) {
     this.selectedAudiobook = audiobook;
     this.isModalOpen = true;
+    this.fetchAudiobookReviews(audiobook.id);
+    this.fetchDislikeAndLike(audiobook.id,true);
+    this.fetchDislikeAndLike(audiobook.id,false);
   }
 
   closeModal() {
@@ -298,14 +303,16 @@ submitAudiobookReview() {
 
 
 
-fetchDislikeAndLike(bookId: number, isLiked: boolean): void {
-  this.likedislikeservice.getAudiobookLikeDislikeCount(bookId, isLiked).subscribe({
+fetchDislikeAndLike(bookid:number, isLiked: boolean): void {
+  this.likedislikeservice.getAudiobookLikeDislikeCount(bookid, isLiked).subscribe({
     next: (response) => {
       if (response.success) {
-        console.log(
-          `${isLiked ? 'Like' : 'Dislike'} count for Audiobook (ID: ${bookId}):`,
-          response.data
-        );
+        if (isLiked) {
+          this.likeCount = response.data;
+        }else{
+          this.dislikeCount = response.data;
+        }
+        
       } else {
         console.warn('Failed to fetch like/dislike count for audiobook:', response.message);
       }

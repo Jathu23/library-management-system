@@ -120,7 +120,7 @@
       >
         <i class="bi bi-hand-thumbs-up-fill me-2"></i>
       </button>
-      <span class="ms-1">213</span>
+      <span class="ms-1">{{likeCount}}</span>
 
       <button
         class="btn btn-outline-dark d-flex align-items-center"
@@ -129,15 +129,15 @@
       >
         <i class="bi bi-hand-thumbs-down-fill me-2"></i>
       </button>
-      <span class="ms-1">213</span>
+      <span class="ms-1">{{dislikeCount}}</span>
 
       <button
         class="btn btn-outline-dark d-flex align-items-center"
-        (click)="toggleCommentBox(); fetchAudiobookReviews(selectedAudiobook?.id)"
+        (click)="toggleCommentBox()"
       >
         <i class="bi bi-chat-right-text-fill me-2"></i>
       </button>
-      <span class="ms-1">243</span>
+      <span class="ms-1">{{reviews.length}}</span>
     </div>
 
     <!-- Comment Box and Container -->
