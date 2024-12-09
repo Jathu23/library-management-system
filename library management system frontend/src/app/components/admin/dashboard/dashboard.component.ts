@@ -1,6 +1,8 @@
 import { Component,OnInit  } from '@angular/core';
 import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
-import { UserService } from '../../../services/user-service/user.service'
+import { UserService } from '../../../services/user-service/user.service';
+
+import {AudiobookService} from '../../../services/bookservice/audiobook.service'
 
 
 @Component({
@@ -10,7 +12,10 @@ import { UserService } from '../../../services/user-service/user.service'
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private userService:UserService) {
+  constructor(
+    private userService:UserService,
+    private audiobookService:AudiobookService
+  ) {
     
   }
 
@@ -21,8 +26,13 @@ export class DashboardComponent implements OnInit {
   NonActiveUsers: number | null = null;
   Subscribed: number | null = null;
 
+  // showing the top books
+
+  audiobooks: any[] = []; 
+
  ngOnInit(): void {
   this.loadUserCounts();
+  this.fetchTopAudiobooks(3)
 }
 
 
@@ -279,6 +289,59 @@ loadUserCounts(): void {
     // Re-sort the data based on updated values
     this.chartData = [...this.top10Data].sort((a, b) => b.value - a.value);
   }
+
+
+  // showing top books
+
+  fetchTopAudiobooks(count: number): void {
+    this.audiobookService.getTopAudiobooks(count).subscribe(
+      (data) => {
+        this.audiobooks = data; // Assign fetched data
+        console.log(this.audiobooks);
+        
+      },
+      (error) => {
+        console.error('Error fetching audiobooks:', error);
+      }
+    );
+  }
+
+
+
+  // books graphs
+
+  appointmentData = [
+    {
+      name: 'DATA ONE',
+      series: [
+        { name: 'January', value: 30 },
+        { name: 'February', value: 50 },
+        { name: 'March', value: 40 },
+        { name: 'April', value: 60 },
+        { name: 'May', value: 80 },
+        { name: 'June', value: 70 },
+        { name: 'July', value: 60 },
+        { name: 'August', value: 40 },
+      ],
+    },
+    {
+      name: 'DATA TWO',
+      series: [
+        { name: 'January', value: 20 },
+        { name: 'February', value: 40 },
+        { name: 'March', value: 30 },
+        { name: 'April', value: 50 },
+        { name: 'May', value: 70 },
+        { name: 'June', value: 60 },
+        { name: 'July', value: 50 },
+        { name: 'August', value: 30 },
+      ],
+    },
+  ];
+
+  colorSchemes = {
+    domain: ['#5AA454', '#C7B42C'],
+  };
 }
   
 
