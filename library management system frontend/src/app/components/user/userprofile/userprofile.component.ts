@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user-service/user.service';
-import { environment } from '../../../../environments/environment.testing';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-userprofile',
@@ -8,72 +8,115 @@ import { environment } from '../../../../environments/environment.testing';
   styleUrls: ['./userprofile.component.css']
 })
 export class UserprofileComponent implements OnInit {
-  currentUser: any ;
+  user: any = {};
   isEditing: boolean = false;
-  currentUserEmail: string = '';
+  profileImage: File | null = null;  
 
-  constructor(private userService: UserService) {
-    const tokendata = environment.getTokenData();
-    this.currentUserEmail = tokendata.Email;
-  }
+ 
+  readonlyFields = ['id', 'isActive', 'isSubscribed', 'registrationDate'];
+
+
+  userFields = [
+    { label: 'First Name', key: 'firstName' },
+    { label: 'Last Name', key: 'lastName' },
+    { label: 'Email', key: 'email' },
+    { label: 'Phone', key: 'phoneNumber' },
+    { label: 'Address', key: 'address' },
+    { label: 'User NIC', key: 'userNic' }
+  ];
+
+  recentActivities: string[] = [
+    'Updated profile information',
+    'Added a new book review',
+    'Joined the Science Fiction group',
+    'Completed the JavaScript tutorial'
+  ];
+
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.getUserInfo();
+    this.fetchUserDetails();
   }
 
-  getUserInfo() {
-    if (this.currentUserEmail) {
-      this.userService.GetUserByEmailorNic(this.currentUserEmail).subscribe(
-        (response) => {
-          this.currentUser = response.data;
-          console.log(this.currentUser);
-          
-        },
-        (error) => {
-          console.error('Error fetching user data:', error);
+  fetchUserDetails() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const tokenData = this.decodeToken(token);
+        const userIdentifier = tokenData.UserNic || tokenData.Email;
+        if (userIdentifier) {
+          this.userService.GetUserByEmailorNic(userIdentifier).subscribe(
+            (response) => {
+              this.user = response?.data || {};
+              console.log('Fetched User:', this.user);
+            },
+            (error) => console.error('Error fetching user:', error)
+          );
         }
-      );
-    } else {
-      console.log('No valid email found to fetch user data');
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
     }
+  }
+
+  decodeToken(token: string) {
+    return JSON.parse(atob(token.split('.')[1]));
   }
 
   toggleEdit() {
-    this.isEditing = !this.isEditing;
+    this.isEditing = true;
   }
 
-  saveUser() {
-    const formData = new FormData();
-    formData.append('Id', this.currentUser.id);
-    formData.append('UserNic', this.currentUser.userNic);
-    formData.append('FirstName', this.currentUser.firstName);
-    formData.append('LastName', this.currentUser.lastName);
-    formData.append('Email', this.currentUser.email);
-    formData.append('PhoneNumber', this.currentUser.phoneNumber);
-    formData.append('Address', this.currentUser.address);
   
-    // Append the profile image if there is one
-    // if (this.currentUser.profileImage) {
-    //   formData.append('ProfileImage', this.currentUser.profileImage, this.currentUser.profileImage.name);
-    // }
+  saveUser(form: any) {
+    if (form.valid) {
+      const updatedUser = { ...this.user };
   
-    this.userService.updateUser(formData).subscribe(
-      (response) => {
-        alert('User updated successfully');
-        this.isEditing = false; // Exit edit mode after successful update
-      },
-      (error) => {
-        console.error('Error updating user data:', error);
+      if (this.profileImage) {
+        updatedUser.profileImage = this.profileImage; 
+      } else {
+        delete updatedUser.profileImage;  
       }
-    );
-  }
-
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.currentUser.profileImage = file;
+  
+      
+      this.userService.updateUser(updatedUser).subscribe(
+        (response) => {
+          alert('User details updated successfully!');
+          console.log('User updated:', response);
+          this.isEditing = false;
+        },
+        (error) => {
+          console.error('Error updating user:', error);
+        }
+      );
+    } else {
+      alert('Please fill out the form correctly.');
     }
   }
   
+  
+  cancelEdit() {
+    this.fetchUserDetails();
+    this.isEditing = false;
+  }
+
+  isFieldReadonly(fieldKey: string): boolean {
+    return this.readonlyFields.includes(fieldKey) || !this.isEditing;
+  }
+
+  onImageSelected(event: any): void {
+    const file = event.target.files[0]; 
+    if (file) {
+      this.profileImage = file;
+      
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.user.profileImage = reader.result as string;  
+      };
+      reader.readAsDataURL(file);  
+    } else {
+      this.profileImage = null; 
+    }
+  }
   
 }

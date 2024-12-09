@@ -1,72 +1,104 @@
 <div class="container">
-  <div class="card">
-    <div class="card-body">
-      <h3>User Profile</h3>
-      <form *ngIf="currentUser">
-        <div class="mb-3">
-          <div class="mb-3">
-            <label for="profileImage" class="form-label">Profile Image</label>
-            <input 
-              type="file" 
-              id="profileImage" 
-              class="form-control" 
-              (change)="onFileChange($event)" 
-              [disabled]="!isEditing">
+  <div class="main-body">
+    <nav aria-label="breadcrumb" class="main-breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Profile</li>
+      </ol>
+    </nav>
+
+    <div class="row gutters-sm">
+      <!-- Left Sidebar -->
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body text-center">
+            <!-- Profile Image -->
+            <img [src]="'https://localhost:7261/'+user?.profileImage || 'https://bootdey.com/img/Content/avatar/avatar7.png'" 
+                 alt="User" class="rounded-circle" width="200" height="250">
+
+            <!-- File Input for Image Upload (only shown when editing) -->
+            <div *ngIf="isEditing">
+              <input type="file" (change)="onImageSelected($event)" class="form-control mt-3" />
+            </div>
+
+            <h4>{{ user?.fullName || 'John Doe' }}</h4>
+            <p class="text-secondary mb-1">{{ user?.aud || 'Member' }}</p>
+            <p class="text-muted font-size-sm">{{ user?.address || 'Bay Area, San Francisco, CA' }}</p>
           </div>
-          
-          <label for="firstName" class="form-label">First Name</label>
-          <input 
-            type="text" 
-            id="firstName" 
-            class="form-control" 
-            [(ngModel)]="currentUser.firstName" 
-            name="firstName" 
-            [readonly]="!isEditing">
         </div>
-        <div class="mb-3">
-          <label for="lastName" class="form-label">Last Name</label>
-          <input 
-            type="text" 
-            id="lastName" 
-            class="form-control" 
-            [(ngModel)]="currentUser.lastName" 
-            name="lastName" 
-            [readonly]="!isEditing">
+
+        <!-- Social Media Links -->
+        <div class="card mt-3">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <i class="fab fa-github"></i> <span>GitHub</span>
+              <a href="{{ user?.githubUrl || '#' }}" target="_blank" class="text-primary">Visit</a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <i class="fab fa-twitter"></i> <span>Twitter</span>
+              <a href="{{ user?.twitterUrl || '#' }}" target="_blank" class="text-primary">Visit</a>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <i class="fab fa-linkedin"></i> <span>LinkedIn</span>
+              <a href="{{ user?.linkedinUrl || '#' }}" target="_blank" class="text-primary">Visit</a>
+            </li>
+          </ul>
         </div>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input 
-            type="email" 
-            id="email" 
-            class="form-control" 
-            [(ngModel)]="currentUser.email" 
-            name="email" 
-            [readonly]="!isEditing">
+      </div>
+
+      <!-- Main Profile Section -->
+      <div class="col-md-8">
+        <div class="card mb-3">
+          <div class="card-body">
+            <form #userForm="ngForm">
+              <!-- Editable Fields -->
+              <div *ngFor="let field of userFields" class="row mb-3">
+                <label class="col-sm-3 col-form-label">{{ field.label }}</label>
+                <div class="col-sm-9">
+                  <input 
+                    type="text" 
+                    [(ngModel)]="user[field.key]" 
+                    [readonly]="isFieldReadonly(field.key)" 
+                    [name]="field.key" 
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+              <!-- Read-Only Fields -->
+              <div class="row mb-3" *ngFor="let key of readonlyFields">
+                <label class="col-sm-3 col-form-label">{{ key | titlecase }}</label>
+                <div class="col-sm-9">
+                  <input 
+                    type="text" 
+                    [value]="user[key]" 
+                    readonly 
+                    class="form-control"
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-12 text-end">
+                  <button *ngIf="!isEditing" class="btn btn-info" (click)="toggleEdit()">Edit</button>
+                  <button *ngIf="isEditing" class="btn btn-success" (click)="saveUser(userForm)">Save Changes</button>
+                  <button *ngIf="isEditing" class="btn btn-secondary ms-2" (click)="cancelEdit()">Cancel</button>
+                </div>
+              </div>
+              
+            </form>
+          </div>
         </div>
-        <div class="mb-3">
-          <label for="phone" class="form-label">Phone</label>
-          <input 
-            type="text" 
-            id="phone" 
-            class="form-control" 
-            [(ngModel)]="currentUser.phoneNumber" 
-            name="phone" 
-            [readonly]="!isEditing">
+
+        <!-- Recent Activity Section -->
+        <div class="card mt-3">
+          <h5 class="card-header">Recent Activity</h5>
+          <ul class="list-group list-group-flush">
+            <li *ngFor="let activity of recentActivities" class="list-group-item">
+              <i class="fas fa-check-circle text-success"></i> {{ activity }}
+            </li>
+          </ul>
         </div>
-        <div class="mb-3">
-          <label for="address" class="form-label">Address</label>
-          <input 
-            type="text" 
-            id="address" 
-            class="form-control" 
-            [(ngModel)]="currentUser.address" 
-            name="address" 
-            [readonly]="!isEditing">
-        </div>
-        <button type="button" class="btn btn-primary" (click)="toggleEdit()" *ngIf="!isEditing">Edit</button>
-        <button type="button" class="btn btn-success" (click)="saveUser()" *ngIf="isEditing">Update</button>
-        <button type="button" class="btn btn-secondary" (click)="toggleEdit()" *ngIf="isEditing">Cancel</button>
-      </form>
+      </div>
     </div>
   </div>
 </div>

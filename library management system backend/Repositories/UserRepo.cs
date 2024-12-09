@@ -264,7 +264,10 @@ namespace library_management_system.Repositories
 			return await _context.Users.CountAsync(user => user.IsSubscribed); // Filter active users
 		}
 
+        public async Task<User> GetByid(int id)
+        {
+            return await _context.Users.FirstOrDefaultAsync(user => user.Id == id);
+        }
 
-
-	}
+    }
 }

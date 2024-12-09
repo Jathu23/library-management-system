@@ -15,15 +15,14 @@ export class UserService {
   GetUserEmailsByPrefix(prefix:string): Observable<any> {
     return this.http.get<any>(this.Url + `GetUserEmails?prefix=${prefix}`);
   }
-  GetUserByEmailorNic(emaiornic:string){
-    return this.http.get<any>(this.Url + `getSingleUserByNICorEmail?emailorNic=${emaiornic}`);
+  GetUserByEmailorNic(emailOrNic:string){
+    return this.http.get<any>(this.Url + `getSingleUserByNICorEmail?emailorNic=${emailOrNic}`);
   }
-
 
   updateUser(userData: any): Observable<any> {
     const formData: FormData = new FormData();
-    
-    // Add the fields to FormData
+  
+    // Add the user fields to FormData
     formData.append('Id', userData.id);
     formData.append('UserNic', userData.userNic);
     formData.append('FirstName', userData.firstName);
@@ -31,14 +30,17 @@ export class UserService {
     formData.append('Email', userData.email);
     formData.append('PhoneNumber', userData.phoneNumber);
     formData.append('Address', userData.address);
-    
+  
     // Add profile image if it exists
-    if (userData.profileImage) {
+    if (userData.profileImage instanceof File) {
       formData.append('ProfileImage', userData.profileImage, userData.profileImage.name);
     }
   
+    // Perform the update request (PUT request)
     return this.http.put<any>(`${this.Url}UpdateUser`, formData);
   }
+  
+  
   
   // functions for dasboard-users
 

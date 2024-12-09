@@ -673,7 +673,57 @@ namespace library_management_system.Services
             return await _userRepo.GetSubscribedUserCountAsync();
 		}
 
-	}
+
+        public async Task<ApiResponse<usersearchDTO>> GetUserById(int id)
+        {
+            var response = new ApiResponse<usersearchDTO>();
+
+            if (id <= 0)
+            {
+                response.Success = false;
+                response.Message = "Invalid user ID.";
+                return response;
+            }
+
+            try
+            {
+                var user = await _userRepo.GetByid(id);
+
+                if (user == null)
+                {
+                    response.Success = false;
+                    response.Message = "User not found.";
+                    return response;
+                }
+
+                var userDto = new usersearchDTO
+                {
+                    Id = user.Id,
+                    UserNic = user.UserNic,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    Address = user.Address,
+                    IsActive = user.IsActive,
+                    IsSubscribed = user.IsSubscribed,
+                    ProfileImage = user.ProfileImage
+                };
+
+                response.Success = true;
+                response.Message = "User retrieved successfully.";
+                response.Data = userDto;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "An error occurred while fetching the user.";
+                response.Errors.Add(ex.Message);
+            }
+
+            return response;
+        }
+    }
 
 }
 
