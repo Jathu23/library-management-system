@@ -50,7 +50,6 @@ import { UserprofileComponent } from './components/user/userprofile/userprofile.
 
 
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,7 +85,8 @@ import { UserprofileComponent } from './components/user/userprofile/userprofile.
     DashboardComponent,
     LockScreenComponent,
     TimeAgoPipe,
-    UserprofileComponent
+    UserprofileComponent,
+    
    
 
   ],
@@ -106,8 +106,8 @@ import { UserprofileComponent } from './components/user/userprofile/userprofile.
     MatDialogModule,
     NgxChartsModule,
     MatInputModule,
-    MatSelectModule
-  
+    MatSelectModule,
+   
 
     
     

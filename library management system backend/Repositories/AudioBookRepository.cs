@@ -84,31 +84,37 @@ namespace library_management_system.Repositories
 
         public async Task<(List<Audiobook>, int)> SearchAsync(string searchString, int pageNumber, int pageSize)
         {
+            // Query with metadata included
             var query = _context.Audiobooks.Include(a => a.Metadata).AsQueryable();
 
-            
+            // Apply search filter if searchString is not null or empty
             if (!string.IsNullOrEmpty(searchString))
             {
-                query = query.Where(a =>
-
-
-                    a.Genre.Contains(searchString));
+                query = query.Where(b =>
+                    b.Genre.Contains(searchString) ||    // Search in Genre
+                    b.Author.Contains(searchString) ||   // Search in Author
+                    b.Title.Contains(searchString) ||    // Search in Title
+                    b.ISBN.Contains(searchString) ||     // Search in ISBN
+                    b.PublishYear.ToString().Contains(searchString) // Search in PublishYear
+                );
             }
 
-           
+            // Get total count of records that match the search criteria
             int totalRecords = await query.CountAsync();
 
-           
+            // Paginate the results
             var audioBooks = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
+                .Skip((pageNumber - 1) * pageSize) // Skip records based on page number
+                .Take(pageSize)                   // Take the specified page size
                 .ToListAsync();
 
+            // Return the paginated result and the total record count
             return (audioBooks, totalRecords);
         }
 
-		//DbFunctions to get 3 books from the Audio table -------------------------------------------
-		public async Task<List<Audiobook>> GetTopAudiobooksAsync(int count)
+
+        //DbFunctions to get 3 books from the Audio table -------------------------------------------
+        public async Task<List<Audiobook>> GetTopAudiobooksAsync(int count)
 		{
 			return await _context.Audiobooks
 				.Include(a => a.Metadata) // Include related Metadata

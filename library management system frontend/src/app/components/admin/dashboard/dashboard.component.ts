@@ -312,9 +312,9 @@ loadUserCounts(): void {
 
   appointmentData = [
     {
-      name: 'DATA ONE',
+      name: 'No of Books',
       series: [
-        { name: 'January', value: 30 },
+        { name: 'January', value: 230 },
         { name: 'February', value: 50 },
         { name: 'March', value: 40 },
         { name: 'April', value: 60 },
@@ -324,24 +324,56 @@ loadUserCounts(): void {
         { name: 'August', value: 40 },
       ],
     },
-    {
-      name: 'DATA TWO',
-      series: [
-        { name: 'January', value: 20 },
-        { name: 'February', value: 40 },
-        { name: 'March', value: 30 },
-        { name: 'April', value: 50 },
-        { name: 'May', value: 70 },
-        { name: 'June', value: 60 },
-        { name: 'July', value: 50 },
-        { name: 'August', value: 30 },
-      ],
-    },
+    // {
+    //   name: 'DATA TWO',
+    //   series: [
+    //     { name: 'January', value: 20 },
+    //     { name: 'February', value: 40 },
+    //     { name: 'March', value: 30 },
+    //     { name: 'April', value: 50 },
+    //     { name: 'May', value: 70 },
+    //     { name: 'June', value: 60 },
+    //     { name: 'July', value: 50 },
+    //     { name: 'August', value: 30 },
+    //   ],
+    // },
   ];
 
   colorSchemes = {
     domain: ['#5AA454', '#C7B42C'],
   };
+
+  // -----------------
+
+  // data = [
+  //   { name: 'All Audio Books', value: 40 },
+  //   { name: 'Commonly Used Books', value: 35 },
+  //   { name: 'Non-Used Books', value: 25 }
+  // ];
+
+  // views: [number, number] = [700, 400];
+  // gradient: boolean = true;
+  // showLegend: boolean = true;
+  // showLabels: boolean = true;
+  // isDoughnut: boolean = false;
+
+  // -----------
+  data = [
+    { name: 'Frequently Listened', value: 40 },
+    { name: 'Commonly Used Books', value: 35 },
+    { name: 'Non-Used Books', value: 25 }
+  ];
+
+  viewed: [number, number] = [250, 200]; // Chart size
+
+  // Chart options
+  gradient: boolean = true;
+  showLegend: boolean = false;
+  showLabels: boolean = true;
+  isDoughnut: boolean = true;
+
+  
+  
 }
   
 

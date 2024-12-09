@@ -1,15 +1,45 @@
-<div class="search-container">
-  <input
-    type="text"
-    placeholder="Search books (title, author, year)..."
-    [(ngModel)]="searchQuery"
-    (input)="onSearch()"
-    class="search-bar"
-  />
+<header class="filter-bar">
+  <div class="filter-container">
+    <input
+      type="text"
+      placeholder="Search books (title, author, year)..."
+      [(ngModel)]="searchText"
+      (input)="onSearch()"
+      class="search-input"
+    />
+    <button (click)="toggleDropdown()" class="filter-btn">
+      Apply Filter
+    </button>
+  </div>
+</header>
+
+
+<div *ngIf="showDropdown" class="dropdown-section">
+  <div class="dropdown">
+    <label for="genre">Genre</label>
+    <select id="genre" [(ngModel)]="selectedGenre" (change)="applyFilters()">
+      <option value="">All Genres</option>
+      <option *ngFor="let genre of genres" [value]="genre">{{ genre }}</option>
+    </select>
+  </div>
+  <div class="dropdown">
+    <label for="author">Author</label>
+    <select id="author" [(ngModel)]="selectedAuthor" (change)="applyFilters()">
+      <option value="">All Authors</option>
+      <option *ngFor="let author of authors" [value]="author">{{ author }}</option>
+    </select>
+  </div>
+  <div class="dropdown">
+    <label for="year">Publish Year</label>
+    <select id="year" [(ngModel)]="selectedYear" (change)="applyFilters()">
+      <option value="">All Years</option>
+      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+    </select>
+  </div>
 </div>
 
-<div class="grid-container scroll-container" (scroll)="onScroll()">
-  <div class="grid-item" *ngFor="let book of Normalbooks" (click)="openModal(book)">
+<div class="grid-container scroll-container">
+  <div class="grid-item" *ngFor="let book of Normalbooks">
     <div class="card">
       <div class="card-images">
         <img *ngIf="book.coverImagePath?.length" [src]="book.coverImagePath[0]" [alt]="book.coverImagePath[0]" />
@@ -22,6 +52,14 @@
     </div>
   </div>
 </div>
+
+<mat-paginator
+  [length]="totalItems"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[10, 25, 50, 100]"
+  showFirstLastButtons
+  (page)="onPageChange($event)"
+></mat-paginator>
 
 <!-- Modal -->
 <!-- Modal -->
