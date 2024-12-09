@@ -9,11 +9,13 @@
     <!-- Right Section -->
     <div class="profile">
       <div class="notification">
-        <i class="bell-icon">🔔</i>
+        <!-- <i class="bell-icon">🔔</i> -->
+        <i class="bi bi-bell-fill" style="color: purple;"></i>
         <span class="notification-badge">3</span>
       </div>
       <span>Profile</span>
-      <img src="https://via.placeholder.com/40" alt="Profile Picture">
+      <!-- <img src="https://via.placeholder.com/40" alt="Profile Picture"> -->
+      <i class="bi bi-person-circle" style="color: black; margin-left: 10px;"></i>
     </div>
   </div>
 
@@ -121,30 +123,62 @@
         
 
       </div>
-      <div class="line_graphs">
-        <div class="Statics_div">
-          <div class="graph_div">
-            <div class="graph-section">
-              <h3>Audio Book Usage</h3>
-              <ngx-charts-line-chart
-                [view]="[800, 400]"
-                [scheme]="colorScheme"
-                [results]="appointmentData"
-                [gradient]="false"
-                [xAxis]="true"
-                [yAxis]="true"
-                [legend]="true"
-                [showXAxisLabel]="true"
-                [showYAxisLabel]="true"
-                [xAxisLabel]="'Month'"
-                [yAxisLabel]="'Total Books'">
-              </ngx-charts-line-chart>
+
+      <div class="graph_section">
+        <div class="line_graphs">
+          <div class="Statics_div">
+            <div class="graph_div">
+              <div class="graph-section">
+                <h3>Audio Book Usage</h3>
+                <ngx-charts-line-chart
+                  [view]="[800, 400]"
+                  [scheme]="colorScheme"
+                  [results]="appointmentData"
+                  [gradient]="false"
+                  [xAxis]="true"
+                  [yAxis]="true"
+                  [legend]="true"
+                  [showXAxisLabel]="true"
+                  [showYAxisLabel]="true"
+                  [xAxisLabel]="'Month'"
+                  [yAxisLabel]="'Total Books'">
+                </ngx-charts-line-chart>
+              </div>
+            </div>
+            .
+          </div>
+  
+        </div>
+        <div class="rounded">
+          
+          <div class="chart-container">
+            <h2>Percentage of Commonly Listened Books</h2>
+            <ngx-charts-pie-chart
+              [view]="viewed"
+              [scheme]="'vivid'"
+              [results]="data"
+              [gradient]="gradient"
+              [legend]="showLegend"
+              [labels]="showLabels"
+              [doughnut]="isDoughnut">
+            </ngx-charts-pie-chart>
+          
+            <div class="list-container">
+              <div class="hedingss">
+                <p>Total Books: </p>
+              </div>
+             
+              <ul *ngFor="let item of data" class="list">
+                <li class="list-item">{{ item.name }}: <span>{{ item.value }}%</span></li>
+              </ul>
+              
             </div>
           </div>
-          .
+          
         </div>
-
+   
       </div>
+      
 
 
       </div>

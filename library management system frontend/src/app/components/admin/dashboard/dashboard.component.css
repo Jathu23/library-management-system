@@ -441,10 +441,61 @@ i {
   
 
   /* --- */
-  .graph-section {
+  /* .graph-section {
     margin-top: 30px;
     background: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  } */
+
+  /* ---------- */
+  .chart-container {
+    width: 100%;
+    margin: 0 ;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    text-align: left;
   }
+  
+  .list-container {
+    margin-top: 5px;
+  }
+  
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0 ;
+  }
+  
+  .list-item {
+    margin: 5px 0;
+    padding: 5px;
+    background: #f0f0f0;
+    border-radius: 5px;
+  }
+  
+  .list-item span {
+    font-weight: bold;
+    margin-left: 5px;
+  }
+  .hedingss{
+    display: flex;
+    justify-content: center;
+  }
+
+
+  /* ---- */
+  .graph_section{
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+    /* .chart-container{
+      height: 400px;
+    }
+    */
+
