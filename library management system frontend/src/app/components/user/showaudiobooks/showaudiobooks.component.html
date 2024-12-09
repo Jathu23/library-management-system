@@ -53,7 +53,7 @@
     class="search-input"
     [(ngModel)]="searchQuery"
     placeholder="Search for audiobooks..."
-    (input)="filterAudiobooks()"
+    (input)="onSearch()"
   />
 </div>
 
@@ -61,7 +61,7 @@
 <div class="grid-container">
   <div
     class="grid-item"
-    *ngFor="let audiobook of filteredAudiobooks"
+    *ngFor="let audiobook of audiobooks"
     (click)="openModal(audiobook)"
   >
     <img 
@@ -79,7 +79,7 @@
 <mat-paginator
   [length]="totalItems"
   [pageSize]="pageSize"
-  [pageSizeOptions]="[10, 15, 25, 50]"
+  [pageSizeOptions]="[2,5,10, 15, 25, 50]"
   showFirstLastButtons
   (page)="onPageChange($event)"
   [pageIndex]="currentPage - 1"

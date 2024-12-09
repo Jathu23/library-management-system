@@ -13,7 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 export class ShowbooksComponent implements OnInit {
   isLoading = false;
   currentPage = 1;
-  pageSize = 5;
+  pageSize = 2;
   totalItems = 0;
   Normalbooks: any[] = [];
   isSearchActive = false;
