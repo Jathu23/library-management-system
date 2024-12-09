@@ -3,7 +3,7 @@
     <input
       type="text"
       placeholder="Search books (title, author, year)..."
-      [(ngModel)]="searchQuery"
+      [(ngModel)]="searchText"
       (input)="onSearch()"
       class="search-input"
     />
@@ -13,18 +13,19 @@
   </div>
 </header>
 
+
 <div *ngIf="showDropdown" class="dropdown-section">
   <div class="dropdown">
     <label for="genre">Genre</label>
     <select id="genre" [(ngModel)]="selectedGenre" (change)="applyFilters()">
-      <option value="" >All Genres</option>
+      <option value="">All Genres</option>
       <option *ngFor="let genre of genres" [value]="genre">{{ genre }}</option>
     </select>
   </div>
   <div class="dropdown">
     <label for="author">Author</label>
     <select id="author" [(ngModel)]="selectedAuthor" (change)="applyFilters()">
-      <option value="" >All Authors</option>
+      <option value="">All Authors</option>
       <option *ngFor="let author of authors" [value]="author">{{ author }}</option>
     </select>
   </div>
@@ -37,10 +38,8 @@
   </div>
 </div>
 
-
-
 <div class="grid-container scroll-container">
-  <div class="grid-item" *ngFor="let book of Normalbooks" (click)="openModal(book)">
+  <div class="grid-item" *ngFor="let book of Normalbooks">
     <div class="card">
       <div class="card-images">
         <img *ngIf="book.coverImagePath?.length" [src]="book.coverImagePath[0]" [alt]="book.coverImagePath[0]" />
@@ -54,15 +53,13 @@
   </div>
 </div>
 
-<!-- Pagination -->
 <mat-paginator
   [length]="totalItems"
   [pageSize]="pageSize"
-  [pageSizeOptions]="[2,10, 17, 25, 50]"
+  [pageSizeOptions]="[10, 25, 50, 100]"
   showFirstLastButtons
   (page)="onPageChange($event)"
->
-</mat-paginator>
+></mat-paginator>
 
 <!-- Modal -->
 <!-- Modal -->

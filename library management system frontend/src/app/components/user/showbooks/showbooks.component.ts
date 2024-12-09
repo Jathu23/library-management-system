@@ -13,10 +13,9 @@ import { MatPaginator } from '@angular/material/paginator';
 export class ShowbooksComponent implements OnInit {
   isLoading = false;
   currentPage = 1;
-  pageSize = 2;
+  pageSize = 5;
   totalItems = 0;
   Normalbooks: any[] = [];
-  searchQuery: string = '';
   isSearchActive = false;
   isModalOpen = false;
   selectedBook: any = null;
@@ -101,63 +100,33 @@ export class ShowbooksComponent implements OnInit {
   selectedAuthor: string = '';
   selectedYear: number = 0;
 
-    
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  
-  toggleDropdown(): void {
-    this.showDropdown = !this.showDropdown;
-  }
-
-  applyFilters(): void {
-    console.log({
-      searchText: this.searchText,
-      genre: this.selectedGenre,
-      author: this.selectedAuthor,
-      year: this.selectedYear
-    });
-    this.loadCategorizedBooks(this.selectedGenre,this.selectedAuthor,this.selectedYear);
-    // Add filter logic here to update book display
-  }
-  onPageChange(event: any) {
-    const { pageIndex, pageSize } = event;
-    if (pageSize !== this.pageSize) {
-      this.currentPage = 1;
-    } else {
-      this.currentPage = pageIndex + 1;
-    }
-    this.pageSize = pageSize;
-    this.loadNormalBooks();
-  }
+  currentContext: 'all' | 'search' | 'filter' = 'all'; // Tracks the current operation
 
   constructor(private getbookservice: GetbooksService, private reviewservice:ReviewService, private likedislikeservice:LikeanddislikeService) {
     const tokendata = environment.getTokenData();
     this.currentUserId= Number(tokendata.ID);
   }
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  
+
   ngOnInit(): void {
     this.loadNormalBooks();
   }
 
+  toggleDropdown(): void {
+    this.showDropdown = !this.showDropdown;
+  }
+
+  // Fetch all books (default view)
   loadNormalBooks(): void {
     if (this.isLoading) return;
-
     this.isLoading = true;
+    this.currentContext = 'all';
+
     this.getbookservice.getNoramlbooks(this.currentPage, this.pageSize).subscribe(
       (response) => {
-        if (response.success) {
-          const result = response.data;
-          this.Normalbooks = result.items.map((book: any) => ({
-            ...book,
-            coverImagePath: Array.isArray(book.coverImagePath)
-              ? book.coverImagePath.map((path: string) => this.resolveImagePath(path))
-              : [this.resolveImagePath(book.coverImagePath)]
-          }));
-          
-          this.totalItems = result.totalCount;
-          this.currentPage++;
-          this.isLoading = false;
-        }
+        this.handleBookResponse(response);
       },
       (error) => {
         console.error('Error fetching normal books:', error);
@@ -166,66 +135,75 @@ export class ShowbooksComponent implements OnInit {
     );
   }
 
-  loadCategorizedBooks(genre: string, author: string, publishYear: number): void {
-    if (this.isLoading) return;
-  
-    this.isLoading = true;
-    this.getbookservice.Categorize(genre, author, publishYear, this.currentPage, this.pageSize).subscribe(
-      (response) => {
-        if (response.success) {
-          const result = response.data;
-          this.Normalbooks = result.items.map((book: any) => ({
-            ...book,
-            coverImagePath: Array.isArray(book.coverImagePath)
-              ? book.coverImagePath.map((path: string) => this.resolveImagePath(path))
-              : [this.resolveImagePath(book.coverImagePath)]
-          }));
-          this.totalItems = result.totalCount;
-          this.currentPage++;
-          this.isLoading = false;
-        }
-      },
-      (error) => {
-        console.error('Error fetching categorized books:', error);
-        this.isLoading = false;
-      }
-    );
+  // Apply filters
+  applyFilters(): void {
+    this.currentPage = 1; // Reset pagination
+    this.currentContext = 'filter';
+    this.fetchBooks(); // Unified fetch logic
   }
-  
+
+  // Search books
   onSearch(): void {
+    this.currentPage = 1; // Reset pagination
+    this.currentContext = 'search';
+    this.fetchBooks(); // Unified fetch logic
+  }
+
+  // Unified fetch logic
+  fetchBooks(): void {
     if (this.isLoading) return;
-
     this.isLoading = true;
-    this.currentPage = 1;
-    this.Normalbooks = [];
-    this.isSearchActive = !!this.searchQuery;
 
-    if (this.searchQuery === '') {
+    if (this.currentContext === 'all') {
       this.loadNormalBooks();
-    } else {
-      this.getbookservice.searchAudiobooks(this.searchQuery, this.currentPage, this.pageSize).subscribe(
-        (response) => {
-          if (response.success) {
-            const result = response.data;
-            this.Normalbooks = result.items.map((book: any) => ({
-              ...book,
-              coverImagePath: Array.isArray(book.coverImagePath)
-                ? book.coverImagePath.map((path: string) => this.resolveImagePath(path))
-                : [this.resolveImagePath(book.coverImagePath)]
-            }));
-
-            this.totalItems = result.totalCount;
-            this.currentPage++;
+    } else if (this.currentContext === 'search') {
+      this.getbookservice
+        .searchNormalBooks(this.searchText, this.currentPage, this.pageSize)
+        .subscribe(
+          (response) => this.handleBookResponse(response),
+          (error) => {
+            console.error('Error fetching search results:', error);
             this.isLoading = false;
           }
-         
-        },
-        (error) => {
-          console.error('Error searching books:', error);
-          this.isLoading = false;
-        }
-      );
+        );
+    } else if (this.currentContext === 'filter') {
+      this.getbookservice
+        .Categorize(this.selectedGenre, this.selectedAuthor, this.selectedYear, this.currentPage, this.pageSize)
+        .subscribe(
+          (response) => this.handleBookResponse(response),
+          (error) => {
+            console.error('Error fetching filtered books:', error);
+            this.isLoading = false;
+          }
+        );
     }
+  }
+
+  // Handle pagination changes
+  onPageChange(event: any): void {
+    const { pageIndex, pageSize } = event;
+    if (pageSize !== this.pageSize) {
+      this.currentPage = 1;
+    } else {
+      this.currentPage = pageIndex + 1;
+    }
+    this.pageSize = pageSize;
+    this.fetchBooks(); // Fetch based on context
+  }
+
+  // Handle book response
+  handleBookResponse(response: any): void {
+    if (response.success) {
+      const result = response.data;
+      this.Normalbooks = result.items.map((book: any) => ({
+        ...book,
+        coverImagePath: Array.isArray(book.coverImagePath)
+          ? book.coverImagePath.map((path: string) => this.resolveImagePath(path))
+          : [this.resolveImagePath(book.coverImagePath)],
+      }));
+      this.totalItems = result.totalCount;
+    }
+    this.isLoading = false;
   }
 
   openModal(book: any): void {

@@ -59,7 +59,17 @@ export class GetbooksService {
       )
     );
   }
-
+  searchNormalBooks(searchString: string, currentPage: number, pageSize: number): Observable<any> {
+    const url = `${this.NormalBookUrl}Search?searchstring=${searchString}&pageNumber=${currentPage}&pageSize=${pageSize}`;
+    console.log(`[API Request] GET: ${url}`);
+    return this.http.get<any>(url).pipe(
+      tap(
+        (response) => console.log(`[API Response] GET: ${url}`, response),
+        (error) => console.error(`[API Error] GET: ${url}`, error)
+      )
+    );
+  }
+  
   // Log API call for fetching ebooks
   getebooks(currentPage: number, pageSize: number): Observable<any> {
     const url = `${this.ebookUrl}GetEbooks?page=${currentPage}&pageSize=${pageSize}`;
