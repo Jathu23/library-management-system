@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
 import { LikeanddislikeService } from '../../../services/bookservice/likeanddislike.service';
 import { ReviewRequest, ReviewResponse, ReviewService } from '../../../services/bookservice/review.service';
 import { environment } from '../../../../environments/environment.testing';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-showbooks',
@@ -12,7 +13,7 @@ import { environment } from '../../../../environments/environment.testing';
 export class ShowbooksComponent implements OnInit {
   isLoading = false;
   currentPage = 1;
-  pageSize = 10;
+  pageSize = 2;
   totalItems = 0;
   Normalbooks: any[] = [];
   searchQuery: string = '';
@@ -29,6 +30,105 @@ export class ShowbooksComponent implements OnInit {
   rating: number=1;
   likeCount:number=0;
   dislikeCount:number=0;
+
+  searchText: string = '';
+  showDropdown: boolean = false;
+
+
+  genres: string[] = [
+    "Science Fiction",
+    "Fantasy",
+    "Mystery",
+    "Romance",
+    "Adventure",
+    "Action",
+    "Business",
+    "Finance",
+    "Cooking",
+    "Lifestyle",
+    "Economics",
+    "Non-fiction",
+    "Health",
+    "History",
+    "Linguistics",
+    "Philosophy",
+    "Self-help",
+    "Psychology",
+    "Technology",
+    "Writing"
+  ];
+  authors: string[] =[
+    "Alice Johnson",
+    "Alice Wilson",
+    "Brian Lewis",
+    "Chris White",
+    "Daniel Harris",
+    "David Lee",
+    "David Thomas",
+    "Emily White",
+    "Emma Brown",
+    "George Brown",
+    "Jack Walker",
+    "James Young",
+    "Jane Smith",
+    "John Doe",
+    "Joseph Clark",
+    "Julia Davis",
+    "Karen Lewis",
+    "Laura Scott",
+    "Lily Clarke",
+    "Mark Turner",
+    "Michael Black",
+    "Nathan Carter",
+    "Olivia Green",
+    "Paul Turner",
+    "Rebecca King",
+    "Sandra Lee",
+    "Sophia White",
+    "William Harris"
+  ];
+  years: number[] =  [
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2011
+  ];
+
+  selectedGenre: string = '';
+  selectedAuthor: string = '';
+  selectedYear: number = 0;
+
+    
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  
+  toggleDropdown(): void {
+    this.showDropdown = !this.showDropdown;
+  }
+
+  applyFilters(): void {
+    console.log({
+      searchText: this.searchText,
+      genre: this.selectedGenre,
+      author: this.selectedAuthor,
+      year: this.selectedYear
+    });
+    this.loadCategorizedBooks(this.selectedGenre,this.selectedAuthor,this.selectedYear);
+    // Add filter logic here to update book display
+  }
+  onPageChange(event: any) {
+    const { pageIndex, pageSize } = event;
+    if (pageSize !== this.pageSize) {
+      this.currentPage = 1;
+    } else {
+      this.currentPage = pageIndex + 1;
+    }
+    this.pageSize = pageSize;
+    this.loadNormalBooks();
+  }
 
   constructor(private getbookservice: GetbooksService, private reviewservice:ReviewService, private likedislikeservice:LikeanddislikeService) {
     const tokendata = environment.getTokenData();
@@ -47,16 +147,13 @@ export class ShowbooksComponent implements OnInit {
       (response) => {
         if (response.success) {
           const result = response.data;
-
-          this.Normalbooks = [
-            ...this.Normalbooks,
-            ...result.items.map((book: any) => ({
-              ...book,
-              coverImagePath: Array.isArray(book.coverImagePath)
-                ? book.coverImagePath.map((path: string) => this.resolveImagePath(path))
-                : [this.resolveImagePath(book.coverImagePath)]
-            }))
-          ];
+          this.Normalbooks = result.items.map((book: any) => ({
+            ...book,
+            coverImagePath: Array.isArray(book.coverImagePath)
+              ? book.coverImagePath.map((path: string) => this.resolveImagePath(path))
+              : [this.resolveImagePath(book.coverImagePath)]
+          }));
+          
           this.totalItems = result.totalCount;
           this.currentPage++;
           this.isLoading = false;
@@ -69,6 +166,32 @@ export class ShowbooksComponent implements OnInit {
     );
   }
 
+  loadCategorizedBooks(genre: string, author: string, publishYear: number): void {
+    if (this.isLoading) return;
+  
+    this.isLoading = true;
+    this.getbookservice.Categorize(genre, author, publishYear, this.currentPage, this.pageSize).subscribe(
+      (response) => {
+        if (response.success) {
+          const result = response.data;
+          this.Normalbooks = result.items.map((book: any) => ({
+            ...book,
+            coverImagePath: Array.isArray(book.coverImagePath)
+              ? book.coverImagePath.map((path: string) => this.resolveImagePath(path))
+              : [this.resolveImagePath(book.coverImagePath)]
+          }));
+          this.totalItems = result.totalCount;
+          this.currentPage++;
+          this.isLoading = false;
+        }
+      },
+      (error) => {
+        console.error('Error fetching categorized books:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+  
   onSearch(): void {
     if (this.isLoading) return;
 
@@ -84,36 +207,24 @@ export class ShowbooksComponent implements OnInit {
         (response) => {
           if (response.success) {
             const result = response.data;
+            this.Normalbooks = result.items.map((book: any) => ({
+              ...book,
+              coverImagePath: Array.isArray(book.coverImagePath)
+                ? book.coverImagePath.map((path: string) => this.resolveImagePath(path))
+                : [this.resolveImagePath(book.coverImagePath)]
+            }));
 
-            this.Normalbooks = [
-              ...this.Normalbooks,
-              ...result.items.map((book: any) => ({
-                ...book,
-                coverImagePath: Array.isArray(book.coverImagePath)
-                  ? book.coverImagePath.map((path: string) => this.resolveImagePath(path))
-                  : [this.resolveImagePath(book.coverImagePath)]
-              }))
-            ];
             this.totalItems = result.totalCount;
             this.currentPage++;
+            this.isLoading = false;
           }
-          this.isLoading = false;
+         
         },
         (error) => {
           console.error('Error searching books:', error);
           this.isLoading = false;
         }
       );
-    }
-  }
-
-  onScroll(): void {
-    const scrollContainer = document.querySelector('.scroll-container') as HTMLElement;
-    if (!scrollContainer) return;
-
-    const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-    if (scrollTop + clientHeight >= scrollHeight - 10 && this.Normalbooks.length < this.totalItems) {
-      this.isSearchActive ? this.onSearch() : this.loadNormalBooks();
     }
   }
 
@@ -247,7 +358,6 @@ fetchDislikeAndLike(bookid:number, isLiked: boolean): void {
     },
   });
 }
-
 like_or_dislikeAudiobook(like:boolean): void {
   const likeDislikeRequest = {
     bookId: this.selectedBook.id,

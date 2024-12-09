@@ -40,20 +40,7 @@
     margin: 0 5px;
     font-size: 1rem;
   }
-.search-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .search-bar {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
+
   
   .grid-container.scroll-container {
     display: grid;
@@ -188,3 +175,6 @@ textarea {
   width: 100%;
   resize: none;
 }
+
+
+

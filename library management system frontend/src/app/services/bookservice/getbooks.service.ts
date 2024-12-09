@@ -17,6 +17,13 @@ export class GetbooksService {
   private NormalBookUrl = `${this.baseurl}/Books/`;
   private UserNormalBookUrl = `${this.baseurl}/Books/get-all-books`;
 
+
+  Categorize (genre: string, author: string, publishYear: number, currentPage: number, pageSize: number): Observable<any> {
+    const url = `${this.NormalBookUrl}Categorize?genre=${genre}&author=${author}&publishYear=${publishYear}&pageNumber=${currentPage}&pageSize=${pageSize}`;
+    return this.http.get<any>(url);
+  }
+  
+
   // Log API call for showing books to users
   showBookstoUser(currentPage: number, pageSize: number): Observable<any> {
     const url = `${this.UserNormalBookUrl}?page=${currentPage}&pageSize=${pageSize}`;

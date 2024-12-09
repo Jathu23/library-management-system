@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 export const environment = {
     production: false,
     apiBaseUrl: 'https://localhost:7261/api', 
+    resourcBaseUrl :'https://localhost:7261/',
     decodeTokenManually(token: string | null): any {
       if (!token) {
         console.error('Token is null or empty');
