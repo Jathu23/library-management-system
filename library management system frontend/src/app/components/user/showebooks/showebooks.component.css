@@ -60,6 +60,7 @@
   background: rgba(0, 0, 0, 0.6);
   justify-content: center;
   align-items: center;
+  z-index: 2000;
 }
 
 .modal.show {
@@ -70,8 +71,14 @@
   background: white;
   padding: 20px;
   border-radius: 8px;
-  max-width: 400px;
-  width: 80%;
+  width: 100%;
+  max-width: 210mm; /* A4 width */
+  height: auto;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-content .close {
@@ -87,4 +94,40 @@
   font-size: 18px;
   color: #666;
   margin-top: 20px;
+}
+/* Buttons and Active States */
+.btn-outline-dark.text-primary {
+  color: blue !important;
+}
+
+.comment-section {
+  margin-top: 20px;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+/* Comments Display */
+.comment-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.comment-card .user {
+  display: flex;
+  align-items: center;
+}
+
+.user-img {
+  border-radius: 50%;
+}
+
+.comment-card small {
+  display: block;
+}
+
+.comment-card small.text-primary {
+  font-weight: bold;
 }

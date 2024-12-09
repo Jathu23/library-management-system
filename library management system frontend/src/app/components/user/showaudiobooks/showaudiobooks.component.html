@@ -64,7 +64,8 @@
     *ngFor="let audiobook of filteredAudiobooks"
     (click)="openModal(audiobook)"
   >
-    <img style="max-height: 300px; max-width: 250px;"
+    <img 
+  
       class="audio-cover"
       [src]="'https://localhost:7261/' + audiobook.coverImagePath"
       alt="{{ audiobook.title }}"
