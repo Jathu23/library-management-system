@@ -20,10 +20,26 @@ export class UserService {
   }
 
 
-  UpdateUser(userData: any): Observable<any> {
-    return this.http.put<any>(`${this.Url}UpdateUser`, userData);
+  updateUser(userData: any): Observable<any> {
+    const formData: FormData = new FormData();
+    
+    // Add the fields to FormData
+    formData.append('Id', userData.id);
+    formData.append('UserNic', userData.userNic);
+    formData.append('FirstName', userData.firstName);
+    formData.append('LastName', userData.lastName);
+    formData.append('Email', userData.email);
+    formData.append('PhoneNumber', userData.phoneNumber);
+    formData.append('Address', userData.address);
+    
+    // Add profile image if it exists
+    if (userData.profileImage) {
+      formData.append('ProfileImage', userData.profileImage, userData.profileImage.name);
+    }
+  
+    return this.http.put<any>(`${this.Url}UpdateUser`, formData);
   }
-
+  
   // functions for dasboard-users
 
   private countUrl=`https://localhost:7261/api/User`;

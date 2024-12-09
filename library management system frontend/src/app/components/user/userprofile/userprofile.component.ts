@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { jwtDecode } from 'jwt-decode'; // Corrected import
 import { UserService } from '../../../services/user-service/user.service';
+import { environment } from '../../../../environments/environment.testing';
 
 @Component({
   selector: 'app-userprofile',
@@ -8,63 +8,33 @@ import { UserService } from '../../../services/user-service/user.service';
   styleUrls: ['./userprofile.component.css']
 })
 export class UserprofileComponent implements OnInit {
-  tokenData: any = null;
-  user: any = {};
-  isEditing: boolean = false; // Flag to toggle edit mode
+  currentUser: any ;
+  isEditing: boolean = false;
+  currentUserEmail: string = '';
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) {
+    const tokendata = environment.getTokenData();
+    this.currentUserEmail = tokendata.Email;
+  }
 
   ngOnInit(): void {
-    this.getTokenData();
+    this.getUserInfo();
   }
 
-  getTokenData() {
-    const token = localStorage.getItem('token'); // Assuming token is saved with the key 'token'
-
-
-    if (token) {
-      try {
-        this.tokenData = jwtDecode(token); // Decode the token
-        this.setUserProfile();
-        console.log(this.tokenData);
-        
-      } catch (error) {
-        console.error('Error decoding the token:', error);
-      }
-    } else {
-      console.log('No token found in localStorage');
-    }
-  }
-
-  setUserProfile() {
-    const userIdentifier = this.tokenData.UserNic || this.tokenData.Email;
-
-    if (userIdentifier) {
-      this.userService.GetUserByEmailorNic(userIdentifier).subscribe(
-        (userData) => {
-          const data = userData.data;
-          console.log(data);
+  getUserInfo() {
+    if (this.currentUserEmail) {
+      this.userService.GetUserByEmailorNic(this.currentUserEmail).subscribe(
+        (response) => {
+          this.currentUser = response.data;
+          console.log(this.currentUser);
           
-          this.user = {
-            id: data.id,
-            fullName: data.fullName || 'John Doe',
-            firstName: data.firstName || 'John Doe',
-            lastName: data.lastName || 'John Doe',
-            email: data.email || 'No email available',
-            phone: data.phoneNumber || 'No phone available',
-            UserNic: data.userNic || 'No UserNic available',
-            address: data.address || 'No address available',
-            profileImage: data.profileImage ? `https://localhost:7261/${data.profileImage}` : 'https://bootdey.com/img/Content/avatar/avatar7.png',
-            aud: this.tokenData.aud || 'Full Stack Developer',
-            registrationDate: data.registrationDate || 'Not available'
-          };
         },
         (error) => {
           console.error('Error fetching user data:', error);
         }
       );
     } else {
-      console.log('No valid UserNic or Email found to fetch user data');
+      console.log('No valid email found to fetch user data');
     }
   }
 
@@ -73,24 +43,24 @@ export class UserprofileComponent implements OnInit {
   }
 
   saveUser() {
-    const updatedUser = {
-      Id: this.user.id,
-      UserNic: this.user.UserNic,
-      FirstName: this.user.firstName,
-      LastName: this.user.lastName,
-      Email: this.user.email,
-      PhoneNumber: this.user.phone,
-      Address: this.user.address,
-    };
-    console.log(updatedUser);
-    
-
-    this.userService.UpdateUser(updatedUser).subscribe(
+    const formData = new FormData();
+    formData.append('Id', this.currentUser.id);
+    formData.append('UserNic', this.currentUser.userNic);
+    formData.append('FirstName', this.currentUser.firstName);
+    formData.append('LastName', this.currentUser.lastName);
+    formData.append('Email', this.currentUser.email);
+    formData.append('PhoneNumber', this.currentUser.phoneNumber);
+    formData.append('Address', this.currentUser.address);
+  
+    // Append the profile image if there is one
+    // if (this.currentUser.profileImage) {
+    //   formData.append('ProfileImage', this.currentUser.profileImage, this.currentUser.profileImage.name);
+    // }
+  
+    this.userService.updateUser(formData).subscribe(
       (response) => {
-        alert("updated successfully")
-        console.log('User data updated successfully:', response);
-        this.isEditing = false; // Toggle back to view mode after saving
-        this.closeEditModal(); // Close the modal after saving
+        alert('User updated successfully');
+        this.isEditing = false; // Exit edit mode after successful update
       },
       (error) => {
         console.error('Error updating user data:', error);
@@ -98,19 +68,12 @@ export class UserprofileComponent implements OnInit {
     );
   }
 
-  // Method to open the edit profile modal
-  openEditModal() {
-    const modal = document.getElementById('editProfileModal') as HTMLElement;
-    if (modal) {
-      modal.style.display = 'block';
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.currentUser.profileImage = file;
     }
   }
-
-  // Method to close the edit profile modal
-  closeEditModal() {
-    const modal = document.getElementById('editProfileModal') as HTMLElement;
-    if (modal) {
-      modal.style.display = 'none';
-    }
-  }
+  
+  
 }
