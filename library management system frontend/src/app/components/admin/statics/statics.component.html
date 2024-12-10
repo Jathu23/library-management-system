@@ -1,0 +1,38 @@
+<div>
+    <h2>Borrowing Trends (Current Year)</h2>
+    <ngx-charts-line-chart
+      [view]="view"
+      [scheme]="'cool'"
+      [results]="borrowingTrends"
+      [legend]="legend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="xAxis"
+      [yAxis]="yAxis"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [timeline]="timeline"
+     >
+    </ngx-charts-line-chart>
+  </div>
+  
+
+  <div>
+    <h2>All Borrowing Trends (By Year)</h2>
+    <ngx-charts-line-chart
+
+      [view]="view"
+      [scheme]="'cool'"
+      [results]="allBorrowingTrends"
+      [legend]="legend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="xAxis"
+      [yAxis]="yAxis"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [timeline]="timeline"
+        >
+    </ngx-charts-line-chart>
+  </div>
+  
