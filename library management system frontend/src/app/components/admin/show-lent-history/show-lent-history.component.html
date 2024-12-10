@@ -29,7 +29,7 @@
             {{ history.status }}
           </td>
           <td>
-            <button (click)="toggleRow(history.id)" class="btn btn-info btn-sm">
+            <button (click)="toggleRow(history.id)" class="btn  btn-sm buttons">
               {{ expandedElementId === history.id ? 'Hide' : 'View' }}
             </button>
           </td>
@@ -47,7 +47,7 @@
                 </tr>
                 <tr>
                   <td><strong>User Email:</strong></td>
-                  <td>{{ history.userEmail }} <button class="btn btn-secondary btn-sm">Send Message</button></td>
+                  <td>{{ history.userEmail }} <button class="btn  btn-sm   buttons"  >Send Message</button></td>
                 </tr>
                 
                 <tr>
