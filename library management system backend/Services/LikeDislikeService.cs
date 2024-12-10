@@ -16,7 +16,6 @@ namespace library_management_system.Services
             _likeDislikeRepository = likeDislikeRepository;
         }
 
-
         // Add Normal Book Like/Dislike
         public async Task<ApiResponse<bool>> AddNormalBookLikeDislikeAsync(NormalBookLikeDislikeDto likeDislike)
         {
@@ -24,13 +23,35 @@ namespace library_management_system.Services
 
             try
             {
-                var userHasLikedDisliked = await _likeDislikeRepository.UserHasLikedDislikedNormalBookAsync(likeDislike.UserId, likeDislike.BookId);
-                if (userHasLikedDisliked)
+                var existingAction = await _likeDislikeRepository.GetUserLikeDislikeActionAsync(likeDislike.UserId, likeDislike.BookId, "NormalBook");
+                if (existingAction != null)
                 {
-                    response.Success = false;
-                    response.Message = "You have already liked or disliked this book.";
-                    return response;
+                    // If the user is trying to perform the same action, remove the record
+                    if (existingAction.IsLiked == likeDislike.IsLiked)
+                    {
+                        var isDeleted = await _likeDislikeRepository.RemoveLikeDislikeAsync(existingAction.Id, "NormalBook");
+                        if (!isDeleted)
+                        {
+                            response.Success = false;
+                            response.Message = "Failed to remove the previous like/dislike.";
+                            return response;
+                        }
+
+                        response.Success = true;
+                        response.Message = "Previous like/dislike removed successfully.";
+                        response.Data = false; // Indicates that the action was reversed
+                        return response;
+                    }
+                    else
+                    {
+                        // If the user is trying to switch between like and dislike, deny the request
+                        response.Success = false;
+                        response.Message = "You cannot switch between like and dislike for the same book.";
+                        return response;
+                    }
                 }
+
+                // If no existing action, add the new like/dislike
                 var likedata = new NormalBookLikeDislike
                 {
                     BookId = likeDislike.BookId,
@@ -67,13 +88,35 @@ namespace library_management_system.Services
 
             try
             {
-                var userHasLikedDisliked = await _likeDislikeRepository.UserHasLikedDislikedEbookAsync(likeDislike.UserId, likeDislike.BookId);
-                if (userHasLikedDisliked)
+                var existingAction = await _likeDislikeRepository.GetUserLikeDislikeActionAsync(likeDislike.UserId, likeDislike.BookId, "Ebook");
+                if (existingAction != null)
                 {
-                    response.Success = false;
-                    response.Message = "You have already liked or disliked this ebook.";
-                    return response;
+                    // If the user is trying to perform the same action, remove the record
+                    if (existingAction.IsLiked == likeDislike.IsLiked)
+                    {
+                        var isDeleted = await _likeDislikeRepository.RemoveLikeDislikeAsync(existingAction.Id, "Ebook");
+                        if (!isDeleted)
+                        {
+                            response.Success = false;
+                            response.Message = "Failed to remove the previous like/dislike.";
+                            return response;
+                        }
+
+                        response.Success = true;
+                        response.Message = "Previous like/dislike removed successfully.";
+                        response.Data = false;
+                        return response;
+                    }
+                    else
+                    {
+                        // If the user is trying to switch between like and dislike, deny the request
+                        response.Success = false;
+                        response.Message = "You cannot switch between like and dislike for the same ebook.";
+                        return response;
+                    }
                 }
+
+                // If no existing action, add the new like/dislike
                 var likedata = new EbookLikeDislike
                 {
                     BookId = likeDislike.BookId,
@@ -81,6 +124,7 @@ namespace library_management_system.Services
                     IsLiked = likeDislike.IsLiked
                 };
                 var isAdded = await _likeDislikeRepository.AddEbookLikeDislikeAsync(likedata);
+
                 if (!isAdded)
                 {
                     response.Success = false;
@@ -109,13 +153,35 @@ namespace library_management_system.Services
 
             try
             {
-                var userHasLikedDisliked = await _likeDislikeRepository.UserHasLikedDislikedAudiobookAsync(likeDislike.UserId, likeDislike.BookId);
-                if (userHasLikedDisliked)
+                var existingAction = await _likeDislikeRepository.GetUserLikeDislikeActionAsync(likeDislike.UserId, likeDislike.BookId, "Audiobook");
+                if (existingAction != null)
                 {
-                    response.Success = false;
-                    response.Message = "You have already liked or disliked this audiobook.";
-                    return response;
+                    // If the user is trying to perform the same action, remove the record
+                    if (existingAction.IsLiked == likeDislike.IsLiked)
+                    {
+                        var isDeleted = await _likeDislikeRepository.RemoveLikeDislikeAsync(existingAction.Id, "Audiobook");
+                        if (!isDeleted)
+                        {
+                            response.Success = false;
+                            response.Message = "Failed to remove the previous like/dislike.";
+                            return response;
+                        }
+
+                        response.Success = true;
+                        response.Message = "Previous like/dislike removed successfully.";
+                        response.Data = false;
+                        return response;
+                    }
+                    else
+                    {
+                        // If the user is trying to switch between like and dislike, deny the request
+                        response.Success = false;
+                        response.Message = "You cannot switch between like and dislike for the same audiobook.";
+                        return response;
+                    }
                 }
+
+                // If no existing action, add the new like/dislike
                 var likedata = new AudiobookLikeDislike
                 {
                     BookId = likeDislike.BookId,
@@ -123,6 +189,7 @@ namespace library_management_system.Services
                     IsLiked = likeDislike.IsLiked
                 };
                 var isAdded = await _likeDislikeRepository.AddAudiobookLikeDislikeAsync(likedata);
+
                 if (!isAdded)
                 {
                     response.Success = false;
@@ -143,6 +210,8 @@ namespace library_management_system.Services
 
             return response;
         }
+
+
 
         // Get Like/Dislike count for Normal Book
         public async Task<ApiResponse<int>> GetNormalBookLikeDislikeCountAsync(int bookId, bool isLiked)

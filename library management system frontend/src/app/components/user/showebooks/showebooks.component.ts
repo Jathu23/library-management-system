@@ -16,10 +16,20 @@ export class ShowebooksComponent implements OnInit {
 
   sanitizedUrl!: SafeResourceUrl;
 
-  constructor(private getbooksService: GetbooksService, private sanitizer: DomSanitizer) { }
+  isThumbsUp = false;
+  isThumbsDown = false;
+  showCommentBox = false;
+  reviewText = '';
+  reviews: { user: string; text: string; date: string }[] = [];
+  thumbsUpCount = 12;
+  thumbsDownCount = 21;
+
+  constructor(
+    private getbooksService: GetbooksService,
+    private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {
-
     this.loadEbooks();
   }
 
@@ -44,8 +54,9 @@ export class ShowebooksComponent implements OnInit {
     this.selectedEbook = ebook;
     this.isModalOpen = true;
 
-    this.sanitizedUrl = this.sanitizer.bypassSecurityTrustResourceUrl('https://localhost:7261/'+this.selectedEbook?.filePath);
-
+    this.sanitizedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+      'https://localhost:7261/' + this.selectedEbook?.filePath
+    );
   }
 
   closeModal(): void {
@@ -64,4 +75,36 @@ export class ShowebooksComponent implements OnInit {
     target.src = 'assets/default-cover.jpg';
   }
 
+  toggleThumbsUp(): void {
+    this.isThumbsUp = !this.isThumbsUp;
+    if (this.isThumbsUp && this.isThumbsDown) {
+      this.isThumbsDown = false;
+      this.thumbsDownCount--;
+    }
+    this.thumbsUpCount += this.isThumbsUp ? 1 : -1;
+  }
+
+  toggleThumbsDown(): void {
+    this.isThumbsDown = !this.isThumbsDown;
+    if (this.isThumbsDown && this.isThumbsUp) {
+      this.isThumbsUp = false;
+      this.thumbsUpCount--;
+    }
+    this.thumbsDownCount += this.isThumbsDown ? 1 : -1;
+  }
+
+  toggleCommentBox(): void {
+    this.showCommentBox = !this.showCommentBox;
+  }
+
+  submitComment(): void {
+    if (this.reviewText.trim()) {
+      this.reviews.push({
+        user: 'john_doe',
+        text: this.reviewText,
+        date: 'Just now',
+      });
+      this.reviewText = '';
+    }
+  }
 }

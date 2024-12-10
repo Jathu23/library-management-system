@@ -3,7 +3,7 @@
   <div class="audio-info">
     <img 
       class="album-cover"
-      [src]="'https://localhost:7261/' + playingAudio?.coverImagePath || ''"
+      [src]="'https://localhost:7261/'+playingAudio?.coverImagePath || ''"
       alt="Album Cover"
       onerror="this.src='th.jpg'"
     />
@@ -53,7 +53,7 @@
     class="search-input"
     [(ngModel)]="searchQuery"
     placeholder="Search for audiobooks..."
-    (input)="filterAudiobooks()"
+    (input)="onSearch()"
   />
 </div>
 
@@ -61,10 +61,11 @@
 <div class="grid-container">
   <div
     class="grid-item"
-    *ngFor="let audiobook of filteredAudiobooks"
+    *ngFor="let audiobook of audiobooks"
     (click)="openModal(audiobook)"
   >
-    <img style="max-height: 300px; max-width: 250px;"
+    <img 
+  
       class="audio-cover"
       [src]="'https://localhost:7261/' + audiobook.coverImagePath"
       alt="{{ audiobook.title }}"
@@ -78,7 +79,7 @@
 <mat-paginator
   [length]="totalItems"
   [pageSize]="pageSize"
-  [pageSizeOptions]="[10, 15, 25, 50]"
+  [pageSizeOptions]="[2,5,10, 15, 25, 50]"
   showFirstLastButtons
   (page)="onPageChange($event)"
   [pageIndex]="currentPage - 1"
@@ -116,7 +117,7 @@
       <button
         class="btn btn-outline-dark d-flex align-items-center"
         [ngClass]="{ 'text-primary': isThumbsUp }"
-        (click)="toggleThumbsUp()"
+        (click)="toggleThumbsUp();  like_or_dislikeAudiobook(true);"
       >
         <i class="bi bi-hand-thumbs-up-fill me-2"></i>
       </button>
@@ -125,7 +126,7 @@
       <button
         class="btn btn-outline-dark d-flex align-items-center"
         [ngClass]="{ 'text-primary': isThumbsDown }"
-        (click)="toggleThumbsDown()"
+        (click)="toggleThumbsDown(); like_or_dislikeAudiobook(false);"
       >
         <i class="bi bi-hand-thumbs-down-fill me-2"></i>
       </button>

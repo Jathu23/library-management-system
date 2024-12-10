@@ -295,7 +295,6 @@ i {
   /* Cards Section */
   .cards-wrapper-trending {
     display: flex;
-    justify-content: space-between;
     gap: 15px;
   }
   
@@ -336,7 +335,7 @@ i {
     font-size: 15px;
     font-weight: bold;
     color: #28a745;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
   
   .card-favorite {
@@ -359,17 +358,19 @@ i {
     max-width: 800px;
     margin: 0 auto;
     padding: 10px;
-    background-color: #f9f9f9;
+    background-color: #faebf73d;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   
   .rating-container h2 {
+    color: rgb(182, 9, 107);
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
   
   .rating-item {
+    
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -382,16 +383,119 @@ i {
   }
   
   .rating-slider {
+    color: #c1085e;
     flex: 1;
     /* margin: 0 15px; */
   }
   
   .rating-item span {
+    color: #c1085e; 
     font-size: 16px;
     font-weight: bold;
   }
   
   ngx-charts-bar-vertical {
+    
     margin-top: 10px;
   }
   
+
+
+  /* showing the datas in audio books */
+  .three_card {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .card-trending {
+    width: 30%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-trending img{
+    width: 100%;
+  }
+  .card-thumbnail {
+    width: 100%;
+    height: auto;
+  }
+  
+  .card-details {
+    padding: 16px;
+  }
+  
+  .card-title-trending {
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+  
+  .card-location-trending,
+  .card-cost {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+
+  /* --- */
+  /* .graph-section {
+    margin-top: 30px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  } */
+
+  /* ---------- */
+  .chart-container {
+    width: 100%;
+    margin: 0 ;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    text-align: left;
+  }
+  
+  .list-container {
+    margin-top: 5px;
+  }
+  
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0 ;
+  }
+  
+  .list-item {
+    margin: 5px 0;
+    padding: 5px;
+    background: #f0f0f0;
+    border-radius: 5px;
+  }
+  
+  .list-item span {
+    font-weight: bold;
+    margin-left: 5px;
+  }
+  .hedingss{
+    display: flex;
+    justify-content: center;
+  }
+
+
+  /* ---- */
+  .graph_section{
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+    /* .chart-container{
+      height: 400px;
+    }
+    */
+

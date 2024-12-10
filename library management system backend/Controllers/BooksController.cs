@@ -168,15 +168,11 @@ namespace library_management_system.Controllers
 
         [HttpGet("Search")]
         public async Task<IActionResult> Categorize(
-            [FromQuery] string? genre,
-            [FromQuery] string? author,
-            [FromQuery] int? publishYear,
-            [FromQuery] string? title,
-            [FromQuery] string? isbn,
+            [FromQuery] string? searchstring,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 10)
         {
-            var response = await _bookService.GetSearchBooks(genre, author, publishYear, title, isbn, pageNumber, pageSize);
+            var response = await _bookService.GetSearchBooks(searchstring, pageNumber, pageSize);
 
             if (!response.Success)
             {
@@ -186,6 +182,14 @@ namespace library_management_system.Controllers
         }
 
 
+
+        // API to get distinct genres, authors, and publish years
+        [HttpGet("get-distinct-attributes")]
+        public async Task<IActionResult> GetDistinctAttributes()
+        {
+            var result = await _bookService.GetDistinctBookAttributesAsync();
+            return Ok(result);
+        }
 
         [HttpPost ("sample")]
         public async Task<int> addsample()

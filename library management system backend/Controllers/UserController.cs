@@ -336,6 +336,21 @@ namespace library_management_system.Controllers
 			}
 		}
 
+       [ HttpGet("getUserByIdid")]
+ public async Task<IActionResult> GetUserById(int id)
+        {
+            var response = await _userService.GetUserById(id);
 
-	}
+            if (response.Success)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest(response);
+            }
+        }
+
+
+    }
 }

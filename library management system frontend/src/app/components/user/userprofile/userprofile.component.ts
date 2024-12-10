@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { jwtDecode } from 'jwt-decode'; // Corrected import
 import { UserService } from '../../../services/user-service/user.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-userprofile',
@@ -8,109 +8,115 @@ import { UserService } from '../../../services/user-service/user.service';
   styleUrls: ['./userprofile.component.css']
 })
 export class UserprofileComponent implements OnInit {
-  tokenData: any = null;
   user: any = {};
-  isEditing: boolean = false; // Flag to toggle edit mode
+  isEditing: boolean = false;
+  profileImage: File | null = null;  
+
+ 
+  readonlyFields = ['id', 'isActive', 'isSubscribed', 'registrationDate'];
+
+
+  userFields = [
+    { label: 'First Name', key: 'firstName' },
+    { label: 'Last Name', key: 'lastName' },
+    { label: 'Email', key: 'email' },
+    { label: 'Phone', key: 'phoneNumber' },
+    { label: 'Address', key: 'address' },
+    { label: 'User NIC', key: 'userNic' }
+  ];
+
+  recentActivities: string[] = [
+    'Updated profile information',
+    'Added a new book review',
+    'Joined the Science Fiction group',
+    'Completed the JavaScript tutorial'
+  ];
 
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.getTokenData();
+    this.fetchUserDetails();
   }
 
-  getTokenData() {
-    const token = localStorage.getItem('token'); // Assuming token is saved with the key 'token'
-
-
+  fetchUserDetails() {
+    const token = localStorage.getItem('token');
     if (token) {
       try {
-        this.tokenData = jwtDecode(token); // Decode the token
-        this.setUserProfile();
-        console.log(this.tokenData);
-        
+        const tokenData = this.decodeToken(token);
+        const userIdentifier = tokenData.UserNic || tokenData.Email;
+        if (userIdentifier) {
+          this.userService.GetUserByEmailorNic(userIdentifier).subscribe(
+            (response) => {
+              this.user = response?.data || {};
+              console.log('Fetched User:', this.user);
+            },
+            (error) => console.error('Error fetching user:', error)
+          );
+        }
       } catch (error) {
-        console.error('Error decoding the token:', error);
+        console.error('Error decoding token:', error);
       }
-    } else {
-      console.log('No token found in localStorage');
     }
   }
 
-  setUserProfile() {
-    const userIdentifier = this.tokenData.UserNic || this.tokenData.Email;
-
-    if (userIdentifier) {
-      this.userService.GetUserByEmailorNic(userIdentifier).subscribe(
-        (userData) => {
-          const data = userData.data;
-          console.log(data);
-          
-          this.user = {
-            id: data.id,
-            fullName: data.fullName || 'John Doe',
-            firstName: data.firstName || 'John Doe',
-            lastName: data.lastName || 'John Doe',
-            email: data.email || 'No email available',
-            phone: data.phoneNumber || 'No phone available',
-            UserNic: data.userNic || 'No UserNic available',
-            address: data.address || 'No address available',
-            profileImage: data.profileImage ? `https://localhost:7261/${data.profileImage}` : 'https://bootdey.com/img/Content/avatar/avatar7.png',
-            aud: this.tokenData.aud || 'Full Stack Developer',
-            registrationDate: data.registrationDate || 'Not available'
-          };
-        },
-        (error) => {
-          console.error('Error fetching user data:', error);
-        }
-      );
-    } else {
-      console.log('No valid UserNic or Email found to fetch user data');
-    }
+  decodeToken(token: string) {
+    return JSON.parse(atob(token.split('.')[1]));
   }
 
   toggleEdit() {
-    this.isEditing = !this.isEditing;
+    this.isEditing = true;
   }
 
-  saveUser() {
-    const updatedUser = {
-      Id: this.user.id,
-      UserNic: this.user.UserNic,
-      FirstName: this.user.firstName,
-      LastName: this.user.lastName,
-      Email: this.user.email,
-      PhoneNumber: this.user.phone,
-      Address: this.user.address,
-    };
-    console.log(updatedUser);
-    
-
-    this.userService.UpdateUser(updatedUser).subscribe(
-      (response) => {
-        alert("updated successfully")
-        console.log('User data updated successfully:', response);
-        this.isEditing = false; // Toggle back to view mode after saving
-        this.closeEditModal(); // Close the modal after saving
-      },
-      (error) => {
-        console.error('Error updating user data:', error);
+  
+  saveUser(form: any) {
+    if (form.valid) {
+      const updatedUser = { ...this.user };
+  
+      if (this.profileImage) {
+        updatedUser.profileImage = this.profileImage; 
+      } else {
+        delete updatedUser.profileImage;  
       }
-    );
-  }
-
-  // Method to open the edit profile modal
-  openEditModal() {
-    const modal = document.getElementById('editProfileModal') as HTMLElement;
-    if (modal) {
-      modal.style.display = 'block';
+  
+      
+      this.userService.updateUser(updatedUser).subscribe(
+        (response) => {
+          alert('User details updated successfully!');
+          console.log('User updated:', response);
+          this.isEditing = false;
+        },
+        (error) => {
+          console.error('Error updating user:', error);
+        }
+      );
+    } else {
+      alert('Please fill out the form correctly.');
     }
   }
+  
+  
+  cancelEdit() {
+    this.fetchUserDetails();
+    this.isEditing = false;
+  }
 
-  // Method to close the edit profile modal
-  closeEditModal() {
-    const modal = document.getElementById('editProfileModal') as HTMLElement;
-    if (modal) {
-      modal.style.display = 'none';
+  isFieldReadonly(fieldKey: string): boolean {
+    return this.readonlyFields.includes(fieldKey) || !this.isEditing;
+  }
+
+  onImageSelected(event: any): void {
+    const file = event.target.files[0]; 
+    if (file) {
+      this.profileImage = file;
+      
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.user.profileImage = reader.result as string;  
+      };
+      reader.readAsDataURL(file);  
+    } else {
+      this.profileImage = null; 
     }
   }
+  
 }

@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
 import { ReviewRequest, ReviewResponse, ReviewService } from '../../../services/bookservice/review.service';
 import { LikeanddislikeService } from '../../../services/bookservice/likeanddislike.service';
 import { environment } from '../../../../environments/environment.testing';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-showaudiobooks',
@@ -11,9 +12,9 @@ import { environment } from '../../../../environments/environment.testing';
 })
 export class ShowaudiobooksComponent implements OnInit, OnDestroy {
   audiobooks: any[] = []; // Store all fetched audiobooks
-  filteredAudiobooks: any[] = []; // Store audiobooks after filtering
+
   currentPage = 1;
-  pageSize = 10;
+  pageSize = 2;
   totalItems = 0;
   isModalOpen = false;
   selectedAudiobook: any = null;
@@ -24,7 +25,7 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
   currentTime: string = '0:00';
   duration: string = '0:00';
   searchQuery: string = '';
-  isAudiobooksLoaded = false; // Prevent multiple API calls
+  isLoding = false; // Prevent multiple API calls
   reviews: any[] = []; // Store fetched reviews here
   reviewText: string ='';
   currentUserId: number=0;
@@ -32,11 +33,12 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
   likeCount:number=0;
   dislikeCount:number=0;
 
+  currentContext: 'all' | 'search' | 'filter' = 'all'; // Tracks the current operation
   constructor(private getbookservice: GetbooksService , private reviewservice:ReviewService, private likedislikeservice:LikeanddislikeService) { 
     const tokendata = environment.getTokenData();
     this.currentUserId= Number(tokendata.ID);
   }
-
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngOnInit() {
     // this.fetchAudiobookReviews(1);
     // this.fetchDislikeAndLike(1,true);
@@ -102,33 +104,71 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
   }
 
   loadAudiobooks() {
+    if (this.isLoding) {
+      return;
+    }
+    this.currentContext = 'all';
     // Only call the API if data has not been loaded
-    if (!this.isAudiobooksLoaded) {
+    if (!this.isLoding) {
+      this.isLoding = true;
       this.getbookservice.getaudiobooks(this.currentPage, this.pageSize).subscribe(
         (response) => {
           console.log('API Response:', response);
           const result = response.data;
           this.audiobooks = result.items;
           this.totalItems = result.totalCount;
-          this.filteredAudiobooks = [...this.audiobooks]; // Initially show all audiobooks
-          this.isAudiobooksLoaded = true; // Mark data as loaded
+          this.isLoding = false;
           this.restoreAudioState(); // Restore the state after loading audiobooks
         },
         (error) => {
+          this.isLoding = false;
           console.error('Error fetching audiobooks:', error);
         }
       );
     }
   }
+ // Search books
+ onSearch(): void {
+  this.currentPage = 1; // Reset pagination
+  this.currentContext = 'search';
+  this.fetchBooks(); // Unified fetch logic
+}
 
-  filterAudiobooks() {
-    const query = this.searchQuery.toLowerCase();
-    this.filteredAudiobooks = this.audiobooks.filter((audiobook) =>
-      audiobook.title.toLowerCase().includes(query) ||
-      audiobook.author.toLowerCase().includes(query) ||
-      audiobook.genre.toLowerCase().includes(query)
-    );
+fetchBooks(): void {
+  if (this.isLoding) return;
+  this.isLoding = true;
+
+  if (this.currentContext === 'all') {
+    this.loadAudiobooks();
+  } else if (this.currentContext === 'search') {
+    this.getbookservice
+      .searchAudiobooks(this.searchQuery, this.currentPage, this.pageSize)
+      .subscribe(
+        (response) => {
+          const result = response.data;
+          this.audiobooks = result.items;
+          this.totalItems = result.totalCount;
+          this.isLoding = false;
+          this.restoreAudioState(); // Restore the state after loading audiobooks
+        }
+        ,
+        (error) => {
+          console.error('Error fetching search results:', error);
+          this.isLoding = false;
+        }
+      );
+  } else if (this.currentContext === 'filter') {
+    // this.getbookservice
+    //   .Categorize(this.selectedGenre, this.selectedAuthor, this.selectedYear, this.currentPage, this.pageSize)
+    //   .subscribe(
+    //     (response) => this.handleBookResponse(response),
+    //     (error) => {
+    //       console.error('Error fetching filtered books:', error);
+    //       this.isLoding = false;
+    //     }
+    //   );
   }
+}
 
   openModal(audiobook: any) {
     this.selectedAudiobook = audiobook;
@@ -180,11 +220,18 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
     }
   }
 
-  onPageChange(event: any) {
+  // Handle pagination changes
+  onPageChange(event: any): void {
     const { pageIndex, pageSize } = event;
-    this.currentPage = pageIndex + 1;
+    if (pageSize !== this.pageSize) {
+      this.currentPage = 1;
+    } else {
+      this.currentPage = pageIndex + 1;
+    }
     this.pageSize = pageSize;
     this.loadAudiobooks();
+  
+    
   }
 
   formatTime(seconds: number): string {
@@ -213,7 +260,6 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
     this.progress = (this.audio.currentTime / this.audio.duration) * 100;
     this.currentTime = this.formatTime(this.audio.currentTime);
   }
-
 
 
 
@@ -289,7 +335,6 @@ submitAudiobookReview() {
         this.fetchAudiobookReviews(this.selectedAudiobook.id); // Refresh the review list
         this.reviewText = ''; // Clear the review text input
         this.rating = 1; // Reset the rating input
-        this.fetchAudiobookReviews(this.selectedAudiobook.id);
       } else {
         alert(`Failed to submit review: ${response.message}`);
       }
@@ -323,17 +368,30 @@ fetchDislikeAndLike(bookid:number, isLiked: boolean): void {
   });
 }
 
-likeAudiobook(bookId: number, userId: number,like:boolean): void {
+like_or_dislikeAudiobook(like:boolean): void {
   const likeDislikeRequest = {
-    bookId: bookId,
-    userId: userId,
+    bookId: this.selectedAudiobook.id,
+    userId: this.currentUserId,
     isLiked: like,
   };
 
   this.likedislikeservice.addAudiobookLikeDislike(likeDislikeRequest).subscribe({
     next: (response) => {
       if (response.success) {
-        console.log(`Audiobook (ID: ${bookId}) liked successfully by User (ID: ${userId}).`);
+       alert(response.message);
+       if (like) {
+        this.fetchDislikeAndLike(this.selectedAudiobook.id,like);
+        if (!response.success){
+          this.toggleThumbsUp(); 
+        }
+        
+       }else{
+        this.fetchDislikeAndLike(this.selectedAudiobook.id,like);
+        if (!response.success){
+          this.toggleThumbsDown(); 
+        }
+       
+       }
       } else {
         console.warn(`Failed to like audiobook: ${response.message}`);
       }
