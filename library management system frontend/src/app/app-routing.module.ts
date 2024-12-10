@@ -25,6 +25,7 @@ import { authGuard } from './guards/auth.guard';
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 import { LockScreenComponent } from './components/lock-screen/lock-screen.component';
 import { SubscriptionComponent } from './components/user/subscription/subscription.component';
+import { StaticsComponent } from './components/admin/statics/statics.component';
 
 
 const routes: Routes = [
@@ -54,6 +55,7 @@ const routes: Routes = [
       {path:'show-rent-his',component:ShowLentHistoryComponent},
       {path:'members',component:MembersComponent},
       {path:'dashboard',component:DashboardComponent},
+      {path:'statics',component:StaticsComponent},
     ]
   },
   {

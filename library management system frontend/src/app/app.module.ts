@@ -42,8 +42,13 @@ import { DashboardComponent } from './components/admin/dashboard/dashboard.compo
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LockScreenComponent } from './components/lock-screen/lock-screen.component';
 import { TimeAgoPipe } from './Pipe/time-ago.pipe';
+
+import { StaticsComponent } from './components/admin/statics/statics.component';
+
+
 import { MatSelectModule } from '@angular/material/select';
 import { UserprofileComponent } from './components/user/userprofile/userprofile.component';
+
 
 
 
@@ -85,8 +90,13 @@ import { UserprofileComponent } from './components/user/userprofile/userprofile.
     DashboardComponent,
     LockScreenComponent,
     TimeAgoPipe,
+
+    StaticsComponent,
+
+
     UserprofileComponent,
     
+
    
 
   ],
