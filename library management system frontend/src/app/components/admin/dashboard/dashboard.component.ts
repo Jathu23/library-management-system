@@ -19,8 +19,7 @@ export class DashboardComponent implements OnInit {
     
   }
 
-  pieData: { name: string; value: number }[] = []; // Explicitly define the type of pieData
-
+  pieData: { name: string; value: number }[] = []; 
   totalUsers: number | null = null;
   activeUsers: number | null = null;
   NonActiveUsers: number | null = null;
@@ -28,15 +27,23 @@ export class DashboardComponent implements OnInit {
   nonsubscrivedUser: number | null = null;
 
 
+  // -------------
+
+
+
+
   imgageBaseUrl:string=`https://localhost:7261/`
 
   // showing the top books
 
   audiobooks: any[] = []; 
+  audiobookslists: any[] = []; 
+
 
  ngOnInit(): void {
   this.loadUserCounts();
-  this.fetchTopAudiobooks(3)
+  this.fetchTopAudiobooks(3);
+  this.fetchTopAudiobookslist(10)
 }
 
 
@@ -279,6 +286,8 @@ loadUserCounts(): void {
   };
 
   // Sample Top 10 data
+
+
   top10Data = [
     { name: 'Item 1', value: 70 },
     { name: 'Item 2', value: 85 },
@@ -307,7 +316,7 @@ loadUserCounts(): void {
   fetchTopAudiobooks(count: number): void {
     this.audiobookService.getTopAudiobooks(count).subscribe(
       (data) => {
-        this.audiobooks = data; // Assign fetched data
+        this.audiobooks = data; 
         console.log(this.audiobooks);
         
       },
@@ -315,7 +324,22 @@ loadUserCounts(): void {
         console.error('Error fetching audiobooks:', error);
       }
     );
+    
   }
+  fetchTopAudiobookslist(count: number): void {
+    this.audiobookService.getTopAudiobooks(count).subscribe(
+      (data) => {
+        this.audiobookslists=data
+        console.log(this.audiobooks);
+        
+      },
+      (error) => {
+        console.error('Error fetching audiobooks:', error);
+      }
+    );
+    
+  }
+
 
 
 

@@ -710,11 +710,19 @@ i {
 .view_more{
   color: white;
   background: linear-gradient(135deg, #dc1d66, #b83ef1);
-  border-radius: 10px;
+  border-radius: 15px;
   padding: 3px;
-  width: 50%;
-}
+  width: 75%;
+} 
 .view_more:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+} 
+
+/* ----- lists */
+
+.rating-list li:hover {
+  color: #c1085e;
+  text-decoration: underline; /* Adds underline on hover */
+  font-weight: bold;
 }
