@@ -25,6 +25,10 @@ export class DashboardComponent implements OnInit {
   activeUsers: number | null = null;
   NonActiveUsers: number | null = null;
   Subscribed: number | null = null;
+  nonsubscrivedUser: number | null = null;
+
+
+  imgageBaseUrl:string=`https://localhost:7261/`
 
   // showing the top books
 
@@ -240,17 +244,24 @@ loadUserCounts(): void {
   //   { name: 'Non Active Users', value: this.NonActiveUsers },
   //   { name: 'Subscribed USers', value: this.Subscribed }
   // ];
+
+
   updatePieData(): void {
     if (
       this.totalUsers !== null &&
       this.activeUsers !== null &&
       this.NonActiveUsers !== null &&
       this.Subscribed !== null
-    ) {
+    )
+     {
+
+      this.nonsubscrivedUser=this.totalUsers-this.Subscribed
+
+
       this.pieData = [
-        { name: 'All Users', value: this.totalUsers },
-        { name: 'Active Users', value: this.activeUsers },
-        { name: 'Non Active Users', value: this.NonActiveUsers },
+        // { name: 'All Users', value: this.totalUsers },
+        // { name: 'Active Users', value: this.activeUsers },
+        { name: 'Non Subscribed Users', value: this.nonsubscrivedUser },
         { name: 'Subscribed Users', value: this.Subscribed },
       ];
     }

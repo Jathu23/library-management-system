@@ -22,7 +22,6 @@
 
 </div>
 
-
 <!-- Trendings -->
 
 <div class="trendings">
@@ -78,13 +77,17 @@
           </div> -->
 
           <div class="card-trending" *ngFor="let book of audiobooks">
-            <img [src]=" 'https://via.placeholder.com/300x180'" alt="Popular Audio Book" class="card-thumbnail">
+            <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book" class="card-thumbnail">
             <div class="card-details">
               <h3 class="card-title-trending">{{ book.title }}</h3>
               <p class="card-location-trending">{{ book.author || 'Unknown Author' }}</p>
               <!-- <p class="card-cost">{{ book.price ? ('$' + book.price) : 'Free' }}</p> -->
               <p class="card-cost">{{ book.genre}}</p>
+
+              <button class="view_more">View More</button>
+              
             </div>
+            
           </div>
     
 
