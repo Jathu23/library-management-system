@@ -98,4 +98,6 @@ export class StaticsComponent implements OnInit {
       console.log('Borrowing trends for all years:', this.allBorrowingTrends);
     });
   }
+
+  
 }

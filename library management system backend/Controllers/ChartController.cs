@@ -30,6 +30,14 @@ namespace library_management_system.Controllers
             var data = await _chartService.GetBorrowingTrendsForAllYears();
             return Ok(data);
         }
+
+
+        [HttpGet("monthly-revenue")]
+        public async Task<IActionResult> GetMonthlyRevenue(int? year)
+        {
+            var revenueData = await _chartService.GetMonthlyRevenueForChartAsync(year);
+            return Ok(revenueData);
+        }
     }
 
 
