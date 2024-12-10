@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { LikeanddislikeService } from '../../../services/bookservice/likeanddislike.service';
+import { ReviewRequest, ReviewResponse, ReviewService } from '../../../services/bookservice/review.service';
+import { environment } from '../../../../environments/environment.testing';
 
 @Component({
   selector: 'app-showebooks',
@@ -21,15 +23,26 @@ export class ShowebooksComponent implements OnInit {
   isThumbsDown = false;
   showCommentBox = false;
   reviewText = '';
-  reviews: { user: string; text: string; date: string }[] = [];
+  reviews: {
+reviewText: any;
+reviewDate: string|Date; user: string; text: string; date: string 
+}[] = [];
   thumbsUpCount = 12;
   thumbsDownCount = 21;
+  currentUserId: number;
+  likeCount: any;
+  dislikeCount: any;
+  rating: number=1;
 
   constructor(
     private getbooksService: GetbooksService,
     private sanitizer: DomSanitizer,
-     private likedislikeservice:LikeanddislikeService
-  ) {}
+     private likedislikeservice:LikeanddislikeService,
+     private reviewservice:ReviewService
+  ) {
+    const tokendata = environment.getTokenData();
+    this.currentUserId= Number(tokendata.ID);
+  }
 
   ngOnInit(): void {
     this.loadEbooks();
@@ -55,7 +68,10 @@ export class ShowebooksComponent implements OnInit {
   openEbookModal(ebook: any): void {
     this.selectedEbook = ebook;
     this.isModalOpen = true;
-    this.addClick();
+    this.fetchEbookReviews(ebook.id)
+    this.addClick(ebook.id);
+    this.fetchDislikeAndLike(ebook.id,true);
+    this.fetchDislikeAndLike(ebook.id,false);
 
     this.sanitizedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
       'https://localhost:7261/' + this.selectedEbook?.filePath
@@ -100,23 +116,125 @@ export class ShowebooksComponent implements OnInit {
     this.showCommentBox = !this.showCommentBox;
   }
 
-  submitComment(): void {
-    if (this.reviewText.trim()) {
-      this.reviews.push({
-        user: 'john_doe',
-        text: this.reviewText,
-        date: 'Just now',
-      });
-      this.reviewText = '';
-    }
+
+
+
+  fetchEbookReviews(bookId: number): void {
+    this.reviewservice.getEbookReviews(bookId).subscribe(
+      (response) => {
+        if (response.success) {
+          console.log('Audiobook Reviews:', response.data);
+          // Handle success: e.g., assign data to a local variable
+          this.reviews = response.data; // Assuming `reviews` is a component property
+        } else {
+          console.error('Failed to fetch reviews:', response.message);
+          // Optionally display an error message to the user
+        }
+      },
+      (error) => {
+        console.error('Error fetching reviews:', error);
+        // Handle network or server errors
+      }
+    );
   }
-  addClick(){
+  
+  submitEbookReview() {
+    // Validate input fields
+    if (!this.selectedEbook ) {
+      alert('Please provide a valid rating (1-5) and a review text.');
+      return;
+    }
+  
+    // Prepare the review request
+    const review: ReviewRequest = {
+      userId: this.currentUserId, // Replace with actual logged-in user ID
+      bookId: this.selectedEbook.id,
+      reviewText: this.reviewText,
+      rating: this.rating
+    };
+  
+    // Call the service method to submit the review
+    this.reviewservice.addEbookReview(review).subscribe({
+      next: (response: ReviewResponse<any>) => {
+        if (response.success) {
+          alert('Review submitted successfully.');
+          this.fetchEbookReviews(this.selectedEbook.id); // Refresh the review list
+          this.reviewText = ''; // Clear the review text input
+          this.rating = 1; // Reset the rating input
+        } else {
+          alert(`Failed to submit review: ${response.message}`);
+        }
+      },
+      error: (error) => {
+        console.error('Error submitting review:', error);
+        alert('An error occurred while submitting the review. Please try again later.');
+      }
+    });
+  }
+  
+  
+  
+  fetchDislikeAndLike(bookid:number, isLiked: boolean): void {
+    this.likedislikeservice.getEbookLikeDislikeCount(bookid, isLiked).subscribe({
+      next: (response) => {
+        if (response.success) {
+          if (isLiked) {
+            this.likeCount = response.data;
+          }else{
+            this.dislikeCount = response.data;
+          }
+          
+        } else {
+          console.warn('Failed to fetch like/dislike count for audiobook:', response.message);
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching like/dislike count for audiobook:', error);
+      },
+    });
+  }
+  
+  like_or_dislikeAudiobook(like:boolean): void {
+    const likeDislikeRequest = {
+      bookId: this.selectedEbook.id,
+      userId: this.currentUserId,
+      isLiked: like,
+    };
+  
+    this.likedislikeservice.addEbookLikeDislike(likeDislikeRequest).subscribe({
+      next: (response) => {
+        if (response.success) {
+         alert(response.message);
+         if (like) {
+          this.fetchDislikeAndLike(this.selectedEbook.id,like);
+          if (!response.success){
+            this.toggleThumbsUp(); 
+          }
+          
+         }else{
+          this.fetchDislikeAndLike(this.selectedEbook.id,like);
+          if (!response.success){
+            this.toggleThumbsDown(); 
+          }
+         
+         }
+        } else {
+          console.warn(`Failed to like audiobook: ${response.message}`);
+        }
+      },
+      error: (error) => {
+        console.error('Error liking audiobook:', error);
+      },
+    });
+  }
+  
+  addClick(id:number){
     // setTimeout(() => {
     //   console.log(this.selectedEbook);
     
     // }, 100);
   
-    this.likedislikeservice.addEBookClick(this.selectedEbook.id).subscribe(
+    this.likedislikeservice.addEBookClick(id).subscribe(
       (result) => {
         if (result) {
           console.log('Click added successfully.');
