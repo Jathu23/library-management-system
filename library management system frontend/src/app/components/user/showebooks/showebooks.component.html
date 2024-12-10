@@ -1,4 +1,4 @@
-<p>ebook works!</p>
+
 <div class="grid-container scroll-container">
   <div class="grid-item" *ngFor="let ebook of ebooks" (click)="openEbookModal(ebook)">
     <img 
@@ -17,7 +17,7 @@
 </div>
 
 <!-- Modal eBook -->
-<div class="modal" [class.show]="isModalOpen">
+<div class="modal" [class.show]="isModalOpen" >
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
     <h2>{{ selectedEbook?.title }}</h2>

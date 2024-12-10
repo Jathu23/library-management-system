@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { LikeanddislikeService } from '../../../services/bookservice/likeanddislike.service';
 
 @Component({
   selector: 'app-showebooks',
@@ -26,7 +27,8 @@ export class ShowebooksComponent implements OnInit {
 
   constructor(
     private getbooksService: GetbooksService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+     private likedislikeservice:LikeanddislikeService
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +55,7 @@ export class ShowebooksComponent implements OnInit {
   openEbookModal(ebook: any): void {
     this.selectedEbook = ebook;
     this.isModalOpen = true;
+    this.addClick();
 
     this.sanitizedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
       'https://localhost:7261/' + this.selectedEbook?.filePath
@@ -106,5 +109,25 @@ export class ShowebooksComponent implements OnInit {
       });
       this.reviewText = '';
     }
+  }
+  addClick(){
+    // setTimeout(() => {
+    //   console.log(this.selectedEbook);
+    
+    // }, 100);
+  
+    this.likedislikeservice.addEBookClick(this.selectedEbook.id).subscribe(
+      (result) => {
+        if (result) {
+          console.log('Click added successfully.');
+        } else {
+          console.log('Failed to add click.');
+        }
+      },
+      (error) => {
+        console.error('Error:', error.message);
+      }
+    );
+    
   }
 }

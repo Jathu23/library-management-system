@@ -402,5 +402,20 @@ like_or_dislikeAudiobook(like:boolean): void {
   });
 }
 
+addClick(){
+  this.likedislikeservice.addAudioBookClick(this.selectedAudiobook.id).subscribe(
+    (result) => {
+      if (result) {
+        console.log('Click added successfully.');
+      } else {
+        console.log('Failed to add click.');
+      }
+    },
+    (error) => {
+      console.error('Error:', error.message);
+    }
+  );
+  
+}
 
 }

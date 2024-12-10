@@ -62,7 +62,7 @@
   <div
     class="grid-item"
     *ngFor="let audiobook of audiobooks"
-    (click)="openModal(audiobook)"
+    (click)="openModal(audiobook); addClick();"
   >
     <img 
   

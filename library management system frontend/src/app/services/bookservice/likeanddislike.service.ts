@@ -23,6 +23,8 @@ export interface LikeDislikeResponse<T> {
 export class LikeanddislikeService {
   private base = environment.apiBaseUrl;
   private baseUrl = `${this.base}/LikeDislike`;
+  private ebookUrl = `${this.base}/Ebook/`;
+  private audiobookUrl = `${this.base}/Audiobook/`;
 
   constructor(private http: HttpClient) {}
 
@@ -100,6 +102,25 @@ export class LikeanddislikeService {
       catchError(this.handleError)
     );
   }
+
+  addAudioBookClick(bookId: number): Observable<any> {
+    const url = `${this.audiobookUrl}AddClick`;
+    const params = new HttpParams().set('bookid', bookId.toString());
+  
+    return this.http.post<any>(url, null, { params }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  addEBookClick(bookId: number): Observable<any> {
+    const url = `${this.ebookUrl}AddClick`;
+    const params = new HttpParams().set('bookid', bookId.toString());
+  
+    return this.http.post<any>(url, null, { params }).pipe(
+      catchError(this.handleError)
+    );
+  }
+    
+
 
   // Handle HTTP errors
   private handleError(error: HttpErrorResponse): Observable<never> {
