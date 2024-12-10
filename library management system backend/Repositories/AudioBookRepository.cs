@@ -39,6 +39,28 @@ namespace library_management_system.Repositories
             return await _context.AudiobookMetadatas
                 .FirstOrDefaultAsync(metadata => metadata.AudiobookId == audiobookId);
         }
+        public async Task<bool> AddClick(int audiobookId)
+        {
+            try
+            {
+                var data = await _context.AudiobookMetadatas
+                    .FirstOrDefaultAsync(metadata => metadata.AudiobookId == audiobookId);
+
+
+                data.Click++;
+
+                _context.AudiobookMetadatas.Update(data);
+                var result = await _context.SaveChangesAsync();
+
+                return result > 0; 
+            }
+            catch (Exception ex)
+            {
+               
+                return false;
+            }
+        }
+
 
         public async Task UpdateAudiobook(Audiobook audiobook, AudiobookMetadata metadata)
         {

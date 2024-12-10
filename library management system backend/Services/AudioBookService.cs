@@ -48,6 +48,7 @@ namespace library_management_system.Services
                 DigitalRights = audiobookDto.DigitalRights,
                 DownloadCount= 0,
                 PlayCount =0,
+                Click =0,
                 FileSize =21,
                 DurationInSeconds = 12
             };
@@ -242,6 +243,11 @@ namespace library_management_system.Services
             return await _audioBookRepository.GetTopAudiobooksAsync( count);
 
 		}
+        public async Task<bool> AddClick(int bookid)
+        {
+           return await _audioBookRepository.AddClick(bookid);
+           
+        }
 
 
 

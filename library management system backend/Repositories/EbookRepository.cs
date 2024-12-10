@@ -104,7 +104,27 @@ namespace library_management_system.Repositories
             return (ebooks, totalRecords);
         }
 
+        public async Task<bool> AddClick(int ebookId)
+        {
+            try
+            {
+                var data = await _context.EbookMetadatas
+                    .FirstOrDefaultAsync(metadata => metadata.EbookId == ebookId);
 
+
+                data.Click++;
+
+                _context.EbookMetadatas.Update(data);
+                var result = await _context.SaveChangesAsync();
+
+                return result > 0;
+            }
+            catch (Exception ex)
+            {
+
+                return false;
+            }
+        }
 
     }
 }
