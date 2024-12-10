@@ -252,14 +252,31 @@ namespace library_management_system.Repositories
 
 		public async Task<int> GetActiveUserCountAsync()
 		{
-			return await _context.Users.CountAsync(user => user.IsActive); // Filter active users
-		}
-		public async Task<int> GetNonActiveUserCountAsync()
-		{
-			return await _context.Users.CountAsync(user => !user.IsActive); // Filter active users
-		}
+            var threeMonthsAgo = DateTime.UtcNow.AddMonths(-3);
 
-		public async Task<int> GetSubscribedUserCountAsync()
+            return await _context.Users
+                .Where(user =>
+                    user.IsActive && // User is marked as active
+                    (_context.LentRecords.Any(lr => lr.UserId == user.Id) || // Has borrowing records
+                     _context.RentHistory.Any(rr => rr.UserId == user.Id && rr.ReturnDate >= threeMonthsAgo)) // Has return activity in the last 3 months
+                )
+                .CountAsync();
+        }
+        public async Task<int> GetNonActiveUserCountAsync()
+        {
+            var threeMonthsAgo = DateTime.Now.AddMonths(-3);
+
+            return await _context.Users
+                .Where(user =>
+                    !user.IsActive || // User is not marked as active
+                    !_context.LentRecords.Any(lr => lr.UserId == user.Id) && // No borrowing records
+                    !_context.RentHistory.Any(rr => rr.UserId == user.Id && rr.ReturnDate >= threeMonthsAgo) // No return activity in the last 3 months
+                )
+                .CountAsync();
+        }
+
+
+        public async Task<int> GetSubscribedUserCountAsync()
 		{
 			return await _context.Users.CountAsync(user => user.IsSubscribed); // Filter active users
 		}
