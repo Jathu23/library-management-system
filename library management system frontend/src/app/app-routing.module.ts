@@ -26,13 +26,11 @@ import { DashboardComponent } from './components/admin/dashboard/dashboard.compo
 import { LockScreenComponent } from './components/lock-screen/lock-screen.component';
 import { SubscriptionComponent } from './components/user/subscription/subscription.component';
 import { StaticsComponent } from './components/admin/statics/statics.component';
-<<<<<<< HEAD
 import { NotificationComponent } from './components/user/notification/notification.component';
-=======
 import { NormalBooksComponent } from './components/admin/dashboard/innercomponenets/normal-books/normal-books.component';
 import { AudioBookComponent } from './components/admin/dashboard/innercomponenets/audio-book/audio-book.component';
 import { EBookComponent } from './components/admin/dashboard/innercomponenets/ebook/ebook.component';
->>>>>>> 9bb57ae5935b21f82e540f8fce1bdc261f433a7f
+import { OverdueComponent } from './components/admin/overdue/overdue.component';
 
 
 const routes: Routes = [
@@ -69,6 +67,7 @@ const routes: Routes = [
       ] 
     },
       {path:'statics',component:StaticsComponent},
+      {path:'overdue',component:OverdueComponent},
     ]
   },
   {

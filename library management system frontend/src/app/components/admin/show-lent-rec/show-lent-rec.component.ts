@@ -167,9 +167,9 @@ export class ShowLentRecComponent implements OnInit {
       (response) => {
         if (response && response.data) {
           this.lentRecords = response.data;
-          console.log('Fetched records:', this.lentRecords);
+          
         } else {
-          console.error('Unexpected response format:', response);
+          
           this.errorMessage = 'Failed to fetch data. Please try again later.';
         }
         this.isLoading = false;
