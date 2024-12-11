@@ -10,6 +10,11 @@ import { BookService } from '../../../services/bookservice/addbook.service';
 })
 export class AddebookComponent implements OnInit {
   addEbookForm!: FormGroup;
+  isLoading = false;
+  currentPage = 1;
+  pageSize = 10;
+  totalItems = 0;
+  Nbooks: any[] = [];
   imagePreviews: string[] = [];
 
   constructor(private fb: FormBuilder, private bookService: BookService) { 
