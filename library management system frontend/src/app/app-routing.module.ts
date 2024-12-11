@@ -30,6 +30,8 @@ import { NotificationComponent } from './components/user/notification/notificati
 import { NormalBooksComponent } from './components/admin/dashboard/innercomponenets/normal-books/normal-books.component';
 import { AudioBookComponent } from './components/admin/dashboard/innercomponenets/audio-book/audio-book.component';
 import { EBookComponent } from './components/admin/dashboard/innercomponenets/ebook/ebook.component';
+import { OverdueComponent } from './components/admin/overdue/overdue.component';
+import { ReportComponent } from './components/admin/report/report.component';
 
 
 const routes: Routes = [
@@ -66,6 +68,8 @@ const routes: Routes = [
       ] 
     },
       {path:'statics',component:StaticsComponent},
+      {path:'overdue',component:OverdueComponent},
+      {path:'report',component:ReportComponent},
     ]
   },
   {

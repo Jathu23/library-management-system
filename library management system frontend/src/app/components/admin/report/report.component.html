@@ -1,0 +1,143 @@
+<div class="control-bar">
+    <!-- Report Type Selection -->
+    <label for="report-type">Select Report Type:</label>
+    <select id="report-type" [(ngModel)]="selectedReportType" (change)="onReportTypeChange()">
+      <option value="overall">Overall Lending Report</option>
+      <option value="lentByUser">Lent Report by User ID</option>
+      <option value="bookBorrow">All Book Borrow Report</option>
+      <option value="bookBorrowbyid">Book Borrow Report by BookId</option>
+    </select>
+  
+    <!-- Conditional Inputs for Report Filters -->
+    <div *ngIf="selectedReportType === 'lentByUser'">
+      <label for="user-id">User ID:</label>
+      <input type="number" id="user-id" [(ngModel)]="userId" (change)="onReportTypeChange()" placeholder="Enter User ID" />
+    </div>
+    
+    <div *ngIf="selectedReportType === 'bookBorrowbyid'">
+      <label for="book-id">Book ID:</label>
+      <input type="number" id="book-id" [(ngModel)]="bookId" (change)="onReportTypeChange()" placeholder="Enter Book ID" />
+    </div>
+
+    <div><button>View</button></div>
+    <div><button>Download</button></div>
+  </div>
+
+  
+
+
+
+
+<div class="container mt-4">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Overview Section -->
+        <div class="overview mb-4">
+          <h3>Overall Report</h3>
+          <table class="table table-bordered table-striped">
+            <tr>
+              <th>Date</th>
+              <td>{{ overallreport.date | date: 'short' }}</td>
+            </tr>
+            <tr>
+              <th>Total Rangings</th>
+              <td>{{ overallreport.totalRengings }}</td>
+            </tr>
+            <tr>
+              <th>Pending</th>
+              <td>{{ overallreport.pending }}</td>
+            </tr>
+            <tr>
+              <th>On Time</th>
+              <td>{{ overallreport.onTime }}</td>
+            </tr>
+            <tr>
+              <th>Late</th>
+              <td>{{ overallreport.later }}</td>
+            </tr>
+          </table>
+        </div>
+  
+        <!-- Pending Lent Books Section -->
+        <div class="pending-lent mb-4">
+          <h4>Pending Lent Books</h4>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Book Title</th>
+                <th>User Name</th>
+                <th>Lent Date</th>
+                <th>Due Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let book of overallreport.pendingLent">
+                <td>{{ book.bookTitle }}</td>
+                <td>{{ book.userName }}</td>
+                <td>{{ book.lentDate | date: 'short' }}</td>
+                <td>{{ book.dueDate | date: 'short' }}</td>
+                <td>{{ book.status }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- On Time Lent Books Section -->
+        <div class="on-time-lent mb-4">
+          <h4>On Time Lent Books</h4>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Book Title</th>
+                <th>User Name</th>
+                <th>Lent Date</th>
+                <th>Return Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let book of overallreport.onTimeLent">
+                <td>{{ book.bookTitle }}</td>
+                <td>{{ book.userName }}</td>
+                <td>{{ book.lentDate | date: 'short' }}</td>
+                <td>{{ book.returnDate | date: 'short' }}</td>
+                <td>{{ book.status }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- Late Lent Books Section -->
+        <div class="late-lent mb-4" *ngIf="overallreport.laterLent.length > 0">
+          <h4>Late Lent Books</h4>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Book Title</th>
+                <th>User Name</th>
+                <th>Lent Date</th>
+                <th>Due Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let book of overallreport.laterLent">
+                <td>{{ book.bookTitle }}</td>
+                <td>{{ book.userName }}</td>
+                <td>{{ book.lentDate | date: 'short' }}</td>
+                <td>{{ book.dueDate | date: 'short' }}</td>
+                <td>{{ book.status }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- No Late Lent Books message -->
+        <div *ngIf="overallreport.laterLent.length === 0">
+          <p>No late lent books.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  

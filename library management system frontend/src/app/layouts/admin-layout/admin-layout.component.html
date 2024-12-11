@@ -79,16 +79,26 @@
         
         <li class="sidebar-item">
           <a  [routerLink]="['/admin/show-rent-rec']" class="sidebar-link">
-            <i class="icon bi bi-arrow-return-left"></i>
+            <i class="icon bi bi-box-arrow-in-right"></i>
             <span>Lend</span>
           </a>
         </li>
         <li class="sidebar-item">
           <a [routerLink]="['/admin/show-rent-his']" class="sidebar-link">
-            <i class="icon bi bi-arrow-return-right"></i>
+            <i class="icon bi bi-box-arrow-in-left"></i> <!-- Box arrow in left -->
             <span>Return</span>
           </a>
         </li>
+        
+        
+
+        <li class="sidebar-item">
+          <a [routerLink]="['/admin/overdue']" class="sidebar-link">
+            <i class="icon bi bi-alarm"></i> <!-- Alarm icon -->
+            <span>OverDue</span>
+          </a>
+        </li>
+        
 
         <li class="sidebar-item">
           <a [routerLink]="['/admin/statics']" class="sidebar-link">
@@ -100,16 +110,16 @@
         
         <li class="sidebar-item">
           <a [routerLink]="['/admin/add-admin']" class="sidebar-link">
-            <i class="icon bi bi-person-add"></i>
+            <i class="icon bi bi-tools"></i> <!-- Tools icon -->
             <span>Create Admin</span>
           </a>
         </li>
-        <li class="sidebar-item">
-          <a [routerLink]="['/admin/add-admin']" class="sidebar-link">
+      <li class="sidebar-item">
+          <a  [routerLink]="['/admin/report']" class="sidebar-link">
             <i class="icon bi bi-person-badge-fill"></i>
-            <span>Profile</span>
+            <span>Report</span>
           </a>
-        </li>
+        </li> 
         
        
       </ul>
