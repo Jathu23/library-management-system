@@ -16,9 +16,10 @@ export class ShowebooksComponent implements OnInit {
   selectedEbook: any | null = null;
   currentPage = 1;
   pageSize = 10;
-
+  totalItems = 0;
   sanitizedUrl!: SafeResourceUrl;
 
+  searchQuery = ''; // Variable to store the search query
   isThumbsUp = false;
   isThumbsDown = false;
   showCommentBox = false;
@@ -49,20 +50,50 @@ reviewDate: string|Date; user: string; text: string; date: string
   }
 
   loadEbooks(): void {
-    this.getbooksService.getebooks(this.currentPage, this.pageSize).subscribe(
+    if (this.searchQuery.trim() !== '') {
+      this.searchForEbooks(); // Search ebooks if there is a search query
+    } else {
+      this.getbooksService.getebooks(this.currentPage, this.pageSize).subscribe(
+        (response) => {
+          console.log('API Response:', response);
+          if (response?.data?.items && Array.isArray(response.data.items)) {
+            this.ebooks = response.data.items;
+            this.totalItems = response.data.totalCount || 0; // Ensure totalItems is assigned
+          } else {
+            console.warn('No eBooks found or invalid data structure:', response);
+            this.ebooks = [];
+          }
+        },
+        (error) => {
+          console.error('Error fetching eBooks:', error);
+        }
+      );
+    }
+  }
+
+  // Handle ebook search functionality
+  searchForEbooks(): void {
+    this.getbooksService.searchEbooks(this.searchQuery, this.currentPage, this.pageSize).subscribe(
       (response) => {
-        console.log('API Response:', response);
+        console.log('Search API Response:', response);
         if (response?.data?.items && Array.isArray(response.data.items)) {
           this.ebooks = response.data.items;
+          this.totalItems = response.data.totalCount || 0;  // Assuming totalCount is returned
         } else {
           console.warn('No eBooks found or invalid data structure:', response);
           this.ebooks = [];
         }
       },
       (error) => {
-        console.error('Error fetching eBooks:', error);
+        console.error('Error searching ebooks:', error);
       }
     );
+  }
+
+  // Handle search input change
+  onSearchChange(): void {
+    this.currentPage = 1; // Reset to the first page on search
+    this.loadEbooks();  // Reload ebooks based on search query
   }
 
   openEbookModal(ebook: any): void {
@@ -246,6 +277,21 @@ reviewDate: string|Date; user: string; text: string; date: string
         console.error('Error:', error.message);
       }
     );
+    
+  }
+
+  // Handle pagination changes
+  // Handle pagination changes
+  onPageChange(event: any): void {
+    const { pageIndex, pageSize } = event;
+    if (pageSize !== this.pageSize) {
+      this.currentPage = 1;
+    } else {
+      this.currentPage = pageIndex + 1;
+    }
+    this.pageSize = pageSize;
+    this.loadEbooks();
+  
     
   }
 }

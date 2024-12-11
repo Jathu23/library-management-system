@@ -1,55 +1,88 @@
-
 <div class="container mt-4">
-    <h2 class="mb-4">User Lending Records</h2>
-  
-    <!-- Loader -->
-    <div *ngIf="isLoading" class="text-center">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-  
-    <!-- Error Message -->
-    <div *ngIf="errorMessage" class="alert alert-danger text-center">
-      {{ errorMessage }}
-    </div>
-  
-    <!-- Lending Table -->
-    <table *ngIf="!isLoading && lentRecords.length > 0" class="table table-bordered">
-      <thead class="table-dark">
-        <tr>
-          <th>Lent ID</th>
-          <th>Book Title</th>
-          <th>BookCopy ID</th>
-          <th>Author</th>
-          <th>Lent Date</th>
-          <th>Due Date</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let record of lentRecords">
-          <td>{{ record.id }}</td>
-          <td>{{ record.bookTitle }}</td>
-          <td>{{ record.bookCopyId }}</td>
-          <td>{{ record.bookAuthor }}</td>
-          <td>{{ record.lentDate | date: 'yyyy-MM-dd' }}</td>
-          <td>{{ record.dueDate | date: 'yyyy-MM-dd' }}</td>
-          <td>
-            <span
-              class="badge"
-              [ngClass]="record.status === 'Returned' ? 'bg-success' : 'bg-warning'"
-            >
-              {{ record.status }}
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <!-- No Records Found -->
-    <div *ngIf="!isLoading && lentRecords.length === 0" class="alert alert-info text-center">
-      No lending records found for this user.
+  <h2 class="mb-4 text-color">User Lending Records</h2>
+
+  <!-- Loader -->
+  <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
   </div>
-  
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger text-center">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Lending Table (for larger screens) -->
+  <table *ngIf="!isLoading && lentRecords.length > 0" class="table table-bordered d-md-table table-hover">
+    <thead class="table-header">
+      <tr>
+        <th>Lent ID</th>
+        <th>Book Title</th>
+        <th>BookCopy ID</th>
+        <th>Author</th>
+        <th>Lent Date</th>
+        <th>Due Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let record of lentRecords">
+        <td>{{ record.id }}</td>
+        <td>{{ record.bookTitle }}</td>
+        <td>{{ record.bookCopyId }}</td>
+        <td>{{ record.bookAuthor }}</td>
+        <td>{{ record.lentDate | date: 'yyyy-MM-dd' }}</td>
+        <td>{{ record.dueDate | date: 'yyyy-MM-dd' }}</td>
+        <td>
+          <span class="badge" [ngClass]="record.status === 'Returned' ? 'bg-success' : 'bg-warning'">
+            {{ record.status }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Lending Records (for smaller screens, Key-Value format) -->
+  <div *ngIf="!isLoading && lentRecords.length > 0" class="lending-records d-md-none">
+    <div *ngFor="let record of lentRecords" class="record-container">
+      <div class="key-value">
+        <span class="key">Lent ID:</span>
+        <span class="value">{{ record.id }}</span>
+      </div>
+      <div class="key-value">
+        <span class="key">Book Title:</span>
+        <span class="value">{{ record.bookTitle }}</span>
+      </div>
+      <div class="key-value">
+        <span class="key">BookCopy ID:</span>
+        <span class="value">{{ record.bookCopyId }}</span>
+      </div>
+      <div class="key-value">
+        <span class="key">Author:</span>
+        <span class="value">{{ record.bookAuthor }}</span>
+      </div>
+      <div class="key-value">
+        <span class="key">Lent Date:</span>
+        <span class="value">{{ record.lentDate | date: 'yyyy-MM-dd' }}</span>
+      </div>
+      <div class="key-value">
+        <span class="key">Due Date:</span>
+        <span class="value">{{ record.dueDate | date: 'yyyy-MM-dd' }}</span>
+      </div>
+      <div class="key-value">
+        <span class="key">Status:</span>
+        <span class="value">
+          <span class="badge" [ngClass]="record.status === 'Returned' ? 'bg-success' : 'bg-warning'">
+            {{ record.status }}
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Records Found -->
+  <div *ngIf="!isLoading && lentRecords.length === 0" class="alert alert-info text-center">
+    No lending records found for this user.
+  </div>
+</div>

@@ -208,16 +208,16 @@ export class ShowbooksComponent implements OnInit {
 
   openModal(book: any): void {
     this.selectedBook = book;
-    this.isModalOpen = true;
-    this.currentImageIndex = 0; // Reset slider index when opening the modal
+    this.isModalOpen = true;  // Make sure this is set to true
+    this.currentImageIndex = 0;
     this.isThumbsUp = false;
     this.isThumbsDown = false;
     this.showCommentBox = false;
     this.fetchNormalbookReviews(book.id);
-    this.fetchDislikeAndLike(book.id,true);
-    this.fetchDislikeAndLike(book.id,false);
-  
+    this.fetchDislikeAndLike(book.id, true);
+    this.fetchDislikeAndLike(book.id, false);
   }
+  
 
   closeModal(): void {
     this.isModalOpen = false;

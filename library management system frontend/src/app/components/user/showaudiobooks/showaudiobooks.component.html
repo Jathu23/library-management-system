@@ -115,7 +115,7 @@
     <!-- Thumbs Up, Thumbs Down, and Comment Buttons -->
     <div class="d-flex justify-content-start align-items-center gap-3 mt-4 flex-wrap">
       <button
-        class="btn btn-outline-dark d-flex align-items-center"
+        class="btn btn-outline-dark d-flex align-items-center" style="background-color: #7e60bf7b;"
         [ngClass]="{ 'text-primary': isThumbsUp }"
         (click)="toggleThumbsUp();  like_or_dislikeAudiobook(true);"
       >
@@ -124,7 +124,7 @@
       <span class="ms-1">{{likeCount}}</span>
 
       <button
-        class="btn btn-outline-dark d-flex align-items-center"
+        class="btn btn-outline-dark d-flex align-items-center" style="background-color: #7e60bf75;"
         [ngClass]="{ 'text-primary': isThumbsDown }"
         (click)="toggleThumbsDown(); like_or_dislikeAudiobook(false);"
       >
@@ -133,7 +133,7 @@
       <span class="ms-1">{{dislikeCount}}</span>
 
       <button
-        class="btn btn-outline-dark d-flex align-items-center"
+        class="btn btn-outline-dark d-flex align-items-center"style="background-color:#7e60bf75;"
         (click)="toggleCommentBox()"
       >
         <i class="bi bi-chat-right-text-fill me-2"></i>

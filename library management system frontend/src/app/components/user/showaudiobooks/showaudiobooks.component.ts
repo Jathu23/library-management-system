@@ -4,6 +4,7 @@ import { ReviewRequest, ReviewResponse, ReviewService } from '../../../services/
 import { LikeanddislikeService } from '../../../services/bookservice/likeanddislike.service';
 import { environment } from '../../../../environments/environment.testing';
 import { MatPaginator } from '@angular/material/paginator';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-showaudiobooks',
@@ -34,7 +35,11 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
   dislikeCount:number=0;
 
   currentContext: 'all' | 'search' | 'filter' = 'all'; // Tracks the current operation
-  constructor(private getbookservice: GetbooksService , private reviewservice:ReviewService, private likedislikeservice:LikeanddislikeService) { 
+  constructor(private getbookservice: GetbooksService ,
+     private reviewservice:ReviewService, 
+     private likedislikeservice:LikeanddislikeService,
+     private http:HttpClient
+    ) { 
     const tokendata = environment.getTokenData();
     this.currentUserId= Number(tokendata.ID);
   }
@@ -64,6 +69,7 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
 
     // Restore audio state if available
     this.restoreAudioState();
+
   }
 
   ngOnDestroy() {

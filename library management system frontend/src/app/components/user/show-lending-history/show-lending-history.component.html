@@ -1,56 +1,100 @@
 <div class="container mt-4">
-    <h2 class="mb-4">User Lending History</h2>
-  
-    <!-- Loader -->
-    <div *ngIf="isLoading" class="text-center">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-  
-    <!-- Error Message -->
-    <div *ngIf="errorMessage" class="alert alert-danger text-center">
-      {{ errorMessage }}
-    </div>
-  
-    <!-- Lending History Table -->
-    <table *ngIf="!isLoading && lendingHistory.length > 0" class="table table-bordered">
-      <thead class="table-dark">
-        <tr>
-          <th>History ID</th>
-          <th>Book Title</th>
-          <th>BookCopy ID</th>
-          <th>Author</th>
-          <th>Lent Date</th>
-          <th>Due Date</th>
-          <th>Return Date</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let history of lendingHistory">
-          <td>{{ history.id }}</td>
-          <td>{{ history.bookTitle }}</td>
-          <td>{{ history.bookCopyId }}</td>
-          <td>{{ history.bookAuthor }}</td>
-          <td>{{ history.lentDate | date: 'yyyy-MM-dd' }}</td>
-          <td>{{ history.dueDate | date: 'yyyy-MM-dd' }}</td>
-          <td>{{ history.returnDate | date: 'yyyy-MM-dd' }}</td>
-          <td>
-            <span
-              class="badge"
-              [ngClass]="history.status === 'Returned' ? 'bg-success' : 'bg-danger'"
-            >
-              {{ history.status }}
-            </span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  
-    <!-- No Records Found -->
-    <div *ngIf="!isLoading && lendingHistory.length === 0" class="alert alert-info text-center">
-      No lending history found for this user.
+  <h2 class="mb-4 text-color">User Lending History</h2>
+
+  <!-- Loader -->
+  <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
     </div>
   </div>
-  
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="alert alert-danger text-center">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Lending History Table (for larger screens) -->
+  <table *ngIf="!isLoading && lendingHistory.length > 0" class="table table-bordered table-hover d-none d-md-table">
+    <thead class="table-header">
+      <tr>
+        <th>History ID</th>
+        <th>Book Title</th>
+        <th>BookCopy ID</th>
+        <th>Author</th>
+        <th>Lent Date</th>
+        <th>Due Date</th>
+        <th>Return Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let history of lendingHistory">
+        <td>{{ history.id }}</td>
+        <td>{{ history.bookTitle }}</td>
+        <td>{{ history.bookCopyId }}</td>
+        <td>{{ history.bookAuthor }}</td>
+        <td>{{ history.lentDate | date: 'yyyy-MM-dd' }}</td>
+        <td>{{ history.dueDate | date: 'yyyy-MM-dd' }}</td>
+        <td>{{ history.returnDate | date: 'yyyy-MM-dd' }}</td>
+        <td>
+          <span
+            class="badge"
+            [ngClass]="history.status === 'Returned' ? 'bg-success' : 'bg-danger'"
+          >
+            {{ history.status }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Lending Records (for smaller screens, Key-Value format) -->
+  <div *ngIf="!isLoading && lendingHistory.length > 0" class="lending-records d-md-none">
+    <div *ngFor="let history of lendingHistory" class="record-container">
+      <div class="key-value">
+        <span class="key">History ID:</span>
+        <span class="value">{{ history.id }}</span>
+      </div>
+      <div class="key-value">
+        <span class="key">Book Title:</span>
+        <span class="value">{{ history.bookTitle }}</span>
+      </div>
+      <div class="key-value">
+        <span class="key">BookCopy ID:</span>
+        <span class="value">{{ history.bookCopyId }}</span>
+      </div>
+      <div class="key-value">
+        <span class="key">Author:</span>
+        <span class="value">{{ history.bookAuthor }}</span>
+      </div>
+      <div class="key-value">
+        <span class="key">Lent Date:</span>
+        <span class="value">{{ history.lentDate | date: 'yyyy-MM-dd' }}</span>
+      </div>
+      <div class="key-value">
+        <span class="key">Due Date:</span>
+        <span class="value">{{ history.dueDate | date: 'yyyy-MM-dd' }}</span>
+      </div>
+      <div class="key-value">
+        <span class="key">Return Date:</span>
+        <span class="value">{{ history.returnDate | date: 'yyyy-MM-dd' }}</span>
+      </div>
+      <div class="key-value">
+        <span class="key">Status:</span>
+        <span class="value">
+          <span
+            class="badge"
+            [ngClass]="history.status === 'Returned' ? 'bg-success' : 'bg-danger'"
+          >
+            {{ history.status }}
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Records Found -->
+  <div *ngIf="!isLoading && lendingHistory.length === 0" class="alert alert-info text-center">
+    No lending history found for this user.
+  </div>
+</div>

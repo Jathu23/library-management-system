@@ -117,4 +117,15 @@ export class GetbooksService {
       )
     );
   }
+
+  searchEbooks(searchQuery: string, pageNumber: number, pageSize: number): Observable<any> {
+    const searchUrl = `${this.baseurl}Ebook/Search?searchString=${searchQuery}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    return this.http.get<any>(searchUrl).pipe(
+      tap(
+        (response) => console.log(`[API Response] GET: ${searchUrl}`, response),
+        (error) => console.error(`[API Error] GET: ${searchUrl}`, error)
+      )
+    );
+  }
+  
 }

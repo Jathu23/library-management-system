@@ -1,4 +1,13 @@
-
+<!-- Search Bar -->
+<div class="search-bar-container">
+  <input 
+    type="text" 
+    [(ngModel)]="searchQuery" 
+    
+    placeholder="Search eBooks by title or author..." 
+    class="form-control"
+  />
+</div>
 <div class="grid-container scroll-container">
   <div class="grid-item" *ngFor="let ebook of ebooks" (click)="openEbookModal(ebook)">
     <img 
@@ -32,7 +41,7 @@
    
     <!-- Thumbs Up, Thumbs Down, and Comment Buttons -->
     <div class="d-flex justify-content-start align-items-center gap-3 mt-4 flex-wrap">
-      <button
+      <button style="background-color:#7e60bf75; color: white; border: none;"
         class="btn btn-outline-dark d-flex align-items-center"
         [ngClass]="{ 'text-primary': isThumbsUp }"
         (click)="toggleThumbsUp();  like_or_dislikeAudiobook(true);"
@@ -41,7 +50,7 @@
       </button>
       <span class="ms-1">{{likeCount}}</span>
 
-      <button
+      <button style="background-color:#7e60bf75; color: white; border: none;"
         class="btn btn-outline-dark d-flex align-items-center"
         [ngClass]="{ 'text-primary': isThumbsDown }"
         (click)="toggleThumbsDown(); like_or_dislikeAudiobook(false);"
@@ -50,7 +59,7 @@
       </button>
       <span class="ms-1">{{dislikeCount}}</span>
 
-      <button
+      <button style="background-color:#7e60bf75; color: white; border: none;"
         class="btn btn-outline-dark d-flex align-items-center"
         (click)="toggleCommentBox()"
       >
@@ -101,3 +110,12 @@
   </div>
   
 </div>
+<!-- Pagination -->
+<mat-paginator
+  [length]="totalItems"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[2,5,10, 15, 25, 50]"
+  showFirstLastButtons
+  (page)="onPageChange($event)"
+  [pageIndex]="currentPage - 1"
+></mat-paginator>

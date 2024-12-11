@@ -12,7 +12,7 @@
         <div class="card">
           <div class="card-body text-center">
             <!-- Profile Image -->
-            <img [src]="'https://localhost:7261/'+user?.profileImage || 'https://bootdey.com/img/Content/avatar/avatar7.png'" 
+            <img [src]="this.userbaseurl + '/' + user.profileImage || 'https://bootdey.com/img/Content/avatar/avatar7.png'" 
                  alt="User" class="rounded-circle" width="200" height="250">
 
             <!-- File Input for Image Upload (only shown when editing) -->
@@ -27,7 +27,7 @@
         </div>
 
         <!-- Social Media Links -->
-        <div class="card mt-3">
+        <!-- <div class="card mt-3">
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <i class="fab fa-github"></i> <span>GitHub</span>
@@ -42,7 +42,7 @@
               <a href="{{ user?.linkedinUrl || '#' }}" target="_blank" class="text-primary">Visit</a>
             </li>
           </ul>
-        </div>
+        </div> -->
       </div>
 
       <!-- Main Profile Section -->
@@ -90,14 +90,14 @@
         </div>
 
         <!-- Recent Activity Section -->
-        <div class="card mt-3">
+        <!-- <div class="card mt-3">
           <h5 class="card-header">Recent Activity</h5>
           <ul class="list-group list-group-flush">
             <li *ngFor="let activity of recentActivities" class="list-group-item">
               <i class="fas fa-check-circle text-success"></i> {{ activity }}
             </li>
           </ul>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
