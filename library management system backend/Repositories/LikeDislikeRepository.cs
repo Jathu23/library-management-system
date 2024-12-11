@@ -83,6 +83,102 @@ namespace library_management_system.Repositories
             return await _context.AudiobookLikeDislikes
                 .AnyAsync(l => l.UserId == userId && l.BookId == bookId);
         }
+
+        public async Task<SpicalReturnType> GetUserLikeDislikeActionAsync(int userId, int bookId, string bookType)
+        {
+            SpicalReturnType returnType = null;
+
+            if (bookType == "NormalBook")
+            {
+                var likeDislike = await _context.NormalBookLikeDislikes
+                    .Where(ld => ld.UserId == userId && ld.BookId == bookId)
+                    .FirstOrDefaultAsync();
+              
+                if (likeDislike != null)
+                {
+               
+                    returnType = new SpicalReturnType
+                    {
+                        Id = likeDislike.Id,
+                        UserId = likeDislike.UserId,
+                        BookId = likeDislike.BookId,
+                        IsLiked = likeDislike.IsLiked
+                    };
+                }
+            }
+            else if (bookType == "Ebook")
+            {
+                var likeDislike = await _context.EbookLikeDislikes
+                    .Where(ld => ld.UserId == userId && ld.BookId == bookId)
+                    .FirstOrDefaultAsync();
+
+                if (likeDislike != null)
+                {
+                    returnType = new SpicalReturnType
+                    {
+                        Id = likeDislike.Id,
+                        UserId = likeDislike.UserId,
+                        BookId = likeDislike.BookId,
+                        IsLiked = likeDislike.IsLiked
+                    };
+                }
+            }
+            else if (bookType == "Audiobook")
+            {
+                var likeDislike = await _context.AudiobookLikeDislikes
+                    .Where(ld => ld.UserId == userId && ld.BookId == bookId)
+                    .FirstOrDefaultAsync();
+
+                if (likeDislike != null)
+                {
+                    returnType = new SpicalReturnType
+                    {
+                        Id = likeDislike.Id,
+                        UserId = likeDislike.UserId,
+                        BookId = likeDislike.BookId,
+                        IsLiked = likeDislike.IsLiked
+                    };
+                }
+            }
+
+            return returnType;
+        }
+
+
+        public async Task<bool> RemoveLikeDislikeAsync(int id, string bookType)
+        {
+            if (bookType == "NormalBook")
+            {
+                var record = await _context.NormalBookLikeDislikes.FindAsync(id);
+                if (record == null) return false;
+
+                _context.NormalBookLikeDislikes.Remove(record);
+            }
+            else if (bookType == "Ebook")
+            {
+                var record = await _context.EbookLikeDislikes.FindAsync(id);
+                if (record == null) return false;
+
+                _context.EbookLikeDislikes.Remove(record);
+            }
+            else if (bookType == "Audiobook")
+            {
+                var record = await _context.AudiobookLikeDislikes.FindAsync(id);
+                if (record == null) return false;
+
+                _context.AudiobookLikeDislikes.Remove(record);
+            }
+            else
+            {
+                return false; // Invalid bookType
+            }
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+
+
+
     }
 
 }

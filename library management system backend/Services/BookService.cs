@@ -504,11 +504,11 @@ namespace library_management_system.Services
             }
         }
 
-        public async Task<ApiResponse<PaginatedResult<NormalBookDto>>> GetSearchBooks(string? genre, string? author, int? publishYear, string? title, string? isbn, int pageNumber, int pageSize)
+        public async Task<ApiResponse<PaginatedResult<NormalBookDto>>> GetSearchBooks(string? searchstring,  int pageNumber, int pageSize)
         {
             try
             {
-                var (books, totalRecords) = await _bookRepository.Search(genre, author, publishYear, title, isbn, pageNumber, pageSize);
+                var (books, totalRecords) = await _bookRepository.Search(searchstring, pageNumber, pageSize);
 
                 var bookDtos = books.Select(b => new NormalBookDto
                 {
@@ -554,6 +554,14 @@ namespace library_management_system.Services
 
 
 
+        // Method to get the distinct book attributes
+        public async Task<dynamic> GetDistinctBookAttributesAsync()
+        {
+            return await _bookRepository.GetDistinctBookAttributesAsync();
+        }
+
+
+
         private async Task<List<string>> SaveCoverImages(List<IFormFile> coverImages)
         {
             //Console.Write("coverImages count is ");
@@ -567,8 +575,6 @@ namespace library_management_system.Services
         }
 
 
-
-           
 
 
     }

@@ -1,4 +1,5 @@
 ﻿using library_management_system.DTOs.AudioBook;
+using library_management_system.Repositories;
 using library_management_system.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -66,6 +67,38 @@ namespace library_management_system.Controllers
         {
             var response = await _audioBookService.SearchAudioBooksAsync(searchString, pageNumber, pageSize);
             return Ok(response);
+        }
+
+
+		//displaying some Audion books--------------------------
+
+		[HttpGet("top/{count:int}")]
+		public async Task<IActionResult> GetTopAudiobooks(int count)
+		{
+			if (count <= 0)
+			{
+				return BadRequest("Count must be a positive integer.");
+			}
+
+			var topAudiobooks = await _audioBookService.GetTopAudiobooksAsync(count);
+
+			if (topAudiobooks == null || !topAudiobooks.Any())
+			{
+				return NotFound("No audiobooks found.");
+			}
+
+			return Ok(topAudiobooks);
+		}
+
+        [HttpPost ("AddClick")]
+        public async Task<IActionResult> AddClick(int bookid)
+        {
+            var result = await _audioBookService.AddClick(bookid);
+            if (result)
+                return Ok(result);
+            else
+                return BadRequest(result);
+
         }
 
 

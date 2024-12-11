@@ -73,6 +73,16 @@ namespace library_management_system.Controllers
             return Ok(response);
         }
 
+        [HttpPost("AddClick")]
+        public async Task<IActionResult> AddClick(int bookid)
+        {
+            var result = await _ebookService.AddClick(bookid);
+            if (result)
+                return Ok(result);
+            else
+                return BadRequest(result);
+
+        }
 
         //        [HttpPost ("sample")]
         //        public async Task<int> addsample()

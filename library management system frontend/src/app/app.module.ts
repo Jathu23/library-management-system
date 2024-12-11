@@ -41,6 +41,13 @@ import { EditEbookDialogComponent } from './components/admin/edit-ebook-dialog/e
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LockScreenComponent } from './components/lock-screen/lock-screen.component';
+import { TimeAgoPipe } from './Pipe/time-ago.pipe';
+
+import { StaticsComponent } from './components/admin/statics/statics.component';
+
+
+import { MatSelectModule } from '@angular/material/select';
+import { UserprofileComponent } from './components/user/userprofile/userprofile.component';
 
 
 
@@ -82,6 +89,13 @@ import { LockScreenComponent } from './components/lock-screen/lock-screen.compon
     EditEbookDialogComponent,
     DashboardComponent,
     LockScreenComponent,
+    TimeAgoPipe,
+
+    StaticsComponent,
+
+
+    UserprofileComponent,
+    
 
    
 
@@ -101,6 +115,10 @@ import { LockScreenComponent } from './components/lock-screen/lock-screen.compon
     MatButtonModule,
     MatDialogModule,
     NgxChartsModule,
+    MatInputModule,
+    MatSelectModule,
+   
+
     
     
 

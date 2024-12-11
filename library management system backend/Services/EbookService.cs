@@ -284,6 +284,10 @@ namespace library_management_system.Services
             }
         }
 
+        public async Task<bool> AddClick(int bookid)
+        {
+            return await _ebookRepository.AddClick(bookid);
 
+        }
     }
 }

@@ -1,6 +1,8 @@
 import { Component,OnInit  } from '@angular/core';
 import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
-import { UserService } from '../../../services/user-service/user.service'
+import { UserService } from '../../../services/user-service/user.service';
+
+import {AudiobookService} from '../../../services/bookservice/audiobook.service'
 
 
 @Component({
@@ -10,19 +12,38 @@ import { UserService } from '../../../services/user-service/user.service'
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private userService:UserService) {
+  constructor(
+    private userService:UserService,
+    private audiobookService:AudiobookService
+  ) {
     
   }
 
-  pieData: { name: string; value: number }[] = []; // Explicitly define the type of pieData
-
+  pieData: { name: string; value: number }[] = []; 
   totalUsers: number | null = null;
   activeUsers: number | null = null;
   NonActiveUsers: number | null = null;
   Subscribed: number | null = null;
+  nonsubscrivedUser: number | null = null;
+
+
+  // -------------
+
+
+
+
+  imgageBaseUrl:string=`https://localhost:7261/`
+
+  // showing the top books
+
+  audiobooks: any[] = []; 
+  audiobookslists: any[] = []; 
+
 
  ngOnInit(): void {
   this.loadUserCounts();
+  this.fetchTopAudiobooks(3);
+  this.fetchTopAudiobookslist(10)
 }
 
 
@@ -230,17 +251,24 @@ loadUserCounts(): void {
   //   { name: 'Non Active Users', value: this.NonActiveUsers },
   //   { name: 'Subscribed USers', value: this.Subscribed }
   // ];
+
+
   updatePieData(): void {
     if (
       this.totalUsers !== null &&
       this.activeUsers !== null &&
       this.NonActiveUsers !== null &&
       this.Subscribed !== null
-    ) {
+    )
+     {
+
+      this.nonsubscrivedUser=this.totalUsers-this.Subscribed
+
+
       this.pieData = [
-        { name: 'All Users', value: this.totalUsers },
-        { name: 'Active Users', value: this.activeUsers },
-        { name: 'Non Active Users', value: this.NonActiveUsers },
+        // { name: 'All Users', value: this.totalUsers },
+        // { name: 'Active Users', value: this.activeUsers },
+        { name: 'Non Subscribed Users', value: this.nonsubscrivedUser },
         { name: 'Subscribed Users', value: this.Subscribed },
       ];
     }
@@ -258,6 +286,8 @@ loadUserCounts(): void {
   };
 
   // Sample Top 10 data
+
+
   top10Data = [
     { name: 'Item 1', value: 70 },
     { name: 'Item 2', value: 85 },
@@ -279,6 +309,106 @@ loadUserCounts(): void {
     // Re-sort the data based on updated values
     this.chartData = [...this.top10Data].sort((a, b) => b.value - a.value);
   }
+
+
+  // showing top books
+
+  fetchTopAudiobooks(count: number): void {
+    this.audiobookService.getTopAudiobooks(count).subscribe(
+      (data) => {
+        this.audiobooks = data; 
+        console.log(this.audiobooks);
+        
+      },
+      (error) => {
+        console.error('Error fetching audiobooks:', error);
+      }
+    );
+    
+  }
+  fetchTopAudiobookslist(count: number): void {
+    this.audiobookService.getTopAudiobooks(count).subscribe(
+      (data) => {
+        this.audiobookslists=data
+        console.log(this.audiobooks);
+        
+      },
+      (error) => {
+        console.error('Error fetching audiobooks:', error);
+      }
+    );
+    
+  }
+
+
+
+
+  // books graphs
+
+  appointmentData = [
+    {
+      name: 'No of Books',
+      series: [
+        { name: 'January', value: 230 },
+        { name: 'February', value: 50 },
+        { name: 'March', value: 40 },
+        { name: 'April', value: 60 },
+        { name: 'May', value: 80 },
+        { name: 'June', value: 70 },
+        { name: 'July', value: 60 },
+        { name: 'August', value: 40 },
+      ],
+    },
+    // {
+    //   name: 'DATA TWO',
+    //   series: [
+    //     { name: 'January', value: 20 },
+    //     { name: 'February', value: 40 },
+    //     { name: 'March', value: 30 },
+    //     { name: 'April', value: 50 },
+    //     { name: 'May', value: 70 },
+    //     { name: 'June', value: 60 },
+    //     { name: 'July', value: 50 },
+    //     { name: 'August', value: 30 },
+    //   ],
+    // },
+  ];
+
+  colorSchemes = {
+    domain: ['#5AA454', '#C7B42C'],
+  };
+
+  // -----------------
+
+  // data = [
+  //   { name: 'All Audio Books', value: 40 },
+  //   { name: 'Commonly Used Books', value: 35 },
+  //   { name: 'Non-Used Books', value: 25 }
+  // ];
+
+  // views: [number, number] = [700, 400];
+  // gradient: boolean = true;
+  // showLegend: boolean = true;
+  // showLabels: boolean = true;
+  // isDoughnut: boolean = false;
+
+  // -----------
+  data = [
+    { name: 'Frequently Listened', value: 40 },
+    { name: 'Commonly Used Books', value: 35 },
+    { name: 'Non-Used Books', value: 25 }
+  ];
+
+  viewed: [number, number] = [250, 200]; // Chart size
+
+  // Chart options
+  gradient: boolean = true;
+  showLegend: boolean = false;
+  showLabels: boolean = true;
+  isDoughnut: boolean = true;
+
+  
+  
 }
   
 

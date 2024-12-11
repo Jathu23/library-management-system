@@ -170,44 +170,34 @@ namespace library_management_system.Repositories
         }
 
 
-        public async Task<(List<NormalBook>, int)> Search(string? genre, string? author, int? publishYear, string? title, string? isbn, int pageNumber, int pageSize)
+        public async Task<(List<NormalBook>, int)> Search(string? searchString, int pageNumber, int pageSize)
         {
             var query = _context.NormalBooks.Include(b => b.BookCopies).AsQueryable();
 
-            if (!string.IsNullOrEmpty(genre))
+            if (!string.IsNullOrEmpty(searchString))
             {
-                query = query.Where(b => b.Genre.Any(g => g.Contains(genre)));
+                // Perform search across multiple fields using the provided search string
+                query = query.Where(b =>
+                    (b.Genre.Any(g => g.Contains(searchString)) || // Search within genre
+                    b.Author.Contains(searchString) ||            // Search within author
+                    b.Title.Contains(searchString) ||             // Search within title
+                    b.ISBN.Contains(searchString) ||              // Search within ISBN
+                    (b.PublishYear.ToString().Contains(searchString)) // Search within publish year (converted to string)
+                ));
             }
 
-            if (!string.IsNullOrEmpty(author))
-            {
-                query = query.Where(b => b.Author.Contains(author));
-            }
-
-            if (publishYear.HasValue)
-            {
-                query = query.Where(b => b.PublishYear == publishYear.Value);
-            }
-
-            if (!string.IsNullOrEmpty(title))
-            {
-                query = query.Where(b => b.Title.Contains(title));
-            }
-
-            if (!string.IsNullOrEmpty(isbn))
-            {
-                query = query.Where(b => b.ISBN.Contains(isbn));
-            }
-
+            // Get the total record count before pagination
             int totalRecords = await query.CountAsync();
 
+            // Apply pagination (skip and take)
             var books = await query
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
+                .Skip((pageNumber - 1) * pageSize) // Skip records based on current page number
+                .Take(pageSize)                   // Take the number of records specified by pageSize
                 .ToListAsync();
 
-            return (books, totalRecords);
+            return (books, totalRecords); // Return the list of books and the total count
         }
+
 
 
         public async Task<int> UpdateCustomData()
@@ -233,7 +223,31 @@ namespace library_management_system.Repositories
             return 1;
         }
 
+        // Method to fetch distinct values for Genre, Author, and PublishYear
+        public async Task<dynamic> GetDistinctBookAttributesAsync()
+        {
+            var genres = await _context.NormalBooks
+                .Select(b => b.Genre)
+                .Distinct()
+                .ToListAsync();
 
+            var authors = await _context.NormalBooks
+                .Select(b => b.Author)
+                .Distinct()
+                .ToListAsync();
+
+            var publishYears = await _context.NormalBooks
+                .Select(b => b.PublishYear)
+                .Distinct()
+                .ToListAsync();
+
+            return new
+            {
+                Genres = genres,
+                Authors = authors,
+                PublishYears = publishYears
+            };
+        }
 
     }
 }

@@ -1,15 +1,45 @@
-<div class="search-container">
-  <input
-    type="text"
-    placeholder="Search books (title, author, year)..."
-    [(ngModel)]="searchQuery"
-    (input)="onSearch()"
-    class="search-bar"
-  />
+<header class="filter-bar">
+  <div class="filter-container">
+    <input
+      type="text"
+      placeholder="Search books (title, author, year)..."
+      [(ngModel)]="searchText"
+      (input)="onSearch()"
+      class="search-input"
+    />
+    <button (click)="toggleDropdown()" class="filter-btn">
+      Apply Filter
+    </button>
+  </div>
+</header>
+
+
+<div *ngIf="showDropdown" class="dropdown-section">
+  <div class="dropdown">
+    <label for="genre">Genre</label>
+    <select id="genre" [(ngModel)]="selectedGenre" (change)="applyFilters()">
+      <option value="">All Genres</option>
+      <option *ngFor="let genre of genres" [value]="genre">{{ genre }}</option>
+    </select>
+  </div>
+  <div class="dropdown">
+    <label for="author">Author</label>
+    <select id="author" [(ngModel)]="selectedAuthor" (change)="applyFilters()">
+      <option value="">All Authors</option>
+      <option *ngFor="let author of authors" [value]="author">{{ author }}</option>
+    </select>
+  </div>
+  <div class="dropdown">
+    <label for="year">Publish Year</label>
+    <select id="year" [(ngModel)]="selectedYear" (change)="applyFilters()">
+      <option value="">All Years</option>
+      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+    </select>
+  </div>
 </div>
 
-<div class="grid-container scroll-container" (scroll)="onScroll()">
-  <div class="grid-item" *ngFor="let book of Normalbooks" (click)="openModal(book)">
+<div class="grid-container scroll-container">
+  <div class="grid-item" *ngFor="let book of Normalbooks">
     <div class="card">
       <div class="card-images">
         <img *ngIf="book.coverImagePath?.length" [src]="book.coverImagePath[0]" [alt]="book.coverImagePath[0]" />
@@ -22,6 +52,14 @@
     </div>
   </div>
 </div>
+
+<mat-paginator
+  [length]="totalItems"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[10, 25, 50, 100]"
+  showFirstLastButtons
+  (page)="onPageChange($event)"
+></mat-paginator>
 
 <!-- Modal -->
 <!-- Modal -->
@@ -50,20 +88,20 @@
       <button
         class="btn btn-outline-dark d-flex align-items-center"
         [ngClass]="{ 'text-primary': isThumbsUp }"
-        (click)="toggleThumbsUp()"
+        (click)="toggleThumbsUp(); like_or_dislikeAudiobook(true);"
       >
         <i class="bi bi-hand-thumbs-up-fill me-2"></i>
       </button>
-      <span class="ms-1">213</span>
+      <span class="ms-1">{{likeCount}}</span>
 
       <button
         class="btn btn-outline-dark d-flex align-items-center"
         [ngClass]="{ 'text-primary': isThumbsDown }"
-        (click)="toggleThumbsDown()"
+        (click)="toggleThumbsDown(); like_or_dislikeAudiobook(false);"
       >
         <i class="bi bi-hand-thumbs-down-fill me-2"></i>
       </button>
-      <span class="ms-1">213</span>
+      <span class="ms-1">{{dislikeCount}}</span>
 
       <button
         class="btn btn-outline-dark d-flex align-items-center"
@@ -71,7 +109,7 @@
       >
         <i class="bi bi-chat-right-text-fill me-2"></i>
       </button>
-      <span class="ms-1">243</span>
+      <span class="ms-1">{{reviews.length}}</span>
     </div>
 
     <!-- Comment Box and Container -->
@@ -82,31 +120,14 @@
           class="form-control mb-2 flex-grow-1"
           rows="2"
           placeholder="Add a comment..."
-          [(ngModel)]="commentText"
+          [(ngModel)]="reviewText"
         ></textarea>
-        <button class="btn btn-primary" (click)="addComment()">Post</button>
+        <button class="btn btn-primary" (click)="submitNormalbookReview()">Post</button>
       </div>
+
 
       <!-- Container with Comments Section -->
-      <div class="comments-container mt-3">
-        <div class="comment-card" *ngFor="let comment of comments">
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="user d-flex flex-row align-items-center">
-              <img
-                src="https://i.imgur.com/hczKIze.jpg"
-                width="30"
-                class="user-img rounded-circle mr-2"
-              />
-              <span>
-                <small class="font-weight-bold text-primary">{{ comment.user }}</small>
-                <small class="font-weight-bold">{{ comment.text }}</small>
-              </span>
-            </div>
-            <small>{{ comment.time }}</small>
-          </div>
-        </div>
-      </div>
-      <div class="comment-card mt-3">
+      <div *ngFor="let review of reviews" class="comment-card mt-3">
         <div class="d-flex justify-content-between align-items-center">
           <div class="user d-flex flex-row align-items-center">
             <img
@@ -116,29 +137,14 @@
             />
             <span>
               <small class="font-weight-bold text-primary">john_doe</small>
-              <small class="font-weight-bold">Great work on this project!</small>
+              <br>
+              <small class="font-weight-bold">{{review.reviewText}}</small>
             </span>
           </div>
-          <small>1 day ago</small>
+          <small>{{ review.reviewDate | timeAgo }}</small>
         </div>
       </div>
-      <div class="comment-card mt-3">
-        <div class="d-flex justify-content-between align-items-center">
-          <div class="user d-flex flex-row align-items-center">
-            <img
-              src="https://i.imgur.com/hczKIze.jpg"
-              width="30"
-              class="user-img rounded-circle mr-2"
-            />
-            <span>
-              <small class="font-weight-bold text-primary">john_doe</small>
-              <small class="font-weight-bold">Great work on this project!</small>
-            </span>
-          </div>
-          <small>1 day ago</small>
-        </div>
-      </div>
-
+  
     </div>
   </div>
 </div>

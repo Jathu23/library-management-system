@@ -3,7 +3,7 @@
   <div class="audio-info">
     <img 
       class="album-cover"
-      [src]="'https://localhost:7261/' + playingAudio?.coverImagePath || ''"
+      [src]="'https://localhost:7261/'+playingAudio?.coverImagePath || ''"
       alt="Album Cover"
       onerror="this.src='th.jpg'"
     />
@@ -53,7 +53,7 @@
     class="search-input"
     [(ngModel)]="searchQuery"
     placeholder="Search for audiobooks..."
-    (input)="filterAudiobooks()"
+    (input)="onSearch()"
   />
 </div>
 
@@ -61,10 +61,11 @@
 <div class="grid-container">
   <div
     class="grid-item"
-    *ngFor="let audiobook of filteredAudiobooks"
-    (click)="openModal(audiobook)"
+    *ngFor="let audiobook of audiobooks"
+    (click)="openModal(audiobook); addClick();"
   >
-    <img style="max-height: 300px; max-width: 250px;"
+    <img 
+  
       class="audio-cover"
       [src]="'https://localhost:7261/' + audiobook.coverImagePath"
       alt="{{ audiobook.title }}"
@@ -78,7 +79,7 @@
 <mat-paginator
   [length]="totalItems"
   [pageSize]="pageSize"
-  [pageSizeOptions]="[10, 15, 25, 50]"
+  [pageSizeOptions]="[2,5,10, 15, 25, 50]"
   showFirstLastButtons
   (page)="onPageChange($event)"
   [pageIndex]="currentPage - 1"
@@ -116,20 +117,20 @@
       <button
         class="btn btn-outline-dark d-flex align-items-center"
         [ngClass]="{ 'text-primary': isThumbsUp }"
-        (click)="toggleThumbsUp()"
+        (click)="toggleThumbsUp();  like_or_dislikeAudiobook(true);"
       >
         <i class="bi bi-hand-thumbs-up-fill me-2"></i>
       </button>
-      <span class="ms-1">213</span>
+      <span class="ms-1">{{likeCount}}</span>
 
       <button
         class="btn btn-outline-dark d-flex align-items-center"
         [ngClass]="{ 'text-primary': isThumbsDown }"
-        (click)="toggleThumbsDown()"
+        (click)="toggleThumbsDown(); like_or_dislikeAudiobook(false);"
       >
         <i class="bi bi-hand-thumbs-down-fill me-2"></i>
       </button>
-      <span class="ms-1">213</span>
+      <span class="ms-1">{{dislikeCount}}</span>
 
       <button
         class="btn btn-outline-dark d-flex align-items-center"
@@ -137,7 +138,7 @@
       >
         <i class="bi bi-chat-right-text-fill me-2"></i>
       </button>
-      <span class="ms-1">243</span>
+      <span class="ms-1">{{reviews.length}}</span>
     </div>
 
     <!-- Comment Box and Container -->
@@ -148,15 +149,16 @@
           class="form-control mb-2 flex-grow-1"
           rows="2"
           placeholder="Add a comment..."
+       [(ngModel)]="reviewText"
         ></textarea>
-        <button class="btn btn-primary">Post</button>
+        <button class="btn btn-primary" (click)="submitAudiobookReview()">Post</button>
       </div>
 
       <!-- Container with Comments Section -->
       <div class="comments-container">
 
 
-        <div class="comment-card mt-3">
+        <div *ngFor="let review of reviews" class="comment-card mt-3">
           <div class="d-flex justify-content-between align-items-center">
             <div class="user d-flex flex-row align-items-center">
               <img
@@ -166,14 +168,17 @@
               />
               <span>
                 <small class="font-weight-bold text-primary">john_doe</small>
-                <small class="font-weight-bold">Great work on this project!</small>
+                <br>
+                <small class="font-weight-bold">{{review.reviewText}}</small>
               </span>
             </div>
-            <small>1 day ago</small>
+            <small>{{ review.reviewDate | timeAgo }}</small>
+
           </div>
         </div>
 
       </div>
     </div>
+    
   </div>
 </div>

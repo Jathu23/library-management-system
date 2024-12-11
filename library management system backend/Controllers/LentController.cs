@@ -71,9 +71,9 @@ namespace library_management_system.Controllers
         }
 
         [HttpGet("get-all-records-admin")]
-        public async Task<IActionResult> GetAllLentRecords()
+        public async Task<IActionResult> GetAllLentRecords(bool? getoverdue = false)
         {
-            var result = await _lentService.GetAllLentRecordsAsync();
+            var result = await _lentService.GetAllLentRecordsAsync(getoverdue);
             if (!result.Success)
             {
                 return BadRequest(result);
@@ -82,9 +82,9 @@ namespace library_management_system.Controllers
             return Ok(result);
         }
         [HttpGet("lent-records-by-userid-user")]
-        public async Task<IActionResult> GetLentRecordsByUserId(int userId)
+        public async Task<IActionResult> GetLentRecordsByUserId(int userId , bool? getoverdue =false)
         {
-            var result = await _lentService.GetLentRecordsByUserIdAsync(userId);
+            var result = await _lentService.GetLentRecordsByUserIdAsync(userId, getoverdue);
 
             if (!result.Success)
             {

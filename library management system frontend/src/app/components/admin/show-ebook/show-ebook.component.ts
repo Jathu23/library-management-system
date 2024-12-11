@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditEbookDialogComponent } from '../edit-ebook-dialog/edit-ebook-dialog.component';
 
 import {MainBookUpdateService} from '../../../services/bookservice/main-book-update.service'
+import { environment } from '../../../../environments/environment.testing';
 
 @Component({
   selector: 'app-show-ebook',
@@ -22,6 +23,7 @@ export class ShowEbookComponent implements OnInit {
   ebooks: any[] = [];
   expandedElementId: number | null = null;
   selectedPdfPath: string | null = null;
+  resourcBaseUrl = environment.resourcBaseUrl;
 
   constructor(
     private getbookservice: GetbooksService,
@@ -78,7 +80,7 @@ export class ShowEbookComponent implements OnInit {
 
     // Update the selected PDF path for the embed tag
     this.selectedPdfPath = this.sanitizer.bypassSecurityTrustResourceUrl(
-      ebook.filePath
+    `${this.resourcBaseUrl}${ebook.filePath}`  
     ) as string;
   }
 
