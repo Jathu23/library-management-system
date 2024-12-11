@@ -51,7 +51,10 @@ import { UserprofileComponent } from './components/user/userprofile/userprofile.
 import { NotificationComponent } from './components/user/notification/notification.component';
 
 
-
+import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
+import { AudioBookComponent } from './components/admin/dashboard/innercomponenets/audio-book/audio-book.component';
+import { NormalBooksComponent } from './components/admin/dashboard/innercomponenets/normal-books/normal-books.component';
+import { EBookComponent } from './components/admin/dashboard/innercomponenets/ebook/ebook.component';
 
 
 
@@ -96,7 +99,13 @@ import { NotificationComponent } from './components/user/notification/notificati
 
 
     UserprofileComponent,
+<<<<<<< HEAD
         NotificationComponent,
+=======
+        AudioBookComponent,
+        NormalBooksComponent,
+        EBookComponent,
+>>>>>>> 9bb57ae5935b21f82e540f8fce1bdc261f433a7f
     
 
    
@@ -119,6 +128,7 @@ import { NotificationComponent } from './components/user/notification/notificati
     NgxChartsModule,
     MatInputModule,
     MatSelectModule,
+    NgxPageScrollCoreModule.forRoot({ duration: 1500, scrollOffset: 100 })
    
 
     
