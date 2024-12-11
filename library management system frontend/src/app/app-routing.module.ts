@@ -26,6 +26,9 @@ import { DashboardComponent } from './components/admin/dashboard/dashboard.compo
 import { LockScreenComponent } from './components/lock-screen/lock-screen.component';
 import { SubscriptionComponent } from './components/user/subscription/subscription.component';
 import { StaticsComponent } from './components/admin/statics/statics.component';
+import { NormalBooksComponent } from './components/admin/dashboard/innercomponenets/normal-books/normal-books.component';
+import { AudioBookComponent } from './components/admin/dashboard/innercomponenets/audio-book/audio-book.component';
+import { EBookComponent } from './components/admin/dashboard/innercomponenets/ebook/ebook.component';
 
 
 const routes: Routes = [
@@ -54,7 +57,13 @@ const routes: Routes = [
       {path:'show-rent-rec',component:ShowLentRecComponent},
       {path:'show-rent-his',component:ShowLentHistoryComponent},
       {path:'members',component:MembersComponent},
-      {path:'dashboard',component:DashboardComponent},
+      { path: 'dashboard', component: DashboardComponent, children: [
+        { path: '', redirectTo: 'normal-books', pathMatch: 'full' },
+        { path: 'normal-books', component: NormalBooksComponent },
+        { path: 'audio-books', component: AudioBookComponent },
+        { path: 'e-books', component: EBookComponent },
+      ] 
+    },
       {path:'statics',component:StaticsComponent},
     ]
   },

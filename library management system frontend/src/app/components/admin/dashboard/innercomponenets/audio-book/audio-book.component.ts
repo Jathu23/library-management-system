@@ -1,39 +1,28 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component,Input,OnInit  } from '@angular/core';
 import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
-import { UserService } from '../../../services/user-service/user.service';
+// import { UserService } from '../../.././../services/user-service/user.service';
+import { UserService } from '../../.././../../services/user-service/user.service';
 
-import { AudiobookService } from '../../../services/bookservice/audiobook.service'
+
+// import {AudiobookService} from '../../../services/bookservice/audiobook.service'
+import {AudiobookService} from '../../../../../services/bookservice/audiobook.service'
+
 
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'], // Fixed `styleUrl` to `styleUrls`
+  selector: 'app-audio-book',
+  templateUrl: './audio-book.component.html',
+  styleUrl: './audio-book.component.css'
 })
-export class DashboardComponent implements OnInit {
-
+export class AudioBookComponent {
   constructor(
-    private userService: UserService,
-    private audiobookService: AudiobookService
+    private userService:UserService,
+    private audiobookService:AudiobookService
   ) {
-
+    
   }
 
-  selectedTab: string = 'audio'; // Default tab
-
-  changeAudio(): void {
-    this.selectedTab = 'audio';
-  }
-
-  changeNormal(): void {
-    this.selectedTab = 'normal';
-  }
-
-  changeEbook(): void {
-    this.selectedTab = 'ebook';
-  }
-
-  pieData: { name: string; value: number }[] = [];
+  pieData: { name: string; value: number }[] = []; 
   totalUsers: number | null = null;
   activeUsers: number | null = null;
   NonActiveUsers: number | null = null;
@@ -46,62 +35,62 @@ export class DashboardComponent implements OnInit {
 
 
 
-  imgageBaseUrl: string = `https://localhost:7261/`
+  imgageBaseUrl:string=`https://localhost:7261/`
 
   // showing the top books
 
-  audiobooks: any[] = [];
-  audiobookslists: any[] = [];
+  audiobooks: any[] = []; 
+  audiobookslists: any[] = []; 
 
 
-  ngOnInit(): void {
-    this.loadUserCounts();
-    this.fetchTopAudiobooks(3);
-    this.fetchTopAudiobookslist(10)
-  }
-
-
-
-  loadUserCounts(): void {
-    // Fetch total user count
-    this.userService.getTotalUserCount().subscribe({
-      next: (count) => {
-        this.totalUsers = count;
-        this.updatePieData(); // Update the pie chart after getting the data
-      },
-      error: (err) => console.error('Failed to fetch total user count', err),
-    });
-
-    // Fetch active user count
-    this.userService.getActiveUserCount().subscribe({
-      next: (count) => {
-        this.activeUsers = count;
-        this.updatePieData(); // Update the pie chart after getting the data
-      },
-      error: (err) => console.error('Failed to fetch active user count', err),
-    });
-
-    // Fetch non-active user count
-    this.userService.getNonActiveUserCount().subscribe({
-      next: (count) => {
-        this.NonActiveUsers = count;
-        this.updatePieData(); // Update the pie chart after getting the data
-      },
-      error: (err) => console.error('Failed to fetch non-active user count', err),
-    });
-
-    // Fetch subscribed user count
-    this.userService.getSubscribedUserCount().subscribe({
-      next: (count) => {
-        this.Subscribed = count;
-        this.updatePieData(); // Update the pie chart after getting the data
-      },
-      error: (err) => console.error('Failed to fetch subscribed user count', err),
-    });
-  }
+ ngOnInit(): void {
+  this.loadUserCounts();
+  this.fetchTopAudiobooks(3);
+  this.fetchTopAudiobookslist(10)
+}
 
 
 
+loadUserCounts(): void {
+  // Fetch total user count
+  this.userService.getTotalUserCount().subscribe({
+    next: (count) => {
+      this.totalUsers = count;
+      this.updatePieData(); // Update the pie chart after getting the data
+    },
+    error: (err) => console.error('Failed to fetch total user count', err),
+  });
+
+  // Fetch active user count
+  this.userService.getActiveUserCount().subscribe({
+    next: (count) => {
+      this.activeUsers = count;
+      this.updatePieData(); // Update the pie chart after getting the data
+    },
+    error: (err) => console.error('Failed to fetch active user count', err),
+  });
+
+  // Fetch non-active user count
+  this.userService.getNonActiveUserCount().subscribe({
+    next: (count) => {
+      this.NonActiveUsers = count;
+      this.updatePieData(); // Update the pie chart after getting the data
+    },
+    error: (err) => console.error('Failed to fetch non-active user count', err),
+  });
+
+  // Fetch subscribed user count
+  this.userService.getSubscribedUserCount().subscribe({
+    next: (count) => {
+      this.Subscribed = count;
+      this.updatePieData(); // Update the pie chart after getting the data
+    },
+    error: (err) => console.error('Failed to fetch subscribed user count', err),
+  });
+}
+  
+
+  
 
   // new dash board -----------------------------------------------------------------------
 
@@ -143,7 +132,7 @@ export class DashboardComponent implements OnInit {
 
   // Data for Pie Chart
 
-
+  
 
   // pieData = [
   //   { name: 'All Users', value: 5000 },
@@ -166,9 +155,10 @@ export class DashboardComponent implements OnInit {
       this.activeUsers !== null &&
       this.NonActiveUsers !== null &&
       this.Subscribed !== null
-    ) {
+    )
+     {
 
-      this.nonsubscrivedUser = this.totalUsers - this.Subscribed
+      this.nonsubscrivedUser=this.totalUsers-this.Subscribed
 
 
       this.pieData = [
@@ -182,7 +172,7 @@ export class DashboardComponent implements OnInit {
 
   // range
 
-
+  
   view: [number, number] = [700, 400];
   colorScheme: Color = {
     name: 'customScheme',
@@ -222,28 +212,28 @@ export class DashboardComponent implements OnInit {
   fetchTopAudiobooks(count: number): void {
     this.audiobookService.getTopAudiobooks(count).subscribe(
       (data) => {
-        this.audiobooks = data;
+        this.audiobooks = data; 
         console.log(this.audiobooks);
-
+        
       },
       (error) => {
         console.error('Error fetching audiobooks:', error);
       }
     );
-
+    
   }
   fetchTopAudiobookslist(count: number): void {
     this.audiobookService.getTopAudiobooks(count).subscribe(
       (data) => {
-        this.audiobookslists = data
+        this.audiobookslists=data
         console.log(this.audiobooks);
-
+        
       },
       (error) => {
         console.error('Error fetching audiobooks:', error);
       }
     );
-
+    
   }
 
 
@@ -291,9 +281,9 @@ export class DashboardComponent implements OnInit {
 
 
   // -------------------------------------------------------------------------------------------
-
+  
   chartView: [number, number] = [150, 150]; // Chart size (width x height)
-
+  
   // Corrected color scheme
   chartColorScheme: Color = {
     name: 'customScheme',
@@ -327,8 +317,3 @@ export class DashboardComponent implements OnInit {
   // -----
 
 }
-
-
-
-
-

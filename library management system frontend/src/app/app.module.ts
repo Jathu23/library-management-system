@@ -50,7 +50,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { UserprofileComponent } from './components/user/userprofile/userprofile.component';
 
 
-
+import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
+import { AudioBookComponent } from './components/admin/dashboard/innercomponenets/audio-book/audio-book.component';
+import { NormalBooksComponent } from './components/admin/dashboard/innercomponenets/normal-books/normal-books.component';
+import { EBookComponent } from './components/admin/dashboard/innercomponenets/ebook/ebook.component';
 
 
 
@@ -95,6 +98,9 @@ import { UserprofileComponent } from './components/user/userprofile/userprofile.
 
 
     UserprofileComponent,
+        AudioBookComponent,
+        NormalBooksComponent,
+        EBookComponent,
     
 
    
@@ -117,6 +123,7 @@ import { UserprofileComponent } from './components/user/userprofile/userprofile.
     NgxChartsModule,
     MatInputModule,
     MatSelectModule,
+    NgxPageScrollCoreModule.forRoot({ duration: 1500, scrollOffset: 100 })
    
 
     

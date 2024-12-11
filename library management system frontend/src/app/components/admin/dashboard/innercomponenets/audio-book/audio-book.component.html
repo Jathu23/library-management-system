@@ -1,0 +1,232 @@
+<div class="changing_divs">
+
+    <h3 style="margin-left: 10px; margin-top: 0px;">Showing 3 audio books from most trendeing list..... </h3>
+    <div class="cards-wrapper-trending">
+
+
+      <!-- <div class="card-trending">
+        <img src="https://via.placeholder.com/300x180" alt="Popular Audio Book" class="card-thumbnail">
+        <div class="card-details">
+          <h3 class="card-title-trending">Mt. Merbabu</h3>
+          <p class="card-location-trending">Semarang, Indonesia</p>
+          <p class="card-cost">$450/day</p>
+        </div>
+      </div>
+
+    
+      <div class="card-trending">
+        <img src="https://via.placeholder.com/300x180" alt="Most Viewed Book" class="card-thumbnail">
+        <div class="card-details">
+          <h3 class="card-title-trending">Mt. Mandala</h3>
+          <p class="card-location-trending">Papua, Indonesia</p>
+          <p class="card-cost">$570/day</p>
+
+        </div>
+      </div>
+
+     
+      <div class="card-trending">
+        <img src="https://via.placeholder.com/300x180" alt="Trending Lending" class="card-thumbnail">
+        <div class="card-details">
+          <h3 class="card-title-trending">Mt. Semeru</h3>
+          <p class="card-location-trending">Malang, Indonesia</p>
+          <p class="card-cost">$690/day</p>
+
+        </div>
+      </div> -->
+
+      <div class="card-trending" *ngFor="let book of audiobooks">
+        <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book" class="card-thumbnail">
+        <div class="card-details">
+          <h3 class="card-title-trending">{{ book.title }}</h3>
+          <p class="card-location-trending">{{ book.author || 'Unknown Author' }}</p>
+          <!-- <p class="card-cost">{{ book.price ? ('$' + book.price) : 'Free' }}</p> -->
+          <p class="card-cost">{{ book.genre}}</p>
+
+          <button class="view_more">View More</button>
+
+        </div>
+
+      </div>
+
+
+
+
+      <div class="card-trending">
+        <div class="card_chart">
+          <div class="rating-container">
+            <h2>Top 10 most listended audio books</h2>
+
+            <!-- Range Slider Input -->
+            <!-- <div *ngFor="let item of audiobookslists; let i = index" class="rating-item">
+            <label>{{ item.title }}</label>
+          </div> -->
+
+            <div class="div_list">
+              <ol class="rating-list">
+                <li *ngFor="let item of audiobookslists; let i = index" class="rating-item">
+                  {{ i + 1 }}. {{ item.title }}
+                </li>
+              </ol>
+            </div>
+
+            <!-- Bar Chart -->
+            <!-- <ngx-charts-bar-vertical
+            [view]="view"
+            [results]="chartData"
+            [scheme]="colorScheme"
+            [xAxis]="true"
+            [yAxis]="true"
+            [barPadding]="10"
+            [roundEdges]="true"
+          >
+          </ngx-charts-bar-vertical> -->
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+
+    </div>
+
+    <div class="boxes">
+      <div class="small_boxes">
+        <div class="metrics-cards">
+          <div class="metric-card">
+            <div class="card-header">
+              <!-- <img src="assets/icons/orders-icon.svg" alt="Orders Icon" /> -->
+              <!-- <i class="bi bi-node-plus"></i> -->
+              <i class="bi bi-play-btn"></i>
+               
+              <span class="percentage positive">+4.2%</span>
+            </div>
+            <div class="card-body">
+              <h2>34,760</h2>
+              <p>Total Audio Books</p>
+            </div>
+            <p class="comparison">Total Books vs last month</p>
+          </div>
+
+          <!-- Card 1: Total Sales -->
+          <div class="metric-card">
+            <div class="card-header">
+              <!-- <img src="assets/icons/sales-icon.svg" alt="Sales Icon" /> -->
+              <i class="bi bi-headphones"></i>
+              <span class="percentage positive">+2.4%</span>
+            </div>
+            <div class="card-body">
+              <h2>612,917</h2>
+              <p>Total Listened Audio Books-This Month</p>
+            </div>
+            <p class="comparison">Listened vs last month</p>
+          </div>
+
+          <!-- Card 2: Total Orders -->
+
+
+          <!-- Card 3: Visitors -->
+          <div class="metric-card">
+            <div class="card-header">
+              <!-- <img src="assets/icons/visitors-icon.svg" alt="Visitors Icon" /> -->
+              <i class="bi bi-people-fill"></i>
+              <span class="percentage negative">-2.08%</span>
+            </div>
+            <div class="card-body">
+              <h2>14,987</h2>
+              <p>Total-Users</p>
+            </div>
+            <p class="comparison">Users vs last month</p>
+          </div>
+
+          <!-- Card 4: Total Sold Products -->
+          <div class="metric-card">
+            <div class="card-header">
+              <!-- <img src="assets/icons/products-icon.svg" alt="Products Icon" /> -->
+              <i class="bi bi-person-check-fill"></i>
+              <span class="percentage positive">+1.2%</span>
+            </div>
+            <div class="card-body">
+              <h2>12,987</h2>
+              <p>Total Visitors-This Month</p>
+            </div>
+            <p class="comparison">New Vistors vs last month</p>
+          </div>
+        </div>
+
+      </div>  
+
+      <div class="meter_graph">
+        <div class="topgenres">
+          <h2>Popular Genres</h2>
+          <div class="small_gen">
+            <div class="mini_gen">
+              <h3>Romantic</h3>
+              <h3>2000 <span>Audio</span></h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="top_listners">
+          <h2>Top Listeners</h2>
+
+          <div class="top_lsit">
+            <div class="mini_top">
+              <img src="" alt="Mini">
+              <h3>Name</h3>
+              <h4>hours</h4>
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="graph_section">
+      <div class="line_graphs">
+        <div class="Statics_div">
+          <div class="graph_div">
+            <div class="graph-section">
+              <h3>Audio Book Usage</h3>
+              <ngx-charts-line-chart [view]="[800, 400]" [scheme]="colorScheme" [results]="appointmentData"
+                [gradient]="false" [xAxis]="true" [yAxis]="true" [legend]="true" [showXAxisLabel]="true"
+                [showYAxisLabel]="true" [xAxisLabel]="'Month'" [yAxisLabel]="'Total Books'">
+              </ngx-charts-line-chart>
+            </div>
+          </div>
+          .
+        </div>
+
+      </div>
+      <div class="rounded">
+
+        <div class="chart-container">
+          <h2>Percentage of Commonly Listened Books</h2>
+          <ngx-charts-pie-chart [view]="viewed" [scheme]="'vivid'" [results]="data" [gradient]="gradient"
+            [legend]="showLegend" [labels]="showLabels" [doughnut]="isDoughnut">
+          </ngx-charts-pie-chart>
+
+          <div class="list-container">
+            <div class="hedingss">
+              <p>Total Books: </p>
+            </div>
+
+            <ul *ngFor="let item of data" class="list">
+              <li class="list-item">{{ item.name }}: <span>{{ item.value }}%</span></li>
+            </ul>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+  </div>
+
