@@ -99,13 +99,10 @@ import { EBookComponent } from './components/admin/dashboard/innercomponenets/eb
 
 
     UserprofileComponent,
-<<<<<<< HEAD
         NotificationComponent,
-=======
         AudioBookComponent,
         NormalBooksComponent,
         EBookComponent,
->>>>>>> 9bb57ae5935b21f82e540f8fce1bdc261f433a7f
     
 
    

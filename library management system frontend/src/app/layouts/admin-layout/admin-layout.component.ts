@@ -13,7 +13,7 @@ import { LockScreenComponent } from '../../components/lock-screen/lock-screen.co
 export class AdminLayoutComponent {
   decodedToken: any;
   tokenExpired: boolean = false;
-  isExpanded = false;
+  isExpanded = true;
   private timeout: any; // Timeout for inactivity
   private isLocked = false; // Track if the screen is already locked
   private inactivityDuration = 6000; // 2 minutes in milliseconds
@@ -81,6 +81,7 @@ ngOnInit(): void {
   // Toggle sidebar
   toggleSidebar() {
     this.isExpanded = !this.isExpanded;
+    
   }
 
   logout() {

@@ -286,5 +286,25 @@ namespace library_management_system.Repositories
             return await _context.Users.FirstOrDefaultAsync(user => user.Id == id);
         }
 
-    }
+		//DbFunctions for filtering users
+
+		//public async Task<List<Audiobook>> FilterUsersBysubcribedAndbest(int count)
+		//{
+		//	return await _context.Users
+		//		.Include(a => a.Metadata) // Include related Metadata
+		//		.OrderByDescending(a => a.AddedDate)
+		//		.Take(count) // Get the top 3 audiobooks
+		//		.ToListAsync();
+		//}
+
+		public async Task<List<User>> FilterUsersBySubscribedAndBest(int count)
+		{
+			return await _context.Users
+				.Where(u => u.IsSubscribed) // Filter users with IsSubscribed = 1
+				.OrderByDescending(u => u.RegistrationDate) // Sort by RegistrationDate in descending order
+				.Take(count) // Limit the result to the specified count
+				.ToListAsync();
+		}
+
+	}
 }
