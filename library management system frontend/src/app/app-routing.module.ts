@@ -26,6 +26,7 @@ import { DashboardComponent } from './components/admin/dashboard/dashboard.compo
 import { LockScreenComponent } from './components/lock-screen/lock-screen.component';
 import { SubscriptionComponent } from './components/user/subscription/subscription.component';
 import { StaticsComponent } from './components/admin/statics/statics.component';
+import { NotificationComponent } from './components/user/notification/notification.component';
 
 
 const routes: Routes = [
@@ -71,7 +72,8 @@ const routes: Routes = [
       {path: 'view-lend-records' , component:ShowLentRecodesComponent },
       {path: 'view-lend-history' , component:ShowLendingHistoryComponent },
       {path:'user-profile',component:UserprofileComponent},
-      {path:'subscription-u',component:SubscriptionComponent}
+      {path:'subscription-u',component:SubscriptionComponent},
+      {path:'notification-u',component:NotificationComponent}
     ]
   }
 ];

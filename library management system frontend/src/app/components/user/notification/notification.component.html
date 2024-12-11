@@ -1,0 +1,40 @@
+
+  <div class="container mt-4">
+    <!-- Loader while fetching data -->
+    <div *ngIf="isLoading" class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  
+    <!-- Error Message if no notifications are found -->
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Notifications List -->
+    <div *ngIf="!isLoading && notifications.length > 0">
+      <div class="notification-list">
+        <div *ngFor="let notification of notifications" class="notification-card">
+          <div class="notification-body">
+            <div class="notification-header">
+              <h6 class="notification-title">{{ notification.bookTitle }}</h6>
+              <span class="notification-time">{{ notification.status }}</span>
+            </div>
+            <p class="notification-detail">
+              <strong>By:</strong> {{ notification.bookAuthor }}<br />
+              <strong>Lent on:</strong> {{ notification.lentDate | date:'short' }}<br />
+              <strong>Due date:</strong> {{ notification.dueDate | date:'short' }}
+            </p>
+      
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- No Notifications Found -->
+    <div *ngIf="!isLoading && notifications.length === 0" class="alert alert-info" role="alert">
+      No notifications found for the user.
+    </div>
+  </div>
+  

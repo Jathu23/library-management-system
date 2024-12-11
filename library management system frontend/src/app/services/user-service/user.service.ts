@@ -43,25 +43,25 @@ export class UserService {
   
   
   
-  // functions for dasboard-users
 
-  private countUrl=`https://localhost:7261/api/User`;
+
+  // functions for dasboard-users
 
   // Get total user count
   getTotalUserCount(): Observable<number> {
-    return this.http.get<number>(`${this.countUrl}/count-all-users`);
+    return this.http.get<number>(`${this.Url}count-all-users`);
   }
 
   // Get active user count
   getActiveUserCount(): Observable<number> {
-    return this.http.get<number>(`${this.countUrl}/active-count`);
+    return this.http.get<number>(`${this.Url}active-count`);
   }
 
   getNonActiveUserCount(): Observable<number> {
-    return this.http.get<number>(`${this.countUrl}/non-active-count`);
+    return this.http.get<number>(`${this.Url}non-active-count`);
   }
 
   getSubscribedUserCount(): Observable<number> {
-    return this.http.get<number>(`${this.countUrl}/subscribed-user-count`);
+    return this.http.get<number>(`${this.Url}subscribed-user-count`);
   }
 }

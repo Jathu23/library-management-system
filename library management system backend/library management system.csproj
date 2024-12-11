@@ -25,10 +25,9 @@
 
   <ItemGroup>
     <Folder Include="wwwRoot\AdminImages\" />
-    <Folder Include="wwwRoot\EbookCoverImages\" />
-    <Folder Include="wwwRoot\Ebooks\" />
     <Folder Include="wwwRoot\AudiobookCovers\" />
-    <Folder Include="wwwRoot\userimages\" />
+    <Folder Include="wwwRoot\BookCoverImages\" />
+    <Folder Include="wwwroot\userimages\" />
   </ItemGroup>
 
 </Project>

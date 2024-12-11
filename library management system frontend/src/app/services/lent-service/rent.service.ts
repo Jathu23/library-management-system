@@ -18,9 +18,10 @@ export class RentService {
   getlentrecByuserid(id:number): Observable<any> {
     return this.http.get<any>(this.rentUrl + `get-records-by-userid-admin?Userid=${id}`);
   }
-  getallrentrecods():Observable<any> {
-    return this.http.get<any>(this.rentUrl + `get-all-records-admin`);
+  getallrentrecods(getoverdue: boolean = false): Observable<any> {
+    return this.http.get<any>(`${this.rentUrl}get-all-records-admin?getoverdue=${getoverdue}`);
   }
+  
   rentnormalbookbycopyid(bcopyid:number,userid:number,adminid:number,duedays:number){
     const url = `${this.rentUrl}lend-by-book-copyid`;
   const params = new HttpParams()
@@ -46,10 +47,11 @@ export class RentService {
   return this.http.post(url, null, { params });
   }
 
-  getUserLentRecords(userId: number): Observable<any> {
-
-    return this.http.get<any>(this.rentUrl+ `lent-records-by-userid-user?userId=${userId}`);
+  getUserLentRecords(userId: number, getoverdue: boolean = false): Observable<any> {
+    // Append the getoverdue query parameter to the URL
+    return this.http.get<any>(`${this.rentUrl}lent-records-by-userid-user?userId=${userId}&getoverdue=${getoverdue}`);
   }
+  
 
   getUserLendingHistory(userId: number): Observable<any> {
     

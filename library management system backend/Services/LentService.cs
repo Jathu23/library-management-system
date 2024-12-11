@@ -217,6 +217,7 @@ namespace library_management_system.Services
 
             bookCopy.IsAvailable = false;
             bookCopy.LastBorrowedDate = lendDate;
+            bookCopy.lentcount++;
 
            
             book.RentCount++;

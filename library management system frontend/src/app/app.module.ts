@@ -48,6 +48,7 @@ import { StaticsComponent } from './components/admin/statics/statics.component';
 
 import { MatSelectModule } from '@angular/material/select';
 import { UserprofileComponent } from './components/user/userprofile/userprofile.component';
+import { NotificationComponent } from './components/user/notification/notification.component';
 
 
 
@@ -95,6 +96,7 @@ import { UserprofileComponent } from './components/user/userprofile/userprofile.
 
 
     UserprofileComponent,
+        NotificationComponent,
     
 
    
