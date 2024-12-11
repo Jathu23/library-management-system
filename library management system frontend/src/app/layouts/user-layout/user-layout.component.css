@@ -1,5 +1,7 @@
 
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
 .colors{
     color: #433878;
     color: #7E60BF;
@@ -8,7 +10,6 @@
 }
 
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
 *,
 ::after,
