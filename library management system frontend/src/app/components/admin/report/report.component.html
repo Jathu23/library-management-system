@@ -1,25 +1,32 @@
 <div class="control-bar">
     <!-- Report Type Selection -->
     <label for="report-type">Select Report Type:</label>
-    <select id="report-type" [(ngModel)]="selectedReportType" (change)="onReportTypeChange()">
+    <select id="report-type" [(ngModel)]="selectedReportType" >
       <option value="overall">Overall Lending Report</option>
       <option value="lentByUser">Lent Report by User ID</option>
       <option value="bookBorrow">All Book Borrow Report</option>
       <option value="bookBorrowbyid">Book Borrow Report by BookId</option>
+      <option value="lentcount">All Book Lent Count</option>
+      <option value="lentcountbybookid">Book Lent Count by BookId</option>
     </select>
   
     <!-- Conditional Inputs for Report Filters -->
     <div *ngIf="selectedReportType === 'lentByUser'">
       <label for="user-id">User ID:</label>
-      <input type="number" id="user-id" [(ngModel)]="userId" (change)="onReportTypeChange()" placeholder="Enter User ID" />
+      <input type="number" id="user-id" [(ngModel)]="userId"  placeholder="Enter User ID" />
     </div>
     
     <div *ngIf="selectedReportType === 'bookBorrowbyid'">
       <label for="book-id">Book ID:</label>
-      <input type="number" id="book-id" [(ngModel)]="bookId" (change)="onReportTypeChange()" placeholder="Enter Book ID" />
+      <input type="number" id="book-id" [(ngModel)]="bookId"  placeholder="Enter Book ID" />
     </div>
 
-    <div><button>View</button></div>
+    <div *ngIf="selectedReportType === 'lentcountbybookid'">
+        <label for="book-id">Book ID:</label>
+        <input type="number" id="book-id" [(ngModel)]="bookId"  placeholder="Enter Book ID" />
+      </div>
+
+    <div><button (click)="fetchReport()">View</button></div>
     <div><button>Download</button></div>
   </div>
 
@@ -28,7 +35,7 @@
 
 
 
-<div class="container mt-4">
+<div class="container mt-4" *ngIf="selectedReportType === 'overall' || selectedReportType === 'lentByUser' ">
     <div class="row">
       <div class="col-md-12">
         <!-- Overview Section -->
@@ -140,4 +147,236 @@
       </div>
     </div>
   </div>
+  
+
+  <div class="container mt-4" *ngIf="selectedReportType === 'bookBorrow'">
+    <h2>Book Lending Reports</h2>
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border" role="status"></div>
+      <span>Loading...</span>
+    </div>
+  
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Loop through the reports to display each book's information -->
+    <div *ngFor="let report of allBookBorrowReport">
+      <!-- Book information row -->
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Book Title</th>
+            <th>ISBN</th>
+            <th>Author</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ report.bookTitle }}</td>
+            <td>{{ report.isbn }}</td>
+            <td>{{ report.author }}</td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <!-- Book lending details table -->
+      <div class="table-responsive mt-3">
+        <h5>Lending Details for {{ report.bookTitle }}</h5>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Book Copy ID</th>
+              <th>User Name</th>
+              <th>Issuing Admin</th>
+              <th>Receiving Admin</th>
+              <th>Lend Date</th>
+              <th>Due Date</th>
+              <th>Return Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Loop through the bookRentDetails for each book -->
+            <tr *ngFor="let rentDetail of report.bookRentDetails">
+              <td>{{ rentDetail.bookCopyId }}</td>
+              <td>{{ rentDetail.userName }}</td>
+              <td>{{ rentDetail.issuingAdmin }}</td>
+              <td>{{ rentDetail.receivingAdmin || 'N/A' }}</td>
+              <td>{{ rentDetail.lendDate | date: 'short' }}</td>
+              <td>{{ rentDetail.dueDate | date: 'short' }}</td>
+              <td>{{ rentDetail.returnDate ? (rentDetail.returnDate | date: 'short') : 'Not returned yet' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-4" *ngIf="selectedReportType === 'bookBorrowbyid'">
+    <h2>Book Lending Reports</h2>
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border" role="status"></div>
+      <span>Loading...</span>
+    </div>
+  
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Loop through the reports to display each book's information -->
+    <div *ngFor="let report of BookBorrowReportbyId">
+      <!-- Book information row -->
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Book Title</th>
+            <th>ISBN</th>
+            <th>Author</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ report.bookTitle }}</td>
+            <td>{{ report.isbn }}</td>
+            <td>{{ report.author }}</td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <!-- Book lending details table -->
+      <div class="table-responsive mt-3">
+        <h5>Lending Details for {{ report.bookTitle }}</h5>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Book Copy ID</th>
+              <th>User Name</th>
+              <th>Issuing Admin</th>
+              <th>Receiving Admin</th>
+              <th>Lend Date</th>
+              <th>Due Date</th>
+              <th>Return Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Loop through the bookRentDetails for each book -->
+            <tr *ngFor="let rentDetail of report.bookRentDetails">
+              <td>{{ rentDetail.bookCopyId }}</td>
+              <td>{{ rentDetail.userName }}</td>
+              <td>{{ rentDetail.issuingAdmin }}</td>
+              <td>{{ rentDetail.receivingAdmin || 'N/A' }}</td>
+              <td>{{ rentDetail.lendDate | date: 'short' }}</td>
+              <td>{{ rentDetail.dueDate | date: 'short' }}</td>
+              <td>{{ rentDetail.returnDate ? (rentDetail.returnDate | date: 'short') : 'Not returned yet' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container mt-4" *ngIf="selectedReportType === 'lentcount'">
+    <h2>Book Rental Count Reports</h2>
+    
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border" role="status"></div>
+      <span>Loading...</span>
+    </div>
+  
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Loop through countReports to display each book's information -->
+    <div *ngFor="let report of allLendingcount">
+      <!-- Book information row -->
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Book ID</th>
+            <th>Total Rent Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ report.bookID }}</td>
+            <td>{{ report.totalRentCount }}</td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <!-- Book copy rent count details table -->
+      <div class="table-responsive mt-3">
+        <h5>Individual Copy Rent Count for Book ID {{ report.bookID }}</h5>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Copy ID</th>
+              <th>Rent Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Loop through the induvalCopyrentcount for each book -->
+            <tr *ngFor="let copy of report.induvalCopyrentcount">
+              <td>{{ copy.coppyId }}</td>
+              <td>{{ copy.rentCount }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-4" *ngIf="selectedReportType === 'lentcountbybookid'">
+    <h2>Book Rental Count Reports</h2>
+    
+    <div *ngIf="isLoading" class="text-center">
+      <div class="spinner-border" role="status"></div>
+      <span>Loading...</span>
+    </div>
+  
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Loop through countReports to display each book's information -->
+    <div *ngFor="let report of Lendingcountbybookid">
+      <!-- Book information row -->
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Book ID</th>
+            <th>Total Rent Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ report.bookID }}</td>
+            <td>{{ report.totalRentCount }}</td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <!-- Book copy rent count details table -->
+      <div class="table-responsive mt-3">
+        <h5>Individual Copy Rent Count for Book ID {{ report.bookID }}</h5>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Copy ID</th>
+              <th>Rent Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Loop through the induvalCopyrentcount for each book -->
+            <tr *ngFor="let copy of report.induvalCopyrentcount">
+              <td>{{ copy.coppyId }}</td>
+              <td>{{ copy.rentCount }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
   

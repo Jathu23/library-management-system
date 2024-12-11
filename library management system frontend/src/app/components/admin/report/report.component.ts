@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { RentService } from '../../../services/lent-service/rent.service';
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
@@ -113,25 +114,247 @@ export class ReportComponent {
     ],
     "laterLent": []
   }
-  lentReportByUserId: Report[] = [];
-  allBookBorrowReport: Report[] = [];
-  
-  selectedReportType: string = 'overall'; // Default report type
-  userId: number = 1;  // Default user ID
-  bookId: number = 1;  // Default book ID
-
-
-
-    // Control bar method to change report type
-    onReportTypeChange(): void {
-      if (this.selectedReportType === 'overall') {
-        
-      } else if (this.selectedReportType === 'lentByUser') {
-        
-      } else if (this.selectedReportType === 'bookBorrow') {
-       
-      }
+  lentReportByUserId: any= [];
+  allBookBorrowReport: any = [
+    {
+      "bookId": 1,
+      "bookTitle": "title1",
+      "isbn": "12311",
+      "author": "author1",
+      "bookRentDetails": [
+        {
+          "bookCopyId": 1,
+          "userName": "Esvaran Jathushan",
+          "issuingAdmin": "Esvaran Jathushan",
+          "receivingAdmin": "Esvaran Jathushan",
+          "lendDate": "2024-12-11T18:26:41.4821258",
+          "dueDate": "2024-12-12T18:26:41.4821258",
+          "returnDate": "2024-12-11T19:00:23.3491402"
+        },
+        {
+          "bookCopyId": 1,
+          "userName": "Esvaran Jathushan",
+          "issuingAdmin": "Esvaran Jathushan",
+          "receivingAdmin": null,
+          "lendDate": "2024-12-11T19:02:10.7712386",
+          "dueDate": "2024-12-13T19:02:10.7712386",
+          "returnDate": null
+        },
+        {
+          "bookCopyId": 3,
+          "userName": "Esvaran Jathushan",
+          "issuingAdmin": "Esvaran Jathushan",
+          "receivingAdmin": null,
+          "lendDate": "2024-12-11T18:32:20.4132878",
+          "dueDate": "2024-12-13T18:32:20.4132878",
+          "returnDate": null
+        }
+      ]
+    },
+    {
+      "bookId": 2,
+      "bookTitle": "title2",
+      "isbn": "54",
+      "author": "author21",
+      "bookRentDetails": [
+        {
+          "bookCopyId": 2,
+          "userName": "Esvaran Jathushan",
+          "issuingAdmin": "Esvaran Jathushan",
+          "receivingAdmin": null,
+          "lendDate": "2024-12-11T18:28:05.9408338",
+          "dueDate": "2024-12-13T18:28:05.9408338",
+          "returnDate": null
+        }
+      ]
     }
+  ];
+  BookBorrowReportbyId: any =  [
+    {
+      "bookId": 1,
+      "bookTitle": "title1",
+      "isbn": "12311",
+      "author": "author1",
+      "bookRentDetails": [
+        {
+          "bookCopyId": 1,
+          "userName": "Esvaran Jathushan",
+          "issuingAdmin": "Esvaran Jathushan",
+          "receivingAdmin": "Esvaran Jathushan",
+          "lendDate": "2024-12-11T18:26:41.4821258",
+          "dueDate": "2024-12-12T18:26:41.4821258",
+          "returnDate": "2024-12-11T19:00:23.3491402"
+        },
+        {
+          "bookCopyId": 1,
+          "userName": "Esvaran Jathushan",
+          "issuingAdmin": "Esvaran Jathushan",
+          "receivingAdmin": null,
+          "lendDate": "2024-12-11T19:02:10.7712386",
+          "dueDate": "2024-12-13T19:02:10.7712386",
+          "returnDate": null
+        },
+        {
+          "bookCopyId": 3,
+          "userName": "Esvaran Jathushan",
+          "issuingAdmin": "Esvaran Jathushan",
+          "receivingAdmin": null,
+          "lendDate": "2024-12-11T18:32:20.4132878",
+          "dueDate": "2024-12-13T18:32:20.4132878",
+          "returnDate": null
+        }
+      ]
+    }
+  ];
+allLendingcount:any=[
+  {
+    "bookID": 1,
+    "totalRentCount": 1,
+    "induvalCopyrentcount": [
+      {
+        "coppyId": 1,
+        "rentCount": 1
+      },
+      {
+        "coppyId": 3,
+        "rentCount": 0
+      }
+    ]
+  },
+  {
+    "bookID": 2,
+    "totalRentCount": 0,
+    "induvalCopyrentcount": [
+      {
+        "coppyId": 2,
+        "rentCount": 0
+      }
+    ]
+  }
+];
+Lendingcountbybookid:any= [
+  {
+    "bookID": 1,
+    "totalRentCount": 1,
+    "induvalCopyrentcount": [
+      {
+        "coppyId": 1,
+        "rentCount": 1
+      },
+      {
+        "coppyId": 3,
+        "rentCount": 0
+      }
+    ]
+  }
+];
+  selectedReportType: string = 'overall';  // Default selected report
+  userId: number = 1; 
+  bookId: number = 2; 
+  date: string = '2024-12-11'; 
+  reportData: any; 
+  isLoading: boolean = false;
+  errorMessage: string = '';
+
+
+  constructor(private rentService: RentService) {}
+
+  fetchReport(): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    switch (this.selectedReportType) {
+      case 'overall':
+        this.rentService.getLentReport(null).subscribe(
+          (response) => {
+            this.overallreport = response;
+            console.log(response);
+            this.isLoading = false;
+          },
+          (error) => {
+            this.errorMessage = 'Error fetching overall report';
+            this.isLoading = false;
+          }
+        );
+        break;
+
+      case 'lentByUser':
+        this.rentService.getLentReportByUserId(this.userId).subscribe(
+          (response) => {
+            this.overallreport = response;
+            console.log(response);
+            this.isLoading = false;
+          },
+          (error) => {
+            this.errorMessage = 'Error fetching report by user ID';
+            this.isLoading = false;
+          }
+        );
+        break;
+
+      case 'bookBorrow':
+        this.rentService.getBookLendingReport(null).subscribe(
+          (response) => {
+            this.allBookBorrowReport = response;
+            console.log(response);
+            this.isLoading = false;
+          },
+          (error) => {
+            this.errorMessage = 'Error fetching book lending report';
+            this.isLoading = false;
+          }
+        );
+        break;
+
+        case 'bookBorrowbyid':
+          this.rentService.getBookLendingReport(this.bookId).subscribe(
+            (response) => {
+              this.BookBorrowReportbyId = response;
+              console.log(response);
+              this.isLoading = false;
+            },
+            (error) => {
+              this.errorMessage = 'Error fetching book lending report';
+              this.isLoading = false;
+            }
+          );
+          break;
+
+      case 'lentcount':
+        this.rentService.getLendingCountReport(null).subscribe(
+          (response) => {
+            this.allLendingcount = response;
+            console.log(response);
+            this.isLoading = false;
+          },
+          (error) => {
+            this.errorMessage = 'Error fetching lending count report';
+            this.isLoading = false;
+          }
+        );
+        break;
+
+        case 'lentcountbybookid':
+          this.rentService.getLendingCountReport(this.bookId).subscribe(
+            (response) => {
+              this.Lendingcountbybookid = response;
+              console.log(response);
+              
+              this.isLoading = false;
+            },
+            (error) => {
+              this.errorMessage = 'Error fetching lending count report';
+              this.isLoading = false;
+            }
+          );
+          break;
+
+      default:
+        this.errorMessage = 'Invalid report type selected';
+        this.isLoading = false;
+        break;
+    }
+  }
 }
 // Define an interface for each lent record
 interface LentRecord {
