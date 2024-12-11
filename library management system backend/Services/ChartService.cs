@@ -83,32 +83,29 @@ namespace library_management_system.Services
             return result;
         }
 
-        public async Task<List<ChartData>> GetMonthlyRevenueForChartAsync(int? year)
+        public async Task<List<object>> GetMonthlyRevenueForChartAsync(int? year)
         {
+            // Fetch revenue data for the given year
             var revenueData = await _chartRepository.GetMonthlyRevenueAsync(year);
 
+            // Get the list of all month names in the current culture
             var months = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames.Take(12).ToList();
 
-            // Prepare data for chart with all months (even if no revenue data for some months)
-            var series = months.Select((month, index) =>
+            // Map each month to its corresponding revenue or a default value of 0
+            var result = months.Select((month, index) =>
             {
-                var dataForMonth = revenueData.FirstOrDefault(r => r.Month == index + 1);
-                return new ChartSeries
+                var dataForMonth = revenueData.FirstOrDefault(r => r.Month == index + 1); // Match month by index
+                return new
                 {
-                    Name = month,
-                    Value = (int)(dataForMonth?.TotalRevenue ?? 0)
-
+                    name = month, // Month name (e.g., "January")
+                    value = (int)(dataForMonth?.TotalRevenue ?? 0) // Total revenue or 0 if no data
                 };
             }).ToList();
 
-            return new List<ChartData>
-        {
-            new ChartData
-            {
-                Name = $"Revenue for {year}",
-                Series = series
-            }
-        };
+            // Return the result as a list of objects
+            return result.Cast<object>().ToList();
         }
+
+
     }
 }

@@ -420,6 +420,10 @@ i {
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
+  .card-trending h3{
+    color: #c1085e;
+    font-size: 20px;
+  }
   
   .card-trending img{
     width: 100%;
@@ -725,4 +729,227 @@ i {
   color: #c1085e;
   text-decoration: underline; /* Adds underline on hover */
   font-weight: bold;
+}
+
+/* ----------------card */
+.metrics-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  gap: 20px; /* Spacing between cards */
+  /* height: 100px; */
+}
+
+.metric-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.metric-card i {
+color: rgb(189, 9, 69);
+}
+
+
+.metric-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.card-header img {
+  width: 35px;
+  height: 35px;
+}
+
+.percentage {
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.percentage.positive {
+  background-color: #d1f5e2;
+  color: #28a745;
+}
+
+.percentage.negative {
+  background-color: #fde4e4;
+  color: #dc3545;
+}
+
+.card-body h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.card-body p {
+  font-size: 1rem;
+  color: #6c757d;
+  margin: 5px 0 0;
+}
+
+.comparison {
+  font-size: 0.85rem;
+  color: #adb5bd;
+  margin-top: 10px;
+}
+
+.small_boxes{
+  width: 60%;
+  background-color: #f6ecf7;
+  padding: 10px;
+  margin-top: 30px;
+  border-radius: 20px;
+
+}
+.boxes{
+  display: flex;
+  justify-content: space-evenly;
+  margin-left: 10px;
+  margin-top: 30px;
+
+}
+.meter_graph{
+  margin-top: 30px;
+  height: 440px;
+  width: 30%;
+  background-color: #f6f0f4;
+  border-radius: 20px;
+}
+
+
+/* -------------------------------------------------------- */
+
+.product-statistics {
+  background-color: #eddbdb;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chart-container h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.chart-container p {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 15px;
+}
+
+.chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.circle {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+}
+
+.item-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.percentage {
+  font-size: 0.85rem;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 8px;
+}
+
+.percentage.positive {
+  background-color: #d1f5e2;
+  color: #28a745;
+}
+
+.percentage.negative {
+  background-color: #fde4e4;
+  color: #dc3545;
+}
+
+
+.small_gen{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.mini_gen{
+  background-color: #ffffff;
+  margin-left: 10px;
+  margin-right: 10px;
+
+}
+
+.mini_gen{
+  display: flex;
+  justify-content: space-around;
+}
+
+.topgenres{
+  height: 50%;
+}
+
+.topgenres h2{
+  text-align: center;
+  color: #d20c96;
+}
+
+.top_lsit{
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 10px;
+}
+
+.mini_top{
+  display: flex;
+  justify-content: space-around;
+  background-color: rgb(255, 255, 255);
+  margin-right: 10px;
+  margin-left: 10px;
+
+}
+
+.top_listners h2{
+  text-align: center;
+  color: #d20c96;
 }
