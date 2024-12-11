@@ -126,6 +126,7 @@ namespace library_management_system.Controllers
             return Ok(result);
         }
 
+        //repostr section-----------------------------------------------
 
         [HttpGet("Lent-Report")]
         public async Task<IActionResult> GetLentReport([FromQuery] DateTime date)
@@ -137,7 +138,7 @@ namespace library_management_system.Controllers
                
            
                 return File(pdf, "application/pdf", "LendReport.pdf");
-                return Ok(pdf);
+               
             }
             catch (Exception ex)
             {
@@ -174,14 +175,14 @@ namespace library_management_system.Controllers
             }
         }
 
-        [HttpGet("download-lending-report")]
-        public async Task<IActionResult> DownloadLendingReport([FromQuery] int? bookId)
-        {
-            var report = await _lentService.GetBookLendingReports(bookId); // Fetch your data
-            var pdfBytes = await _pdfGeneratorService.GenerateBookLendingReportPdfAsync(report);
+        //[HttpGet("download-lending-report")]
+        //public async Task<IActionResult> DownloadLendingReport([FromQuery] int? bookId)
+        //{
+        //    var report = await _lentService.GetBookLendingReports(bookId); // Fetch your data
+        //    var pdfBytes = await _pdfGeneratorService.GenerateBookLendingReportPdfAsync(report);
 
-            return File(pdfBytes, "application/pdf", "BookLendingReport.pdf");
-        }
+        //    return File(pdfBytes, "application/pdf", "BookLendingReport.pdf");
+        //}
 
         [HttpGet("LendingCount-report")]
         public async Task<IActionResult> GetLendingCountReport([FromQuery] int? bookId)
@@ -209,7 +210,7 @@ namespace library_management_system.Controllers
             return Ok(borrowStatus);
         }
 
-        [HttpGet("lend-report")]
+        [HttpGet("pdf-sample-report")]
         public async Task<IActionResult> GetLendReport()
         {
             // Sample HTML content for the report
@@ -235,7 +236,7 @@ namespace library_management_system.Controllers
             var pdfBytes = await _pdfGeneratorService.GeneratePdfAsync(htmlContent);
 
             // Return as a downloadable file
-            return File(pdfBytes, "application/pdf", "LendReport.pdf");
+            return File(pdfBytes, "application/pdf", "sample.pdf");
         }
 
 
