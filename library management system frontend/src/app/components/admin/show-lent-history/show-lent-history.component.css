@@ -1,38 +1,5 @@
 /* General Table Styling */
 .table {
-<<<<<<< HEAD
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .table th,
-  .table td {
-    padding: 8px;
-    border: 1px solid #ddd;
-    text-align: left;
-    font-size: 20px;
-  }
-  
-  .expanded-content {
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-top: 1px solid #ddd;
-  }
-  
-  .additional-info-table {
-    width: 100%;
-    margin-top: 10px;
-    border-collapse: collapse;
-  }
-  
-  .additional-info-table td {
-    padding: 8px;
-    border: 1px solid #ccc;
-  }
-  
-  .additional-info-table td:first-child {
-    font-weight: bold;
-=======
   width: 100%;
   border-collapse: collapse;
 }
@@ -126,7 +93,6 @@ progress::-moz-progress-bar {
 @media (max-width: 768px) {
   .table-container {
     overflow-x: auto;
->>>>>>> 693afad9ee2ab83629174a5c95b801506bce82de
   }
 
   .table th, .table td {
