@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .table th,
 .table td {
   padding: 8px;
@@ -7,10 +6,8 @@
   font-size: 20px;
 }
 
-=======
 /* Add row hover shadow effect */
 .table-row:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transform: translateY(-2px);
   }
->>>>>>> 693afad9ee2ab83629174a5c95b801506bce82de

@@ -71,7 +71,7 @@ isLoading3:  boolean = false;
               setTimeout(() => {
                 if (response.data.role == "admin") {
                   this.isLoading3=false;
-                  this.router.navigate(['/admin']); 
+                  this.router.navigate(['/admin/dashboard/audio-books']); 
                 }else{
                   this.isLoading3=false;
                   this.router.navigate(['/user']); 
@@ -121,7 +121,7 @@ isLoading3:  boolean = false;
               setTimeout(() => {
                 if (response.data.role == "admin") {
                   this.isLoading3=false;
-                  this.router.navigate(['/admin']); 
+                  this.router.navigate(['/admin/dashboard/audio-books']); 
                 }else{
                   this.isLoading3=false;
                   this.router.navigate(['/user']); 

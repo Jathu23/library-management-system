@@ -51,7 +51,6 @@ import { UserprofileComponent } from './components/user/userprofile/userprofile.
 import { NotificationComponent } from './components/user/notification/notification.component';
 
 
-import { NgxPageScrollCoreModule } from 'ngx-page-scroll-core';
 import { AudioBookComponent } from './components/admin/dashboard/innercomponenets/audio-book/audio-book.component';
 import { NormalBooksComponent } from './components/admin/dashboard/innercomponenets/normal-books/normal-books.component';
 import { EBookComponent } from './components/admin/dashboard/innercomponenets/ebook/ebook.component';
@@ -129,12 +128,7 @@ import { ReportComponent } from './components/admin/report/report.component';
     NgxChartsModule,
     MatInputModule,
     MatSelectModule,
-    NgxPageScrollCoreModule.forRoot({ duration: 1500, scrollOffset: 100 })
    
-
-    
-    
-
      
   ],
   providers: [

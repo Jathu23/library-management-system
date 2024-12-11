@@ -9,12 +9,14 @@ import {AudiobookService} from '../../../../../services/bookservice/audiobook.se
 
 
 
+
 @Component({
   selector: 'app-audio-book',
   templateUrl: './audio-book.component.html',
   styleUrl: './audio-book.component.css'
 })
 export class AudioBookComponent {
+  errorMessage: string = '';
   constructor(
     private userService:UserService,
     private audiobookService:AudiobookService
@@ -47,6 +49,7 @@ export class AudioBookComponent {
   this.loadUserCounts();
   this.fetchTopAudiobooks(3);
   this.fetchTopAudiobookslist(10)
+  this.fetchUsers(10);
 }
 
 
@@ -314,6 +317,24 @@ loadUserCounts(): void {
     },
   ];
 
-  // -----
+  // ----- SubAnd Bset
+
+  users: any[] = [];
+
+  fetchUsers(count: number): void {
+    this.userService.getSubscribedAndBestUsers(count).subscribe(
+      (response) => {
+        this.users = response;
+        console.log(this.users);
+        
+      },
+      (error) => {
+        this.errorMessage = 'Failed to load users';
+        console.error('Error fetching users:', error);
+      }
+    );
+  }
+
+
 
 }

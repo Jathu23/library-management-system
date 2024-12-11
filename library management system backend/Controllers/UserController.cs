@@ -319,8 +319,10 @@ namespace library_management_system.Controllers
  public async Task<IActionResult> GetUserById(int id)
         {
             var response = await _userService.GetUserById(id);
+			
 
-            if (response.Success)
+
+			if (response.Success)
             {
                 return Ok(response);
             }
@@ -330,6 +332,31 @@ namespace library_management_system.Controllers
             }
         }
 
+		//Functions for sub and Best
+		[HttpGet("subscribed-and-best")]
+		public async Task<IActionResult> GetSubscribedAndBestUsers([FromQuery] int count)
+		{
+			try
+			{
+				// Call the service method
+				var users = await _userService.FilterUsersBySubscribedAndBest(count);
+	
+			// Return the result
+			return Ok(users);
+			}
+			catch (Exception ex)
+			{
+				// Log the error (use a logger in a real application)
+				Console.WriteLine($"An error occurred: {ex.Message}");
 
-    }
+				// Return a 500 Internal Server Error response
+				return StatusCode(500, "An error occurred while retrieving users.");
+			}
+		}
+
+
+	}
+	
+
+	
 }

@@ -11,6 +11,8 @@ export class UserService {
   private baseurl = environment.apiBaseUrl;
   private Url = `${this.baseurl}/User/`;
 
+  private suBestUrl = `https://localhost:7261/api/User/subscribed-and-best?count`
+
   constructor(private http: HttpClient) {}
 
   GetUserEmailsByPrefix(prefix:string): Observable<any> {
@@ -63,5 +65,11 @@ export class UserService {
 
   getSubscribedUserCount(): Observable<number> {
     return this.http.get<number>(`${this.Url}subscribed-user-count`);
+  }
+
+  getSubscribedAndBestUsers(count: number): Observable<any> {
+    return this.http.get(`${this.suBestUrl}/subscribed-and-best`, {
+      params: { count: count.toString() },
+    });
   }
 }

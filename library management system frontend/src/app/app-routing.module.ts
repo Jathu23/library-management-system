@@ -61,9 +61,9 @@ const routes: Routes = [
       {path:'show-rent-his',component:ShowLentHistoryComponent},
       {path:'members',component:MembersComponent},
       { path: 'dashboard', component: DashboardComponent, children: [
-        { path: '', redirectTo: 'normal-books', pathMatch: 'full' },
-        { path: 'normal-books', component: NormalBooksComponent },
+        { path: '', redirectTo: 'audio-books', pathMatch: 'full' },
         { path: 'audio-books', component: AudioBookComponent },
+        { path: 'normal-books', component: NormalBooksComponent },
         { path: 'e-books', component: EBookComponent },
       ] 
     },

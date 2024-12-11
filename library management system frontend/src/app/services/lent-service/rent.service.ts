@@ -57,4 +57,26 @@ export class RentService {
     
     return this.http.get<any>(this.rentUrl+ `rent-history-by-userid?userId=${userId}`);
   }
+
+  getLentReport(date: string | null): Observable<any> {
+    const url = date != null ? `${this.rentUrl}Lent-Report?date=${date}` : `${this.rentUrl}Lent-Report`;
+    return this.http.get<any>(url);
+  }
+  
+  getLentReportByUserId(userId: number | null): Observable<any> {
+    const url = userId != null ? `${this.rentUrl}Lent-Report-ByUserid?userid=${userId}` : `${this.rentUrl}Lent-Report-ByUserid`;
+    return this.http.get<any>(url);
+  }
+  
+  getBookLendingReport(bookId: number | null): Observable<any> {
+    const url = bookId != null ? `${this.rentUrl}Book-lending-report?bookId=${bookId}` : `${this.rentUrl}Book-lending-report`;
+    return this.http.get<any>(url);
+  }
+  
+  getLendingCountReport(bookId: number | null): Observable<any> {
+    const url = bookId != null ? `${this.rentUrl}LendingCount-report?bookId=${bookId}` : `${this.rentUrl}LendingCount-report`;
+    return this.http.get<any>(url);
+  }
+  
+        
 }
