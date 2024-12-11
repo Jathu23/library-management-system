@@ -75,10 +75,8 @@ export class ShowEbookComponent implements OnInit {
   }
 
   viewPdf(ebook: any) {
-    // Mark the PDF as read
     this.markPdfAsRead(ebook.id);
 
-    // Update the selected PDF path for the embed tag
     this.selectedPdfPath = this.sanitizer.bypassSecurityTrustResourceUrl(
     `${this.resourcBaseUrl}${ebook.filePath}`  
     ) as string;
@@ -141,6 +139,18 @@ export class ShowEbookComponent implements OnInit {
         );
       }
     });
+  }
+
+  isModalOpen = false;
+  editedEbook: any = {}; 
+
+  closeModal() {
+    this.isModalOpen = false;
+  }
+
+  submitEditForm() {
+    console.log('Edited Ebook:', this.editedEbook);
+    this.closeModal();
   }
 }
 

@@ -50,15 +50,6 @@
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: #f9f9f9;
 }
-<<<<<<< HEAD
-
-.table th,
-.table td {
-  padding: 8px;
-  border: 1px solid #ddd;
-  text-align: left;
-  font-size: 20px;
-=======
 .table thead th {
   background-color: #8d377e !important;
   color: white !important;
@@ -84,5 +75,4 @@
 
 .table thead th:last-child {
   border-top-right-radius: 5px;
->>>>>>> 693afad9ee2ab83629174a5c95b801506bce82de
 }
