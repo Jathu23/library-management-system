@@ -1,4 +1,4 @@
-/* Custom Styles for Buttons */
+
 .btn {
   font-size: 1rem;
   padding: 0.5rem 1rem;
@@ -43,12 +43,18 @@
   justify-content: center;
 }
 
-/* Hover effect on table rows */
 .table tbody tr:hover {
   background-color: #f1f1f1;
 }
 
-/* Striped table rows */
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: #f9f9f9;
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+  font-size: 20px;
 }
