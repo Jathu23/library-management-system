@@ -99,19 +99,21 @@ export class ShowEbookComponent implements OnInit {
 
 
   deleteEbook(id: number) {
-    if(confirm("Do you want to delete ")){
+    if (confirm("Do you want to delete this ebook?")) {
       this.EbookDelete.deleteEBook(id).subscribe(
-        response => {
+        (response) => {
+          this.ebooks = this.ebooks.filter(ebook => ebook.id !== id);
           console.log('Ebook deleted successfully');
           alert('Ebook deleted successfully!');
         },
-        error => {
+        (error) => {
           console.error('Error deleting ebook', error);
           alert('Error deleting ebook');
         }
       );
     }
   }
+  
 
   openEditDialog(ebook: any): void {
     const dialogRef = this.dialog.open(EditEbookDialogComponent, {
