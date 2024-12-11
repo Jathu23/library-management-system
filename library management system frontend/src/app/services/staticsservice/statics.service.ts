@@ -21,4 +21,9 @@ export class StaticsService {
   getBorrowingTrendsForAllYears(): Observable<any> {
     return this.http.get(`${this.baseUrl}/all-borrowing-trends`);
   }
+  // Fetch monthly revenue, optionally filtered by year
+  getMonthlyRevenue(year?: number): Observable<any> {
+    const url = year ? `${this.baseUrl}/monthly-revenue?year=${year}` : `${this.baseUrl}/monthly-revenue`;
+    return this.http.get(url);
+  }
 }

@@ -2,6 +2,7 @@
 using library_management_system.Database.Entiy;
 using library_management_system.DTOs.Chart;
 using Microsoft.EntityFrameworkCore;
+using static library_management_system.Repositories.ChartRepository;
 
 namespace library_management_system.Repositories
 {
@@ -46,29 +47,25 @@ namespace library_management_system.Repositories
             return await _libraryDbContext.RentHistory.MaxAsync(r => r.LendDate.Year);
         }
 
-        public async Task<List<RevenueData>> GetMonthlyRevenueAsync(int? Year)
+        public async Task<List<RevenueData>> GetMonthlyRevenueAsync(int? year)
         {
-            int year = Year ?? DateTime.Now.Year;
+            int targetYear = year ?? DateTime.Now.Year;
 
-            var monthlyRevenue = await _libraryDbContext.Payment
-                .Where(p => p.PaymentDate.Year == year)
-                .GroupBy(p => new { p.PaymentDate.Month, p.PaymentDate.Year })
+            return await _libraryDbContext.Payment
+                .Where(p => p.PaymentDate.Year == targetYear)
+                .GroupBy(p => new { p.PaymentDate.Month })
                 .Select(g => new RevenueData
                 {
                     Month = g.Key.Month,
-                    Year = g.Key.Year,
                     TotalRevenue = g.Sum(p => p.AmountPaid)
                 })
-                .OrderBy(p => p.Month)
+                .OrderBy(r => r.Month)
                 .ToListAsync();
-
-            return monthlyRevenue;
         }
 
         public class RevenueData
         {
-            public int Month { get; set; }
-            public int Year { get; set; }
+            public int Month { get; set; } // Changed to int to store month number
             public decimal TotalRevenue { get; set; }
         }
 
