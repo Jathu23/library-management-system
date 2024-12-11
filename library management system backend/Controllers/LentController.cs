@@ -81,6 +81,7 @@ namespace library_management_system.Controllers
 
             return Ok(result);
         }
+
         [HttpGet("lent-records-by-userid-user")]
         public async Task<IActionResult> GetLentRecordsByUserId(int userId , bool? getoverdue =false)
         {
@@ -134,10 +135,10 @@ namespace library_management_system.Controllers
             try
             {
                 var report = await _lentService.GetLentReport(date);
-                var pdf =await _pdfGeneratorService.GenerateLendReportPdfAsync(report);
-               
-           
-                return File(pdf, "application/pdf", "LendReport.pdf");
+                //var pdf =await _pdfGeneratorService.GenerateLendReportPdfAsync(report);
+
+                return Ok(report);
+                //return File(pdf, "application/pdf", "LendReport.pdf");
                
             }
             catch (Exception ex)

@@ -1,0 +1,44 @@
+/* Control Bar */
+.control-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  
+  /* Label styles */
+  .control-bar label {
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  
+  /* Input and Select field styles */
+  .control-bar select, .control-bar input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 200px;
+  }
+  
+  .control-bar select {
+    width: 220px;
+  }
+  
+  .control-bar input {
+    width: 120px;
+  }
+  
+  /* Adjust input fields for mobile responsiveness */
+  @media (max-width: 600px) {
+    .control-bar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .control-bar select, .control-bar input {
+      width: 100%;
+    }
+  }
+  
