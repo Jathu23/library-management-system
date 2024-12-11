@@ -50,27 +50,6 @@ namespace library_management_system.Controllers
             if (!response.Success)
                 return BadRequest(response);
 
-
-            const string subject = "Account Created";
-
-            var body = $"""
-                <html>
-                    <body>
-                        <h1>Hello, {userRequestDto.FirstName} {userRequestDto.LastName}</h1>
-                        <h2>
-                            Your account has been created and we have sent approval request to admin.
-                            Once the request is approved by admin you will receive email, and you will be
-                            able to login in to your account.
-                        </h2>
-                        <h3>Thanks</h3>
-                    </body>
-                </html>
-            
-            """
-            ;
-
-            await _Email.SendEmailAsync(userRequestDto.Email, subject, body);
-
             return Ok(response);
 
 

@@ -5,6 +5,9 @@ using library_management_system.DTOs;
 using library_management_system.DTOs.User;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
+using MailSend.Enums;
+using MailSend.Models;
+using MailSend.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -20,6 +23,7 @@ namespace library_management_system.Services
         private readonly JwtService _jwtService;
         private readonly LoginRepository _loginRepository;
         private readonly LentService _lentService;
+        private readonly sendmailService _sendmailService;
 
         public UserServices(
             UserRepo userRepo,
@@ -27,7 +31,8 @@ namespace library_management_system.Services
             BCryptService bCryptService,
             JwtService jwtService,
             LoginRepository loginRepository,
-            LentService lentService)
+            LentService lentService,
+            sendmailService sendmailService)
         {
             _userRepo = userRepo;
             _imageService = imageService;
@@ -35,6 +40,7 @@ namespace library_management_system.Services
             _jwtService = jwtService;
             _loginRepository = loginRepository;
             _lentService = lentService;
+            _sendmailService = sendmailService;
         }
 
         public async Task<ApiResponse<AuthResponse>> CreateUser(UserRequstModel userRequestDto)
@@ -90,8 +96,15 @@ namespace library_management_system.Services
                         Token = _jwtService.GenerateToken(user),
                         Role = "user"
                     };
+                    var sendMailRequest = new SendMailRequest
+                    {
+                        EmailType = EmailTypes.accountcreate,
+                        Name = $"{userRequestDto.FirstName} {userRequestDto.LastName}",
+                        Email= userRequestDto.Email
 
 
+                    };
+                    var res = await _sendmailService.Sendmail(sendMailRequest).ConfigureAwait(false);
 
                 }
                 else
