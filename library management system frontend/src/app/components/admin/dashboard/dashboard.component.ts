@@ -1,4 +1,4 @@
-import { Component,OnInit  } from '@angular/core';
+import { Component,Input,OnInit  } from '@angular/core';
 import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
 import { UserService } from '../../../services/user-service/user.service';
 
@@ -407,9 +407,46 @@ loadUserCounts(): void {
   showLabels: boolean = true;
   isDoughnut: boolean = true;
 
+
+  // -------------------------------------------------------------------------------------------
   
+  chartView: [number, number] = [150, 150]; // Chart size (width x height)
+  
+  // Corrected color scheme
+  chartColorScheme: Color = {
+    name: 'customScheme',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['#5AA454', '#C7B42C', '#A10A28'], // Colors
+  };
+
+  // Product statistics data
+  productStatistics = [
+    {
+      name: 'Electronic',
+      value: 2487,
+      color: '#5AA454',
+      change: 1.8, // Percentage change
+    },
+    {
+      name: 'Games',
+      value: 1828,
+      color: '#C7B42C',
+      change: 2.3,
+    },
+    {
+      name: 'Furniture',
+      value: 1463,
+      color: '#A10A28',
+      change: -1.04,
+    },
+  ];
+
+  // -----
   
 }
+  
+
   
 
 
