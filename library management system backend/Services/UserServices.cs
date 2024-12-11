@@ -736,7 +736,24 @@ namespace library_management_system.Services
 
             return response;
         }
-    }
+
+		public async Task<List<User>> FilterUsersBySubscribedAndBest(int count)
+		{
+			try
+			{
+				return await _userRepo.FilterUsersBySubscribedAndBest(count);
+			}
+			catch (Exception ex)
+			{
+				// Log the exception (use a logging framework or service as appropriate)
+				Console.WriteLine($"An error occurred: {ex.Message}");
+
+				// Optionally, rethrow the exception or return a default value
+				throw; // Rethrow the exception to be handled by higher-level logic
+			}
+		}
+
+	}
 
 }
 

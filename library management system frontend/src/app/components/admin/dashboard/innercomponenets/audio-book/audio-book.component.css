@@ -819,13 +819,13 @@ color: rgb(189, 9, 69);
   margin-top: 30px;
 
 }
-.meter_graph{
+/* .meter_graph{
   margin-top: 30px;
   height: 440px;
   width: 30%;
   background-color: #1e011b;
   border-radius: 20px;
-}
+} */
 
 
 /* -------------------------------------------------------- */
@@ -907,14 +907,14 @@ color: rgb(189, 9, 69);
 }
 
 
-.small_gen{
+/* .small_gen{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-}
+} */
 
-.mini_gen{
-  /* background-color: #ffffff; */
+/* .mini_gen{
+
   margin-left: 10px;
   margin-right: 10px;
 
@@ -923,39 +923,197 @@ color: rgb(189, 9, 69);
 .mini_gen{
   display: flex;
   justify-content: space-around;
-}
+} */
 
-.topgenres{
+/* .topgenres{
   height: 50%;
 }
 
 .topgenres h2{
   text-align: center;
   color: #d20c96;
-}
+} */
 
-.top_lsit{
+/* .top_lsit{
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 10px;
-}
+} */
 
-.mini_top{
+/* .mini_top{
   display: flex;
   justify-content: space-around;
   background-color: rgba(60, 0, 25, 0.086);
   margin-right: 10px;
   margin-left: 10px;
+  color: white;
 
-}
+} */
 
 .mini_top img{
   border-radius: 100%;
-  width: 20px;
+  width: 40px;
 }
 
-.top_listners h2{
+/* .top_listners h2{
   text-align: center;
   color: #d20c96;
+} */
+
+
+/* ------------------- */
+
+.meter_graph {
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Space between Popular Genres and Top Listeners */
 }
 
+.topgenres {
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+
+.topgenres h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.small_gen {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.mini_gen h3 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.mini_gen span {
+  font-size: 14px;
+  color: gray;
+}
+
+.top_listners {
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+
+.top_listners h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.top_lsit {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Space between each listener */
+  max-height: 400px; /* Limit the height */
+  overflow-y: auto; /* Make it scrollable */
+  padding-right: 10px; /* Add space for the scrollbar */
+}
+
+.mini_top {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-thumbnail {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.mini_top h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.mini_top h4 {
+  margin: 0;
+  font-size: 14px;
+  color: gray;
+}
+
+
+/* -------------new tops */
+
+.top_things{
+  width: 30%;
+  background-color: #f1e3f0;
+  height: 450px;
+  margin-top: 30px;
+  border-radius: 10px;
+}
+
+.top_geners_t{
+  height: 40%;
+}
+
+.mini_uers{
+  background-color: white;
+  height: 60%;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 10px;
+  margin-left: 10px;
+  margin-top: 5px;
+
+}
+
+.top_geners_t h2{
+  text-align: center;
+  color: purple;
+  font-weight: bold;
+}
+
+.top_users{
+  margin-right: 10px;
+  margin-left: 10px;
+  background-color: white;
+
+}
+
+.scrolable_div{
+  max-height: 200px; 
+  overflow-y: auto;
+  font-weight: bold;
+
+}
+.top_users h2{
+  text-align: center;
+  color: purple;
+  font-weight: bold;
+}
+
+.mini_genre{
+  display: flex;
+  justify-content: space-evenly;  
+}
+.mini_genre h3{
+  background-color: white;
+  color: #000000;
+  padding-left: 5px;
+  padding-right: 5px;
+
+
+
+}
+
+.grid_box{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+/*  */
