@@ -75,10 +75,8 @@ export class ShowEbookComponent implements OnInit {
   }
 
   viewPdf(ebook: any) {
-    // Mark the PDF as read
     this.markPdfAsRead(ebook.id);
 
-    // Update the selected PDF path for the embed tag
     this.selectedPdfPath = this.sanitizer.bypassSecurityTrustResourceUrl(
     `${this.resourcBaseUrl}${ebook.filePath}`  
     ) as string;
@@ -99,29 +97,28 @@ export class ShowEbookComponent implements OnInit {
     console.log(`PDF for Ebook ID ${ebookId} has loaded.`);
   }
 
-  // deleting functions for E_Books
 
   deleteEbook(id: number) {
-    if(confirm("Do you want to delete ")){
+    if (confirm("Do you want to delete this ebook?")) {
       this.EbookDelete.deleteEBook(id).subscribe(
-        response => {
+        (response) => {
+          this.ebooks = this.ebooks.filter(ebook => ebook.id !== id);
           console.log('Ebook deleted successfully');
           alert('Ebook deleted successfully!');
-          // Additional actions on success, such as refreshing the list
         },
-        error => {
+        (error) => {
           console.error('Error deleting ebook', error);
           alert('Error deleting ebook');
         }
       );
     }
   }
+  
 
-  // edit functions are here
   openEditDialog(ebook: any): void {
     const dialogRef = this.dialog.open(EditEbookDialogComponent, {
       width: '500px',
-      data: { ...ebook }, // Pass a copy of the ebook to prevent direct modifications
+      data: { ...ebook }, 
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -130,7 +127,6 @@ export class ShowEbookComponent implements OnInit {
           (response) => {
             console.log('Ebook updated successfully:', response);
             alert('Ebook updated successfully!');
-            // Optionally update local data
             const index = this.ebooks.findIndex((e) => e.id === result.id);
             if (index !== -1) this.ebooks[index] = result;
           },
@@ -141,6 +137,18 @@ export class ShowEbookComponent implements OnInit {
         );
       }
     });
+  }
+
+  isModalOpen = false;
+  editedEbook: any = {}; 
+
+  closeModal() {
+    this.isModalOpen = false;
+  }
+
+  submitEditForm() {
+    console.log('Edited Ebook:', this.editedEbook);
+    this.closeModal();
   }
 }
 
