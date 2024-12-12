@@ -249,5 +249,22 @@ namespace library_management_system.Repositories
             };
         }
 
+        public async Task<bool> IsbnisAvailable(string isbn)
+        {
+
+            var r1 = await _context.NormalBooks.AnyAsync(u => u.ISBN == isbn);
+            var r2 = await _context.Audiobooks.AnyAsync(u => u.ISBN == isbn);
+            var r3 = await _context.Ebooks.AnyAsync(u => u.ISBN == isbn);
+
+            if (r1 && r2 && r3)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }
