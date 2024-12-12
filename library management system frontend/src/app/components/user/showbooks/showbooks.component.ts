@@ -32,7 +32,7 @@ export class ShowbooksComponent implements OnInit {
 
   searchText: string = '';
   showDropdown: boolean = false;
-
+resoursBase = environment.resourcBaseUrl;
 
   genres: string[] = [
     "Science Fiction",

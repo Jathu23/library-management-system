@@ -33,7 +33,7 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
   rating: number=1;
   likeCount:number=0;
   dislikeCount:number=0;
-
+  resoursBase = environment.resourcBaseUrl;
   currentContext: 'all' | 'search' | 'filter' = 'all'; // Tracks the current operation
   constructor(private getbookservice: GetbooksService ,
      private reviewservice:ReviewService, 

@@ -2,6 +2,7 @@
 using library_management_system.Database.Entiy;
 using library_management_system.Database.Entiy.ReviewEntitys;
 using library_management_system.DTOs;
+using library_management_system.DTOs.LikeandReview;
 using library_management_system.Repositories;
 
 namespace library_management_system.Services
@@ -124,9 +125,10 @@ namespace library_management_system.Services
         }
 
         // Get Reviews for Normal Book
-        public async Task<ApiResponse<List<NormalBookReview>>> GetNormalBookReviewsAsync(int bookId)
+        public async Task<ApiResponse<List<ReviewDto>>> GetNormalBookReviewsAsync(int bookId)
         {
-            var response = new ApiResponse<List<NormalBookReview>>();
+            var response = new ApiResponse<List<ReviewDto>>();
+            var reviewdata = new List<ReviewDto>(); 
 
             try
             {
@@ -138,9 +140,25 @@ namespace library_management_system.Services
                     return response;
                 }
 
+                foreach (var review in reviews)
+                {
+                    var Dto = new ReviewDto() {
+                        Id = review.Id,
+                        UserName=review.User.FullName,
+                        UserProfil =review.User.ProfileImage,
+                        ReviewText= review.ReviewText,
+                        ReviewDate=review.ReviewDate,
+                        Rating=review.Rating
+
+                        
+                    };
+                    reviewdata.Add(Dto);
+
+                }
+
                 response.Success = true;
                 response.Message = "Reviews fetched successfully.";
-                response.Data = reviews;
+                response.Data = reviewdata;
             }
             catch (Exception ex)
             {
@@ -153,10 +171,10 @@ namespace library_management_system.Services
         }
 
         // Get Reviews for Ebook
-        public async Task<ApiResponse<List<EbookReview>>> GetEbookReviewsAsync(int bookId)
+        public async Task<ApiResponse<List<ReviewDto>>> GetEbookReviewsAsync(int bookId)
         {
-            var response = new ApiResponse<List<EbookReview>>();
-
+            var response = new ApiResponse<List<ReviewDto>>();
+            var reviewdata = new List<ReviewDto>();
             try
             {
                 var reviews = await _reviewRepository.GetEbookReviewsAsync(bookId);
@@ -167,9 +185,26 @@ namespace library_management_system.Services
                     return response;
                 }
 
+                foreach (var review in reviews)
+                {
+                    var Dto = new ReviewDto()
+                    {
+                        Id = review.Id,
+                        UserName = review.User.FullName,
+                        UserProfil = review.User.ProfileImage,
+                        ReviewText = review.ReviewText,
+                        ReviewDate = review.ReviewDate,
+                        Rating = review.Rating
+
+
+                    };
+                    reviewdata.Add(Dto);
+
+                }
+
                 response.Success = true;
                 response.Message = "Reviews fetched successfully.";
-                response.Data = reviews;
+                response.Data = reviewdata;
             }
             catch (Exception ex)
             {
@@ -182,10 +217,10 @@ namespace library_management_system.Services
         }
 
         // Get Reviews for Audiobook
-        public async Task<ApiResponse<List<AudiobookReview>>> GetAudiobookReviewsAsync(int bookId)
+        public async Task<ApiResponse<List<ReviewDto>>> GetAudiobookReviewsAsync(int bookId)
         {
-            var response = new ApiResponse<List<AudiobookReview>>();
-
+            var response = new ApiResponse<List<ReviewDto>>();
+            var reviewdata = new List<ReviewDto>();
             try
             {
                 var reviews = await _reviewRepository.GetAudiobookReviewsAsync(bookId);
@@ -196,9 +231,26 @@ namespace library_management_system.Services
                     return response;
                 }
 
+                foreach (var review in reviews)
+                {
+                    var Dto = new ReviewDto()
+                    {
+                        Id = review.Id,
+                        UserName = review.User.FullName,
+                        UserProfil = review.User.ProfileImage,
+                        ReviewText = review.ReviewText,
+                        ReviewDate = review.ReviewDate,
+                        Rating = review.Rating
+
+
+                    };
+                    reviewdata.Add(Dto);
+
+                }
+
                 response.Success = true;
                 response.Message = "Reviews fetched successfully.";
-                response.Data = reviews;
+                response.Data = reviewdata;
             }
             catch (Exception ex)
             {
