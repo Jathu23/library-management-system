@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ForgotPasswordService } from '../../../services/forgot-password.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -8,21 +9,21 @@ import { Component, OnInit } from '@angular/core';
 export class ForgotPasswordComponent implements OnInit {
   email: string = '';
   otp: string = '';
-  generatedOTP: string = '';
-  otpTimer: number = 60;
-  otpInterval: any;
-
   newPassword: string = '';
   confirmPassword: string = '';
 
   emailError: string = '';
   otpError: string = '';
   passwordError: string = '';
+  successMessage: string = '';
 
   isEmailValid: boolean = false;
   step: number = 1; // 1: Email Input, 2: OTP, 3: New Password
 
-  constructor() {}
+  otpTimer: number = 60;
+  otpInterval: any;
+
+  constructor(private forgotPasswordService: ForgotPasswordService) {}
 
   ngOnInit(): void {}
 
@@ -38,13 +39,20 @@ export class ForgotPasswordComponent implements OnInit {
       return;
     }
 
-    // Simulate OTP generation
-    this.generatedOTP = Math.floor(10000 + Math.random() * 90000).toString();
-    console.log('Generated OTP:', this.generatedOTP); // For debugging
-    this.step = 2;
-
-    // Start OTP timer
-    this.startOTPTimer();
+    this.forgotPasswordService.sendToken(this.email).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.successMessage = response.message;
+          this.step = 2;
+          this.startOTPTimer();
+        } else {
+          this.emailError = response.message;
+        }
+      },
+      error: (error) => {
+        this.emailError = 'Error sending OTP. Please try again.';
+      }
+    });
   }
 
   startOTPTimer() {
@@ -60,12 +68,24 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   verifyOTP() {
-    if (this.otp !== this.generatedOTP) {
-      this.otpError = 'Invalid OTP. Please try again.';
+    if (!this.otp) {
+      this.otpError = 'Please enter the OTP.';
       return;
     }
-    clearInterval(this.otpInterval);
-    this.step = 3;
+
+    this.forgotPasswordService.resetPassword(this.email, this.otp, '').subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.successMessage = response.message;
+          this.step = 3;
+        } else {
+          this.otpError = response.message;
+        }
+      },
+      error: (error) => {
+        this.otpError = 'Invalid OTP. Please try again.';
+      }
+    });
   }
 
   updatePassword() {
@@ -74,19 +94,32 @@ export class ForgotPasswordComponent implements OnInit {
       return;
     }
 
-    alert('Password updated successfully!');
-    // Simulate backend call here
-    this.resetComponent();
+    this.forgotPasswordService.resetPassword(this.email, this.otp, this.newPassword).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.successMessage = 'Password updated successfully!';
+          this.resetComponent();
+        } else {
+          this.passwordError = response.message;
+        }
+      },
+      error: (error) => {
+        this.passwordError = 'Error updating password. Please try again.';
+      }
+    });
   }
 
   resetComponent() {
     this.email = '';
     this.otp = '';
-    this.generatedOTP = '';
     this.newPassword = '';
     this.confirmPassword = '';
     this.isEmailValid = false;
     this.step = 1;
+    this.successMessage = '';
+    this.emailError = '';
+    this.otpError = '';
+    this.passwordError = '';
     clearInterval(this.otpInterval);
   }
 }
