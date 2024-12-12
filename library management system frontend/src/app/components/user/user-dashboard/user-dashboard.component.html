@@ -1,1 +1,125 @@
-<p>user-dashboard works!</p>
+<div class="popular_andUr">
+    <div class="popular">
+        <h1>Popular Books</h1>
+
+        <div class="dividing_div">
+            <div class="subTrendings">
+                <!-- <div class="mini_container">
+                    <h2>Trending Audio Books</h2>
+                    <div class="audio_book" *ngFor="let book of audiobooks">
+                        <div class="image_container">
+                            <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book">
+    
+                        </div>
+                        <div class="details">
+                            <h2>Book Name</h2>
+                            <p>Author</p>
+                            <p>Genre</p>
+                            <p>*****</p>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="mini_container">
+                    <h2>Trending Audio Books</h2>
+                    <div class="carousel">
+                        <button class="prev" (click)="moveSlide(-1)">&#10094;</button>
+
+                        <div class="carousel-container">
+                            <div class="audio_book books_top" *ngFor="let book of audiobooks; let i = index"
+                                [ngClass]="{'active': currentIndex === i}">
+                                <div class="image_container">
+                                    <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book">
+                                </div>
+                                <div class="details">
+                                    <h2>{{ book.name }}</h2>
+                                    <p>{{ book.author }}</p>
+                                    <p>{{ book.genre }}</p>
+                                    <p>*****</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="next" (click)="moveSlide(1)">&#10095;</button>
+                    </div>
+                </div>
+
+                <div class="mini_container">
+                    <h2>Trending E-Books</h2>
+                    <div class="carousel">
+                        <button class="prev" (click)="moveSlide(-1)">&#10094;</button>
+
+                        <div class="carousel-container">
+                            <div class="audio_book books_top" *ngFor="let book of Ebooks; let i = index"
+                                [ngClass]="{'active': currentIndex === i}">
+                                <div class="image_container">
+                                    <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book">
+                                </div>
+                                <div class="details">
+                                    <!-- <h2>{{ book.title }}</h2> -->
+                                    <p>{{ book.author }}</p>
+                                    <p>{{ book.genre }}</p>
+                                    <p>*****</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="next" (click)="moveSlide(1)">&#10095;</button>
+                    </div>
+                </div>
+
+                <div class="mini_container">
+                    <h2>Trending Physcial Books</h2>
+                    <div class="carousel">
+                        <button class="prev" (click)="moveSlide(-1)">&#10094;</button>
+
+                        <div class="carousel-container">
+                            <div class="audio_book books_top" *ngFor="let book of audiobooks; let i = index"
+                                [ngClass]="{'active': currentIndex === i}">
+                                <div class="image_container">
+                                    <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book">
+                                </div>
+                                <div class="details">
+                                    <h2>{{ book.name }}</h2>
+                                    <p>{{ book.author }}</p>
+                                    <p>{{ book.genre }}</p>
+                                    <p>*****</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="next" (click)="moveSlide(1)">&#10095;</button>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="colections">
+                <h1>asd</h1>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<div class="graph_sections">
+    <div class="line_charts">
+        <!-- <app-line-chart></app-line-chart> -->
+        
+
+    </div>
+
+    <div class="pie_chart">
+        <div class="inner_div">
+            <h2>Usage of all kinds of books</h2>
+            <app-pie-chart></app-pie-chart>
+
+
+        </div>
+    </div>
+</div>

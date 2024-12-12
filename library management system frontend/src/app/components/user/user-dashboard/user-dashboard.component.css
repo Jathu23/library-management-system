@@ -1,0 +1,111 @@
+.mini_container {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .carousel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Hide content overflowing the container */
+  }
+  
+  .carousel-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out; /* Smooth transition for sliding effect */
+  }
+  
+  .audio_book {
+    flex: 0 0 100%; /* Ensure each item takes full width of the container */
+    width: 100%;    /* Ensure each item takes up the full width */
+    opacity: 0;     /* Initially hide all items */
+    visibility: hidden; /* Hide the images that are not active */
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+  }
+  
+  .audio_book.active {
+    opacity: 1; /* Show only the active item */
+    visibility: visible; /* Make the active book visible */
+  }
+  
+  .image_container img {
+    width: 100%; /* Ensure image takes full width of the container */
+    height: auto;
+  }
+  
+  button {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .prev {
+    left: 10px;
+  }
+  
+  .next {
+    right: 10px;
+  }
+  
+
+  /* ---- */
+  .mini_container{
+    width: 400px;
+    max-width: 500px;
+  }
+
+  .subTrendings{
+    display: flex;
+    justify-content: space-evenly;
+    width: 65%;
+  }
+
+  .image_container img{
+    height: 300px;
+  }
+
+  .image_container{
+    height: 300px;
+  }
+
+  .details{
+    height: 100px;
+  }
+
+/* .popular_andUr{
+    display: flex;
+    justify-content: space-around;
+} */
+
+.dividing_div{
+    display: flex;
+    justify-content: space-around;
+}
+
+.graph_sections{
+    display: flex;
+    justify-content: space-around;
+}
+
+.inner_div{
+    text-align: center;
+}
+
+.line_charts{
+    width: 50%;
+}
+

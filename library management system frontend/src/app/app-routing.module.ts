@@ -79,6 +79,7 @@ const routes: Routes = [
     data:{roles:['user']},
     children: [
       { path: '', component: UserDashboardComponent },
+      { path: 'dashboard', component: UserDashboardComponent },
       { path: 'view-normal-books', component: ShowbooksComponent },
       { path: 'view-audio-books', component: ShowaudiobooksComponent },
       {path: 'view-e-books' , component:ShowebooksComponent },
