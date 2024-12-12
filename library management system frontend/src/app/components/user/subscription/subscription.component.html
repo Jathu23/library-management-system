@@ -1,9 +1,9 @@
 <div class="container mt-4">
-  <h3>Subscription Management</h3>
+  <h1>Subscription Management</h1>
   <!-- Current Subscription -->
   <div class="card mb-3">
-    <div class="card-header bg-primary text-white">
-      <h5>Current Subscription</h5>
+    <div class="card-header  text-white">
+      <h2>Current Subscription</h2>
     </div>
     <div class="card-body">
       <p><strong>Plan:</strong> {{ currentSubscription?.name }}</p>
@@ -13,8 +13,8 @@
 
   <!-- Subscription History -->
   <div class="card mb-3">
-    <div class="card-header bg-secondary text-white">
-      <h5>Subscription History</h5>
+    <div class="card-header  text-white">
+      <h2>Subscription History</h2>
     </div>
     <div class="card-body">
       <ul class="list-group">
@@ -31,9 +31,10 @@
   <!-- New Subscription Button -->
   <div class="text-center mt-4">
     <button
-      class="btn btn-primary"
+      class="btn button"
       data-bs-toggle="modal"
       data-bs-target="#newSubscriptionModal"
+      style="background-color: #7E60BF;"
     >
       New Subscription
     </button>
@@ -47,12 +48,12 @@
     aria-labelledby="newSubscriptionModalLabel"
     aria-hidden="true"
   >
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title" id="newSubscriptionModalLabel">
+    <div class="modal-dialog modal-dialog-centered" >
+      <div class="modal-content" >
+        <div class="modal-header  text-white">
+          <h2 class="modal-title" id="newSubscriptionModalLabel">
             Subscribe to a New Plan
-          </h5>
+          </h2>
           <button
             type="button"
             class="btn-close"
@@ -124,8 +125,9 @@
             <!-- Subscribe Button -->
             <button
               type="button"
-              class="btn btn-success w-100"
+              class="btn button w-100"
               (click)="subscribe()"
+              style=" background-color: #7E60BF;"
             >
               Subscribe
             </button>
