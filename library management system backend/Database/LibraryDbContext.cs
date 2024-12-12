@@ -45,6 +45,8 @@
         public DbSet<EbookLikeDislike> EbookLikeDislikes { get; set; }
         public DbSet<AudiobookLikeDislike> AudiobookLikeDislikes { get; set; }
 
+        public DbSet<ForgotPasswordToken> ForgotPasswordTokens { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Define relationship between BookCopy and NormalBook
