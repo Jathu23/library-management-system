@@ -22,6 +22,10 @@ namespace library_management_system.Services
         {
             try
             {
+                var isbnexits = await _bookRepository.IsbnisAvailable(bookDto.ISBN);
+                if (isbnexits)
+                    throw new Exception("ISBN alredy Exits");
+
                 var coverImagePaths = await SaveCoverImages(bookDto.CoverImages);
 
 
@@ -84,6 +88,16 @@ namespace library_management_system.Services
                         Message = "Book not found",
                         Errors = new List<string> { "No book with the provided ID exists." }
                     };
+                }
+                else
+                {
+                    if (book.ISBN != bookDto.ISBN)
+                    {
+                        var isbnexits = await _bookRepository.IsbnisAvailable(bookDto.ISBN);
+                        if (isbnexits)
+                            throw new Exception("ISBN alredy Exits");
+                    }
+                   
                 }
 
                 // Update book properties
