@@ -19,6 +19,7 @@ namespace library_management_system.Database.Entiy
         public required DateTime RegistrationDate { get; set; }
         public required bool IsActive { get; set; }
         public required bool IsSubscribed { get; set; }
+        public string PasswordHash { get; set; }
     }
 
 

@@ -13,8 +13,9 @@ namespace library_management_system.Database.Entiy
         public required string Email { get; set; }
         public required bool IsMaster { get; set; }
         public string? ProfileImage { get; set; }
-      
+        public string PasswordHash { get; set; }
 
-       
+
+
     };
 }
