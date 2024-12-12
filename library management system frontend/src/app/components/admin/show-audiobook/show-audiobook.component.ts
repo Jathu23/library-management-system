@@ -15,9 +15,9 @@ export class ShowAudiobookComponent implements OnInit {
   audiobooks: any[] = [];
   isLoading = false;
   totalItems = 0;
-  pageSize = 2; // Default page size
+  pageSize = 2; 
   currentPage = 1;
-  expandedElementId: number | null = null; // Keeps track of the expanded row's ID
+  expandedElementId: number | null = null; 
 
   constructor(
     private getbookservice: GetbooksService,
@@ -96,7 +96,6 @@ export class ShowAudiobookComponent implements OnInit {
     }
   }
 
-  // Method to toggle row expansion
   toggleRow(id: number): void {
     this.expandedElementId = this.expandedElementId === id ? null : id;
   }
