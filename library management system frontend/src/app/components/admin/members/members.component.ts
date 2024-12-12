@@ -34,7 +34,7 @@ resoursBase = environment.resourcBaseUrl;
     if (this.isLoading) return;
 
     this.isLoading = true;
-
+this.users=[];
     // Handle empty search query for search option
     if (this.selectedOption === 'search' && !this.searchQuery.trim()) {
       this.isLoading = false;
@@ -64,7 +64,7 @@ resoursBase = environment.resourcBaseUrl;
         },
         (error: any) => {
           console.error('API Error:', error);
-          alert('Failed to fetch data. Please try again.');
+          alert('No data or Failed to fetch data. Please try again.');
           this.isLoading = false;
         }
       );
