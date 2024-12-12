@@ -94,7 +94,7 @@
         <img
           style="width: 100%; height: auto; border-radius: 8px;"
           class="modal-image"
-          [src]="'https://localhost:7261/' + selectedAudiobook?.coverImagePath || ''"
+          [src]="resoursBase + selectedAudiobook?.coverImagePath"
           alt="Audiobook Cover"
         />
       </div>
@@ -162,12 +162,12 @@
           <div class="d-flex justify-content-between align-items-center">
             <div class="user d-flex flex-row align-items-center">
               <img
-              [src]="resoursBase + review.userProfil"
-              width="30"
-              class="user-img rounded-circle mr-2"
-            />
+                src="https://i.imgur.com/hczKIze.jpg"
+                width="30"
+                class="user-img rounded-circle mr-2"
+              />
               <span>
-                <small class="font-weight-bold text-primary">{{review.userName}}</small>
+                <small class="font-weight-bold text-primary">john_doe</small>
                 <br>
                 <small class="font-weight-bold">{{review.reviewText}}</small>
               </span>
@@ -180,5 +180,16 @@
       </div>
     </div>
     
+  </div>
+</div>
+<!-- Modal for Subscription Warning -->
+<div class="modal" [class.show]="modelwindow">
+  <div class="modal-content">
+    
+    <div class="modal-body">
+      <h2>Please Subscribe to Continue</h2>
+      <p>You need to be subscribed to play this audiobook. Please subscribe to continue.</p>
+      <button class="btn btn-primary" (click)="closeModal1()" style="color: black;">Close</button>
+    </div>
   </div>
 </div>

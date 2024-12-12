@@ -8,15 +8,16 @@ import { environment } from '../../../environments/environment.testing';
 })
 export class MainBookUpdateService {
   private baseurl = environment.apiBaseUrl;
-  private apiBaseUrl = 'https://localhost:7261/api/Ebook'
-  
+  private apiBaseUrl = `${this.baseurl}/Ebook`;
+  private apiUrl = `${this.baseurl}/Books/Update`;
+
+  private apiaudiourl = `${this.baseurl}/Audiobook`;
 
 
 
   constructor(private http: HttpClient) {}
 
 
-  private apiUrl = `${this.baseurl}/Books/Update`;
 
   updateBook(book: any): Observable<any> {
     const headers = new HttpHeaders({'Content-Type': 'application/json'});
@@ -34,12 +35,11 @@ export class MainBookUpdateService {
 
   }
 
-  private apiaudiourl = 'https://localhost:7261/api/Audiobook'
 
   updateAudiobook(audiobook: any): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.put<any>(
-      `${this.apiaudiourl}/update?Id=${audiobook.id}&Title=${audiobook.title}&Author=${audiobook.author}&Genre=${audiobook.genre}&PublishYear=${audiobook.publishYear}&Publisher=${audiobook.publisher}&Language=${audiobook.language}&Description=${audiobook.description}&DigitalRights=${audiobook.digitalRights}`,
+      `${this.apiaudiourl}/update-audiobook?Id=${audiobook.id}&Title=${audiobook.title}&Author=${audiobook.author}&Genre=${audiobook.genre}&PublishYear=${audiobook.publishYear}&Publisher=${audiobook.publisher}&Language=${audiobook.language}&Description=${audiobook.description}&DigitalRights=${audiobook.digitalRights}`,
       audiobook,
       { headers }
     );

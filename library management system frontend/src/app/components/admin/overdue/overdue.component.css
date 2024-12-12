@@ -1,4 +1,4 @@
-/* Overall container for the table */
+
 .container {
     margin-top: 20px;
   }
@@ -54,5 +54,9 @@
   tr:hover {
     background-color: #f8f9fa;
     cursor: pointer;
+  }
+  table th{
+    background-color: #ad5ba1;
+    color: white;
   }
   
