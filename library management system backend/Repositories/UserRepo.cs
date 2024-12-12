@@ -1,6 +1,7 @@
 ﻿using library_management_system.Database;
 using library_management_system.Database.Entiy;
 using library_management_system.DTOs.User;
+using library_management_system.IRepository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using PdfSharp;
@@ -8,7 +9,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace library_management_system.Repositories
 {
-    public class UserRepo
+    public class UserRepo 
     {
        private readonly LibraryDbContext _context;
 
