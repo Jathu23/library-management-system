@@ -44,4 +44,29 @@ public class ForgotPasswordRepository
         _context.ForgotPasswordTokens.Remove(token);
         await _context.SaveChangesAsync();
     }
+
+
+    public async Task<bool> UpdatePasswordAsync(string email, string password)
+    {
+        try
+        {
+            var data = await _context.LoginPort.FirstOrDefaultAsync(u => u.Email == email);
+            if (data == null)
+            {
+
+                return false;
+            }
+
+            data.PasswordHash = password;  
+            _context.LoginPort.Update(data);
+            await _context.SaveChangesAsync(); 
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+
+            return false; 
+        }
+    }
 }

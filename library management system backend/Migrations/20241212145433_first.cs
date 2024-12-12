@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace library_management_system.Migrations
 {
     /// <inheritdoc />
-    public partial class updatedatabase : Migration
+    public partial class first : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -82,6 +82,21 @@ namespace library_management_system.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EmailTemplates", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ForgotPasswordTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TokenCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ForgotPasswordTokens", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -783,6 +798,9 @@ namespace library_management_system.Migrations
 
             migrationBuilder.DropTable(
                 name: "EmailTemplates");
+
+            migrationBuilder.DropTable(
+                name: "ForgotPasswordTokens");
 
             migrationBuilder.DropTable(
                 name: "globalSubscriptions");

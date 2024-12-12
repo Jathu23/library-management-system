@@ -16,7 +16,7 @@ public class ForgotPasswordController : ControllerBase
 
     // Endpoint to generate and send OTP
     [HttpPost("send-token")]
-    public async Task<IActionResult> SendToken([FromBody] ForgotPasswordRequests request)
+    public async Task<IActionResult> SendToken([FromQuery] ForgotPasswordRequests request)
     {
         if (string.IsNullOrEmpty(request.Email))
             return BadRequest(new ApiResponse<string> { Success = false, Message = "Email is required." });
@@ -28,7 +28,7 @@ public class ForgotPasswordController : ControllerBase
 
     // Endpoint to validate OTP and update password
     [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequests request)
+    public async Task<IActionResult> ResetPassword([FromQuery] ResetPasswordRequests request)
     {
         if (string.IsNullOrEmpty(request.Email) || string.IsNullOrEmpty(request.OtpCode) || string.IsNullOrEmpty(request.NewPassword))
             return BadRequest(new ApiResponse<string> { Success = false, Message = "Email, OTP, and new password are required." });

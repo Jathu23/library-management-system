@@ -13,12 +13,7 @@ public class ForgotPasswordService
     private readonly sendmailService _sendmailService;
     private readonly BCryptService _bCryptService;
 
-    public ForgotPasswordService(
-        ForgotPasswordRepository forgotPasswordRepository,
-        UserRepo userRepo,
-        AdminRepo adminRepo,
-        sendmailService sendmailService,
-        BCryptService bCryptService)
+    public ForgotPasswordService(ForgotPasswordRepository forgotPasswordRepository, UserRepo userRepo, AdminRepo adminRepo, sendmailService sendmailService, BCryptService bCryptService)
     {
         _forgotPasswordRepository = forgotPasswordRepository;
         _userRepo = userRepo;
@@ -26,6 +21,7 @@ public class ForgotPasswordService
         _sendmailService = sendmailService;
         _bCryptService = bCryptService;
     }
+
 
     // Generate OTP and send email
     public async Task<ApiResponse<string>> GenerateAndSendTokenAsync(string email)
@@ -64,6 +60,7 @@ public class ForgotPasswordService
     }
 
     // Validate OTP and update password
+  
     public async Task<ApiResponse<string>> ValidateTokenAndUpdatePasswordAsync(string email, string tokenCode, string newPassword)
     {
         var response = new ApiResponse<string>();
@@ -82,30 +79,25 @@ public class ForgotPasswordService
                 throw new Exception("OTP has expired.");
             }
 
-            // Check if the email belongs to a user or admin
-            var user = await _userRepo.GetUserByEmail(email);
-            var admin = await _adminRepo.GetAdminByEmailOrNic(email);
+            //// Check if the email belongs to a user or admin
+            //var user = await _userRepo.GetUserByEmail(email);
+            //var admin = await _adminRepo.GetAdminByEmailOrNic(email);
+            var hash = _bCryptService.HashPassword(newPassword);
 
-            if (user != null)
+             var result = await _forgotPasswordRepository.UpdatePasswordAsync(email, hash);
+            if (result)
             {
-                user.PasswordHash = _bCryptService.HashPassword(newPassword);
-                await _userRepo.UpdateUserAsync(user);
-            }
-            else if (admin != null)
-            {
-                admin.PasswordHash = _bCryptService.HashPassword(newPassword);
-                await _adminRepo.UpdateAdminAsync(admin);
+                // Delete the OTP after successful use
+                await _forgotPasswordRepository.DeleteTokenAsync(tokenRecord);
+                response.Success = true;
+                response.Message = "Password updated successfully.";
             }
             else
             {
                 throw new Exception("No account associated with this email.");
             }
 
-            // Delete the OTP after successful use
-            await _forgotPasswordRepository.DeleteTokenAsync(tokenRecord);
-
-            response.Success = true;
-            response.Message = "Password updated successfully.";
+          
         }
         catch (Exception ex)
         {
