@@ -427,11 +427,13 @@ i {
   
   .card-trending img{
     width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
-  .card-thumbnail {
-    width: 100%;
+  /* .card-thumbnail {
+    width: 10%;
     height: auto;
-  }
+  } */
   
   .card-details {
     padding: 16px;
@@ -633,7 +635,6 @@ i {
     
     .card-trending {
       position: relative;
-   
       height: 350px;
       border-radius: 20px;
       overflow: hidden;
@@ -642,8 +643,12 @@ i {
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       margin: 10px;
       cursor: pointer;
+
     }
     
+    .images{
+      height: 100%;
+    }
     .card-trending:hover {
       transform: translateY(-10px);
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
@@ -724,7 +729,9 @@ i {
 } 
 
 /* ----- lists */
-
+.rating-list li{
+  font-weight: bold;
+}
 .rating-list li:hover {
   color: #c1085e;
   text-decoration: underline; /* Adds underline on hover */
@@ -764,10 +771,10 @@ color: rgb(189, 9, 69);
   margin-bottom: 15px;
 }
 
-.card-header img {
+/* .card-header img {
   width: 35px;
   height: 35px;
-}
+} */
 
 .percentage {
   font-size: 0.9rem;
@@ -1066,10 +1073,21 @@ color: rgb(189, 9, 69);
   height: 60%;
   display: flex;
   justify-content: space-between;
-  margin-right: 10px;
-  margin-left: 10px;
+  margin-right: 15px;
+  margin-left: 15px;
   margin-top: 5px;
 
+}
+
+.mini_uers img{
+  width: 50px;
+  border-radius: 100%;
+  border:  1 1 purple;
+}
+
+.mini_uers h3{
+  color: rgb(196, 5, 65);
+  font-weight: bold;
 }
 
 .top_geners_t h2{

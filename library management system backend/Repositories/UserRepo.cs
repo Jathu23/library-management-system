@@ -299,12 +299,24 @@ namespace library_management_system.Repositories
 
 		public async Task<List<User>> FilterUsersBySubscribedAndBest(int count)
 		{
-			return await _context.Users
-				.Where(u => u.IsSubscribed) // Filter users with IsSubscribed = 1
-				.OrderByDescending(u => u.RegistrationDate) // Sort by RegistrationDate in descending order
-				.Take(count) // Limit the result to the specified count
-				.ToListAsync();
-		}
+
+            //funcion for subscribed and be
+
+			//return await _context.Users
+			//	.Where(u => u.IsSubscribed) 
+			//	.OrderByDescending(u => u.RegistrationDate) 
+			//	.Take(count) 
+			//	.ToListAsync();
+
+            //DbFunctions for oredrerin users
+
+            return await _context.Users
+            .Where(u => u.IsActive)
+            .OrderByDescending(u => u.RegistrationDate)
+            .Take(count)
+            .ToListAsync();
+
+        }
 
 	}
 }

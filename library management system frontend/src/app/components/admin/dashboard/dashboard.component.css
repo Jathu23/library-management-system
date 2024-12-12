@@ -442,9 +442,9 @@ i {
     font-size: 20px;
   }
   
-  .card-trending img{
+  /* .card-trending img{
     width: 100%;
-  }
+  } */
   .card-thumbnail {
     width: 100%;
     height: auto;
@@ -571,10 +571,10 @@ i {
       box-shadow: 5px 5px 30px rgba(0, 0, 0, 0.7);
     }
     
-    .logo img {
+    /* .logo img {
       height: 100%;
     }
-    
+     */
     .main-text {
       position: absolute;
       color: #fff;
@@ -741,7 +741,10 @@ i {
 } 
 
 /* ----- lists */
-
+/* .rating-list li{
+  font-weight: bold;
+  font-size: 20px;
+} */
 .rating-list li:hover {
   color: #c1085e;
   text-decoration: underline; /* Adds underline on hover */
@@ -781,10 +784,10 @@ color: rgb(189, 9, 69);
   margin-bottom: 15px;
 }
 
-.card-header img {
+/* .card-header img {
   width: 35px;
   height: 35px;
-}
+} */
 
 .percentage {
   font-size: 0.9rem;
@@ -966,10 +969,10 @@ color: rgb(189, 9, 69);
 
 }
 
-.mini_top img{
+/* .mini_top img{
   border-radius: 100%;
   width: 20px;
-}
+} */
 
 .top_listners h2{
   text-align: center;

@@ -325,6 +325,8 @@ loadUserCounts(): void {
     this.userService.getSubscribedAndBestUsers(count).subscribe(
       (response) => {
         this.users = response;
+        console.log("ados");
+        
         console.log(this.users);
         
       },

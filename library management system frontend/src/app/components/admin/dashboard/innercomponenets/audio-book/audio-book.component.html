@@ -36,7 +36,11 @@
       </div> -->
 
     <div class="card-trending" *ngFor="let book of audiobooks">
-      <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book" class="card-thumbnail">
+      <div class="images">
+        <!-- <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book" class="card-thumbnail"> -->
+        <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book">
+
+      </div>
       <div class="card-details">
         <h3 class="card-title-trending">{{ book.title }}</h3>
         <p class="card-location-trending">{{ book.author || 'Unknown Author' }}</p>
@@ -210,10 +214,16 @@
         <h2>Top 10 Listeners</h2>
         <div class="scrolable_div">
           <div class="mini_uers" *ngFor="let user of users">
-            <img [src]="imgageBaseUrl + user.profileImage" alt="Popular Audio Book" class="card-thumbnail">
+            <img [src]="imgageBaseUrl + user.profileImage" alt="Popular Audio Book">
             <h3>{{user.firstName}} {{user.lastName}} </h3>
             <h4>hours</h4>
           </div>
+          
+          <!-- <div class="top_names"  >
+            <h2>Name</h2>
+          </div> -->
+          
+
         </div>
       </div>
     </div>
