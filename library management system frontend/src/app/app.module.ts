@@ -57,6 +57,8 @@ import { EBookComponent } from './components/admin/dashboard/innercomponenets/eb
 import { OverdueComponent } from './components/admin/overdue/overdue.component';
 import { ReportComponent } from './components/admin/report/report.component';
 import { EditAudiobookDialogComponent } from './components/admin/edit-audiobook-dialog/edit-audiobook-dialog/edit-audiobook-dialog.component';
+import { LineChartComponent } from './components/user/user-dashboard/line-chart/line-chart.component';
+import { PieChartComponent } from './components/user/user-dashboard/pie-chart/pie-chart.component';
 
 
 
@@ -108,6 +110,8 @@ import { EditAudiobookDialogComponent } from './components/admin/edit-audiobook-
         EBookComponent,
         OverdueComponent,
         ReportComponent,
+        LineChartComponent,
+        PieChartComponent,
        
     
 

@@ -4,6 +4,7 @@ using library_management_system.DTOs;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
 using static library_management_system.DTOs.Ebook.UpdateEbookDto;
+using Microsoft.EntityFrameworkCore;
 
 namespace library_management_system.Services
 {
@@ -289,5 +290,22 @@ namespace library_management_system.Services
             return await _ebookRepository.AddClick(bookid);
 
         }
+
+        //DbFunctions for sorting top
+
+        public async Task<List<Ebook>> GetTopEbooksAsync(int count)
+        {
+            try
+            {
+                // Try to get the top eBooks from the repository
+                return await _ebookRepository.GetTopEbooksAsync(count);
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("An error occurred while fetching top eBooks.", ex);
+            }
+        }
+
     }
 }

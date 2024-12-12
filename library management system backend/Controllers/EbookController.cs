@@ -1,4 +1,5 @@
-﻿using library_management_system.DTOs.Ebook;
+﻿using library_management_system.Database.Entiy;
+using library_management_system.DTOs.Ebook;
 using library_management_system.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -82,6 +83,30 @@ namespace library_management_system.Controllers
             else
                 return BadRequest(result);
 
+        }
+
+        [HttpGet("top")]
+        public async Task<ActionResult<List<Ebook>>> GetTopEbooksAsync(int count)
+        {
+            try
+            {
+                var ebooks = await _ebookService.GetTopEbooksAsync(count);
+
+                // Check if no eBooks found
+                if (ebooks == null || ebooks.Count == 0)
+                {
+                    return NotFound("No eBooks found.");
+                }
+
+                return Ok(ebooks); // Return the eBooks with a 200 OK status
+            }
+            catch (Exception ex)
+            {
+
+
+                // Return a 500 Internal Server Error with a message
+                return StatusCode(500, "An error occurred while fetching top eBooks. Please try again later.");
+            }
         }
 
         //        [HttpPost ("sample")]
