@@ -1,270 +1,262 @@
-<div class="control-bar">
-    <!-- Report Type Selection -->
-    <label for="report-type">Select Report Type:</label>
-    <select id="report-type" [(ngModel)]="selectedReportType" >
-      <option value="overall">Overall Lending Report</option>
-      <option value="lentByUser">Lent Report by User ID</option>
-      <option value="bookBorrow">All Book Borrow Report</option>
-      <option value="bookBorrowbyid">Book Borrow Report by BookId</option>
-      <option value="lentcount">All Book Lent Count</option>
-      <option value="lentcountbybookid">Book Lent Count by BookId</option>
-    </select>
-  
-    <!-- Conditional Inputs for Report Filters -->
-    <div *ngIf="selectedReportType === 'lentByUser'">
-      <label for="user-id">User ID:</label>
-      <input type="number" id="user-id" [(ngModel)]="userId"  placeholder="Enter User ID" />
-    </div>
-    
-    <div *ngIf="selectedReportType === 'bookBorrowbyid'">
-      <label for="book-id">Book ID:</label>
-      <input type="number" id="book-id" [(ngModel)]="bookId"  placeholder="Enter Book ID" />
-    </div>
+<div class="control-bar" style="color: #ad5ba1;">
+  <!-- Report Type Selection -->
+  <label for="report-type" style="color: #ad5ba1; font-weight: bold;">Select Report Type:</label>
+  <select id="report-type" [(ngModel)]="selectedReportType" class="form-select" style="width: 220px; border-color: #ad5ba1;">
+    <option value="overall">Overall Lending Report</option>
+    <option value="lentByUser">Lent Report by User ID</option>
+    <option value="bookBorrow">All Book Borrow Report</option>
+    <option value="bookBorrowbyid">Book Borrow Report by BookId</option>
+    <option value="lentcount">All Book Lent Count</option>
+    <option value="lentcountbybookid">Book Lent Count by BookId</option>
+  </select>
 
-    <div *ngIf="selectedReportType === 'lentcountbybookid'">
-        <label for="book-id">Book ID:</label>
-        <input type="number" id="book-id" [(ngModel)]="bookId"  placeholder="Enter Book ID" />
-      </div>
-
-    <div><button (click)="fetchReport()">View</button></div>
-    <div><button (click)="downloadReport(); ">Download</button></div>
-  </div>
-
-  
-
-
-
-
-<div class="container mt-4" *ngIf="selectedReportType === 'overall' || selectedReportType === 'lentByUser' ">
-    <div class="row">
-      <div class="col-md-12">
-        <!-- Overview Section -->
-        <div class="overview mb-4">
-          <h3>Borrow Report</h3>
-          <table class="table table-bordered table-striped">
-            <tr>
-              <th>Date</th>
-              <td>{{ overallreport.date | date: 'short' }}</td>
-            </tr>
-            <tr>
-              <th>Total Rangings</th>
-              <td>{{ overallreport.totalRengings }}</td>
-            </tr>
-            <tr>
-              <th>Pending</th>
-              <td>{{ overallreport.pending }}</td>
-            </tr>
-            <tr>
-              <th>On Time</th>
-              <td>{{ overallreport.onTime }}</td>
-            </tr>
-            <tr>
-              <th>Late</th>
-              <td>{{ overallreport.later }}</td>
-            </tr>
-          </table>
-        </div>
-  
-        <!-- Pending Lent Books Section -->
-        <div class="pending-lent mb-4">
-          <h4>Pending Lent Books</h4>
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th>Book Title</th>
-                <th>User Name</th>
-                <th>Lent Date</th>
-                <th>Due Date</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let book of overallreport.pendingLent">
-                <td>{{ book.bookTitle }}</td>
-                <td>{{ book.userName }}</td>
-                <td>{{ book.lentDate | date: 'short' }}</td>
-                <td>{{ book.dueDate | date: 'short' }}</td>
-                <td>{{ book.status }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-  
-        <!-- On Time Lent Books Section -->
-        <div class="on-time-lent mb-4">
-          <h4>On Time Lent Books</h4>
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th>Book Title</th>
-                <th>User Name</th>
-                <th>Lent Date</th>
-                <th>Return Date</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let book of overallreport.onTimeLent">
-                <td>{{ book.bookTitle }}</td>
-                <td>{{ book.userName }}</td>
-                <td>{{ book.lentDate | date: 'short' }}</td>
-                <td>{{ book.returnDate | date: 'short' }}</td>
-                <td>{{ book.status }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-  
-        <!-- Late Lent Books Section -->
-        <div class="late-lent mb-4" >
-          <h4>Late Lent Books</h4>
-          <table class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th>Book Title</th>
-                <th>User Name</th>
-                <th>Lent Date</th>
-                <th>Due Date</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let book of overallreport.laterLent">
-                <td>{{ book.bookTitle }}</td>
-                <td>{{ book.userName }}</td>
-                <td>{{ book.lentDate | date: 'short' }}</td>
-                <td>{{ book.dueDate | date: 'short' }}</td>
-                <td>{{ book.status }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-  
-        <!-- No Late Lent Books message -->
-        <div *ngIf="overallreport.laterLent.length === 0">
-          <p>No late lent books.</p>
-        </div>
-      </div>
-    </div>
+  <!-- Conditional Inputs for Report Filters -->
+  <div *ngIf="selectedReportType === 'lentByUser'">
+    <label for="user-id" style="color: #ad5ba1; font-weight: bold;">User ID:</label>
+    <input type="number" id="user-id" [(ngModel)]="userId" class="form-control" placeholder="Enter User ID" style="border-color: #ad5ba1;"/>
   </div>
   
+  <div *ngIf="selectedReportType === 'bookBorrowbyid'">
+    <label for="book-id" style="color: #ad5ba1; font-weight: bold;">Book ID:</label>
+    <input type="number" id="book-id" [(ngModel)]="bookId" class="form-control" placeholder="Enter Book ID" style="border-color: #ad5ba1;"/>
+  </div>
 
-  <div class="container mt-4" *ngIf="selectedReportType === 'bookBorrow' || selectedReportType === 'bookBorrowbyid'">
-    <h2>Book Lending Reports</h2>
-    <div *ngIf="isLoading" class="text-center">
-      <div class="spinner-border" role="status"></div>
-      <span>Loading...</span>
-    </div>
-  
-    <div *ngIf="errorMessage" class="alert alert-danger">
-      {{ errorMessage }}
-    </div>
-  
-    <!-- Loop through the reports to display each book's information -->
-    <div *ngFor="let report of BookBorrowReport">
-      <!-- Book information row -->
-      <table class="table table-bordered table-striped">
-        <thead>
+  <div *ngIf="selectedReportType === 'lentcountbybookid'">
+    <label for="book-id" style="color: #ad5ba1; font-weight: bold;">Book ID:</label>
+    <input type="number" id="book-id" [(ngModel)]="bookId" class="form-control" placeholder="Enter Book ID" style="border-color: #ad5ba1;"/>
+  </div>
+
+  <div><button (click)="fetchReport()" class="btn btn-primary" style="background-color: #ad5ba1; border-color: #ad5ba1;">View</button></div>
+  <div><button (click)="downloadReport()" class="btn btn-secondary" style="background-color: #ad5ba1; border-color: #ad5ba1;">Download</button></div>
+</div>
+
+<!-- Overall Report Section -->
+<div class="container mt-4" *ngIf="selectedReportType === 'overall' || selectedReportType === 'lentByUser'">
+  <div class="row">
+    <div class="col-md-12">
+      <!-- Overview Section -->
+      <div class="overview mb-4" style="border: 1px solid #ad5ba1; padding: 15px;">
+        <h3 style="color: #ad5ba1;">Borrow Report</h3>
+        <table class="table table-bordered table-striped">
           <tr>
-            <th>Book Title</th>
-            <th>ISBN</th>
-            <th>Author</th>
+            <th>Date</th>
+            <td>{{ overallreport.date | date: 'short' }}</td>
           </tr>
-        </thead>
-        <tbody>
           <tr>
-            <td>{{ report.bookTitle }}</td>
-            <td>{{ report.isbn }}</td>
-            <td>{{ report.author }}</td>
+            <th>Total Rangings</th>
+            <td>{{ overallreport.totalRengings }}</td>
           </tr>
-        </tbody>
-      </table>
-  
-      <!-- Book lending details table -->
-      <div class="table-responsive mt-3">
-        <h5>Lending Details for {{ report.bookTitle }}</h5>
+          <tr>
+            <th>Pending</th>
+            <td>{{ overallreport.pending }}</td>
+          </tr>
+          <tr>
+            <th>On Time</th>
+            <td>{{ overallreport.onTime }}</td>
+          </tr>
+          <tr>
+            <th>Late</th>
+            <td>{{ overallreport.later }}</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Pending Lent Books Section -->
+      <div class="pending-lent mb-4" style="border: 1px solid #ad5ba1; padding: 15px;">
+        <h4 style="color: #ad5ba1;">Pending Lent Books</h4>
         <table class="table table-bordered table-striped">
           <thead>
             <tr>
-              <th>Book Copy ID</th>
+              <th>Book Title</th>
               <th>User Name</th>
-              <th>Issuing Admin</th>
-              <th>Receiving Admin</th>
-              <th>Lend Date</th>
+              <th>Lent Date</th>
               <th>Due Date</th>
-              <th>Return Date</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <!-- Loop through the bookRentDetails for each book -->
-            <tr *ngFor="let rentDetail of report.bookRentDetails">
-              <td>{{ rentDetail.bookCopyId }}</td>
-              <td>{{ rentDetail.userName }}</td>
-              <td>{{ rentDetail.issuingAdmin }}</td>
-              <td>{{ rentDetail.receivingAdmin || 'N/A' }}</td>
-              <td>{{ rentDetail.lendDate | date: 'short' }}</td>
-              <td>{{ rentDetail.dueDate | date: 'short' }}</td>
-              <td>{{ rentDetail.returnDate ? (rentDetail.returnDate | date: 'short') : 'Not returned yet' }}</td>
+            <tr *ngFor="let book of overallreport.pendingLent">
+              <td>{{ book.bookTitle }}</td>
+              <td>{{ book.userName }}</td>
+              <td>{{ book.lentDate | date: 'short' }}</td>
+              <td>{{ book.dueDate | date: 'short' }}</td>
+              <td>{{ book.status }}</td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div>
-  </div>
 
-
-  
-  <div class="container mt-4" *ngIf="selectedReportType === 'lentcount' || selectedReportType === 'lentcountbybookid'">
-    <h2>Book Rental Count Reports</h2>
-    
-    <div *ngIf="isLoading" class="text-center">
-      <div class="spinner-border" role="status"></div>
-      <span>Loading...</span>
-    </div>
-  
-    <div *ngIf="errorMessage" class="alert alert-danger">
-      {{ errorMessage }}
-    </div>
-  
-    <!-- Loop through countReports to display each book's information -->
-    <div *ngFor="let report of Lendingcount">
-      <!-- Book information row -->
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>Book ID</th>
-            <th>Total Rent Count</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{ report.bookID }}</td>
-            <td>{{ report.totalRentCount }}</td>
-          </tr>
-        </tbody>
-      </table>
-  
-      <!-- Book copy rent count details table -->
-      <div class="table-responsive mt-3">
-        <h5>Individual Copy Rent Count for Book ID {{ report.bookID }}</h5>
+      <!-- On Time Lent Books Section -->
+      <div class="on-time-lent mb-4" style="border: 1px solid #ad5ba1; padding: 15px;">
+        <h4 style="color: #ad5ba1;">On Time Lent Books</h4>
         <table class="table table-bordered table-striped">
           <thead>
             <tr>
-              <th>Copy ID</th>
-              <th>Rent Count</th>
+              <th>Book Title</th>
+              <th>User Name</th>
+              <th>Lent Date</th>
+              <th>Return Date</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <!-- Loop through the induvalCopyrentcount for each book -->
-            <tr *ngFor="let copy of report.induvalCopyrentcount">
-              <td>{{ copy.coppyId }}</td>
-              <td>{{ copy.rentCount }}</td>
+            <tr *ngFor="let book of overallreport.onTimeLent">
+              <td>{{ book.bookTitle }}</td>
+              <td>{{ book.userName }}</td>
+              <td>{{ book.lentDate | date: 'short' }}</td>
+              <td>{{ book.returnDate | date: 'short' }}</td>
+              <td>{{ book.status }}</td>
             </tr>
           </tbody>
         </table>
       </div>
+
+      <!-- Late Lent Books Section -->
+      <div class="late-lent mb-4" style="border: 1px solid #ad5ba1; padding: 15px;">
+        <h4 style="color: #ad5ba1;">Late Lent Books</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Book Title</th>
+              <th>User Name</th>
+              <th>Lent Date</th>
+              <th>Due Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let book of overallreport.laterLent">
+              <td>{{ book.bookTitle }}</td>
+              <td>{{ book.userName }}</td>
+              <td>{{ book.lentDate | date: 'short' }}</td>
+              <td>{{ book.dueDate | date: 'short' }}</td>
+              <td>{{ book.status }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- No Late Lent Books message -->
+      <div *ngIf="overallreport.laterLent.length === 0">
+        <p>No late lent books.</p>
+      </div>
     </div>
   </div>
+</div>
 
-  
-  
+<!-- Book Borrow Section -->
+<div class="container mt-4" *ngIf="selectedReportType === 'bookBorrow' || selectedReportType === 'bookBorrowbyid'">
+  <h2 style="color: #ad5ba1;">Book Lending Reports</h2>
+  <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border" role="status"></div>
+    <span>Loading...</span>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger" style="background-color: #f8d7da; color: #721c24;">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Loop through the reports to display each book's information -->
+  <div *ngFor="let report of BookBorrowReport">
+    <!-- Book information row -->
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Book Title</th>
+          <th>ISBN</th>
+          <th>Author</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ report.bookTitle }}</td>
+          <td>{{ report.isbn }}</td>
+          <td>{{ report.author }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Book lending details table -->
+    <div class="table-responsive mt-3">
+      <h5 style="color: #ad5ba1;">Lending Details for {{ report.bookTitle }}</h5>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Book Copy ID</th>
+            <th>User Name</th>
+            <th>Issuing Admin</th>
+            <th>Receiving Admin</th>
+            <th>Lend Date</th>
+            <th>Due Date</th>
+            <th>Return Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Loop through the bookRentDetails for each book -->
+          <tr *ngFor="let rentDetail of report.bookRentDetails">
+            <td>{{ rentDetail.bookCopyId }}</td>
+            <td>{{ rentDetail.userName }}</td>
+            <td>{{ rentDetail.issuingAdmin }}</td>
+            <td>{{ rentDetail.receivingAdmin || 'N/A' }}</td>
+            <td>{{ rentDetail.lendDate | date: 'short' }}</td>
+            <td>{{ rentDetail.dueDate | date: 'short' }}</td>
+            <td>{{ rentDetail.returnDate ? (rentDetail.returnDate | date: 'short') : 'Not returned yet' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Lending Count Section -->
+<div class="container mt-4" *ngIf="selectedReportType === 'lentcount' || selectedReportType === 'lentcountbybookid'">
+  <h2 style="color: #ad5ba1;">Book Rental Count Reports</h2>
+
+  <div *ngIf="isLoading" class="text-center">
+    <div class="spinner-border" role="status"></div>
+    <span>Loading...</span>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger" style="background-color: #f8d7da; color: #721c24;">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Loop through countReports to display each book's information -->
+  <div *ngFor="let report of Lendingcount">
+    <!-- Book information row -->
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Book ID</th>
+          <th>Total Rent Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ report.bookID }}</td>
+          <td>{{ report.totalRentCount }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Book copy rent count details table -->
+    <div class="table-responsive mt-3">
+      <h5 style="color: #ad5ba1;">Individual Copy Rent Count for Book ID {{ report.bookID }}</h5>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Copy ID</th>
+            <th>Rent Count</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Loop through the induvalCopyrentcount for each book -->
+          <tr *ngFor="let copy of report.induvalCopyrentcount">
+            <td>{{ copy.coppyId }}</td>
+            <td>{{ copy.rentCount }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

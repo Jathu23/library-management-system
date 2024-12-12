@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewmembersService } from '../../../services/admin-services/viewmembers.service';
+import { environment } from '../../../../environments/environment.testing';
 
 @Component({
   selector: 'app-members',
@@ -15,7 +16,7 @@ export class MembersComponent implements OnInit {
   heading: string = 'Active Members';
   selectedOption: string = 'active';
   searchQuery: string = '';
-
+resoursBase = environment.resourcBaseUrl;
   apiEndpoints: { [key: string]: string } = {
     active: 'getActiveUsers',
     subscribed: 'getSubscribeUsers',

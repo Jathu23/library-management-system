@@ -80,7 +80,7 @@
           <td>
             <img
               *ngIf="user.profileImage; else noImage"
-              [src]="user.profileImage"
+              [src]="this.resoursBase+'/'+user.profileImage"
               alt="Profile Image"
               class="rounded-circle border border-2"
               width="50"
