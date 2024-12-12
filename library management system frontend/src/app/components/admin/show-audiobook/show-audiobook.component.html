@@ -39,13 +39,13 @@
             </button>
           </td>
         </tr>
-->
+
         <tr *ngIf="expandedElementId === element.id">
           <td colspan="9" class="expanded-content">
             <div>
               <p><strong>Audio File:</strong></p>
               <audio controls>
-                <source [src]="'https://localhost:7261/' + element.filePath" />
+                <source [src]="resoursbase + element.filePath" />
                 Your browser does not support the audio element.
               </audio>
             </div>

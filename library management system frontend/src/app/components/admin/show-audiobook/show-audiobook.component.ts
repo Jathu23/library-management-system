@@ -5,6 +5,7 @@ import { GetbooksService } from '../../../services/bookservice/getbooks.service'
 import { BookDeleteServicesService } from '../../../services/bookservice/deletebook.service';
 import { MainBookUpdateService } from '../../../services/bookservice/main-book-update.service';
 import { EditAudiobookDialogComponent } from '../edit-audiobook-dialog/edit-audiobook-dialog/edit-audiobook-dialog.component';
+import { environment } from '../../../../environments/environment.testing';
 
 @Component({
   selector: 'app-show-audiobook',
@@ -18,6 +19,7 @@ export class ShowAudiobookComponent implements OnInit {
   pageSize = 2; 
   currentPage = 1;
   expandedElementId: number | null = null; 
+  resoursbase= environment.resourcBaseUrl;
 
   constructor(
     private getbookservice: GetbooksService,
