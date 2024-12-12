@@ -16,32 +16,30 @@ export class ShowebooksComponent implements OnInit {
   selectedEbook: any | null = null;
   currentPage = 1;
   pageSize = 10;
-
+  totalItems = 0;
   sanitizedUrl!: SafeResourceUrl;
-
+  resoursBase = environment.resourcBaseUrl;
+  searchQuery = ''; // Variable to store the search query
   isThumbsUp = false;
   isThumbsDown = false;
   showCommentBox = false;
   reviewText = '';
-  reviews: {
-reviewText: any;
-reviewDate: string|Date; user: string; text: string; date: string 
-}[] = [];
+  reviews:any;
   thumbsUpCount = 12;
   thumbsDownCount = 21;
   currentUserId: number;
   likeCount: any;
   dislikeCount: any;
-  rating: number=1;
+  rating: number = 1;
 
   constructor(
     private getbooksService: GetbooksService,
     private sanitizer: DomSanitizer,
-     private likedislikeservice:LikeanddislikeService,
-     private reviewservice:ReviewService
+    private likedislikeservice: LikeanddislikeService,
+    private reviewservice: ReviewService
   ) {
     const tokendata = environment.getTokenData();
-    this.currentUserId= Number(tokendata.ID);
+    this.currentUserId = Number(tokendata.ID);
   }
 
   ngOnInit(): void {
@@ -49,20 +47,50 @@ reviewDate: string|Date; user: string; text: string; date: string
   }
 
   loadEbooks(): void {
-    this.getbooksService.getebooks(this.currentPage, this.pageSize).subscribe(
+    if (this.searchQuery.trim() !== '') {
+      this.searchForEbooks(); // Search ebooks if there is a search query
+    } else {
+      this.getbooksService.getebooks(this.currentPage, this.pageSize).subscribe(
+        (response) => {
+          console.log('API Response:', response);
+          if (response?.data?.items && Array.isArray(response.data.items)) {
+            this.ebooks = response.data.items;
+            this.totalItems = response.data.totalCount || 0; // Ensure totalItems is assigned
+          } else {
+            console.warn('No eBooks found or invalid data structure:', response);
+            this.ebooks = [];
+          }
+        },
+        (error) => {
+          console.error('Error fetching eBooks:', error);
+        }
+      );
+    }
+  }
+
+  // Handle ebook search functionality
+  searchForEbooks(): void {
+    this.getbooksService.searchEbooks(this.searchQuery, this.currentPage, this.pageSize).subscribe(
       (response) => {
-        console.log('API Response:', response);
+        console.log('Search API Response:', response);
         if (response?.data?.items && Array.isArray(response.data.items)) {
           this.ebooks = response.data.items;
+          this.totalItems = response.data.totalCount || 0;  // Assuming totalCount is returned
         } else {
           console.warn('No eBooks found or invalid data structure:', response);
           this.ebooks = [];
         }
       },
       (error) => {
-        console.error('Error fetching eBooks:', error);
+        console.error('Error searching ebooks:', error);
       }
     );
+  }
+
+  // Handle search input change
+  onSearchChange(): void {
+    this.currentPage = 1; // Reset to the first page on search
+    this.loadEbooks();  // Reload ebooks based on search query
   }
 
   openEbookModal(ebook: any): void {
@@ -70,8 +98,8 @@ reviewDate: string|Date; user: string; text: string; date: string
     this.isModalOpen = true;
     this.fetchEbookReviews(ebook.id)
     this.addClick(ebook.id);
-    this.fetchDislikeAndLike(ebook.id,true);
-    this.fetchDislikeAndLike(ebook.id,false);
+    this.fetchDislikeAndLike(ebook.id, true);
+    this.fetchDislikeAndLike(ebook.id, false);
 
     this.sanitizedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
       'https://localhost:7261/' + this.selectedEbook?.filePath
@@ -137,14 +165,14 @@ reviewDate: string|Date; user: string; text: string; date: string
       }
     );
   }
-  
+
   submitEbookReview() {
     // Validate input fields
-    if (!this.selectedEbook ) {
+    if (!this.selectedEbook) {
       alert('Please provide a valid rating (1-5) and a review text.');
       return;
     }
-  
+
     // Prepare the review request
     const review: ReviewRequest = {
       userId: this.currentUserId, // Replace with actual logged-in user ID
@@ -152,7 +180,7 @@ reviewDate: string|Date; user: string; text: string; date: string
       reviewText: this.reviewText,
       rating: this.rating
     };
-  
+
     // Call the service method to submit the review
     this.reviewservice.addEbookReview(review).subscribe({
       next: (response: ReviewResponse<any>) => {
@@ -171,19 +199,19 @@ reviewDate: string|Date; user: string; text: string; date: string
       }
     });
   }
-  
-  
-  
-  fetchDislikeAndLike(bookid:number, isLiked: boolean): void {
+
+
+
+  fetchDislikeAndLike(bookid: number, isLiked: boolean): void {
     this.likedislikeservice.getEbookLikeDislikeCount(bookid, isLiked).subscribe({
       next: (response) => {
         if (response.success) {
           if (isLiked) {
             this.likeCount = response.data;
-          }else{
+          } else {
             this.dislikeCount = response.data;
           }
-          
+
         } else {
           console.warn('Failed to fetch like/dislike count for audiobook:', response.message);
         }
@@ -193,31 +221,31 @@ reviewDate: string|Date; user: string; text: string; date: string
       },
     });
   }
-  
-  like_or_dislikeAudiobook(like:boolean): void {
+
+  like_or_dislikeAudiobook(like: boolean): void {
     const likeDislikeRequest = {
       bookId: this.selectedEbook.id,
       userId: this.currentUserId,
       isLiked: like,
     };
-  
+
     this.likedislikeservice.addEbookLikeDislike(likeDislikeRequest).subscribe({
       next: (response) => {
         if (response.success) {
-         alert(response.message);
-         if (like) {
-          this.fetchDislikeAndLike(this.selectedEbook.id,like);
-          if (!response.success){
-            this.toggleThumbsUp(); 
+          alert(response.message);
+          if (like) {
+            this.fetchDislikeAndLike(this.selectedEbook.id, like);
+            if (!response.success) {
+              this.toggleThumbsUp();
+            }
+
+          } else {
+            this.fetchDislikeAndLike(this.selectedEbook.id, like);
+            if (!response.success) {
+              this.toggleThumbsDown();
+            }
+
           }
-          
-         }else{
-          this.fetchDislikeAndLike(this.selectedEbook.id,like);
-          if (!response.success){
-            this.toggleThumbsDown(); 
-          }
-         
-         }
         } else {
           console.warn(`Failed to like audiobook: ${response.message}`);
         }
@@ -227,13 +255,13 @@ reviewDate: string|Date; user: string; text: string; date: string
       },
     });
   }
-  
-  addClick(id:number){
+
+  addClick(id: number) {
     // setTimeout(() => {
     //   console.log(this.selectedEbook);
-    
+
     // }, 100);
-  
+
     this.likedislikeservice.addEBookClick(id).subscribe(
       (result) => {
         if (result) {
@@ -246,6 +274,21 @@ reviewDate: string|Date; user: string; text: string; date: string
         console.error('Error:', error.message);
       }
     );
-    
+
+  }
+
+  // Handle pagination changes
+  // Handle pagination changes
+  onPageChange(event: any): void {
+    const { pageIndex, pageSize } = event;
+    if (pageSize !== this.pageSize) {
+      this.currentPage = 1;
+    } else {
+      this.currentPage = pageIndex + 1;
+    }
+    this.pageSize = pageSize;
+    this.loadEbooks();
+
+
   }
 }

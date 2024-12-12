@@ -43,6 +43,7 @@ namespace library_management_system.Repositories
         public async Task<List<NormalBookReview>> GetNormalBookReviewsAsync(int bookId)
         {
             return await _context.NormalBookReviews
+                .Include(r => r.User)
                 .Where(r => r.BookId == bookId)
                 .ToListAsync();
         }
@@ -51,6 +52,7 @@ namespace library_management_system.Repositories
         public async Task<List<EbookReview>> GetEbookReviewsAsync(int bookId)
         {
             return await _context.EbookReviews
+                 .Include(r => r.User)
                 .Where(r => r.BookId == bookId)
                 .ToListAsync();
         }
@@ -59,6 +61,7 @@ namespace library_management_system.Repositories
         public async Task<List<AudiobookReview>> GetAudiobookReviewsAsync(int bookId)
         {
             return await _context.AudiobookReviews
+                 .Include(r => r.User)
                 .Where(r => r.BookId == bookId)
                 .ToListAsync();
         }

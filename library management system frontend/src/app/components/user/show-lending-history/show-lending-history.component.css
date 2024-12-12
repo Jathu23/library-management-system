@@ -1,22 +1,119 @@
+/* Main Container */
 .container {
-    max-width: 900px;
-    margin: 0 auto;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.text-color {
+  color: #433878;  /* Title color */
+}
+
+.table {
+  margin-top: 20px;
+}
+
+/* Badge colors */
+.badge.bg-success {
+  background-color: #28a745;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107;
+}
+
+.badge.bg-danger {
+  background-color: #dc3545;
+}
+
+/* Table styling */
+.table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  font-family: 'Poppins', sans-serif;
+  color: #433878; /* Default color */
+}
+
+.table th, .table td {
+  padding: 12px 15px;
+  text-align: left;
+  border: 1px solid #e4b1f0; /* Soft purple border */
+}
+
+/* Header row (table headers) */
+.table-header th {
+  background-color: #7e60bf; /* Light purple */
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Table row styling */
+.table tbody tr {
+  background-color: #f8f9fc; /* Light background for rows */
+}
+
+/* Table row hover effect */
+.table tbody tr:hover {
+  background-color: rgba(225, 118, 225, 0.5); /* Light hover effect */
+}
+
+/* Responsive Layout for larger screens: Table view */
+@media (min-width: 768px) {
+  /* Table view for larger screens (e.g., desktop) */
+  .d-md-table {
+    display: table;
   }
-  
-  .spinner-border {
-    width: 3rem;
-    height: 3rem;
+
+  /* Key-value block for smaller screens should not be shown on larger screens */
+  .d-md-none {
+    display: none;
   }
-  
-  .table {
-    margin-top: 20px;
+
+  .table th, .table td {
+    padding: 15px;
+    text-align: left;
   }
-  
-  .badge.bg-success {
-    background-color: #28a745;
+}
+
+/* Mobile/Tablet responsiveness: Key-Value format */
+@media (max-width: 768px) {
+  /* Key-value pair block for smaller screens (mobile/tablet) */
+  .d-md-none {
+    display: block;
   }
-  
-  .badge.bg-danger {
-    background-color: #dc3545;
+
+  /* Hide table on mobile/tablet screens */
+  .d-md-table {
+    display: none;
   }
-  
+
+  .record-container {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Key-Value pairs displayed side by side using flexbox */
+  .key-value {
+    display: flex;
+    justify-content: center; /* Spread key and value across the available space */
+    margin-bottom: 10px;
+  }
+
+  .key {
+    font-weight: bold;
+    color: #433878;
+  }
+
+  .value {
+    color: #7e60bf;  /* Lighter color for values */
+    font-weight: lighter;
+  }
+}

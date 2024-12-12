@@ -1,0 +1,136 @@
+/* General Body */
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Container */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* Card Header */
+  .card-header {
+    background-color: #7E60BF;
+    color: #FFFFFF;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  /* Card Body */
+  .card-body {
+    background-color: #f0e9f0;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Plan Name */
+  .card-body p {
+    color: #433878;
+    font-weight: bold;
+  }
+  
+  /* List Group Item */
+  .list-group-item {
+    background-color: #fcefff;
+    border: 1px solid #E4B1F0;
+    color: #433878;
+    font-size: 1rem;
+  }
+  
+  /* Hover Effects for List Group Item */
+  .list-group-item:hover {
+    background-color: #9f83db;
+    color: #FFFFFF;
+  }
+  
+
+  
+  /* Dropdown Button */
+  .form-select {
+    background-color: #fbfbfb;
+    color: #433878;
+    border: 1px solid #7E60BF;
+    border-radius: 4px;
+  }
+  
+  .form-select:focus {
+    border-color: #7E60BF;
+    box-shadow: 0 0 5px rgba(126, 96, 191, 0.5);
+  }
+  
+  .form-select option {
+    background-color: #FFFFFF;
+    color: #433878;
+  }
+  
+  /* Modal Background */
+  .modal-content {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 7000;
+  }
+  
+  /* Modal Header */
+  .modal-header {
+    background-color: #7E60BF;
+    color: #FFFFFF;
+  }
+  
+  .modal-header .btn-close {
+    background-color: #FFE1FF;
+    color: #7E60BF;
+  }
+  
+  .modal-header .btn-close:hover {
+    background-color: #433878;
+    color: #E4B1F0;
+  }
+  
+  .button:hover {
+    background-color: #433878;
+    color: #E4B1F0;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Hover Effects on Inputs and Dropdown */
+  input[type="text"],
+  input[type="password"],
+  textarea,
+  select {
+    background-color: #faf5fa;
+    color: #433878;
+    border: 1px solid #7E60BF;
+    padding: 0.75rem;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  input[type="text"]:hover,
+  input[type="password"]:hover,
+  textarea:hover,
+  select:hover {
+    border-color: #433878;
+    background-color: #fafafa;
+  }
+  
+  input[type="text"]:focus,
+  input[type="password"]:focus,
+  textarea:focus,
+  select:focus {
+    border-color: #7E60BF;
+    background-color: #FFFFFF;
+  }
+  
+  /* Total Price Text */
+  .mb-3 p {
+    color: #433878;
+    font-weight: bold;
+  }
+  
+ 
+   
+ 
+  

@@ -1,3 +1,13 @@
+
+.colors{
+  color: #433878;
+  color: #7E60BF;
+  color: #E4B1F0;
+  color: #FFE1FF;
+}
+
+
+
 /* General Styles */
 * {
   box-sizing: border-box;
@@ -46,7 +56,7 @@ body {
   min-height:350px ;
   max-height: 400px;
   min-width: 200px;
-  max-width: 300px;
+ 
   overflow-y: scroll; /* Allow scrolling */
   overflow-x: hidden; /* Hide horizontal scrollbar */
 }
@@ -64,8 +74,11 @@ body {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
+  max-width: 250px;
   background-color: #f9f9f9;
+  box-shadow: 10px 10px 10px rgba(126, 96, 191, 0.3); /* Apply box shadow with color #7E60BF */
 }
+
 
 .grid-item:hover {
   transform: scale(1.05);
@@ -136,9 +149,10 @@ body {
   width: 95%;
   display: flex;
   justify-content: center;
-  background-color: #000000;
+  background-color: #7e60bf;
   padding: 10px;
   max-height: fit-content	;
+  border-radius: 15px;
 }
 
 .album-cover {
@@ -162,7 +176,7 @@ body {
 
 .artist {
   font-size: 14px;
-  color: #aaa;
+  color: #766969;
   margin: 0;
 }
 
@@ -242,7 +256,7 @@ input[type="range"]::-webkit-slider-thumb {
 button {
   background-color: transparent;
   border: none;
-  color: #333;
+  color: #ffffff;
   font-size: 18px;
   cursor: pointer;
 }

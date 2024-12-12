@@ -147,6 +147,24 @@ namespace library_management_system.Controllers
             }
         }
 
+        [HttpGet("Lent-Report-pdf")]
+        public async Task<IActionResult> GetLentReportpdf([FromQuery] DateTime date)
+        {
+            try
+            {
+                var report = await _lentService.GetLentReport(date);
+                var pdf = await _pdfGeneratorService.GenerateLendReportPdfAsync(report);
+
+                return File(pdf, "application/pdf", "LendReport.pdf");
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
+        }
+
+
         [HttpGet("Lent-Report-ByUserid")]
         public async Task<IActionResult> GetLentReportbyuserid([FromQuery] int userid)
         {
@@ -154,6 +172,23 @@ namespace library_management_system.Controllers
             {
                 var report = await _lentService.GetLentReportbyuserid(userid);
                 return Ok(report);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
+        }
+
+
+        [HttpGet("Lent-Report-ByUserid-pdf")]
+        public async Task<IActionResult> GetLentReportbyuseridpdf([FromQuery] int userid)
+        {
+            try
+            {
+                var report = await _lentService.GetLentReportbyuserid(userid);
+                var pdf = await _pdfGeneratorService.GenerateLendReportPdfAsync(report);
+
+                return File(pdf, "application/pdf", $"LendReportuser({userid}).pdf");
             }
             catch (Exception ex)
             {
