@@ -1,0 +1,116 @@
+<div><button (click)="fetchReport()" class="btn btn-primary" style="background-color: #097ecc; border-color: #ad5ba1;">View</button></div>
+  <div><button (click)="downloadReport()" class="btn btn-secondary" style="background-color: #ad5ba1; border-color: #ad5ba1;">Download</button></div>
+
+<div class="container mt-4" >
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Overview Section -->
+        <div class="overview mb-4" style="border: 1px solid #ad5ba1; padding: 15px;">
+          <h3 style="color: #ad5ba1;">Borrow Report</h3>
+          <table class="table table-bordered table-striped">
+            <tr>
+              <th>Date</th>
+              <td>{{ overallreport.date | date: 'short' }}</td>
+            </tr>
+            <tr>
+              <th>Total Rangings</th>
+              <td>{{ overallreport.totalRengings }}</td>
+            </tr>
+            <tr>
+              <th>Pending</th>
+              <td>{{ overallreport.pending }}</td>
+            </tr>
+            <tr>
+              <th>On Time</th>
+              <td>{{ overallreport.onTime }}</td>
+            </tr>
+            <tr>
+              <th>Late</th>
+              <td>{{ overallreport.later }}</td>
+            </tr>
+          </table>
+        </div>
+  
+        <!-- Pending Lent Books Section -->
+        <div class="pending-lent mb-4" style="border: 1px solid #ad5ba1; padding: 15px;">
+          <h4 style="color: #ad5ba1;">Pending Lent Books</h4>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Book Title</th>
+                <th>User Name</th>
+                <th>Lent Date</th>
+                <th>Due Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let book of overallreport.pendingLent">
+                <td>{{ book.bookTitle }}</td>
+                <td>{{ book.userName }}</td>
+                <td>{{ book.lentDate | date: 'short' }}</td>
+                <td>{{ book.dueDate | date: 'short' }}</td>
+                <td>{{ book.status }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- On Time Lent Books Section -->
+        <div class="on-time-lent mb-4" style="border: 1px solid #ad5ba1; padding: 15px;">
+          <h4 style="color: #ad5ba1;">On Time Lent Books</h4>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Book Title</th>
+                <th>User Name</th>
+                <th>Lent Date</th>
+                <th>Return Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let book of overallreport.onTimeLent">
+                <td>{{ book.bookTitle }}</td>
+                <td>{{ book.userName }}</td>
+                <td>{{ book.lentDate | date: 'short' }}</td>
+                <td>{{ book.returnDate | date: 'short' }}</td>
+                <td>{{ book.status }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- Late Lent Books Section -->
+        <div class="late-lent mb-4" style="border: 1px solid #ad5ba1; padding: 15px;">
+          <h4 style="color: #ad5ba1;">Late Lent Books</h4>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Book Title</th>
+                <th>User Name</th>
+                <th>Lent Date</th>
+                <th>Due Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let book of overallreport.laterLent">
+                <td>{{ book.bookTitle }}</td>
+                <td>{{ book.userName }}</td>
+                <td>{{ book.lentDate | date: 'short' }}</td>
+                <td>{{ book.dueDate | date: 'short' }}</td>
+                <td>{{ book.status }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- No Late Lent Books message -->
+        <div *ngIf="overallreport.laterLent.length === 0">
+          <p>No late lent books.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -15,7 +15,7 @@ export class AdminLayoutComponent implements OnInit {
   isExpanded = true;
   private timeout: any; // Timeout for inactivity
   private isLocked = false; // Track if the screen is already locked
-  private inactivityDuration = 150000; // 2 minutes in milliseconds
+  private inactivityDuration = 900000; // 2 minutes in milliseconds
 
   constructor(private router: Router, private dialog: MatDialog) {
     // Get token from localStorage and decode it
@@ -66,6 +66,7 @@ export class AdminLayoutComponent implements OnInit {
 
       const dialogRef = this.dialog.open(LockScreenComponent, {
         disableClose: true, // Prevent closing without PIN
+        panelClass: 'full-screen-dialog'
       });
 
       // When the dialog is closed (after unlocking), reset lock status
