@@ -32,6 +32,7 @@ import { AudioBookComponent } from './components/admin/dashboard/innercomponenet
 import { EBookComponent } from './components/admin/dashboard/innercomponenets/ebook/ebook.component';
 import { OverdueComponent } from './components/admin/overdue/overdue.component';
 import { ReportComponent } from './components/admin/report/report.component';
+import { ForgotPasswordComponent } from './components/landing/forgot-password/forgot-password.component';
 
 
 const routes: Routes = [
@@ -40,6 +41,7 @@ const routes: Routes = [
     component: LandingLayoutComponent,
     children: [
       { path: 'login', component: LoginComponent },
+       { path: 'ForgotPassword', component: ForgotPasswordComponent },
     ]
   },
   {
@@ -54,7 +56,11 @@ const routes: Routes = [
       { path: 'add-e-book', component: AddebookComponent },
       { path: 'add-audio-book', component: AddAudiobookComponent },
       {path:'add-admin',component:NewAdminComponent},
+
+      
       {path:'show-normal-Books',component:ShowNormalbookComponent},
+
+
       {path:'show-audio-Books',component:ShowAudiobookComponent},
       {path:'show-e-Books',component:ShowEbookComponent},
       {path:'show-rent-rec',component:ShowLentRecComponent},
