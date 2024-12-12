@@ -7,251 +7,22 @@ import { RentService } from '../../../services/lent-service/rent.service';
 })
 export class ReportComponent {
   overallreport: OverallReport = {
-    "date": "0001-01-01T00:00:00",
-    "totalRengings": 4,
-    "pending": 3,
-    "onTime": 1,
-    "later": 0,
-    "pendingLent": [
-      {
-        "id": 2,
-        "userId": 1,
-        "userName": "Esvaran Jathushan",
-        "userEmail": "jathushanj2003@gmail.com",
-        "iAdminId": 1,
-        "iAdminName": "Esvaran Jathushan",
-        "rAdminId": null,
-        "rAdminName": null,
-        "bookId": 2,
-        "bookTitle": "title2",
-        "bookISBN": "54",
-        "bookAuthor": "author21",
-        "bookGenre": "Non-Fiction, Science",
-        "bookPublishYear": 5665,
-        "bookCopyId": 2,
-        "bookCondition": "New",
-        "lentDate": "2024-12-11T18:28:05.9408338",
-        "dueDate": "2024-12-13T18:28:05.9408338",
-        "returnDate": null,
-        "status": "1 days 20 hours remaining",
-        "statusValue": 2691,
-        "maxValue": 2880
-      },
-      {
-        "id": 3,
-        "userId": 1,
-        "userName": "Esvaran Jathushan",
-        "userEmail": "jathushanj2003@gmail.com",
-        "iAdminId": 1,
-        "iAdminName": "Esvaran Jathushan",
-        "rAdminId": null,
-        "rAdminName": null,
-        "bookId": 1,
-        "bookTitle": "title1",
-        "bookISBN": "12311",
-        "bookAuthor": "author1",
-        "bookGenre": "Non-Fiction,Science",
-        "bookPublishYear": 1523,
-        "bookCopyId": 3,
-        "bookCondition": "New",
-        "lentDate": "2024-12-11T18:32:20.4132878",
-        "dueDate": "2024-12-13T18:32:20.4132878",
-        "returnDate": null,
-        "status": "1 days 20 hours remaining",
-        "statusValue": 2695,
-        "maxValue": 2880
-      },
-      {
-        "id": 4,
-        "userId": 1,
-        "userName": "Esvaran Jathushan",
-        "userEmail": "jathushanj2003@gmail.com",
-        "iAdminId": 1,
-        "iAdminName": "Esvaran Jathushan",
-        "rAdminId": null,
-        "rAdminName": null,
-        "bookId": 1,
-        "bookTitle": "title1",
-        "bookISBN": "12311",
-        "bookAuthor": "author1",
-        "bookGenre": "Non-Fiction,Science",
-        "bookPublishYear": 1523,
-        "bookCopyId": 1,
-        "bookCondition": "New",
-        "lentDate": "2024-12-11T19:02:10.7712386",
-        "dueDate": "2024-12-13T19:02:10.7712386",
-        "returnDate": null,
-        "status": "1 days 21 hours remaining",
-        "statusValue": 2725,
-        "maxValue": 2880
-      }
-    ],
-    "onTimeLent": [
-      {
-        "id": 1,
-        "userId": 1,
-        "userName": "Esvaran Jathushan",
-        "userEmail": "jathushanj2003@gmail.com",
-        "iAdminId": 1,
-        "iAdminName": "Esvaran Jathushan",
-        "rAdminId": 1,
-        "rAdminName": "Esvaran Jathushan",
-        "bookId": 1,
-        "bookTitle": "title1",
-        "bookISBN": "12311",
-        "bookAuthor": "author1",
-        "bookGenre": "Non-Fiction,Science",
-        "bookPublishYear": 1523,
-        "bookCopyId": 1,
-        "bookCondition": "New",
-        "lentDate": "2024-12-11T18:26:41.4821258",
-        "dueDate": "2024-12-12T18:26:41.4821258",
-        "returnDate": "2024-12-11T19:00:23.3491402",
-        "status": "On Time",
-        "statusValue": 1249,
-        "maxValue": 1440
-      }
-    ],
-    "laterLent": []
+    date: '',
+    totalRengings: 0,
+    pending: 0,
+    onTime: 0,
+    later: 0,
+    pendingLent: [],
+    onTimeLent: [],
+    laterLent: []
   }
-  lentReportByUserId: any= [];
-  allBookBorrowReport: any = [
-    {
-      "bookId": 1,
-      "bookTitle": "title1",
-      "isbn": "12311",
-      "author": "author1",
-      "bookRentDetails": [
-        {
-          "bookCopyId": 1,
-          "userName": "Esvaran Jathushan",
-          "issuingAdmin": "Esvaran Jathushan",
-          "receivingAdmin": "Esvaran Jathushan",
-          "lendDate": "2024-12-11T18:26:41.4821258",
-          "dueDate": "2024-12-12T18:26:41.4821258",
-          "returnDate": "2024-12-11T19:00:23.3491402"
-        },
-        {
-          "bookCopyId": 1,
-          "userName": "Esvaran Jathushan",
-          "issuingAdmin": "Esvaran Jathushan",
-          "receivingAdmin": null,
-          "lendDate": "2024-12-11T19:02:10.7712386",
-          "dueDate": "2024-12-13T19:02:10.7712386",
-          "returnDate": null
-        },
-        {
-          "bookCopyId": 3,
-          "userName": "Esvaran Jathushan",
-          "issuingAdmin": "Esvaran Jathushan",
-          "receivingAdmin": null,
-          "lendDate": "2024-12-11T18:32:20.4132878",
-          "dueDate": "2024-12-13T18:32:20.4132878",
-          "returnDate": null
-        }
-      ]
-    },
-    {
-      "bookId": 2,
-      "bookTitle": "title2",
-      "isbn": "54",
-      "author": "author21",
-      "bookRentDetails": [
-        {
-          "bookCopyId": 2,
-          "userName": "Esvaran Jathushan",
-          "issuingAdmin": "Esvaran Jathushan",
-          "receivingAdmin": null,
-          "lendDate": "2024-12-11T18:28:05.9408338",
-          "dueDate": "2024-12-13T18:28:05.9408338",
-          "returnDate": null
-        }
-      ]
-    }
-  ];
-  BookBorrowReportbyId: any =  [
-    {
-      "bookId": 1,
-      "bookTitle": "title1",
-      "isbn": "12311",
-      "author": "author1",
-      "bookRentDetails": [
-        {
-          "bookCopyId": 1,
-          "userName": "Esvaran Jathushan",
-          "issuingAdmin": "Esvaran Jathushan",
-          "receivingAdmin": "Esvaran Jathushan",
-          "lendDate": "2024-12-11T18:26:41.4821258",
-          "dueDate": "2024-12-12T18:26:41.4821258",
-          "returnDate": "2024-12-11T19:00:23.3491402"
-        },
-        {
-          "bookCopyId": 1,
-          "userName": "Esvaran Jathushan",
-          "issuingAdmin": "Esvaran Jathushan",
-          "receivingAdmin": null,
-          "lendDate": "2024-12-11T19:02:10.7712386",
-          "dueDate": "2024-12-13T19:02:10.7712386",
-          "returnDate": null
-        },
-        {
-          "bookCopyId": 3,
-          "userName": "Esvaran Jathushan",
-          "issuingAdmin": "Esvaran Jathushan",
-          "receivingAdmin": null,
-          "lendDate": "2024-12-11T18:32:20.4132878",
-          "dueDate": "2024-12-13T18:32:20.4132878",
-          "returnDate": null
-        }
-      ]
-    }
-  ];
-allLendingcount:any=[
-  {
-    "bookID": 1,
-    "totalRentCount": 1,
-    "induvalCopyrentcount": [
-      {
-        "coppyId": 1,
-        "rentCount": 1
-      },
-      {
-        "coppyId": 3,
-        "rentCount": 0
-      }
-    ]
-  },
-  {
-    "bookID": 2,
-    "totalRentCount": 0,
-    "induvalCopyrentcount": [
-      {
-        "coppyId": 2,
-        "rentCount": 0
-      }
-    ]
-  }
-];
-Lendingcountbybookid:any= [
-  {
-    "bookID": 1,
-    "totalRentCount": 1,
-    "induvalCopyrentcount": [
-      {
-        "coppyId": 1,
-        "rentCount": 1
-      },
-      {
-        "coppyId": 3,
-        "rentCount": 0
-      }
-    ]
-  }
-];
+  BookBorrowReport: any = [];
+  Lendingcount:any=[];
+
   selectedReportType: string = 'overall';  // Default selected report
   userId: number = 1; 
   bookId: number = 2; 
-  date: string = '2024-12-11'; 
+  date: any = Date.now; 
   reportData: any; 
   isLoading: boolean = false;
   errorMessage: string = '';
@@ -295,7 +66,7 @@ Lendingcountbybookid:any= [
       case 'bookBorrow':
         this.rentService.getBookLendingReport(null).subscribe(
           (response) => {
-            this.allBookBorrowReport = response;
+            this.BookBorrowReport = response.reports;
             console.log(response);
             this.isLoading = false;
           },
@@ -309,7 +80,7 @@ Lendingcountbybookid:any= [
         case 'bookBorrowbyid':
           this.rentService.getBookLendingReport(this.bookId).subscribe(
             (response) => {
-              this.BookBorrowReportbyId = response;
+              this.BookBorrowReport =response.reports;
               console.log(response);
               this.isLoading = false;
             },
@@ -323,7 +94,7 @@ Lendingcountbybookid:any= [
       case 'lentcount':
         this.rentService.getLendingCountReport(null).subscribe(
           (response) => {
-            this.allLendingcount = response;
+            this.Lendingcount = response.countReports;
             console.log(response);
             this.isLoading = false;
           },
@@ -337,7 +108,7 @@ Lendingcountbybookid:any= [
         case 'lentcountbybookid':
           this.rentService.getLendingCountReport(this.bookId).subscribe(
             (response) => {
-              this.Lendingcountbybookid = response;
+              this.Lendingcount = response.countReports;
               console.log(response);
               
               this.isLoading = false;
@@ -355,6 +126,49 @@ Lendingcountbybookid:any= [
         break;
     }
   }
+
+  downloadReport(): void {
+    if (this.selectedReportType == 'overall') {
+      if (!this.date) {
+        console.error('Invalid date.');
+        return;
+      }
+      this.rentService.getLentReportPdfAll(null).subscribe(
+        (pdfBlob: Blob) => {
+          const fileURL = URL.createObjectURL(pdfBlob);
+          const link = document.createElement('a');
+          link.href = fileURL;
+          link.download = `LendReport_${new Date().toLocaleString().replace(/[\/:]/g, '-')}.pdf`; // Name file based on current date and time
+
+          link.click();
+        },
+        (error) => {
+          console.error('Error downloading the report:', error);
+        }
+      );
+    }
+    
+    if(this.selectedReportType == 'lentByUser') {
+      this.rentService.getLentReportPdf(this.userId).subscribe(
+        (pdfBlob: Blob) => {
+          const fileURL = URL.createObjectURL(pdfBlob);
+          const link = document.createElement('a');
+          link.href = fileURL;
+          link.download = `LendReportuser.pdf`; // Name the file dynamically based on user ID
+          link.click();
+        },
+        (error) => {
+          console.error('Error downloading the report:', error);
+        }
+      );
+    }
+
+    else{
+      alert("select corect option");
+    }
+  
+  }
+
 }
 // Define an interface for each lent record
 interface LentRecord {
