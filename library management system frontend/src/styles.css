@@ -1,12 +1,19 @@
+.full-screen-dialog .mat-mdc-dialog-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 1050 !important; /* Ensure it stays above everything */
+  overflow: hidden !important; /* Prevent scrollbars */
+}
 
-
- .mat-mdc-dialog-surface {
+.full-screen-dialog .mat-mdc-dialog-surface {
   width: 100% !important;
   height: 100% !important;
   box-shadow: none !important; /* Remove shadow */
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  background: transparent !important; 
+  background: transparent !important; /* Match parent background */
 }
 
