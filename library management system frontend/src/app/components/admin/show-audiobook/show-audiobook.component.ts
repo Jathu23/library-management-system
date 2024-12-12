@@ -1,11 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
 import { GetbooksService } from '../../../services/bookservice/getbooks.service';
+import { BookDeleteServicesService } from '../../../services/bookservice/deletebook.service';
+import { MainBookUpdateService } from '../../../services/bookservice/main-book-update.service';
+import { EditAudiobookDialogComponent } from '../edit-audiobook-dialog/edit-audiobook-dialog/edit-audiobook-dialog.component';
 
 @Component({
   selector: 'app-show-audiobook',
   templateUrl: './show-audiobook.component.html',
-  styleUrl: './show-audiobook.component.css'
+  styleUrls: ['./show-audiobook.component.css']
 })
 export class ShowAudiobookComponent implements OnInit {
   audiobooks: any[] = [];
@@ -13,13 +17,16 @@ export class ShowAudiobookComponent implements OnInit {
   totalItems = 0;
   pageSize = 2; // Default page size
   currentPage = 1;
-  expandedElementId: number | null = null;
-  element: any;
-  
+  expandedElementId: number | null = null; // Keeps track of the expanded row's ID
+
+  constructor(
+    private getbookservice: GetbooksService,
+    private AudiobookDelete: BookDeleteServicesService,
+    private AudiobookUpdate: MainBookUpdateService,
+    private dialog: MatDialog
+  ) {}
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  constructor(private getbookservice: GetbooksService) {}
 
   ngOnInit() {
     this.loadAudiobooks(0, this.pageSize);
@@ -52,64 +59,45 @@ export class ShowAudiobookComponent implements OnInit {
     this.loadAudiobooks(this.currentPage - 1, this.pageSize);
   }
 
+  openEditDialog(audiobook: any): void {
+    const dialogRef = this.dialog.open(EditAudiobookDialogComponent, {
+      width: '500px',
+      data: { ...audiobook }, 
+    });
+  
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.AudiobookUpdate.updateAudiobook(result).subscribe(
+          () => {
+            alert('Audiobook updated successfully!');
+            this.loadAudiobooks(0, this.pageSize); 
+          },
+          (error) => {
+            console.error('Error updating audiobook:', error);
+            alert('Failed to update audiobook.');
+          }
+        );
+      }
+    });
+  }
+  
+  deleteAudiobook(id: number): void {
+    if (confirm('Do you want to delete this audiobook?')) {
+      this.AudiobookDelete.deleteAudioBook(id).subscribe(
+        () => {
+          this.audiobooks = this.audiobooks.filter((a) => a.id !== id);
+          alert('Audiobook deleted successfully!');
+        },
+        (error) => {
+          console.error('Error deleting audiobook:', error);
+          alert('Error deleting audiobook.');
+        }
+      );
+    }
+  }
 
-
-  toggleRow(id:any): void {
-    this.element =id;
+  // Method to toggle row expansion
+  toggleRow(id: number): void {
     this.expandedElementId = this.expandedElementId === id ? null : id;
   }
 }
-
-
-
-// import { Component, OnInit } from '@angular/core';
-// import { GetbooksService } from '../../../services/bookservice/getbooks.service';
-
-// @Component({
-//   selector: 'app-show-audiobook',
-//   templateUrl: './show-audiobook.component.html',
-//   styleUrl: './show-audiobook.component.css'
-// })
-// export class ShowAudiobookComponent implements OnInit {
-//   audiobooks: any[] = [];
-//   isLoading = false;
-//   currentPage = 1;
-//   pageSize = 17;
-//   totalItems = 0;
-
-
-//   constructor(private getbookservice: GetbooksService) {}
-
-//   ngOnInit() {
-//     this.loadAudiobooks(); // Load initial data
-//   }
-
-//   loadAudiobooks() {
-//     if (this.isLoading) return;
-
-//     this.isLoading = true;
-//     this.getbookservice.getaudiobooks(this.currentPage, this.pageSize).subscribe(
-//       (response) => {
-//         const result = response.data;
-
-//         this.audiobooks = [...this.audiobooks, ...result.items];
-//         this.totalItems = result.totalCount;
-//         this.currentPage++;
-//         this.isLoading = false;
-//       },
-//       (error) => {
-//         console.error('Error fetching audiobooks:', error);
-//         this.isLoading = false;
-//       }
-//     );
-//   }
-
-//   expandedElementId: number | null = null;
-// element: any;
-
-
-//   toggleRow(id:any): void {
-//     this.element =id;
-//     this.expandedElementId = this.expandedElementId === id ? null : id;
-//   }
-// }

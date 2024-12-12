@@ -17,13 +17,10 @@ export class EditEbookDialogComponent {
 
     
   }
-
- 
   saveChanges(): void {
-    this.dialogRef.close(this.ebook); // Pass updated ebook back to parent
+    this.dialogRef.close(this.ebook); 
   }
-
   cancel(): void {
-    this.dialogRef.close(); // Close without saving
+    this.dialogRef.close(); 
   }
 }

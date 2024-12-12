@@ -56,6 +56,7 @@ import { NormalBooksComponent } from './components/admin/dashboard/innercomponen
 import { EBookComponent } from './components/admin/dashboard/innercomponenets/ebook/ebook.component';
 import { OverdueComponent } from './components/admin/overdue/overdue.component';
 import { ReportComponent } from './components/admin/report/report.component';
+import { EditAudiobookDialogComponent } from './components/admin/edit-audiobook-dialog/edit-audiobook-dialog/edit-audiobook-dialog.component';
 
 
 
@@ -92,6 +93,7 @@ import { ReportComponent } from './components/admin/report/report.component';
     ShowLentRecodesComponent,
     ShowLendingHistoryComponent,
     EditEbookDialogComponent,
+    EditAudiobookDialogComponent,
     DashboardComponent,
     LockScreenComponent,
     TimeAgoPipe,
@@ -106,6 +108,7 @@ import { ReportComponent } from './components/admin/report/report.component';
         EBookComponent,
         OverdueComponent,
         ReportComponent,
+       
     
 
    

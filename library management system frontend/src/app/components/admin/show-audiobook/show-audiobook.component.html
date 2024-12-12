@@ -25,12 +25,21 @@
           <td>{{ element.narrator }}</td>
           <td>{{ element.publisher }}</td>
           <td>
-            <button (click)="toggleRow(element.id)">
-              {{ expandedElementId === element.id ? 'Hide' : 'View' }}
+
+            <button class="btn btn-primary" (click)="openEditDialog(element)" title="Edit AudioBook">
+              <i class="bi bi-pencil"></i>
+            </button>
+            
+            <button class="btn btn-danger" (click)="deleteAudiobook(element.id)" title="Delete AudioBook">
+              <i class="bi bi-trash"></i>
+            </button>
+
+            <button class="btn btn-info" (click)="toggleRow(element.id)" title="View AudioBook">
+              <i class="bi" [ngClass]="expandedElementId === element.id ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
             </button>
           </td>
         </tr>
-        <!-- Expanded row -->
+->
         <tr *ngIf="expandedElementId === element.id">
           <td colspan="9" class="expanded-content">
             <div>
@@ -56,4 +65,3 @@
   (page)="onPageChange($event)"
 >
 </mat-paginator>
-

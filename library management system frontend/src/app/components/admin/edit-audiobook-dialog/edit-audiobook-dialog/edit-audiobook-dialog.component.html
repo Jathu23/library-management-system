@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>Edit Audiobook</h2>
+<div mat-dialog-content>
+  <form>
+    <!-- Title -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Title</mat-label>
+      <input matInput [(ngModel)]="audiobook.title" name="title" />
+    </mat-form-field>
+
+    <!-- Author -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Author</mat-label>
+      <input matInput [(ngModel)]="audiobook.author" name="author" />
+    </mat-form-field>
+
+    <!-- Genre -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Genre</mat-label>
+      <input matInput [(ngModel)]="audiobook.genre" name="genre" />
+    </mat-form-field>
+
+    <!-- Publish Year -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Publish Year</mat-label>
+      <input matInput type="number" [(ngModel)]="audiobook.publishYear" name="publishYear" />
+    </mat-form-field>
+
+    <!-- Publisher -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Publisher</mat-label>
+      <input matInput [(ngModel)]="audiobook.publisher" name="publisher" />
+    </mat-form-field>
+
+    <!-- Language -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Language</mat-label>
+      <input matInput [(ngModel)]="audiobook.language" name="language" />
+    </mat-form-field>
+
+    <!-- Narrator -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Narrator</mat-label>
+      <input matInput [(ngModel)]="audiobook.narrator" name="narrator" />
+    </mat-form-field>
+
+    <!-- Dialog Actions -->
+    <div mat-dialog-actions>
+      <button mat-button (click)="cancel()">Cancel</button>
+      <button mat-button color="primary" (click)="saveChanges()">Save</button>
+    </div>
+  </form>
+</div>

@@ -4,9 +4,7 @@ import { GetbooksService } from '../../../services/bookservice/getbooks.service'
 import { ViewportScrollPosition } from '@angular/cdk/scrolling';
 import { BookDeleteServicesService } from '../../../services/bookservice/deletebook.service';
 import { MatDialog } from '@angular/material/dialog';
-
 import { EditEbookDialogComponent } from '../edit-ebook-dialog/edit-ebook-dialog.component';
-
 import {MainBookUpdateService} from '../../../services/bookservice/main-book-update.service'
 import { environment } from '../../../../environments/environment.testing';
 
