@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from '../../../environments/environment.testing';
+import { catchError, throwError } from 'rxjs';
 
 
 @Injectable({
@@ -71,5 +72,19 @@ export class UserService {
     return this.http.get(`${this.suBestUrl}/subscribed-and-best`, {
       params: { count: count.toString() },
     });
+  }
+
+  private baseUrlLentById = 'https://localhost:7261/api/Lent';
+
+  getLentReportByUserId(userId: number): Observable<any> {
+    const url = `${this.baseUrlLentById}/Lent-Report-ByUserid?userid=${userId}`;
+    return this.http.get<any>(url).pipe(
+      catchError(this.handleError) // Error handling
+    );
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    console.error('An error occurred:', error.message);
+    return throwError(() => new Error('Error fetching Lent Report.'));
   }
 }
