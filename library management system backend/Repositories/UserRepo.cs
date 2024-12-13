@@ -329,5 +329,11 @@ namespace library_management_system.Repositories
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
+        public async Task<int> GetuserCountAsync()
+        {
+            return await _context.Users.CountAsync();
+        }
+
+
     }
 }

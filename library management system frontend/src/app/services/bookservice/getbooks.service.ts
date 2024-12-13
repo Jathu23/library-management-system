@@ -143,6 +143,17 @@ export class GetbooksService {
   getDistinctAttributes(): Observable<BookDataOptionssimple> {
     return this.http.get<BookDataOptionssimple>(`${this.baseurl}/books/get-distinct-attributes`);
   }
+
+  private MAinapiUrl = 'https://your-api-url.com/api';
+  private EapiUrl = 'https://localhost:7261/api/Ebook';
+
+  getNormalBookCount(): Observable<{ Count: number }> {
+    return this.http.get<{ Count: number }>(`${this.MAinapiUrl}/normalbooks/count`);
+  }
+
+  getEbookCount(): Observable<{ count: number }> {
+    return this.http.get<{ count: number }>(`${this.EapiUrl}/ebooks/count`);
+  }
   
 }
 

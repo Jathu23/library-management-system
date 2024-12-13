@@ -12,6 +12,8 @@ export class UserService {
   private baseurl = environment.apiBaseUrl;
   private Url = `${this.baseurl}/User/`;
 
+  
+
   private suBestUrl = `https://localhost:7261/api/User/subscribed-and-best?count`
 
   constructor(private http: HttpClient) {}
@@ -87,4 +89,11 @@ export class UserService {
     console.error('An error occurred:', error.message);
     return throwError(() => new Error('Error fetching Lent Report.'));
   }
+
+  private apiUrl = 'https://localhost:7261/api/User';
+
+  getUserBookCount(): Observable<{ count: number }> {
+    return this.http.get<{ count: number }>(`${this.apiUrl}/Userbooks/count`);
+  }
+
 }

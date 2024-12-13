@@ -41,8 +41,9 @@ const routes: Routes = [
     path: '',
     component: LandingLayoutComponent,
     children: [
-      { path: 'login', component: LoginComponent },
       { path: 'ForgotPassword', component: ForgotPasswordComponent },
+      { path: 'login', component: LoginComponent },
+      
     ]
   },
   {
