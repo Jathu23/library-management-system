@@ -273,5 +273,10 @@ namespace library_management_system.Repositories
             public List<int> PublishYears { get; set; }
         }
 
+        public async Task<int> GetAudiobookCountAsync()
+        {
+            return await _context.NormalBooks.CountAsync();
+        }
+
     }
 }

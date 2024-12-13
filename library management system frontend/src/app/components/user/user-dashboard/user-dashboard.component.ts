@@ -9,6 +9,13 @@ import { Color, ScaleType } from '@swimlane/ngx-charts';
 
 
 
+
+
+
+
+
+
+
 @Component({
   selector: 'app-user-dashboard',
   templateUrl: './user-dashboard.component.html',
@@ -40,7 +47,16 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
   Ebooks: any[] = [];
   imgageBaseUrl: string = `https://localhost:7261/`
 
-  // 
+  // \
+  
+
+  normalBookCount: number | null = null;
+  normalAudioCount: number | null = null;
+  normalUserCount: number | null = null;
+  normalEBookCount: number | null = null;
+
+
+
 
   totalLendings:string='';
   pendings:string='';
@@ -59,6 +75,11 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     this.fetchTopAudiobooks(3);
     this.fetchTopAudiobookslist(10)
     this.fetchUsers(10);
+
+    this.fetchNormalBookCount()
+    this.fetchAudiobookCount()
+    this.fetchUserBookCount()
+    this.fetchEbookCount()
 
     // --
 
@@ -81,6 +102,55 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         console.error('Error fetching Lent Report:', err);
       },
     });
+  }
+
+  fetchNormalBookCount(): void {
+    this.EbookService.getNormalBookCount().subscribe(
+      response => {
+        this.normalBookCount = response.Count;
+        console.log('Normal book count:', this.normalBookCount);
+      },
+      error => {
+        console.error('Error fetching normal book count:', error);
+      }
+    );
+  }
+
+  fetchAudiobookCount(): void {
+    this.audiobookService.getAudiobookCount().subscribe(
+      response => {
+        this.normalAudioCount = response.count;
+        console.log('Audiobook count:', this.normalAudioCount);
+      },
+      error => {
+        console.error('Error fetching audiobook count:', error);
+      }
+    );
+  }
+
+  fetchEbookCount(): void {
+    this.EbookService.getEbookCount().subscribe(
+      response => {
+        this.normalEBookCount = response.count;
+        console.log('Ebook count:', this.normalEBookCount);
+      },
+      error => {
+        console.error('Error fetching ebook count:', error);
+      }
+    );
+  }
+
+
+  fetchUserBookCount(): void {
+    this.userService.getUserBookCount().subscribe(
+      response => {
+        this.normalUserCount = response.count;
+        console.log('User book count:', this.normalUserCount);
+      },
+      error => {
+        console.error('Error fetching user book count:', error);
+      }
+    );
   }
 
   // fetchTopAudiobooks(count: number): void {

@@ -103,6 +103,14 @@ namespace library_management_system.Controllers
 
         }
 
+        [HttpGet("audiobooks/count")]
+        public async Task<IActionResult> GetAudiobookCount()
+        {
+            int count = await _audioBookService.GetAudiobookCountAsync();
+            return Ok(new { Count = count });
+        }
+
+
 
         //        [HttpPost("addsamle")]
         //        public async Task<int> addsample()

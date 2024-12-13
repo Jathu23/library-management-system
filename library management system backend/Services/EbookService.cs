@@ -334,6 +334,22 @@ namespace library_management_system.Services
                 throw new ApplicationException("An error occurred while fetching top eBooks.", ex);
             }
         }
+        public async Task<int> GetEbookCountAsync()
+        {
+            try
+            {
+                return await _ebookRepository.GetEbooksCountAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details (e.g., using a logging framework like Serilog or NLog)
+                Console.WriteLine($"An error occurred while counting audiobooks: {ex.Message}");
+
+                // Optionally rethrow the exception or return a default value
+                // throw;
+                return 0; // Returning 0 in case of an error
+            }
+        }
 
     }
 }

@@ -269,7 +269,24 @@ namespace library_management_system.Services
            
         }
 
+        public async Task<int> GetAudiobookCountAsync()
+        {
+            try
+            {
+                return await _audioBookRepository.GetAudiobookCountAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details (e.g., using a logging framework like Serilog or NLog)
+                Console.WriteLine($"An error occurred while counting audiobooks: {ex.Message}");
+
+                // Optionally rethrow the exception or return a default value
+                // throw;
+                return 0; // Returning 0 in case of an error
+            }
+        }
 
 
-	}
+
+    }
 }

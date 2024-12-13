@@ -145,8 +145,13 @@ namespace library_management_system.Repositories
 				.ToListAsync();
 		}
 
+        public async Task<int> GetAudiobookCountAsync()
+        {
+            return await _context.Audiobooks.CountAsync();
+        }
 
 
 
-	}
+
+    }
 }
