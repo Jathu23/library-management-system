@@ -41,14 +41,9 @@ const routes: Routes = [
     path: '',
     component: LandingLayoutComponent,
     children: [
-<<<<<<< HEAD
-      { path: 'login', component: LoginComponent },
-     
-=======
       { path: 'ForgotPassword', component: ForgotPasswordComponent },
       { path: 'login', component: LoginComponent },
       
->>>>>>> 9c8076d700438c469d8f392231b417d0513347d8
     ]
   },
   {
