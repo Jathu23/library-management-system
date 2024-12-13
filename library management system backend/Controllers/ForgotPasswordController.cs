@@ -14,7 +14,6 @@ public class ForgotPasswordController : ControllerBase
         _forgotPasswordService = forgotPasswordService;
     }
 
-    // Endpoint to generate and send OTP
     [HttpPost("send-token")]
     public async Task<IActionResult> SendToken([FromQuery] ForgotPasswordRequests request)
     {
@@ -26,7 +25,7 @@ public class ForgotPasswordController : ControllerBase
         return response.Success ? Ok(response) : BadRequest(response);
     }
 
-    // Endpoint to validate OTP and update password
+
     [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword([FromQuery] ResetPasswordRequests request)
     {

@@ -1,6 +1,7 @@
 ﻿using library_management_system.Database.Entiy;
 using library_management_system.DTOs.Ebook;
 using library_management_system.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static library_management_system.DTOs.Ebook.UpdateEbookDto;
@@ -9,6 +10,7 @@ namespace library_management_system.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EbookController : ControllerBase
     {
         private readonly EbookService _ebookService;

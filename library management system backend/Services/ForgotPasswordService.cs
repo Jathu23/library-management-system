@@ -23,20 +23,17 @@ public class ForgotPasswordService
     }
 
 
-    // Generate OTP and send email
     public async Task<ApiResponse<string>> GenerateAndSendTokenAsync(string email)
     {
         var response = new ApiResponse<string>();
 
         try
         {
-            // Generate a 5-digit OTP
+
             var tokenCode = new Random().Next(10000, 99999).ToString();
 
-            // Save the OTP to the database
             await _forgotPasswordRepository.SaveTokenAsync(email, tokenCode);
 
-            // Send the OTP via email
             var sendMailRequest = new SendMailRequest
             {
                 EmailType = EmailTypes.otp,
@@ -59,7 +56,6 @@ public class ForgotPasswordService
         return response;
     }
 
-    // Validate OTP and update password
   
     public async Task<ApiResponse<string>> ValidateTokenAndUpdatePasswordAsync(string email, string tokenCode, string newPassword)
     {
@@ -72,22 +68,19 @@ public class ForgotPasswordService
             if (tokenRecord == null || tokenRecord.TokenCode != tokenCode)
                 throw new Exception("Invalid OTP.");
 
-            // Check if the OTP is expired (2 minutes validity)
+
             if (DateTime.UtcNow > tokenRecord.CreatedAt.AddMinutes(2))
             {
                 await _forgotPasswordRepository.DeleteTokenAsync(tokenRecord);
                 throw new Exception("OTP has expired.");
             }
 
-            //// Check if the email belongs to a user or admin
-            //var user = await _userRepo.GetUserByEmail(email);
-            //var admin = await _adminRepo.GetAdminByEmailOrNic(email);
             var hash = _bCryptService.HashPassword(newPassword);
 
              var result = await _forgotPasswordRepository.UpdatePasswordAsync(email, hash);
             if (result)
             {
-                // Delete the OTP after successful use
+
                 await _forgotPasswordRepository.DeleteTokenAsync(tokenRecord);
                 response.Success = true;
                 response.Message = "Password updated successfully.";

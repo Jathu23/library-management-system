@@ -14,7 +14,6 @@ public class ForgotPasswordRepository
         _context = context;
     }
 
-    // Save the OTP to the database
     public async Task<ForgotPasswordToken> SaveTokenAsync(string email, string tokenCode)
     {
         var token = new ForgotPasswordToken
@@ -29,7 +28,6 @@ public class ForgotPasswordRepository
         return token;
     }
 
-    // Retrieve the latest OTP for the given email
     public async Task<ForgotPasswordToken?> GetLatestTokenAsync(string email)
     {
         return await _context.ForgotPasswordTokens
@@ -38,7 +36,6 @@ public class ForgotPasswordRepository
             .FirstOrDefaultAsync();
     }
 
-    // Delete the OTP from the database
     public async Task DeleteTokenAsync(ForgotPasswordToken token)
     {
         _context.ForgotPasswordTokens.Remove(token);

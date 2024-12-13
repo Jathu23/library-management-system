@@ -42,7 +42,7 @@ const routes: Routes = [
     component: LandingLayoutComponent,
     children: [
       { path: 'login', component: LoginComponent },
-      { path: 'ForgotPassword', component: ForgotPasswordComponent },
+     
     ]
   },
   {
@@ -57,11 +57,7 @@ const routes: Routes = [
       { path: 'add-e-book', component: AddebookComponent },
       { path: 'add-audio-book', component: AddAudiobookComponent },
       {path:'add-admin',component:NewAdminComponent},
-
-      
       {path:'show-normal-Books',component:ShowNormalbookComponent},
-
-
       {path:'show-audio-Books',component:ShowAudiobookComponent},
       {path:'show-e-Books',component:ShowEbookComponent},
       {path:'show-rent-rec',component:ShowLentRecComponent},
@@ -98,7 +94,8 @@ const routes: Routes = [
       {path:'notification-u',component:NotificationComponent},
       {path:'report-u',component:UserreportComponent},
     ]
-  }
+  },
+  { path: 'ForgotPassword', component: ForgotPasswordComponent },
 ];
 
 

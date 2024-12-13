@@ -16,12 +16,13 @@ export class ForgotPasswordComponent implements OnInit {
   otpError: string = '';
   passwordError: string = '';
   successMessage: string = '';
-
   isEmailValid: boolean = false;
-  step: number = 1; // 1: Email Input, 2: OTP, 3: New Password
 
-  otpTimer: number = 60;
+  step: number = 1;
+
+  otpTimer: number = 120; 
   otpInterval: any;
+  otpSentTime: number = 0; 
 
   constructor(private forgotPasswordService: ForgotPasswordService) {}
 
@@ -39,11 +40,13 @@ export class ForgotPasswordComponent implements OnInit {
       return;
     }
 
+    // Send OTP to the backend
     this.forgotPasswordService.sendToken(this.email).subscribe({
       next: (response) => {
         if (response.success) {
           this.successMessage = response.message;
           this.step = 2;
+          this.otpSentTime = Date.now(); 
           this.startOTPTimer();
         } else {
           this.emailError = response.message;
@@ -56,12 +59,13 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   startOTPTimer() {
-    this.otpTimer = 60; // Reset Timer
+    this.otpTimer = 120; 
     this.otpInterval = setInterval(() => {
-      if (this.otpTimer > 0) {
-        this.otpTimer--;
+      const elapsedTime = Math.floor((Date.now() - this.otpSentTime) / 1000); 
+      if (elapsedTime < 120) {
+        this.otpTimer = 120 - elapsedTime; 
       } else {
-        clearInterval(this.otpInterval);
+        clearInterval(this.otpInterval); 
         this.otpError = 'OTP has expired. Please request a new one.';
       }
     }, 1000);
@@ -73,7 +77,7 @@ export class ForgotPasswordComponent implements OnInit {
       return;
     }
 
-    this.forgotPasswordService.resetPassword(this.email, this.otp, '').subscribe({
+    this.forgotPasswordService.verifyOtp( this.otp).subscribe({
       next: (response) => {
         if (response.success) {
           this.successMessage = response.message;
