@@ -61,6 +61,7 @@ export class SubscriptionComponent implements OnInit {
     this.subscriptionService.getPlans().subscribe(
       (plans) => {
         this.plans = plans || [];
+        plans.shift();
         this.cdr.detectChanges(); // Ensure view updates
       },
       (error) => {

@@ -28,6 +28,27 @@ namespace library_management_system.Repositories
 
         
         }
+
+        public async Task<bool> UpdateUserLoginData(string email, string newNic)
+        {
+
+            var userdata = await _context.LoginPort.FirstOrDefaultAsync(a => a.Email == email);
+
+            userdata.NIC = newNic;
+
+         _context.LoginPort.Update(userdata);
+
+            var changes = await _context.SaveChangesAsync();
+
+            
+            if (changes == 0)
+            {
+                return false; 
+            }
+            return true;
+        }
+
+
         public async Task<LoginT?> GetByEmailOrNic(string emailOrNic)
         {
             return await _context.LoginPort.FirstOrDefaultAsync(a => a.Email == emailOrNic || a.NIC == emailOrNic);
@@ -46,5 +67,11 @@ namespace library_management_system.Repositories
                 return null;
             }
         }
+        public async Task<bool> IsNicAvailable(string nic)
+        {
+            
+            return await _context.Users.AnyAsync(u => u.UserNic == nic);
+        }
+
     }   
 }

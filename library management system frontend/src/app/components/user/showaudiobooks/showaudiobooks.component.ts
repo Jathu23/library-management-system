@@ -4,6 +4,7 @@ import { ReviewRequest, ReviewResponse, ReviewService } from '../../../services/
 import { LikeanddislikeService } from '../../../services/bookservice/likeanddislike.service';
 import { environment } from '../../../../environments/environment.testing';
 import { MatPaginator } from '@angular/material/paginator';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-showaudiobooks',
@@ -32,25 +33,29 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
   rating: number=1;
   likeCount:number=0;
   dislikeCount:number=0;
-
+  IsSubscribed:any;
+  resoursBase = environment.resourcBaseUrl;
+  modelwindow=false;
   currentContext: 'all' | 'search' | 'filter' = 'all'; // Tracks the current operation
-  constructor(private getbookservice: GetbooksService , private reviewservice:ReviewService, private likedislikeservice:LikeanddislikeService) { 
+  constructor(
+     private getbookservice: GetbooksService ,
+     private reviewservice:ReviewService, 
+     private likedislikeservice:LikeanddislikeService,
+     private http:HttpClient
+    ) { 
     const tokendata = environment.getTokenData();
     this.currentUserId= Number(tokendata.ID);
   }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngOnInit() {
-    // this.fetchAudiobookReviews(1);
-    // this.fetchDislikeAndLike(1,true);
-    // this.fetchDislikeAndLike(1,false);
-
     this.loadAudiobooks();
-
     // Event listener for when audio metadata is loaded
     this.audio.addEventListener('loadedmetadata', () => {
       this.duration = this.formatTime(this.audio.duration);
-    });
 
+      this.fetchLoggedInUser();
+
+    });
     // Event listener for when audio time updates (for progress bar)
     this.audio.addEventListener('timeupdate', () => {
       this.progress = (this.audio.currentTime / this.audio.duration) * 100;
@@ -64,7 +69,23 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
 
     // Restore audio state if available
     this.restoreAudioState();
+
   }
+
+  fetchLoggedInUser() {
+    environment.fetchUserDataById(this.http, this.currentUserId).then((userData) => {
+      if (userData) {
+        this.IsSubscribed = userData;  
+        this.IsSubscribed=this.IsSubscribed.data.isSubscribed// Store the logged-in user data
+        console.log('Logged-in user data:', this.IsSubscribed);
+      } else {
+        console.warn('Failed to fetch logged-in user data.');
+      }
+    }).catch((error) => {
+      console.error('Error fetching user data:', error);
+    });
+  }
+
 
   ngOnDestroy() {
     this.saveAudioState();
@@ -183,6 +204,10 @@ fetchBooks(): void {
   }
 
   playAudio(audiobook: any) {
+    if(this.IsSubscribed===false){
+      this.modelwindow=true
+      return;
+    }
     if (this.playingAudio?.id !== audiobook.id || !this.isPlaying) {
       // Stop the currently playing audio if any
       this.stopAudio();
@@ -400,6 +425,27 @@ like_or_dislikeAudiobook(like:boolean): void {
       console.error('Error liking audiobook:', error);
     },
   });
+}
+
+addClick(){
+  this.likedislikeservice.addAudioBookClick(this.selectedAudiobook.id).subscribe(
+    (result) => {
+      if (result) {
+        console.log('Click added successfully.');
+      } else {
+        console.log('Failed to add click.');
+      }
+    },
+    (error) => {
+      console.error('Error:', error.message);
+    }
+  );
+  
+}
+
+closeModal1(){
+  this.modelwindow=false;
+  this.closeModal();
 }
 
 

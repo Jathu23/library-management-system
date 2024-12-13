@@ -3,6 +3,7 @@
     using library_management_system.Database.Entiy;
     using library_management_system.Database.Entiy.LikeDisLike;
     using library_management_system.Database.Entiy.ReviewEntitys;
+    using MailSend.DB.Entity;
     using Microsoft.EntityFrameworkCore;
     using System.Diagnostics.Eventing.Reader;
     using static library_management_system.Controllers.LikeDislikeController;
@@ -13,6 +14,7 @@
         {
         }
 
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
         public DbSet<User> Users { get; set; }
 
         public DbSet<Admin> Admins { get; set; }
@@ -42,6 +44,8 @@
         public DbSet<NormalBookLikeDislike> NormalBookLikeDislikes { get; set; }
         public DbSet<EbookLikeDislike> EbookLikeDislikes { get; set; }
         public DbSet<AudiobookLikeDislike> AudiobookLikeDislikes { get; set; }
+
+        public DbSet<ForgotPasswordToken> ForgotPasswordTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

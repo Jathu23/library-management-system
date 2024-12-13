@@ -6,7 +6,7 @@
           <i class="bi bi-grip-horizontal"></i>
         </button>
         <div class="sidebar-logo">
-          <a href="#">CodzSword</a>
+          <a href="#">TLH</a>
         </div>
       </div>
       <div class="head">
@@ -58,37 +58,36 @@
             </li>
           </ul>
         </li>
+        
         <li class="sidebar-item">
-          <a [routerLink]="['/admin/members']" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-            data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+          <a  [routerLink]="['/admin/members']" class="sidebar-link">
             <i class="icon bi bi-people"></i>
             <span>Members</span>
           </a>
-          <!-- <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar" style="padding-left: 25px;">
-            <li class="sidebar-item">
-              <a [routerLink]="['/admin/add-audio-book']"  class="sidebar-link"><i class="icon bi bi-person-check-fill"></i>Active Users</a>
-            </li>
-            <li class="sidebar-item">
-              <a [routerLink]="['/admin/add-audio-book']"  class="sidebar-link"><i class="icon bi bi-coin"></i>Subscribed Users</a>
-            </li>
-            <li class="sidebar-item">
-              <a [routerLink]="['/admin/add-audio-book']"  class="sidebar-link"><i class="icon bi bi-ban"></i>NonActive Users</a>
-            </li>
-          </ul> -->
         </li>
         
         <li class="sidebar-item">
           <a  [routerLink]="['/admin/show-rent-rec']" class="sidebar-link">
-            <i class="icon bi bi-arrow-return-left"></i>
+            <i class="icon bi bi-box-arrow-in-right"></i>
             <span>Lend</span>
           </a>
         </li>
         <li class="sidebar-item">
           <a [routerLink]="['/admin/show-rent-his']" class="sidebar-link">
-            <i class="icon bi bi-arrow-return-right"></i>
+            <i class="icon bi bi-box-arrow-in-left"></i> <!-- Box arrow in left -->
             <span>Return</span>
           </a>
         </li>
+        
+        
+
+        <li class="sidebar-item">
+          <a [routerLink]="['/admin/overdue']" class="sidebar-link">
+            <i class="icon bi bi-alarm"></i> <!-- Alarm icon -->
+            <span>OverDue</span>
+          </a>
+        </li>
+        
 
         <li class="sidebar-item">
           <a [routerLink]="['/admin/statics']" class="sidebar-link">
@@ -100,16 +99,18 @@
         
         <li class="sidebar-item">
           <a [routerLink]="['/admin/add-admin']" class="sidebar-link">
-            <i class="icon bi bi-person-add"></i>
+            <i class="icon bi bi-tools"></i> <!-- Tools icon -->
             <span>Create Admin</span>
           </a>
         </li>
+        
         <li class="sidebar-item">
-          <a [routerLink]="['/admin/add-admin']" class="sidebar-link">
-            <i class="icon bi bi-person-badge-fill"></i>
-            <span>Profile</span>
+          <a [routerLink]="['/admin/report']" class="sidebar-link">
+            <i class="icon bi bi-file-earmark-text"></i>
+            <span>Report</span>
           </a>
         </li>
+        
         
        
       </ul>

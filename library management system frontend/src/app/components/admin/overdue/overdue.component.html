@@ -1,0 +1,67 @@
+<div class="container mt-4">
+    <!-- Loading Spinner -->
+    <div *ngIf="isLoading" class="d-flex justify-content-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Overdue Records Table -->
+    <div *ngIf="!isLoading && overdues.length > 0">
+      <h2 class="mb-3" style="color:#611555 ;">Overdue Records</h2>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Book Title</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>User</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let overdue of overdues; let i = index">
+            <tr (click)="toggleDetails(i)">
+              <td>{{ i + 1 }}</td>
+              <td>{{ overdue.bookTitle }}</td>
+              <td>{{ overdue.dueDate | date:'shortDate' }}</td>
+              <td>
+                <span class="badge bg-danger">{{ overdue.status }}</span>
+              </td>
+              <td>{{ overdue.userName }}</td>
+            </tr>
+  
+            <!-- Expandable Row: Show additional info when the row is clicked -->
+            <tr *ngIf="isRowExpanded(i)">
+                <td colspan="5">
+                  <div class="additional-info">
+                    <h5>Additional Info:</h5>
+                    <ul>
+                      <li><strong>Book ISBN:</strong> {{ overdue.bookISBN }}</li>
+                      <li><strong>Book Genre:</strong> {{ overdue.bookGenre }}</li>
+                      <li><strong>Book Condition:</strong> {{ overdue.bookCondition }}</li>
+                      <li><strong>Publish Year:</strong> {{ overdue.bookPublishYear }}</li>
+                      <li><strong>Lent Date:</strong> {{ overdue.lentDate | date:'short' }}</li>
+                      <li><strong>User Email:</strong> {{ overdue.userEmail }}</li>
+                      <li><strong>Admin Name:</strong> {{ overdue.adminName }}</li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+              
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- No Overdue Records Found -->
+    <div *ngIf="!isLoading && overdues.length === 0" class="alert alert-info" role="alert">
+      No overdue records found.
+    </div>
+  </div>
+  

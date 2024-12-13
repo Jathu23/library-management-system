@@ -5,6 +5,9 @@ using library_management_system.DTOs;
 using library_management_system.DTOs.User;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
+using MailSend.Enums;
+using MailSend.Models;
+using MailSend.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -20,6 +23,7 @@ namespace library_management_system.Services
         private readonly JwtService _jwtService;
         private readonly LoginRepository _loginRepository;
         private readonly LentService _lentService;
+        private readonly sendmailService _sendmailService;
 
         public UserServices(
             UserRepo userRepo,
@@ -27,7 +31,8 @@ namespace library_management_system.Services
             BCryptService bCryptService,
             JwtService jwtService,
             LoginRepository loginRepository,
-            LentService lentService)
+            LentService lentService,
+            sendmailService sendmailService)
         {
             _userRepo = userRepo;
             _imageService = imageService;
@@ -35,18 +40,21 @@ namespace library_management_system.Services
             _jwtService = jwtService;
             _loginRepository = loginRepository;
             _lentService = lentService;
+            _sendmailService = sendmailService;
         }
 
         public async Task<ApiResponse<AuthResponse>> CreateUser(UserRequstModel userRequestDto)
         {
             var response = new ApiResponse<AuthResponse>();
             var exLoginData = await _loginRepository.GetByEmailOrNic(userRequestDto.Email);
-
-
+            var nicalreadyexists = await _loginRepository.IsNicAvailable(userRequestDto.UserNic);
+                
             try
             {
                 if (exLoginData != null)
                     throw new Exception("A user with this email already exists.");
+                if(nicalreadyexists)
+                    throw new Exception("A user with this Nic already exists.");
 
                 var profileImagePath = await SaveProfileImage(userRequestDto.ProfileImage);
 
@@ -90,8 +98,15 @@ namespace library_management_system.Services
                         Token = _jwtService.GenerateToken(user),
                         Role = "user"
                     };
+                    var sendMailRequest = new SendMailRequest
+                    {
+                        EmailType = EmailTypes.accountcreate,
+                        Name = $"{userRequestDto.FirstName} {userRequestDto.LastName}",
+                        Email= userRequestDto.Email
 
 
+                    };
+                    var res = await _sendmailService.Sendmail(sendMailRequest).ConfigureAwait(false);
 
                 }
                 else
@@ -453,8 +468,29 @@ namespace library_management_system.Services
                     response.Success = false;
                     response.Message = "User not found.";
                     return response;
-                }
+                }else
+                {
+                    if (existingUser.UserNic == userInfoUpdate.UserNic)
+                    {
 
+                    }
+                    else
+                    {
+                        // Check if the NIC is already in use
+                        var nicalreadyexists = await _loginRepository.IsNicAvailable(userInfoUpdate.UserNic);
+
+                        if (nicalreadyexists)
+                        {
+                            throw new Exception("A user with this Nic already exists.");
+                        }
+                        else
+                        {
+                            // If NIC is available, update the UserNic of the existing user
+                            existingUser.UserNic = userInfoUpdate.UserNic;
+                        }
+                    }
+
+                }
 
 
                 if (userInfoUpdate.ProfileImage != null)
@@ -466,16 +502,25 @@ namespace library_management_system.Services
 
                 existingUser.FirstName = userInfoUpdate.FirstName ?? existingUser.FirstName;
                 existingUser.LastName = userInfoUpdate.LastName ?? existingUser.FirstName;
-                existingUser.Email = userInfoUpdate.Email ?? existingUser.LastName;
+              
                 existingUser.PhoneNumber = userInfoUpdate.PhoneNumber ?? existingUser.PhoneNumber;
                 existingUser.Address = userInfoUpdate.Address ?? existingUser.Address;
                 existingUser.FullName = $"{existingUser.FirstName} {existingUser.LastName}";
 
                 var updatedUser = await _userRepo.UpdateUser(existingUser);
+                var updatelogindata = await _loginRepository.UpdateUserLoginData(existingUser.Email, userInfoUpdate.UserNic);
 
-                response.Success = true;
-                response.Message = "User updated successfully.";
-                response.Data = updatedUser;
+                    if (updatedUser && updatelogindata)
+                {
+                    response.Success = true;
+                    response.Message = "User updated successfully.";
+                    response.Data = updatedUser;
+                }
+                else
+                {
+                    throw new Exception("fail updating the user.");
+                }
+               
             }
             catch (Exception ex)
             {
@@ -723,6 +768,41 @@ namespace library_management_system.Services
 
             return response;
         }
+
+		public async Task<List<User>> FilterUsersBySubscribedAndBest(int count)
+		{
+			try
+			{
+				return await _userRepo.FilterUsersBySubscribedAndBest(count);
+			}
+			catch (Exception ex)
+			{
+				// Log the exception (use a logging framework or service as appropriate)
+				Console.WriteLine($"An error occurred: {ex.Message}");
+
+				// Optionally, rethrow the exception or return a default value
+				throw; // Rethrow the exception to be handled by higher-level logic
+			}
+		}
+
+        public async Task<int> GetuserCountAsync()
+        {
+            try
+            {
+                return await _userRepo.GetActiveUserCountAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details (e.g., using a logging framework like Serilog or NLog)
+                Console.WriteLine($"An error occurred while counting audiobooks: {ex.Message}");
+
+                // Optionally rethrow the exception or return a default value
+                // throw;
+                return 0; // Returning 0 in case of an error
+            }
+        }
+
+
     }
 
 }

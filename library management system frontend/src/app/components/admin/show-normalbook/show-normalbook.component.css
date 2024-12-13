@@ -1,4 +1,4 @@
-/* Custom Styles for Buttons */
+
 .btn {
   font-size: 1rem;
   padding: 0.5rem 1rem;
@@ -7,7 +7,7 @@
 }
 
 .btn-success {
-  background-color: #28a745;
+  background-color: #c69bbf;
   border-color: #28a745;
 }
 
@@ -16,7 +16,7 @@
 }
 
 .btn-primary {
-  background-color: #007bff;
+  background-color: #a9699f;
   border-color: #007bff;
 }
 
@@ -25,12 +25,12 @@
 }
 
 .btn-danger {
-  background-color: #dc3545;
-  border-color: #dc3545;
+  background-color: #71065f;
+  border-color: #dc35c0;
 }
 
 .btn-danger:hover {
-  background-color: #c82333;
+  background-color: #f00b0b;
 }
 
 .btn:active {
@@ -43,12 +43,36 @@
   justify-content: center;
 }
 
-/* Hover effect on table rows */
 .table tbody tr:hover {
   background-color: #f1f1f1;
 }
 
-/* Striped table rows */
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: #f9f9f9;
+}
+.table thead th {
+  background-color: #8d377e !important;
+  color: white !important;
+  text-align: center;
+}
+
+.table thead {
+  border-radius: 5px;
+}
+
+.table-bordered th, 
+.table-bordered td {
+  border: 1px solid #ddd;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(169, 105, 159, 0.1); 
+}
+
+.table thead th:first-child {
+  border-top-left-radius: 5px;
+}
+
+.table thead th:last-child {
+  border-top-right-radius: 5px;
 }

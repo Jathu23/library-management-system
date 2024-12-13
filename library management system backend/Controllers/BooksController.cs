@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Azure;
 using library_management_system.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace library_management_system.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BooksController : ControllerBase
     {
         private readonly BookService _bookService;
@@ -246,5 +248,13 @@ namespace library_management_system.Controllers
            
               return await _bookRepository.UpdateCustomData();
         }
+
+        [HttpGet("normalbooks/count")]
+        public async Task<IActionResult> GetNormalBookCount()
+        {
+            int count = await _bookRepository.GetAudiobookCountAsync();
+            return Ok(new { Count = count });
+        }
+
     }
 }

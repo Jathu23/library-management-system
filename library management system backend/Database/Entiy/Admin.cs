@@ -15,6 +15,7 @@ namespace library_management_system.Database.Entiy
         public string? ProfileImage { get; set; }
       
 
-       
+
+
     };
 }

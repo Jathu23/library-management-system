@@ -5,9 +5,14 @@
       placeholder="Search books (title, author, year)..."
       [(ngModel)]="searchText"
       (input)="onSearch()"
-      class="search-input"
+      class="form-control search-input"
+      style="border-color: #7e60bf; box-shadow: 0 0 5px rgba(126, 96, 191, 0.3);"
     />
-    <button (click)="toggleDropdown()" class="filter-btn">
+    <button
+      (click)="toggleDropdown()"
+      class="btn btn-outline-primary filter-btn"
+      style="background-color: #7e60bf; color: white; border: none;"
+    >
       Apply Filter
     </button>
   </div>
@@ -17,29 +22,46 @@
 <div *ngIf="showDropdown" class="dropdown-section">
   <div class="dropdown">
     <label for="genre">Genre</label>
-    <select id="genre" [(ngModel)]="selectedGenre" (change)="applyFilters()">
+    <select
+      id="genre"
+      [(ngModel)]="selectedGenre"
+      (change)="applyFilters()"
+      class="form-select select-style"
+    >
       <option value="">All Genres</option>
       <option *ngFor="let genre of genres" [value]="genre">{{ genre }}</option>
     </select>
   </div>
   <div class="dropdown">
     <label for="author">Author</label>
-    <select id="author" [(ngModel)]="selectedAuthor" (change)="applyFilters()">
+    <select
+      id="author"
+      [(ngModel)]="selectedAuthor"
+      (change)="applyFilters()"
+      class="form-select select-style"
+    >
       <option value="">All Authors</option>
       <option *ngFor="let author of authors" [value]="author">{{ author }}</option>
     </select>
   </div>
   <div class="dropdown">
     <label for="year">Publish Year</label>
-    <select id="year" [(ngModel)]="selectedYear" (change)="applyFilters()">
-      <option value="">All Years</option>
+    <select
+      id="year"
+      [(ngModel)]="selectedYear"
+      (change)="applyFilters()"
+      class="form-select select-style"
+    >
+      <option value=0>All Years</option>
       <option *ngFor="let year of years" [value]="year">{{ year }}</option>
     </select>
   </div>
 </div>
 
+
 <div class="grid-container scroll-container">
-  <div class="grid-item" *ngFor="let book of Normalbooks">
+  <div class="grid-item" *ngFor="let book of Normalbooks" (click)="openModal(book)">
+
     <div class="card">
       <div class="card-images">
         <img *ngIf="book.coverImagePath?.length" [src]="book.coverImagePath[0]" [alt]="book.coverImagePath[0]" />
@@ -85,7 +107,7 @@
 
     <!-- Thumbs Up, Thumbs Down, and Comment Buttons -->
     <div class="d-flex justify-content-start align-items-center gap-3 mt-4 flex-wrap">
-      <button
+      <button style="background-color:#7e60bf75; color: white;border: none;"
         class="btn btn-outline-dark d-flex align-items-center"
         [ngClass]="{ 'text-primary': isThumbsUp }"
         (click)="toggleThumbsUp(); like_or_dislikeAudiobook(true);"
@@ -94,7 +116,7 @@
       </button>
       <span class="ms-1">{{likeCount}}</span>
 
-      <button
+      <button style="background-color:#7e60bf75; color: white;border: none;"
         class="btn btn-outline-dark d-flex align-items-center"
         [ngClass]="{ 'text-primary': isThumbsDown }"
         (click)="toggleThumbsDown(); like_or_dislikeAudiobook(false);"
@@ -102,8 +124,7 @@
         <i class="bi bi-hand-thumbs-down-fill me-2"></i>
       </button>
       <span class="ms-1">{{dislikeCount}}</span>
-
-      <button
+      <button style="background-color:#7e60bf75; color: white;border: none;"
         class="btn btn-outline-dark d-flex align-items-center"
         (click)="toggleCommentBox()"
       >
@@ -131,12 +152,13 @@
         <div class="d-flex justify-content-between align-items-center">
           <div class="user d-flex flex-row align-items-center">
             <img
-              src="https://i.imgur.com/hczKIze.jpg"
-              width="30"
-              class="user-img rounded-circle mr-2"
-            />
+            [src]="resoursBase + review.userProfil"
+            width="30"
+            class="user-img rounded-circle mr-2"
+          />
+          
             <span>
-              <small class="font-weight-bold text-primary">john_doe</small>
+              <small class="font-weight-bold text-primary">{{review.userName}}</small>
               <br>
               <small class="font-weight-bold">{{review.reviewText}}</small>
             </span>

@@ -8,6 +8,20 @@ import { StaticsService } from '../../../services/staticsservice/statics.service
 })
 export class StaticsComponent implements OnInit {
   borrowingTrends: any[] = [];
+  monthlyRevenue: any[] = [
+    { "name": "January", "value": 1000 },
+    { "name": "February", "value": 1200 },
+    { "name": "March", "value": 800 },
+    { "name": "April", "value": 1500 },
+    { "name": "May", "value": 1800 },
+    { "name": "June", "value": 2000 },
+    { "name": "July", "value": 1700 },
+    { "name": "August", "value": 1600 },
+    { "name": "September", "value": 1900 },
+    { "name": "October", "value": 2100 },
+    { "name": "November", "value": 2200 },
+    { "name": "December", "value": 2500 }
+  ]
   allBorrowingTrends: any[] = [
     {
         "name": "year 2022",
@@ -66,7 +80,6 @@ export class StaticsComponent implements OnInit {
   view: [number, number] = [700, 400]; // Width and height of the chart
   legend: boolean = true;
   showLabels: boolean = true;
-
   xAxis: boolean = true;
   yAxis: boolean = true;
   showYAxisLabel: boolean = true;
@@ -77,9 +90,13 @@ export class StaticsComponent implements OnInit {
 
 
 
+  xAxisLabel2: string = 'Month';
+  yAxisLabel2: string = 'Revenue';
+
   constructor(private staticsService: StaticsService) {}
 
   ngOnInit(): void {
+    // this.fetchMonthlyRevenue();
     this.fetchBorrowingTrends();
     // this.fetchAllBorrowingTrends()
   }
@@ -98,4 +115,13 @@ export class StaticsComponent implements OnInit {
       console.log('Borrowing trends for all years:', this.allBorrowingTrends);
     });
   }
+
+
+  fetchMonthlyRevenue(year?: number): void {
+    this.staticsService.getMonthlyRevenue(year).subscribe(data => {
+      this.monthlyRevenue =data
+      console.log('Monthly revenue:', this.monthlyRevenue);
+    });
+  }
+  
 }

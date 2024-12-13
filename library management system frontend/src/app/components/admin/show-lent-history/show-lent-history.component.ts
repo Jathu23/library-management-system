@@ -110,9 +110,6 @@ export class ShowLentHistoryComponent implements OnInit {
           if (response.success) {
             this.isLoading = false;
             alert(response.message);
-            // this.searchQuery = "";
-            // this.userInfo = '';
-            // this.pendingBooks = []
           } else {
             this.isLoading = false;
             alert(response.message);

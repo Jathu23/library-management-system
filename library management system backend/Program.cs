@@ -11,6 +11,10 @@ using System.Text;
 using System.Text.Json.Serialization;
 using VersOne.Epub.Schema;
 using PdfSharp.Charting;
+using MailSend.Models;
+using MailSend.Repo;
+using MailSend.Service;
+using Microsoft.Extensions.Options;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,6 +57,9 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
+
+// Register EmailConfig
+builder.Services.Configure<EmailConfig>(builder.Configuration.GetSection("EmailConfig"));
 
 //Email Services
 
@@ -117,6 +124,17 @@ builder.Services.AddScoped<BCryptService>();
 builder.Services.AddScoped<EbookFileService>();
 builder.Services.AddScoped<AudioBookFileService>();
 builder.Services.AddScoped<PdfGeneratorService>();
+
+builder.Services.AddScoped<ForgotPasswordRepository>();
+builder.Services.AddScoped<ForgotPasswordService>();
+
+// Register services
+builder.Services.AddScoped<sendmailService>();
+builder.Services.AddScoped<SendMailRepository>();
+builder.Services.AddScoped<EmailServiceProvider>();
+
+// Ensure EmailConfig is available as a singleton if needed
+builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<EmailConfig>>().Value);
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();

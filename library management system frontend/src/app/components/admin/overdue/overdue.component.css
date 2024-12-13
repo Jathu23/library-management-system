@@ -1,0 +1,62 @@
+
+.container {
+    margin-top: 20px;
+  }
+  
+  /* Style for additional info container */
+  .additional-info {
+    background-color: #f8f9fa; /* Light background to differentiate from main content */
+    border: 1px solid #e0e0e0; /* Border to separate the section */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    margin-top: 10px;
+  }
+  
+  /* Heading style inside Additional Info */
+  .additional-info h5 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #007bff; /* Blue color for the heading */
+    margin-bottom: 15px;
+  }
+  
+  /* Style for the unordered list */
+  .additional-info ul {
+    list-style-type: none; /* Remove default bullet points */
+    padding-left: 0;
+  }
+  
+  /* Style for each list item */
+  .additional-info li {
+    margin-bottom: 10px; /* Spacing between items */
+    font-size: 14px; /* Slightly smaller font size */
+    color: #495057; /* Dark grey text */
+  }
+  
+  /* Style for the labels inside list items */
+  .additional-info li strong {
+    color: #007bff; /* Make the label (e.g., Book ISBN, Genre) blue */
+  }
+  
+  /* Style for the table rows that are expanded */
+  table tr td {
+    padding: 10px;
+  }
+  
+  /* Make the expand/collapse row background stand out */
+  tr.expanded-row {
+    background-color: #f1f1f1;
+    border-top: 1px solid #d3d3d3;
+  }
+  
+  /* Hover effect for rows */
+  tr:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+  }
+  table th{
+    background-color: #ad5ba1;
+    color: white;
+  }
+  

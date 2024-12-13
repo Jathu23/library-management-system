@@ -12,7 +12,7 @@
         <div class="card">
           <div class="card-body text-center">
             <!-- Profile Image -->
-            <img [src]="'https://localhost:7261/'+user?.profileImage || 'https://bootdey.com/img/Content/avatar/avatar7.png'" 
+            <img [src]="this.userbaseurl + '/' + user.profileImage || 'https://bootdey.com/img/Content/avatar/avatar7.png'" 
                  alt="User" class="rounded-circle" width="200" height="250">
 
             <!-- File Input for Image Upload (only shown when editing) -->
@@ -20,14 +20,14 @@
               <input type="file" (change)="onImageSelected($event)" class="form-control mt-3" />
             </div>
 
-            <h4>{{ user?.fullName || 'John Doe' }}</h4>
+            <h4>{{ user?.fullName || '----' }}</h4>
             <p class="text-secondary mb-1">{{ user?.aud || 'Member' }}</p>
-            <p class="text-muted font-size-sm">{{ user?.address || 'Bay Area, San Francisco, CA' }}</p>
+            <p class="text-muted font-size-sm">{{ user?.address || '------' }}</p>
           </div>
         </div>
 
         <!-- Social Media Links -->
-        <div class="card mt-3">
+        <!-- <div class="card mt-3">
           <ul class="list-group list-group-flush">
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <i class="fab fa-github"></i> <span>GitHub</span>
@@ -42,7 +42,7 @@
               <a href="{{ user?.linkedinUrl || '#' }}" target="_blank" class="text-primary">Visit</a>
             </li>
           </ul>
-        </div>
+        </div> -->
       </div>
 
       <!-- Main Profile Section -->
@@ -65,7 +65,7 @@
               </div>
 
               <!-- Read-Only Fields -->
-              <div class="row mb-3" *ngFor="let key of readonlyFields">
+              <!-- <div class="row mb-3" *ngFor="let key of readonlyFields">
                 <label class="col-sm-3 col-form-label">{{ key | titlecase }}</label>
                 <div class="col-sm-9">
                   <input 
@@ -75,7 +75,7 @@
                     class="form-control"
                   />
                 </div>
-              </div>
+              </div> -->
 
               <div class="row">
                 <div class="col-sm-12 text-end">
@@ -90,14 +90,14 @@
         </div>
 
         <!-- Recent Activity Section -->
-        <div class="card mt-3">
+        <!-- <div class="card mt-3">
           <h5 class="card-header">Recent Activity</h5>
           <ul class="list-group list-group-flush">
             <li *ngFor="let activity of recentActivities" class="list-group-item">
               <i class="fas fa-check-circle text-success"></i> {{ activity }}
             </li>
           </ul>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

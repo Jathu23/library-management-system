@@ -48,9 +48,19 @@ import { StaticsComponent } from './components/admin/statics/statics.component';
 
 import { MatSelectModule } from '@angular/material/select';
 import { UserprofileComponent } from './components/user/userprofile/userprofile.component';
+import { NotificationComponent } from './components/user/notification/notification.component';
 
 
-
+import { AudioBookComponent } from './components/admin/dashboard/innercomponenets/audio-book/audio-book.component';
+import { NormalBooksComponent } from './components/admin/dashboard/innercomponenets/normal-books/normal-books.component';
+import { EBookComponent } from './components/admin/dashboard/innercomponenets/ebook/ebook.component';
+import { OverdueComponent } from './components/admin/overdue/overdue.component';
+import { ReportComponent } from './components/admin/report/report.component';
+import { EditAudiobookDialogComponent } from './components/admin/edit-audiobook-dialog/edit-audiobook-dialog/edit-audiobook-dialog.component';
+import { LineChartComponent } from './components/user/user-dashboard/line-chart/line-chart.component';
+import { PieChartComponent } from './components/user/user-dashboard/pie-chart/pie-chart.component';
+import { UserreportComponent } from './components/user/userreport/userreport.component';
+import { ForgotPasswordComponent } from './components/landing/forgot-password/forgot-password.component';
 
 
 
@@ -72,9 +82,9 @@ import { UserprofileComponent } from './components/user/userprofile/userprofile.
     AddAudiobookComponent,
     ShowbooksComponent,
     ShowaudiobooksComponent,
-   NewAdminComponent,
-   ShowNormalbookComponent,
-   ShowebooksComponent,
+    NewAdminComponent,
+    ShowNormalbookComponent,
+    ShowebooksComponent,
     ShowebooksComponent,
     ShowNormalbookComponent,
     ShowAudiobookComponent,
@@ -87,17 +97,26 @@ import { UserprofileComponent } from './components/user/userprofile/userprofile.
     ShowLentRecodesComponent,
     ShowLendingHistoryComponent,
     EditEbookDialogComponent,
+    EditAudiobookDialogComponent,
     DashboardComponent,
     LockScreenComponent,
     TimeAgoPipe,
-
     StaticsComponent,
-
-
     UserprofileComponent,
-    
+    NotificationComponent,
+    AudioBookComponent,
+    NormalBooksComponent,
+    EBookComponent,
+    OverdueComponent,
+    ReportComponent,
+    LineChartComponent,
+    PieChartComponent,
+    UserreportComponent,
+    ForgotPasswordComponent,
 
-   
+
+
+
 
   ],
 
@@ -117,12 +136,8 @@ import { UserprofileComponent } from './components/user/userprofile/userprofile.
     NgxChartsModule,
     MatInputModule,
     MatSelectModule,
-   
 
-    
-    
 
-     
   ],
   providers: [
     MatPaginatorIntl, provideAnimationsAsync(),

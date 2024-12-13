@@ -217,6 +217,7 @@ namespace library_management_system.Services
 
             bookCopy.IsAvailable = false;
             bookCopy.LastBorrowedDate = lendDate;
+            bookCopy.lentcount++;
 
            
             book.RentCount++;
@@ -307,65 +308,85 @@ namespace library_management_system.Services
 
 
 
-        public async Task<ApiResponse<List<LentRecordAdminDto>>> GetAllLentRecordsAsync()
+        public async Task<ApiResponse<List<LentRecordAdminDto>>> GetAllLentRecordsAsync(bool? selector =false)
         {
-            var lentRecords = await _lentRecordRepository.GetAllLentRecordsWithDetailsAsync();
+            List<LentRecord> lentRecords;
 
-            if (lentRecords == null || !lentRecords.Any())
+            try
             {
+                if (selector ?? false)
+                    lentRecords = await _lentRecordRepository.GetAllOverDuesWithDetailsAsync();
+                else
+                    lentRecords = await _lentRecordRepository.GetAllLentRecordsWithDetailsAsync();
+
+                if (lentRecords == null || !lentRecords.Any())
+                {
+                    return new ApiResponse<List<LentRecordAdminDto>>
+                    {
+                        Success = false,
+                        Message = "No lent records found",
+                        Data = null
+                    };
+                }
+
+                var lentRecordDtos = new List<LentRecordAdminDto>();
+
+                foreach (var lentRecord in lentRecords)
+                {
+                    //var book = await _lentRecordRepository.GetBookById(lentRecord.BookCopy.BookId);
+
+                    var currentDateTime = DateTime.Now;
+                    var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
+                    var maxvalue = (int)(lentRecord.DueDate - lentRecord.LentDate).TotalMinutes;
+                    string status = statusValue > 0
+                        ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
+                        : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours over";
+
+                    var lentRecordDto = new LentRecordAdminDto
+                    {
+                        Id = lentRecord.Id,
+                        UserId = lentRecord.UserId,
+                        UserName = lentRecord.User.FullName,
+                        UserEmail = lentRecord.User.Email,
+                        AdminId = lentRecord.AdminId,
+                        AdminName = lentRecord.Admin.FullName,
+                        BookId = lentRecord.BookCopy.Book.Id,
+                        BookTitle = lentRecord.BookCopy.Book.Title,
+                        BookISBN = lentRecord.BookCopy.Book.ISBN,
+                        BookAuthor = lentRecord.BookCopy.Book.Author,
+                        BookGenre = string.Join(", ", lentRecord.BookCopy.Book.Genre),
+                        BookPublishYear = lentRecord.BookCopy.Book.PublishYear,
+                        BookCopyId = lentRecord.BookCopyId,
+                        BookCondition = lentRecord.BookCopy.Condition,
+                        LentDate = lentRecord.LentDate,
+                        DueDate = lentRecord.DueDate,
+                        Status = status,
+                        StatusValue = statusValue,
+                        MaxValue = maxvalue
+                    };
+
+                    lentRecordDtos.Add(lentRecordDto);
+                }
+
+                return new ApiResponse<List<LentRecordAdminDto>>
+                {
+                    Success = true,
+                    Message = "All lent records retrieved successfully",
+                    Data = lentRecordDtos
+                };
+            }
+            catch(Exception ex)
+            {
+
                 return new ApiResponse<List<LentRecordAdminDto>>
                 {
                     Success = false,
-                    Message = "No lent records found",
+                    Message = "An error occurred while retrieving user-specific lent records",
+                    Errors = new List<string> { ex.Message },
                     Data = null
                 };
             }
-
-            var lentRecordDtos = new List<LentRecordAdminDto>();
-
-            foreach (var lentRecord in lentRecords)
-            {
-                //var book = await _lentRecordRepository.GetBookById(lentRecord.BookCopy.BookId);
-
-                var currentDateTime = DateTime.Now;  
-                var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
-                var maxvalue = (int)(lentRecord.DueDate - lentRecord.LentDate).TotalMinutes;
-                string status = statusValue > 0
-                    ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
-                    : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours over";
-
-                var lentRecordDto = new LentRecordAdminDto
-                {
-                    Id = lentRecord.Id,
-                    UserId = lentRecord.UserId,
-                    UserName = lentRecord.User.FullName,
-                    UserEmail = lentRecord.User.Email,
-                    AdminId = lentRecord.AdminId,
-                    AdminName = lentRecord.Admin.FullName,
-                    BookId = lentRecord.BookCopy.Book.Id,
-                    BookTitle = lentRecord.BookCopy.Book.Title,
-                    BookISBN = lentRecord.BookCopy.Book.ISBN,
-                    BookAuthor = lentRecord.BookCopy.Book.Author,
-                    BookGenre = string.Join(", ", lentRecord.BookCopy.Book.Genre),
-                    BookPublishYear = lentRecord.BookCopy.Book.PublishYear,
-                    BookCopyId = lentRecord.BookCopyId,
-                    BookCondition = lentRecord.BookCopy.Condition,
-                    LentDate = lentRecord.LentDate,
-                    DueDate = lentRecord.DueDate,
-                    Status = status,
-                    StatusValue = statusValue,
-                    MaxValue=maxvalue
-                };
-
-                lentRecordDtos.Add(lentRecordDto);
-            }
-
-            return new ApiResponse<List<LentRecordAdminDto>>
-            {
-                Success = true,
-                Message = "All lent records retrieved successfully",
-                Data = lentRecordDtos
-            };
+            
         }
 
 
@@ -472,12 +493,16 @@ namespace library_management_system.Services
             }
         }
 
-        public async Task<ApiResponse<List<LentRecordUserDto>>> GetLentRecordsByUserIdAsync(int userId)
+        public async Task<ApiResponse<List<LentRecordUserDto>>> GetLentRecordsByUserIdAsync(int userId ,bool? selector = false)
         {
+            List<LentRecord> lentRecords;
             try
             {
 
-                var lentRecords = await _lentRecordRepository.GetLentRecordsByUserIdAsync(userId);
+                if (selector ?? false)
+                lentRecords = await _lentRecordRepository.GetOverDueByUserIdAsync(userId);
+                else
+                    lentRecords = await _lentRecordRepository.GetLentRecordsByUserIdAsync(userId);
 
                 if (lentRecords == null || !lentRecords.Any())
                 {

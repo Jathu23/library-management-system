@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../services/user-service/user.service';
 import { DatePipe } from '@angular/common';
+import { environment } from '../../../../environments/environment.testing';
 
 @Component({
   selector: 'app-userprofile',
@@ -11,9 +12,9 @@ export class UserprofileComponent implements OnInit {
   user: any = {};
   isEditing: boolean = false;
   profileImage: File | null = null;  
-
+userbaseurl =environment.resourcBaseUrl
  
-  readonlyFields = ['id', 'isActive', 'isSubscribed', 'registrationDate'];
+  readonlyFields = ['id', 'isActive', 'isSubscribed', 'registrationDate','email'];
 
 
   userFields = [

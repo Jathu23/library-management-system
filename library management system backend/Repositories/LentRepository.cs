@@ -59,16 +59,6 @@ namespace library_management_system.Repositories
         }
 
 
-        //public async Task<LentRecord?> GetLentRecordWithDetailsAsync(int userid)
-        //{
-        //    return await _context.LentRecords
-        //        .Include(lr => lr.BookCopy) // Include the BookCopy related to the LentRecord
-        //         .ThenInclude(lr => lr.Book)
-        //        .Include(lr => lr.User) // Include the User related to the LentRecord
-               
-        //        .FirstOrDefaultAsync(lr => lr.UserId == userid);
-        //}
-
         public async Task<List<LentRecord>?> GetLentRecordWithDetailsbyuserid(int userid)
         {
             return await _context.LentRecords
@@ -88,6 +78,16 @@ namespace library_management_system.Repositories
                 .Include(lr => lr.User)     // Include User details
                 .Include(lr => lr.Admin)    // Include Admin details
                 .ToListAsync();
+        }
+        public async Task<List<LentRecord>?> GetAllOverDuesWithDetailsAsync()
+        {
+            return await _context.LentRecords
+                .Include(lr => lr.BookCopy)
+                  .ThenInclude(lr => lr.Book)
+                .Include(lr => lr.User)     // Include User details
+                .Include(lr => lr.Admin)    // Include Admin details
+                .Where(lr => lr.DueDate < DateTime.Now)
+                .ToListAsync() ?? new List<LentRecord>(); 
         }
         public async Task<(List<RentHistory>?, int)> GetAllRentHistory(int page, int pageSize)
         {
@@ -120,6 +120,14 @@ namespace library_management_system.Repositories
                 .Include(lr => lr.User)
                 .Where(lr => lr.UserId == userId)
                 .ToListAsync();
+        }
+        public async Task<List<LentRecord>> GetOverDueByUserIdAsync(int userId)
+        {
+            return await _context.LentRecords
+                .Include(lr => lr.BookCopy)
+                .Include(lr => lr.User)
+                .Where(lr => lr.UserId == userId && lr.DueDate < DateTime.Now)
+                .ToListAsync() ?? new List<LentRecord>();
         }
 
 

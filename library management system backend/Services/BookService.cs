@@ -5,6 +5,8 @@ using library_management_system.DTOs.Book;
 using library_management_system.DTOs.Ebook;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
+using Microsoft.EntityFrameworkCore;
+using static library_management_system.Repositories.BookRepository;
 
 namespace library_management_system.Services
 {
@@ -22,6 +24,10 @@ namespace library_management_system.Services
         {
             try
             {
+                var isbnexits = await _bookRepository.IsbnisAvailable(bookDto.ISBN);
+                if (isbnexits)
+                    throw new Exception("ISBN alredy Exits");
+
                 var coverImagePaths = await SaveCoverImages(bookDto.CoverImages);
 
 
@@ -84,6 +90,16 @@ namespace library_management_system.Services
                         Message = "Book not found",
                         Errors = new List<string> { "No book with the provided ID exists." }
                     };
+                }
+                else
+                {
+                    if (book.ISBN != bookDto.ISBN)
+                    {
+                        var isbnexits = await _bookRepository.IsbnisAvailable(bookDto.ISBN);
+                        if (isbnexits)
+                            throw new Exception("ISBN alredy Exits");
+                    }
+                   
                 }
 
                 // Update book properties
@@ -555,12 +571,37 @@ namespace library_management_system.Services
 
 
         // Method to get the distinct book attributes
-        public async Task<dynamic> GetDistinctBookAttributesAsync()
+        public async Task<BookDataOptionssimple> GetDistinctBookAttributesAsync()
         {
-            return await _bookRepository.GetDistinctBookAttributesAsync();
+         
+            var genres = new List<string>() { };
+
+           var data =await _bookRepository.GetDistinctBookAttributesAsync();
+            var gerners = data.Genres;
+            foreach (var g in gerners)
+            {
+                foreach (var item in g)
+                {
+                    genres.Add(item);
+                }
+
+            }
+            var options = new BookDataOptionssimple()
+            {
+                Genres = genres.Distinct().ToList(),
+                Authors = data.Authors,
+                PublishYears = data.PublishYears
+            };
+
+            return options; 
         }
 
-
+        public class BookDataOptionssimple
+        {
+            public List<string> Genres { get; set; }
+            public List<string> Authors { get; set; }
+            public List<int> PublishYears { get; set; }
+        }
 
         private async Task<List<string>> SaveCoverImages(List<IFormFile> coverImages)
         {
@@ -573,6 +614,25 @@ namespace library_management_system.Services
             var imagePaths = await _imageService.SaveImages(coverImages, "BookCoverImages");
             return imagePaths;
         }
+
+        public async Task<int> GetNormalbookCountAsync()
+        {
+            try
+            {
+                return await _bookRepository.GetAudiobookCountAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details (e.g., using a logging framework like Serilog or NLog)
+                Console.WriteLine($"An error occurred while counting audiobooks: {ex.Message}");
+
+                // Optionally rethrow the exception or return a default value
+                // throw;
+                return 0; // Returning 0 in case of an error
+            }
+        }
+
+
 
 
 

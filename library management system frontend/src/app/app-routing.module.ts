@@ -26,6 +26,14 @@ import { DashboardComponent } from './components/admin/dashboard/dashboard.compo
 import { LockScreenComponent } from './components/lock-screen/lock-screen.component';
 import { SubscriptionComponent } from './components/user/subscription/subscription.component';
 import { StaticsComponent } from './components/admin/statics/statics.component';
+import { NotificationComponent } from './components/user/notification/notification.component';
+import { NormalBooksComponent } from './components/admin/dashboard/innercomponenets/normal-books/normal-books.component';
+import { AudioBookComponent } from './components/admin/dashboard/innercomponenets/audio-book/audio-book.component';
+import { EBookComponent } from './components/admin/dashboard/innercomponenets/ebook/ebook.component';
+import { OverdueComponent } from './components/admin/overdue/overdue.component';
+import { ReportComponent } from './components/admin/report/report.component';
+import { UserreportComponent } from './components/user/userreport/userreport.component';
+import { ForgotPasswordComponent } from './components/landing/forgot-password/forgot-password.component';
 
 
 const routes: Routes = [
@@ -33,7 +41,9 @@ const routes: Routes = [
     path: '',
     component: LandingLayoutComponent,
     children: [
+      { path: 'ForgotPassword', component: ForgotPasswordComponent },
       { path: 'login', component: LoginComponent },
+      
     ]
   },
   {
@@ -54,8 +64,16 @@ const routes: Routes = [
       {path:'show-rent-rec',component:ShowLentRecComponent},
       {path:'show-rent-his',component:ShowLentHistoryComponent},
       {path:'members',component:MembersComponent},
-      {path:'dashboard',component:DashboardComponent},
+      { path: 'dashboard', component: DashboardComponent, children: [
+        { path: '', redirectTo: 'audio-books', pathMatch: 'full' },
+        { path: 'audio-books', component: AudioBookComponent },
+        { path: 'normal-books', component: NormalBooksComponent },
+        { path: 'e-books', component: EBookComponent },
+      ] 
+    },
       {path:'statics',component:StaticsComponent},
+      {path:'overdue',component:OverdueComponent},
+      {path:'report',component:ReportComponent},
     ]
   },
   {
@@ -65,15 +83,20 @@ const routes: Routes = [
     data:{roles:['user']},
     children: [
       { path: '', component: UserDashboardComponent },
+      { path: 'home', component: UserDashboardComponent },
+      { path: 'dashboard', component: UserDashboardComponent },
       { path: 'view-normal-books', component: ShowbooksComponent },
       { path: 'view-audio-books', component: ShowaudiobooksComponent },
       {path: 'view-e-books' , component:ShowebooksComponent },
       {path: 'view-lend-records' , component:ShowLentRecodesComponent },
       {path: 'view-lend-history' , component:ShowLendingHistoryComponent },
       {path:'user-profile',component:UserprofileComponent},
-      {path:'subscription-u',component:SubscriptionComponent}
+      {path:'subscription-u',component:SubscriptionComponent},
+      {path:'notification-u',component:NotificationComponent},
+      {path:'report-u',component:UserreportComponent},
     ]
-  }
+  },
+  { path: 'ForgotPassword', component: ForgotPasswordComponent },
 ];
 
 

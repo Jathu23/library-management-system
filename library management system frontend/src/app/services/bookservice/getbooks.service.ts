@@ -117,4 +117,48 @@ export class GetbooksService {
       )
     );
   }
+
+  searchEbooks(searchQuery: string, pageNumber: number, pageSize: number): Observable<any> {
+    const searchUrl = `${this.baseurl}Ebook/Search?searchString=${searchQuery}&pageNumber=${pageNumber}&pageSize=${pageSize}`;
+    return this.http.get<any>(searchUrl).pipe(
+      tap(
+        (response) => console.log(`[API Response] GET: ${searchUrl}`, response),
+        (error) => console.error(`[API Error] GET: ${searchUrl}`, error)
+      )
+    );
+  }
+
+  // getting e books ton 5
+
+  private apiUrl = `${this.baseurl}/api/Ebook/top`;  // Your API endpoint
+
+
+  // Method to get the top eBooks
+  getTopEbooks(count: number): Observable<any[]> {
+    const url = `${this.apiUrl}?count=${count}`;
+    return this.http.get<any[]>(url);  // Make the HTTP GET request and return the response as an Observable
+  }
+
+
+  getDistinctAttributes(): Observable<BookDataOptionssimple> {
+    return this.http.get<BookDataOptionssimple>(`${this.baseurl}/books/get-distinct-attributes`);
+  }
+
+  private MAinapiUrl = 'https://your-api-url.com/api';
+  private EapiUrl = 'https://localhost:7261/api/Ebook';
+
+  getNormalBookCount(): Observable<{ Count: number }> {
+    return this.http.get<{ Count: number }>(`${this.MAinapiUrl}/normalbooks/count`);
+  }
+
+  getEbookCount(): Observable<{ count: number }> {
+    return this.http.get<{ count: number }>(`${this.EapiUrl}/ebooks/count`);
+  }
+  
+}
+
+export interface BookDataOptionssimple {
+  genres: string[];
+  authors: string[];
+  publishYears: number[];
 }

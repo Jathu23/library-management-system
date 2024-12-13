@@ -71,9 +71,9 @@ namespace library_management_system.Controllers
         }
 
         [HttpGet("get-all-records-admin")]
-        public async Task<IActionResult> GetAllLentRecords()
+        public async Task<IActionResult> GetAllLentRecords(bool? getoverdue = false)
         {
-            var result = await _lentService.GetAllLentRecordsAsync();
+            var result = await _lentService.GetAllLentRecordsAsync(getoverdue);
             if (!result.Success)
             {
                 return BadRequest(result);
@@ -81,10 +81,11 @@ namespace library_management_system.Controllers
 
             return Ok(result);
         }
+
         [HttpGet("lent-records-by-userid-user")]
-        public async Task<IActionResult> GetLentRecordsByUserId(int userId)
+        public async Task<IActionResult> GetLentRecordsByUserId(int userId , bool? getoverdue =false)
         {
-            var result = await _lentService.GetLentRecordsByUserIdAsync(userId);
+            var result = await _lentService.GetLentRecordsByUserIdAsync(userId, getoverdue);
 
             if (!result.Success)
             {
@@ -126,6 +127,7 @@ namespace library_management_system.Controllers
             return Ok(result);
         }
 
+        //repostr section-----------------------------------------------
 
         [HttpGet("Lent-Report")]
         public async Task<IActionResult> GetLentReport([FromQuery] DateTime date)
@@ -133,17 +135,35 @@ namespace library_management_system.Controllers
             try
             {
                 var report = await _lentService.GetLentReport(date);
-                var pdf =await _pdfGeneratorService.GenerateLendReportPdfAsync(report);
+                //var pdf =await _pdfGeneratorService.GenerateLendReportPdfAsync(report);
+
+                return Ok(report);
+                //return File(pdf, "application/pdf", "LendReport.pdf");
                
-           
-                return File(pdf, "application/pdf", "LendReport.pdf");
-                return Ok(pdf);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { Message = ex.Message });
             }
         }
+
+        [HttpGet("Lent-Report-pdf")]
+        public async Task<IActionResult> GetLentReportpdf([FromQuery] DateTime date)
+        {
+            try
+            {
+                var report = await _lentService.GetLentReport(date);
+                var pdf = await _pdfGeneratorService.GenerateLendReportPdfAsync(report);
+
+                return File(pdf, "application/pdf", "LendReport.pdf");
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
+        }
+
 
         [HttpGet("Lent-Report-ByUserid")]
         public async Task<IActionResult> GetLentReportbyuserid([FromQuery] int userid)
@@ -152,6 +172,23 @@ namespace library_management_system.Controllers
             {
                 var report = await _lentService.GetLentReportbyuserid(userid);
                 return Ok(report);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
+        }
+
+
+        [HttpGet("Lent-Report-ByUserid-pdf")]
+        public async Task<IActionResult> GetLentReportbyuseridpdf([FromQuery] int userid)
+        {
+            try
+            {
+                var report = await _lentService.GetLentReportbyuserid(userid);
+                var pdf = await _pdfGeneratorService.GenerateLendReportPdfAsync(report);
+
+                return File(pdf, "application/pdf", $"LendReportuser({userid}).pdf");
             }
             catch (Exception ex)
             {
@@ -174,14 +211,14 @@ namespace library_management_system.Controllers
             }
         }
 
-        [HttpGet("download-lending-report")]
-        public async Task<IActionResult> DownloadLendingReport([FromQuery] int? bookId)
-        {
-            var report = await _lentService.GetBookLendingReports(bookId); // Fetch your data
-            var pdfBytes = await _pdfGeneratorService.GenerateBookLendingReportPdfAsync(report);
+        //[HttpGet("download-lending-report")]
+        //public async Task<IActionResult> DownloadLendingReport([FromQuery] int? bookId)
+        //{
+        //    var report = await _lentService.GetBookLendingReports(bookId); // Fetch your data
+        //    var pdfBytes = await _pdfGeneratorService.GenerateBookLendingReportPdfAsync(report);
 
-            return File(pdfBytes, "application/pdf", "BookLendingReport.pdf");
-        }
+        //    return File(pdfBytes, "application/pdf", "BookLendingReport.pdf");
+        //}
 
         [HttpGet("LendingCount-report")]
         public async Task<IActionResult> GetLendingCountReport([FromQuery] int? bookId)
@@ -209,7 +246,7 @@ namespace library_management_system.Controllers
             return Ok(borrowStatus);
         }
 
-        [HttpGet("lend-report")]
+        [HttpGet("pdf-sample-report")]
         public async Task<IActionResult> GetLendReport()
         {
             // Sample HTML content for the report
@@ -235,7 +272,7 @@ namespace library_management_system.Controllers
             var pdfBytes = await _pdfGeneratorService.GeneratePdfAsync(htmlContent);
 
             // Return as a downloadable file
-            return File(pdfBytes, "application/pdf", "LendReport.pdf");
+            return File(pdfBytes, "application/pdf", "sample.pdf");
         }
 
 

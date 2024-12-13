@@ -1,15 +1,17 @@
+<h1>sdfghj</h1>
+
 <div class="container mt-4">
   <!-- Search Section -->
   <div class="row mb-4">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <!-- Search by Username -->
       <div class="mb-3">
-        <label for="usernameSearch" class="form-label">Select for a User</label>
+        <label for="usernameSearch" class="form-label"><strong>Select User</strong></label>
         <input
           type="text"
           id="usernameSearch"
           class="form-control"
-          placeholder="Enter Nic-or-Email"
+          placeholder="Enter NIC or Email"
           [(ngModel)]="searchQuery"
           (input)="onSearch()"
         />
@@ -24,26 +26,29 @@
           </li>
         </ul>
       </div>
-
-      <label for="numberSelect" class="form-label">Select a DueTime:</label>
-      <select
-    id="numberSelect"
-    class="form-select"
-    [(ngModel)]="selectedDuesday"
-    name="duesdays"
-  >
-    <option *ngFor="let duesday of duesdays" [value]="duesday">
-      {{ duesday }}
-    </option>
-  </select>
-      <button class="btn btn-primary btn-sm" (click)="onRentClick()">Rent</button>
-  
     </div>
-
-    <div class="col-md-6">
+  
+    <div class="col-md-4">
+      <!-- Select Due Time -->
+      <div class="mb-3">
+        <label for="numberSelect" class="form-label"><strong>Select a Due Time:</strong></label>
+        <select
+          id="numberSelect"
+          class="form-select"
+          [(ngModel)]="selectedDuesday"
+          name="duesdays"
+        >
+          <option *ngFor="let duesday of duesdays" [value]="duesday">
+            {{ duesday }}
+          </option>
+        </select>
+      </div>
+    </div>
+  
+    <div class="col-md-4">
       <!-- Search by Book ID -->
       <div class="mb-3">
-        <label for="bookIdInput" class="form-label">Select Book by Copy ID</label>
+        <label for="bookIdInput" class="form-label"><strong>Select Book by Copy ID</strong></label>
         <input
           type="text"
           id="bookIdInput"
@@ -55,7 +60,15 @@
       </div>
     </div>
   </div>
-
+  
+  <button
+    class="btn btn-sm"
+    (click)="onRentClick()"
+    style="background-color: #9b508f; color: #f3e4f1; margin-top: 7px"
+  >
+    Rent
+  </button>
+  
   <!-- Grid View -->
   <div class="row">
     <!-- User Information Card -->
@@ -68,12 +81,19 @@
               [src]="'https://bootdey.com/img/Content/avatar/avatar7.png'"
               class="rounded-circle profile-img img-fluid"
               alt="User Profile"
-              style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #007bff;"
+              style="
+                width: 120px;
+                height: 120px;
+                object-fit: cover;
+                border: 3px solid #d3c7d4;
+              "
             />
           </div>
           <!-- User Details -->
           <div class="mb-4">
-            <h5 class="card-title text-center text-primary">{{ userInfo.fullName }}</h5>
+            <h5 class="card-title text-center text-primary">
+              {{ userInfo.fullName }}
+            </h5>
             <ul class="list-group list-group-flush">
               <li class="list-group-item">
                 <strong>Email:</strong> {{ userInfo.email }}
@@ -86,12 +106,15 @@
               </li>
               <li class="list-group-item">
                 <strong>Registration Date:</strong>
-                {{ userInfo.registrationDate | date: 'medium' }}
+                {{ userInfo.registrationDate | date : "medium" }}
               </li>
               <li class="list-group-item">
                 <strong>Status:</strong>
-                <span class="badge" [ngClass]="userInfo.isActive ? 'bg-success' : 'bg-secondary'">
-                  {{ userInfo.isActive ? 'Active' : 'Inactive' }}
+                <span
+                  class="badge"
+                  [ngClass]="userInfo.isActive ? 'bg-success' : 'bg-secondary'"
+                >
+                  {{ userInfo.isActive ? "Active" : "Inactive" }}
                 </span>
               </li>
             </ul>
@@ -101,20 +124,22 @@
             <h5 class="text-center text-primary mb-3">Borrow Status</h5>
             <ul class="list-group list-group-flush">
               <li class="list-group-item">
-                <strong>Can Borrow:</strong> {{ userInfo.borrowStatus.canBorrow ? 'Yes' : 'No' }}
+                <strong>Can Borrow:</strong>
+                {{ userInfo.borrowStatus.canBorrow ? "Yes" : "No" }}
               </li>
               <li class="list-group-item">
-                <strong>Borrow Limit:</strong> {{ userInfo.borrowStatus.borrowLimit }}
+                <strong>Borrow Limit:</strong>
+                {{ userInfo.borrowStatus.borrowLimit }}
               </li>
               <li class="list-group-item">
-                {{ userInfo.borrowStatus.booksBorrowed }} books borrowed this month
+                {{ userInfo.borrowStatus.booksBorrowed }} books borrowed this
+                month
               </li>
             </ul>
           </div>
         </div>
       </div>
     </div>
-    
 
     <!-- Pending Books Card -->
     <div *ngIf="pendingBooks.length > 0" class="col-md-6 mb-4">
@@ -128,9 +153,10 @@
             >
               <div>
                 <strong>{{ book.bookTitle }}</strong>
-                <span class="text-muted"> - Due on {{ book.dueDate | date }}</span>
+                <span class="text-muted">
+                  - Due on {{ book.dueDate | date }}</span
+                >
               </div>
-             
             </li>
           </ul>
         </div>
@@ -142,16 +168,23 @@
       <div class="card h-100 shadow-sm">
         <div class="card-body">
           <h5 class="card-title text-info">Book Information</h5>
-          <p class="card-text mb-1"><strong>Title:</strong> {{ bookInfo.title }}</p>
-          <p class="card-text mb-1"><strong>Author:</strong> {{ bookInfo.author }}</p>
-          <p class="card-text mb-1"><strong>Genre:</strong> {{ bookInfo.genre }}</p>
-          <p class="card-text mb-1"><strong>Published Year:</strong> {{ bookInfo.publishYear }}</p>
+          <p class="card-text mb-1">
+            <strong>Title:</strong> {{ bookInfo.title }}
+          </p>
+          <p class="card-text mb-1">
+            <strong>Author:</strong> {{ bookInfo.author }}
+          </p>
+          <p class="card-text mb-1">
+            <strong>Genre:</strong> {{ bookInfo.genre }}
+          </p>
+          <p class="card-text mb-1">
+            <strong>Published Year:</strong> {{ bookInfo.publishYear }}
+          </p>
           <p class="card-text"><strong>ISBN:</strong> {{ bookInfo.isbn }}</p>
         </div>
       </div>
     </div>
   </div>
-
 
   <!-- Loader -->
   <div *ngIf="isLoading" class="text-center mt-4">
@@ -161,83 +194,99 @@
   </div>
 </div>
 
+<div class="container">
+  <h2>Lent Records</h2>
 
+  <table class="responsive-table">
+    <thead>
+      <tr class="table-header">
+        <th>Lent ID</th>
+        <th>Book Title</th>
+        <th>BookCopyId</th>
+        <th>Author</th>
+        <th>Lent Date</th>
+        <th>Due Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
 
+    <tbody>
+      <tr *ngIf="isLoading">
+        <td colspan="8">Loading...</td>
+      </tr>
 
+      <tr *ngIf="errorMessage">
+        <td colspan="8">{{ errorMessage }}</td>
+      </tr>
 
-
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Lent ID</th>
-      <th>Book Title</th>
-      <th>BookCopyId</th>
-      <th>Author</th>
-      <th>Lent Date</th>
-      <th>Due Date</th>
-      <th>Status</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <tr *ngIf="isLoading">
-      <td colspan="8">Loading...</td>
-    </tr>
-    <tr *ngIf="errorMessage">
-      <td colspan="8">{{ errorMessage }}</td>
-    </tr>
-    <ng-container *ngFor="let record of lentRecords">
-      <tr>
-        <td>{{ record.id }}</td>
-        <td>{{ record.bookTitle }}</td>
-        <td>{{ record.bookCopyId }}</td>
-        <td>{{ record.bookAuthor }}</td>
-        <td>{{ record.lentDate | date: 'yyyy-MM-dd' }}</td>
-        <td>{{ record.dueDate | date: 'yyyy-MM-dd' }}</td>
-        <td> <progress value="{{record.statusValue}}" max="{{record.maxValue}}"></progress>
-          {{ record.status }} </td>
-        <td>
-          <button (click)="openModal(record)">Details</button>
+      <tr *ngFor="let record of lentRecords" class="table-row">
+        <td data-label="Lent ID">{{ record.id }}</td>
+        <td data-label="Book Title">{{ record.bookTitle }}</td>
+        <td data-label="BookCopyId">{{ record.bookCopyId }}</td>
+        <td data-label="Author">{{ record.bookAuthor }}</td>
+        <td data-label="Lent Date">
+          {{ record.lentDate | date : "yyyy-MM-dd" }}
+        </td>
+        <td data-label="Due Date">
+          {{ record.dueDate | date : "yyyy-MM-dd" }}
+        </td>
+        <td data-label="Status">
+          <progress
+            value="{{ record.statusValue }}"
+            max="{{ record.maxValue }}"
+          ></progress>
+          {{ record.status }}
+        </td>
+        <td data-label="Actions">
+          <button
+            class="btn btn-sm"
+            style="background-color: #ebcee6"
+            (click)="openModal(record)"
+          >
+            Details
+          </button>
         </td>
       </tr>
-      <!-- Modal for Expanded Details -->
-      <div *ngIf="selectedRecord" class="modal-backdrop">
-        <div class="modal-content">
-          <h3>Detailed Information</h3>
-          <button class="close-btn" (click)="closeModal()">Close</button>
-          <table class="additional-info-table">
-            <tr>
-              <td><strong>User ID:</strong></td>
-              <td>{{ selectedRecord.userId }}</td>
-            </tr>
-            <tr>
-              <td><strong>User Name:</strong></td>
-              <td>{{ selectedRecord.userName }}</td>
-            </tr>
-            <tr>
-              <td><strong>User Email:</strong></td>
-              <td>{{ selectedRecord.userEmail }}</td>
-            </tr>
-            <tr>
-              <td><strong>Admin ID:</strong></td>
-              <td>{{ selectedRecord.adminId }}</td>
-            </tr>
-            <tr>
-              <td><strong>Admin Name:</strong></td>
-              <td>{{ selectedRecord.adminName }}</td>
-            </tr>
-            <tr>
-              <td><strong>Book Condition:</strong></td>
-              <td>{{ selectedRecord.bookCondition }}</td>
-            </tr>
-            <tr>
-              <td><strong>Book ISBN:</strong></td>
-              <td>{{ selectedRecord.bookISBN }}</td>
-            </tr>
-          </table>
-        </div>
-      </div>
+    </tbody>
+  </table>
 
+  <!-- Modal for Expanded Details -->
+  <div *ngIf="selectedRecord" class="modal-backdrop">
+    <div class="modal-content">
+      <h3>Detailed Information</h3>
+      <button class="close-btn" (click)="closeModal()">X</button>
 
-      
+      <table class="additional-info-table">
+        <tr>
+          <th>User ID</th>
+          <td>{{ selectedRecord.userId }}</td>
+        </tr>
+        <tr>
+          <th>User Name</th>
+          <td>{{ selectedRecord.userName }}</td>
+        </tr>
+        <tr>
+          <th>User Email</th>
+          <td>{{ selectedRecord.userEmail }}</td>
+        </tr>
+        <tr>
+          <th>Admin ID</th>
+          <td>{{ selectedRecord.adminId }}</td>
+        </tr>
+        <tr>
+          <th>Admin Name</th>
+          <td>{{ selectedRecord.adminName }}</td>
+        </tr>
+        <tr>
+          <th>Book Condition</th>
+          <td>{{ selectedRecord.bookCondition }}</td>
+        </tr>
+        <tr>
+          <th>Book ISBN</th>
+          <td>{{ selectedRecord.bookISBN }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

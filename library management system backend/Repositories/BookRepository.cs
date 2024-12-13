@@ -224,7 +224,7 @@ namespace library_management_system.Repositories
         }
 
         // Method to fetch distinct values for Genre, Author, and PublishYear
-        public async Task<dynamic> GetDistinctBookAttributesAsync()
+        public async Task<BookDataOptions> GetDistinctBookAttributesAsync()
         {
             var genres = await _context.NormalBooks
                 .Select(b => b.Genre)
@@ -241,12 +241,41 @@ namespace library_management_system.Repositories
                 .Distinct()
                 .ToListAsync();
 
-            return new
+            return new BookDataOptions
             {
                 Genres = genres,
                 Authors = authors,
                 PublishYears = publishYears
             };
+        }
+
+        public async Task<bool> IsbnisAvailable(string isbn)
+        {
+
+            var r1 = await _context.NormalBooks.AnyAsync(u => u.ISBN == isbn);
+            var r2 = await _context.Audiobooks.AnyAsync(u => u.ISBN == isbn);
+            var r3 = await _context.Ebooks.AnyAsync(u => u.ISBN == isbn);
+
+            if (r1 && r2 && r3)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public class BookDataOptions
+        {
+            public List<List<string>> Genres { get; set; }
+            public List<string> Authors { get; set; }
+            public List<int> PublishYears { get; set; }
+        }
+
+        public async Task<int> GetAudiobookCountAsync()
+        {
+            return await _context.NormalBooks.CountAsync();
         }
 
     }

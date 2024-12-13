@@ -50,27 +50,6 @@ namespace library_management_system.Controllers
             if (!response.Success)
                 return BadRequest(response);
 
-
-            const string subject = "Account Created";
-
-            var body = $"""
-                <html>
-                    <body>
-                        <h1>Hello, {userRequestDto.FirstName} {userRequestDto.LastName}</h1>
-                        <h2>
-                            Your account has been created and we have sent approval request to admin.
-                            Once the request is approved by admin you will receive email, and you will be
-                            able to login in to your account.
-                        </h2>
-                        <h3>Thanks</h3>
-                    </body>
-                </html>
-            
-            """
-            ;
-
-            await _Email.SendEmailAsync(userRequestDto.Email, subject, body);
-
             return Ok(response);
 
 
@@ -340,8 +319,10 @@ namespace library_management_system.Controllers
  public async Task<IActionResult> GetUserById(int id)
         {
             var response = await _userService.GetUserById(id);
+			
 
-            if (response.Success)
+
+			if (response.Success)
             {
                 return Ok(response);
             }
@@ -351,6 +332,39 @@ namespace library_management_system.Controllers
             }
         }
 
+		//Functions for sub and Best
+		[HttpGet("subscribed-and-best")]
+		public async Task<IActionResult> GetSubscribedAndBestUsers([FromQuery] int count)
+		{
+			try
+			{
+				// Call the service method
+				var users = await _userService.FilterUsersBySubscribedAndBest(count);
+	
+			// Return the result
+			return Ok(users);
+			}
+			catch (Exception ex)
+			{
+				// Log the error (use a logger in a real application)
+				Console.WriteLine($"An error occurred: {ex.Message}");
+
+				// Return a 500 Internal Server Error response
+				return StatusCode(500, "An error occurred while retrieving users.");
+			}
+		}
+
+        [HttpGet("Userbooks/count")]
+        public async Task<IActionResult> GetAudiobookCount()
+        {
+            int count = await _userService.GetuserCountAsync();
+            return Ok(new { Count = count });
+        }
+
+
 
     }
+
+
+
 }

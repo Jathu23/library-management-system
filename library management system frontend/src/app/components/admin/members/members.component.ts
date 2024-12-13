@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ViewmembersService } from '../../../services/admin-services/viewmembers.service';
+import { environment } from '../../../../environments/environment.testing';
 
 @Component({
   selector: 'app-members',
@@ -15,7 +16,7 @@ export class MembersComponent implements OnInit {
   heading: string = 'Active Members';
   selectedOption: string = 'active';
   searchQuery: string = '';
-
+resoursBase = environment.resourcBaseUrl;
   apiEndpoints: { [key: string]: string } = {
     active: 'getActiveUsers',
     subscribed: 'getSubscribeUsers',
@@ -33,7 +34,7 @@ export class MembersComponent implements OnInit {
     if (this.isLoading) return;
 
     this.isLoading = true;
-
+this.users=[];
     // Handle empty search query for search option
     if (this.selectedOption === 'search' && !this.searchQuery.trim()) {
       this.isLoading = false;
@@ -63,7 +64,7 @@ export class MembersComponent implements OnInit {
         },
         (error: any) => {
           console.error('API Error:', error);
-          alert('Failed to fetch data. Please try again.');
+          alert('No data or Failed to fetch data. Please try again.');
           this.isLoading = false;
         }
       );

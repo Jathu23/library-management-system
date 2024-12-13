@@ -1,8 +1,8 @@
-import { Component,OnInit  } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
 import { UserService } from '../../../services/user-service/user.service';
 
-import {AudiobookService} from '../../../services/bookservice/audiobook.service'
+import { AudiobookService } from '../../../services/bookservice/audiobook.service'
 
 
 @Component({
@@ -13,175 +13,93 @@ import {AudiobookService} from '../../../services/bookservice/audiobook.service'
 export class DashboardComponent implements OnInit {
 
   constructor(
-    private userService:UserService,
-    private audiobookService:AudiobookService
+    private userService: UserService,
+    private audiobookService: AudiobookService
   ) {
-    
+
   }
 
-  pieData: { name: string; value: number }[] = []; // Explicitly define the type of pieData
+  selectedTab: string = 'audio'; // Default tab
 
+  changeAudio(): void {
+    this.selectedTab = 'audio';
+  }
+
+  changeNormal(): void {
+    this.selectedTab = 'normal';
+  }
+
+  changeEbook(): void {
+    this.selectedTab = 'ebook';
+  }
+
+  pieData: { name: string; value: number }[] = [];
   totalUsers: number | null = null;
   activeUsers: number | null = null;
   NonActiveUsers: number | null = null;
   Subscribed: number | null = null;
+  nonsubscrivedUser: number | null = null;
 
-  // showing the top books
-
-  audiobooks: any[] = []; 
-
- ngOnInit(): void {
-  this.loadUserCounts();
-  this.fetchTopAudiobooks(3)
-}
-
-
-
-loadUserCounts(): void {
-  // Fetch total user count
-  this.userService.getTotalUserCount().subscribe({
-    next: (count) => {
-      this.totalUsers = count;
-      this.updatePieData(); // Update the pie chart after getting the data
-    },
-    error: (err) => console.error('Failed to fetch total user count', err),
-  });
-
-  // Fetch active user count
-  this.userService.getActiveUserCount().subscribe({
-    next: (count) => {
-      this.activeUsers = count;
-      this.updatePieData(); // Update the pie chart after getting the data
-    },
-    error: (err) => console.error('Failed to fetch active user count', err),
-  });
-
-  // Fetch non-active user count
-  this.userService.getNonActiveUserCount().subscribe({
-    next: (count) => {
-      this.NonActiveUsers = count;
-      this.updatePieData(); // Update the pie chart after getting the data
-    },
-    error: (err) => console.error('Failed to fetch non-active user count', err),
-  });
-
-  // Fetch subscribed user count
-  this.userService.getSubscribedUserCount().subscribe({
-    next: (count) => {
-      this.Subscribed = count;
-      this.updatePieData(); // Update the pie chart after getting the data
-    },
-    error: (err) => console.error('Failed to fetch subscribed user count', err),
-  });
-}
-  
 
   // -------------
 
-  // chartData = [
-  //   { name: 'January', value: 5000 },
-  //   { name: 'February', value: 7200 },
-  //   { name: 'March', value: 6700 },
-  //   { name: 'April', value: 8000 },
-  //   { name: 'May', value: 9000 },
-  //   { name: 'June', value: 8500 },
-  //   { name: 'July', value: 10000 },
-  //   { name: 'August', value: 9500 },
-  //   { name: 'September', value: 7800 },
-  //   { name: 'October', value: 9100 },
-  //   { name: 'November', value: 8800 },
-  //   { name: 'December', value: 9800 }
-  // ];
-
-
-  // view: [number, number] = [1200, 500];
-
-  // colorScheme: Color = {
-  //   domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'],
-  //   group: ScaleType.Ordinal,
-  //   selectable: true,
-  //   name: 'custom'
-  // };
-  //  // Correctly using LegendPosition enum value
-  //  legendPosition: LegendPosition = LegendPosition.Right;
 
 
 
-  //  view2: [number, number] = [700, 400]; // Width and height of the chart
+  imgageBaseUrl: string = `https://localhost:7261/`
 
-  // cardData = [
-  //   {
-  //     "name": "Active Users",
-  //     "value": 150
-  //   },
-  //   {
-  //     "name": "Books Borrowed Today",
-  //     "value": 45
-  //   },
-  //   {
-  //     "name": "Books Available",
-  //     "value": 1200
-  //   }
-  // ];
+  // showing the top books
 
-  // colorScheme2 = {
-  //   domain: [ '#A10A28', '#C7B42C', '#AAAAAA'] // Customize the colors
-  // };
+  audiobooks: any[] = [];
+  audiobookslists: any[] = [];
 
-  // view3: [number, number] = [700, 400]; // Width and height of the chart
 
-  // // Data for the Line Chart
-  // lineChartData = [
-  //   {
-  //     "name": "year 2023",
-  //     "series": [
-  //       { "name": "January", "value": 50 },
-  //       { "name": "February", "value": 65 },
-  //       { "name": "March", "value": 80 },
-  //       { "name": "April", "value": 55 },
-  //       { "name": "May", "value": 70 },
-  //       { "name": "June", "value": 95 },
-  //       { "name": "July", "value": 85 },
-  //       { "name": "August", "value": 60 },
-  //       { "name": "September", "value": 75 },
-  //       { "name": "October", "value": 90 },
-  //       { "name": "November", "value": 100 },
-  //       { "name": "December", "value": 120 }
-  //     ]
-  //   },
-  //   {
-  //     "name": "year 2024",
-  //     "series": [
-  //         { "name": "January", "value": 0 },
-  //         { "name": "February", "value": 0 },
-  //         { "name": "March", "value": 0 },
-  //         { "name": "April", "value": 0 },
-  //         { "name": "May", "value": 70 },
-  //         { "name": "June", "value": 95 },
-  //         { "name": "July", "value": 0 },
-  //         { "name": "August", "value": 0 },
-  //         { "name": "September", "value": 0 },
-  //         { "name": "October", "value": 0 },
-  //         { "name": "November", "value": 0 },
-  //         { "name": "December", "value": 0 }
-  //     ]
-  // }
-  // ];
+  ngOnInit(): void {
+    this.loadUserCounts();
+    this.fetchTopAudiobooks(3);
+    this.fetchTopAudiobookslist(10)
+  }
 
-  // colorScheme3 = {
-  //   domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA'] // Customize chart colors
-  // };
 
-  // // Options for animations and additional interactivity
-  // gradient = false;
-  // showLegend = false;
-  // showXAxis = true;
-  // showYAxis = true;
-  // showXAxisLabel = true;
-  // xAxisLabel = 'Month';
-  // showYAxisLabel = true;
-  // yAxisLabel = 'Books Borrowed';
-  // autoScale = true;
+
+  loadUserCounts(): void {
+    // Fetch total user count
+    this.userService.getTotalUserCount().subscribe({
+      next: (count) => {
+        this.totalUsers = count;
+        this.updatePieData(); // Update the pie chart after getting the data
+      },
+      error: (err) => console.error('Failed to fetch total user count', err),
+    });
+
+    // Fetch active user count
+    this.userService.getActiveUserCount().subscribe({
+      next: (count) => {
+        this.activeUsers = count;
+        this.updatePieData(); // Update the pie chart after getting the data
+      },
+      error: (err) => console.error('Failed to fetch active user count', err),
+    });
+
+    // Fetch non-active user count
+    this.userService.getNonActiveUserCount().subscribe({
+      next: (count) => {
+        this.NonActiveUsers = count;
+        this.updatePieData(); // Update the pie chart after getting the data
+      },
+      error: (err) => console.error('Failed to fetch non-active user count', err),
+    });
+
+    // Fetch subscribed user count
+    this.userService.getSubscribedUserCount().subscribe({
+      next: (count) => {
+        this.Subscribed = count;
+        this.updatePieData(); // Update the pie chart after getting the data
+      },
+      error: (err) => console.error('Failed to fetch subscribed user count', err),
+    });
+  }
+
 
 
 
@@ -225,7 +143,7 @@ loadUserCounts(): void {
 
   // Data for Pie Chart
 
-  
+
 
   // pieData = [
   //   { name: 'All Users', value: 5000 },
@@ -240,6 +158,8 @@ loadUserCounts(): void {
   //   { name: 'Non Active Users', value: this.NonActiveUsers },
   //   { name: 'Subscribed USers', value: this.Subscribed }
   // ];
+
+
   updatePieData(): void {
     if (
       this.totalUsers !== null &&
@@ -247,10 +167,14 @@ loadUserCounts(): void {
       this.NonActiveUsers !== null &&
       this.Subscribed !== null
     ) {
+
+      this.nonsubscrivedUser = this.totalUsers - this.Subscribed
+
+
       this.pieData = [
-        { name: 'All Users', value: this.totalUsers },
-        { name: 'Active Users', value: this.activeUsers },
-        { name: 'Non Active Users', value: this.NonActiveUsers },
+        // { name: 'All Users', value: this.totalUsers },
+        // { name: 'Active Users', value: this.activeUsers },
+        { name: 'Non Subscribed Users', value: this.nonsubscrivedUser },
         { name: 'Subscribed Users', value: this.Subscribed },
       ];
     }
@@ -258,7 +182,7 @@ loadUserCounts(): void {
 
   // range
 
-  
+
   view: [number, number] = [700, 400];
   colorScheme: Color = {
     name: 'customScheme',
@@ -268,6 +192,8 @@ loadUserCounts(): void {
   };
 
   // Sample Top 10 data
+
+
   top10Data = [
     { name: 'Item 1', value: 70 },
     { name: 'Item 2', value: 85 },
@@ -296,15 +222,30 @@ loadUserCounts(): void {
   fetchTopAudiobooks(count: number): void {
     this.audiobookService.getTopAudiobooks(count).subscribe(
       (data) => {
-        this.audiobooks = data; // Assign fetched data
+        this.audiobooks = data;
         console.log(this.audiobooks);
-        
+
       },
       (error) => {
         console.error('Error fetching audiobooks:', error);
       }
     );
+
   }
+  fetchTopAudiobookslist(count: number): void {
+    this.audiobookService.getTopAudiobooks(count).subscribe(
+      (data) => {
+        this.audiobookslists = data
+        console.log(this.audiobooks);
+
+      },
+      (error) => {
+        console.error('Error fetching audiobooks:', error);
+      }
+    );
+
+  }
+
 
 
 
@@ -324,38 +265,14 @@ loadUserCounts(): void {
         { name: 'August', value: 40 },
       ],
     },
-    // {
-    //   name: 'DATA TWO',
-    //   series: [
-    //     { name: 'January', value: 20 },
-    //     { name: 'February', value: 40 },
-    //     { name: 'March', value: 30 },
-    //     { name: 'April', value: 50 },
-    //     { name: 'May', value: 70 },
-    //     { name: 'June', value: 60 },
-    //     { name: 'July', value: 50 },
-    //     { name: 'August', value: 30 },
-    //   ],
-    // },
+
   ];
 
   colorSchemes = {
     domain: ['#5AA454', '#C7B42C'],
   };
 
-  // -----------------
 
-  // data = [
-  //   { name: 'All Audio Books', value: 40 },
-  //   { name: 'Commonly Used Books', value: 35 },
-  //   { name: 'Non-Used Books', value: 25 }
-  // ];
-
-  // views: [number, number] = [700, 400];
-  // gradient: boolean = true;
-  // showLegend: boolean = true;
-  // showLabels: boolean = true;
-  // isDoughnut: boolean = false;
 
   // -----------
   data = [
@@ -372,9 +289,46 @@ loadUserCounts(): void {
   showLabels: boolean = true;
   isDoughnut: boolean = true;
 
-  
-  
+
+  // -------------------------------------------------------------------------------------------
+
+  chartView: [number, number] = [150, 150]; // Chart size (width x height)
+
+  // Corrected color scheme
+  chartColorScheme: Color = {
+    name: 'customScheme',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ['#5AA454', '#C7B42C', '#A10A28'], // Colors
+  };
+
+  // Product statistics data
+  productStatistics = [
+    {
+      name: 'Electronic',
+      value: 2487,
+      color: '#5AA454',
+      change: 1.8, // Percentage change
+    },
+    {
+      name: 'Games',
+      value: 1828,
+      color: '#C7B42C',
+      change: 2.3,
+    },
+    {
+      name: 'Furniture',
+      value: 1463,
+      color: '#A10A28',
+      change: -1.04,
+    },
+  ];
+
+  // -----
+
 }
-  
+
+
+
 
 

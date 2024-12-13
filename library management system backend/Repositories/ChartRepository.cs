@@ -2,6 +2,7 @@
 using library_management_system.Database.Entiy;
 using library_management_system.DTOs.Chart;
 using Microsoft.EntityFrameworkCore;
+using static library_management_system.Repositories.ChartRepository;
 
 namespace library_management_system.Repositories
 {
@@ -13,40 +14,6 @@ namespace library_management_system.Repositories
         {
             _libraryDbContext = libraryDbContext;
         }
-
-
-        //public List<ChartData> GetBorrowingTrends()
-        //{
-        //    int currentYear = DateTime.Now.Year;
-
-        //    // Fetch and group data by month for the current year
-        //    var data = _libraryDbContext.RentHistory
-        //        .Where(r => r.LendDate.Year == currentYear) // Filter by the current year
-        //        .GroupBy(r => r.LendDate.Month) // Group by month
-        //        .Select(group => new
-        //        {
-        //            Month = group.Key,
-        //            BorrowCount = group.Count() // Count the number of records per month
-        //        })
-        //        .ToList()
-        //        .OrderBy(g => g.Month) // Order by month
-        //        .Select(g => new ChartSeries
-        //        {
-        //            Name = new DateTime(currentYear, g.Month, 1).ToString("MMMM"), // Convert month number to name
-        //            Value = g.BorrowCount
-        //        })
-        //        .ToList();
-
-        //    // Wrap the data in ChartData format
-        //    return new List<ChartData>
-        //{
-        //    new ChartData
-        //    {
-        //        Name = "Books Borrowed",
-        //        Series = data
-        //    }
-        //};
-        //}
 
         public List<ChartSeries> GetBorrowingTrends()
         {
@@ -79,6 +46,29 @@ namespace library_management_system.Repositories
         {
             return await _libraryDbContext.RentHistory.MaxAsync(r => r.LendDate.Year);
         }
+
+        public async Task<List<RevenueData>> GetMonthlyRevenueAsync(int? year)
+        {
+            int targetYear = year ?? DateTime.Now.Year;
+
+            return await _libraryDbContext.Payment
+                .Where(p => p.PaymentDate.Year == targetYear)
+                .GroupBy(p => new { p.PaymentDate.Month })
+                .Select(g => new RevenueData
+                {
+                    Month = g.Key.Month,
+                    TotalRevenue = g.Sum(p => p.AmountPaid)
+                })
+                .OrderBy(r => r.Month)
+                .ToListAsync();
+        }
+
+        public class RevenueData
+        {
+            public int Month { get; set; } // Changed to int to store month number
+            public decimal TotalRevenue { get; set; }
+        }
+
 
     }
 

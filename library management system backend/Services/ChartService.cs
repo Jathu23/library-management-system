@@ -82,5 +82,30 @@ namespace library_management_system.Services
 
             return result;
         }
+
+        public async Task<List<object>> GetMonthlyRevenueForChartAsync(int? year)
+        {
+            // Fetch revenue data for the given year
+            var revenueData = await _chartRepository.GetMonthlyRevenueAsync(year);
+
+            // Get the list of all month names in the current culture
+            var months = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames.Take(12).ToList();
+
+            // Map each month to its corresponding revenue or a default value of 0
+            var result = months.Select((month, index) =>
+            {
+                var dataForMonth = revenueData.FirstOrDefault(r => r.Month == index + 1); // Match month by index
+                return new
+                {
+                    name = month, // Month name (e.g., "January")
+                    value = (int)(dataForMonth?.TotalRevenue ?? 0) // Total revenue or 0 if no data
+                };
+            }).ToList();
+
+            // Return the result as a list of objects
+            return result.Cast<object>().ToList();
+        }
+
+
     }
 }
