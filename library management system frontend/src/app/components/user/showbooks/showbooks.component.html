@@ -52,7 +52,7 @@
       (change)="applyFilters()"
       class="form-select select-style"
     >
-      <option value="">All Years</option>
+      <option value=0>All Years</option>
       <option *ngFor="let year of years" [value]="year">{{ year }}</option>
     </select>
   </div>

@@ -5,6 +5,7 @@ using library_management_system.DTOs.Book;
 using library_management_system.DTOs.Ebook;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
+using static library_management_system.Repositories.BookRepository;
 
 namespace library_management_system.Services
 {
@@ -569,12 +570,37 @@ namespace library_management_system.Services
 
 
         // Method to get the distinct book attributes
-        public async Task<dynamic> GetDistinctBookAttributesAsync()
+        public async Task<BookDataOptionssimple> GetDistinctBookAttributesAsync()
         {
-            return await _bookRepository.GetDistinctBookAttributesAsync();
+         
+            var genres = new List<string>() { };
+
+           var data =await _bookRepository.GetDistinctBookAttributesAsync();
+            var gerners = data.Genres;
+            foreach (var g in gerners)
+            {
+                foreach (var item in g)
+                {
+                    genres.Add(item);
+                }
+
+            }
+            var options = new BookDataOptionssimple()
+            {
+                Genres = genres.Distinct().ToList(),
+                Authors = data.Authors,
+                PublishYears = data.PublishYears
+            };
+
+            return options; 
         }
 
-
+        public class BookDataOptionssimple
+        {
+            public List<string> Genres { get; set; }
+            public List<string> Authors { get; set; }
+            public List<int> PublishYears { get; set; }
+        }
 
         private async Task<List<string>> SaveCoverImages(List<IFormFile> coverImages)
         {

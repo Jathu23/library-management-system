@@ -224,7 +224,7 @@ namespace library_management_system.Repositories
         }
 
         // Method to fetch distinct values for Genre, Author, and PublishYear
-        public async Task<dynamic> GetDistinctBookAttributesAsync()
+        public async Task<BookDataOptions> GetDistinctBookAttributesAsync()
         {
             var genres = await _context.NormalBooks
                 .Select(b => b.Genre)
@@ -241,7 +241,7 @@ namespace library_management_system.Repositories
                 .Distinct()
                 .ToListAsync();
 
-            return new
+            return new BookDataOptions
             {
                 Genres = genres,
                 Authors = authors,
@@ -264,6 +264,13 @@ namespace library_management_system.Repositories
             {
                 return false;
             }
+        }
+
+        public class BookDataOptions
+        {
+            public List<List<string>> Genres { get; set; }
+            public List<string> Authors { get; set; }
+            public List<int> PublishYears { get; set; }
         }
 
     }

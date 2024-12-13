@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { GetbooksService } from '../../../services/bookservice/getbooks.service';
+import { BookDataOptionssimple, GetbooksService } from '../../../services/bookservice/getbooks.service';
 import { LikeanddislikeService } from '../../../services/bookservice/likeanddislike.service';
 import { ReviewRequest, ReviewResponse, ReviewService } from '../../../services/bookservice/review.service';
 import { environment } from '../../../../environments/environment.testing';
@@ -11,6 +11,7 @@ import { MatPaginator } from '@angular/material/paginator';
   styleUrls: ['./showbooks.component.css']
 })
 export class ShowbooksComponent implements OnInit {
+  resourcebase=environment.resourcBaseUrl;
   isLoading = false;
   currentPage = 1;
   pageSize = 2;
@@ -35,65 +36,13 @@ export class ShowbooksComponent implements OnInit {
 resoursBase = environment.resourcBaseUrl;
 
   genres: string[] = [
-    "Science Fiction",
-    "Fantasy",
-    "Mystery",
-    "Romance",
-    "Adventure",
-    "Action",
-    "Business",
-    "Finance",
-    "Cooking",
-    "Lifestyle",
-    "Economics",
-    "Non-fiction",
-    "Health",
-    "History",
-    "Linguistics",
-    "Philosophy",
-    "Self-help",
-    "Psychology",
-    "Technology",
-    "Writing"
+   
   ];
   authors: string[] =[
-    "Alice Johnson",
-    "Alice Wilson",
-    "Brian Lewis",
-    "Chris White",
-    "Daniel Harris",
-    "David Lee",
-    "David Thomas",
-    "Emily White",
-    "Emma Brown",
-    "George Brown",
-    "Jack Walker",
-    "James Young",
-    "Jane Smith",
-    "John Doe",
-    "Joseph Clark",
-    "Julia Davis",
-    "Karen Lewis",
-    "Laura Scott",
-    "Lily Clarke",
-    "Mark Turner",
-    "Michael Black",
-    "Nathan Carter",
-    "Olivia Green",
-    "Paul Turner",
-    "Rebecca King",
-    "Sandra Lee",
-    "Sophia White",
-    "William Harris"
+   
   ];
   years: number[] =  [
-    2017,
-    2018,
-    2019,
-    2020,
-    2021,
-    2022,
-    2011
+    
   ];
 
   selectedGenre: string = '';
@@ -112,6 +61,7 @@ resoursBase = environment.resourcBaseUrl;
 
   ngOnInit(): void {
     this.loadNormalBooks();
+    this.fetchoptionsdatas();
   }
 
   toggleDropdown(): void {
@@ -239,7 +189,7 @@ resoursBase = environment.resourcBaseUrl;
     if (!path) {
       return 'assets/images/defaultcover.jpg'; // Fallback to default cover
     }
-    return path.startsWith('http') ? path : `https://localhost:7261/${path}`;
+    return path.startsWith('http') ? path : `${this.resourcebase}${path}`;
   }
 
   // Thumbs Up Functionality
@@ -370,5 +320,20 @@ like_or_dislikeAudiobook(like:boolean): void {
   });
 }
 
+fetchoptionsdatas(){
+   // Call the service method to fetch data
+   this.getbookservice.getDistinctAttributes().subscribe(
+    (data: BookDataOptionssimple) => {
+      // Assign the received data to component properties
+      this.genres = data.genres;
+      this.authors = data.authors;
+      this.years = data.publishYears;
+    },
+    (error) => {
+      // Handle errors here
+      console.error('Error fetching distinct attributes:', error);
+    }
+  );
+}
 
 }

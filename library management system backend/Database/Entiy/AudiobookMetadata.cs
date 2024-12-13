@@ -9,7 +9,7 @@
         public string Language { get; set; }
         public int DownloadCount { get; set; }
         public int PlayCount { get; set; } = 0;
-        public int Click { get; set; } = 0;
+        public int? Click { get; set; } = 0;
         public string Narrator { get; set; }
         public string Publisher { get; set; }
         public string Description { get; set; }

@@ -130,7 +130,7 @@ export class GetbooksService {
 
   // getting e books ton 5
 
-  private apiUrl = 'https://localhost:7261/api/Ebook/top';  // Your API endpoint
+  private apiUrl = `${this.baseurl}/api/Ebook/top`;  // Your API endpoint
 
 
   // Method to get the top eBooks
@@ -138,5 +138,16 @@ export class GetbooksService {
     const url = `${this.apiUrl}?count=${count}`;
     return this.http.get<any[]>(url);  // Make the HTTP GET request and return the response as an Observable
   }
+
+
+  getDistinctAttributes(): Observable<BookDataOptionssimple> {
+    return this.http.get<BookDataOptionssimple>(`${this.baseurl}/books/get-distinct-attributes`);
+  }
   
+}
+
+export interface BookDataOptionssimple {
+  genres: string[];
+  authors: string[];
+  publishYears: number[];
 }

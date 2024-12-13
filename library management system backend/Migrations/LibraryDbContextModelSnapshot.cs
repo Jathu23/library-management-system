@@ -136,7 +136,7 @@ namespace library_management_system.Migrations
                     b.Property<int>("AudiobookId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Click")
+                    b.Property<int?>("Click")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -268,7 +268,7 @@ namespace library_management_system.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Click")
+                    b.Property<int?>("Click")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")

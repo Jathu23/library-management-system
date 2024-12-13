@@ -59,11 +59,8 @@ import { ReportComponent } from './components/admin/report/report.component';
 import { EditAudiobookDialogComponent } from './components/admin/edit-audiobook-dialog/edit-audiobook-dialog/edit-audiobook-dialog.component';
 import { LineChartComponent } from './components/user/user-dashboard/line-chart/line-chart.component';
 import { PieChartComponent } from './components/user/user-dashboard/pie-chart/pie-chart.component';
-<<<<<<< HEAD
 import { UserreportComponent } from './components/user/userreport/userreport.component';
-=======
 import { ForgotPasswordComponent } from './components/landing/forgot-password/forgot-password.component';
->>>>>>> 4c8d5c8d09c9a5a965817362a9cfbc69b27e02f3
 
 
 
@@ -85,9 +82,9 @@ import { ForgotPasswordComponent } from './components/landing/forgot-password/fo
     AddAudiobookComponent,
     ShowbooksComponent,
     ShowaudiobooksComponent,
-   NewAdminComponent,
-   ShowNormalbookComponent,
-   ShowebooksComponent,
+    NewAdminComponent,
+    ShowNormalbookComponent,
+    ShowebooksComponent,
     ShowebooksComponent,
     ShowNormalbookComponent,
     ShowAudiobookComponent,
@@ -104,28 +101,22 @@ import { ForgotPasswordComponent } from './components/landing/forgot-password/fo
     DashboardComponent,
     LockScreenComponent,
     TimeAgoPipe,
-
     StaticsComponent,
-
-
     UserprofileComponent,
-        NotificationComponent,
-        AudioBookComponent,
-        NormalBooksComponent,
-        EBookComponent,
-        OverdueComponent,
-        ReportComponent,
-        LineChartComponent,
-        PieChartComponent,
-<<<<<<< HEAD
-        UserreportComponent,
-=======
-        ForgotPasswordComponent,
->>>>>>> 4c8d5c8d09c9a5a965817362a9cfbc69b27e02f3
-       
-    
+    NotificationComponent,
+    AudioBookComponent,
+    NormalBooksComponent,
+    EBookComponent,
+    OverdueComponent,
+    ReportComponent,
+    LineChartComponent,
+    PieChartComponent,
+    UserreportComponent,
+    ForgotPasswordComponent,
 
-   
+
+
+
 
   ],
 
@@ -145,8 +136,8 @@ import { ForgotPasswordComponent } from './components/landing/forgot-password/fo
     NgxChartsModule,
     MatInputModule,
     MatSelectModule,
-   
-     
+
+
   ],
   providers: [
     MatPaginatorIntl, provideAnimationsAsync(),
