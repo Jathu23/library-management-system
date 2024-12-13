@@ -103,7 +103,6 @@ import { ForgotPasswordComponent } from './components/landing/forgot-password/fo
     TimeAgoPipe,
     StaticsComponent,
     UserprofileComponent,
-<<<<<<< HEAD
     NotificationComponent,
     AudioBookComponent,
     NormalBooksComponent,
@@ -117,20 +116,6 @@ import { ForgotPasswordComponent } from './components/landing/forgot-password/fo
 
 
 
-=======
-        NotificationComponent,
-        AudioBookComponent,
-        NormalBooksComponent,
-        EBookComponent,
-        OverdueComponent,
-        ReportComponent,
-        LineChartComponent,
-        PieChartComponent,
-        UserreportComponent,
-        ForgotPasswordComponent,
-       
-    
->>>>>>> 4db74bdf989fb0c2816b1bf807586327c65fea6e
 
 
   ],

@@ -5,6 +5,7 @@ using library_management_system.DTOs.Book;
 using library_management_system.DTOs.Ebook;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
+using Microsoft.EntityFrameworkCore;
 using static library_management_system.Repositories.BookRepository;
 
 namespace library_management_system.Services
@@ -613,6 +614,25 @@ namespace library_management_system.Services
             var imagePaths = await _imageService.SaveImages(coverImages, "BookCoverImages");
             return imagePaths;
         }
+
+        public async Task<int> GetNormalbookCountAsync()
+        {
+            try
+            {
+                return await _bookRepository.GetAudiobookCountAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details (e.g., using a logging framework like Serilog or NLog)
+                Console.WriteLine($"An error occurred while counting audiobooks: {ex.Message}");
+
+                // Optionally rethrow the exception or return a default value
+                // throw;
+                return 0; // Returning 0 in case of an error
+            }
+        }
+
+
 
 
 

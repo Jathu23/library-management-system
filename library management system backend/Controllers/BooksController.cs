@@ -246,5 +246,13 @@ namespace library_management_system.Controllers
            
               return await _bookRepository.UpdateCustomData();
         }
+
+        [HttpGet("normalbooks/count")]
+        public async Task<IActionResult> GetNormalBookCount()
+        {
+            int count = await _bookRepository.GetAudiobookCountAsync();
+            return Ok(new { Count = count });
+        }
+
     }
 }

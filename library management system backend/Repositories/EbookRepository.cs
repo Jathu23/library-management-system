@@ -137,6 +137,12 @@ namespace library_management_system.Repositories
 
 
         }
+
+        public async Task<int> GetEbooksCountAsync()
+        {
+            return await _context.Ebooks.CountAsync();
+        }
+
     }
 
 }

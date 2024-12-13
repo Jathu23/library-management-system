@@ -107,7 +107,17 @@ namespace library_management_system.Controllers
                 // Return a 500 Internal Server Error with a message
                 return StatusCode(500, "An error occurred while fetching top eBooks. Please try again later.");
             }
+
+
         }
+
+        [HttpGet("ebooks/count")]
+        public async Task<IActionResult> GetEbookCount()
+        {
+            int count = await _ebookService.GetEbookCountAsync();
+            return Ok(new { Count = count });
+        }
+
 
         //        [HttpPost ("sample")]
         //        public async Task<int> addsample()
