@@ -32,11 +32,8 @@ import { AudioBookComponent } from './components/admin/dashboard/innercomponenet
 import { EBookComponent } from './components/admin/dashboard/innercomponenets/ebook/ebook.component';
 import { OverdueComponent } from './components/admin/overdue/overdue.component';
 import { ReportComponent } from './components/admin/report/report.component';
-<<<<<<< HEAD
 import { UserreportComponent } from './components/user/userreport/userreport.component';
-=======
 import { ForgotPasswordComponent } from './components/landing/forgot-password/forgot-password.component';
->>>>>>> 4c8d5c8d09c9a5a965817362a9cfbc69b27e02f3
 
 
 const routes: Routes = [
