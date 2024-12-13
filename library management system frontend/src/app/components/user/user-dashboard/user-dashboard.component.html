@@ -1,115 +1,97 @@
 <div class="popular_andUr">
-    <div class="popular">
-        <h1>Popular Books</h1>
+  <div class="popular">
+    <h1>Popular Books</h1>
 
-        <div class="dividing_div">
-            <div class="subTrendings">
-                <!-- <div class="mini_container">
-                    <h2>Trending Audio Books</h2>
-                    <div class="audio_book" *ngFor="let book of audiobooks">
-                        <div class="image_container">
-                            <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book">
-    
-                        </div>
-                        <div class="details">
-                            <h2>Book Name</h2>
-                            <p>Author</p>
-                            <p>Genre</p>
-                            <p>*****</p>
-                        </div>
-                    </div>
-                </div> -->
-                <div class="mini_container">
-                    <h2>Trending Audio Books</h2>
-                    <div class="carousel">
-                        <button class="prev" (click)="moveSlide(-1)">&#10094;</button>
+    <div class="dividing_div">
+      <div class="subTrendings">
 
-                        <div class="carousel-container">
-                            <div class="audio_book books_top" *ngFor="let book of audiobooks; let i = index"
-                                [ngClass]="{'active': currentIndex === i}">
-                                <div class="image_container">
-                                    <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book">
-                                </div>
-                                <div class="details">
-                                    <h2>{{ book.name }}</h2>
-                                    <p>{{ book.author }}</p>
-                                    <p>{{ book.genre }}</p>
-                                    <p>*****</p>
-                                </div>
-                            </div>
-                        </div>
 
-                        <button class="next" (click)="moveSlide(1)">&#10095;</button>
-                    </div>
+        <div class="mini_container" id="mini__container">
+          <h2>Trending E-Books</h2>
+          <div class="carousel">
+            <!-- <button class="prev" (click)="moveSlide(-1)">&#10094;</button> -->
+
+            <div class="carousel-container">
+              <div class="audio_book books_top" *ngFor="let book of Ebooks; let i = index"
+                [ngClass]="{'active': currentIndex === i}">
+                <div class="image_container">
+                  <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book">
                 </div>
-
-                <div class="mini_container">
-                    <h2>Trending E-Books</h2>
-                    <div class="carousel">
-                        <button class="prev" (click)="moveSlide(-1)">&#10094;</button>
-
-                        <div class="carousel-container">
-                            <div class="audio_book books_top" *ngFor="let book of Ebooks; let i = index"
-                                [ngClass]="{'active': currentIndex === i}">
-                                <div class="image_container">
-                                    <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book">
-                                </div>
-                                <div class="details">
-                                    <!-- <h2>{{ book.title }}</h2> -->
-                                    <p>{{ book.author }}</p>
-                                    <p>{{ book.genre }}</p>
-                                    <p>*****</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button class="next" (click)="moveSlide(1)">&#10095;</button>
-                    </div>
+                <div class="details">
+                  <!-- <h2>{{ book.title }}</h2> -->
+                  <p>{{ book.author }}</p>
+                  <p>{{ book.genre }}</p>
+                  <p>*****</p>
                 </div>
-
-                <div class="mini_container">
-                    <h2>Trending Physcial Books</h2>
-                    <div class="carousel">
-                        <button class="prev" (click)="moveSlide(-1)">&#10094;</button>
-
-                        <div class="carousel-container">
-                            <div class="audio_book books_top" *ngFor="let book of audiobooks; let i = index"
-                                [ngClass]="{'active': currentIndex === i}">
-                                <div class="image_container">
-                                    <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book">
-                                </div>
-                                <div class="details">
-                                    <h2>{{ book.name }}</h2>
-                                    <p>{{ book.author }}</p>
-                                    <p>{{ book.genre }}</p>
-                                    <p>*****</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button class="next" (click)="moveSlide(1)">&#10095;</button>
-                    </div>
-                </div>
-
-
-
+              </div>
             </div>
 
-            <div class="colections">
-                <h1>asd</h1>
-            </div>
-
+            <!-- <button class="next" (click)="moveSlide(1)">&#10095;</button> -->
+          </div>
         </div>
 
+        <div class="mini_container">
+          <h2>Trending Physcial Books</h2>
+          <div class="carousel">
+            <!-- <button class="prev" (click)="moveSlide(-1)">&#10094;</button> -->
+
+            <div class="carousel-container">
+              <div class="audio_book books_top" *ngFor="let book of audiobooks; let i = index"
+                [ngClass]="{'active': currentIndex === i}">
+                <div class="image_container">
+                  <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book">
+                </div>
+                <div class="details">
+                  <h2>{{ book.name }}</h2>
+                  <p>{{ book.author }}</p>
+                  <p>{{ book.genre }}</p>
+                  <p>*****</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- <button class="next" (click)="moveSlide(1)">&#10095;</button> -->
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <div class="achievements">
+        <div class="status-container">
+          <h2>Your Records</h2>
+          <ul class="status-list">
+            <li><strong>Total Rengings:</strong> {{totalLendings}}</li>
+            <li><strong>Pending:</strong> {{pendings}}</li>
+            <li><strong>On Time:</strong> {{ontime}}</li>
+            <li><strong>Later:</strong> {{later}}</li>
+          </ul>
+
+          <div class="details-section">
+            <h3>Details</h3>
+            <div class="detail-item">
+              <strong>Pending Lent:</strong> <span class="status">
+                <ul>
+                  <li *ngFor="let record of pendingLists">{{record.title}}</li>
+                </ul>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
     </div>
+
+  </div>
 
 
 </div>
 
-
+<!-- 
 <div class="graph_sections">
     <div class="line_charts">
-        <!-- <app-line-chart></app-line-chart> -->
+
         
 
     </div>
@@ -122,4 +104,220 @@
 
         </div>
     </div>
+</div> -->
+
+
+
+<div class="taken">
+  <div class="changing_divs">
+
+    <h3 style="margin-left: 10px; margin-top: 0px;">Showing 3 audio books from most trendeing list..... </h3>
+    <div class="cards-wrapper-trending">
+
+
+      <div class="card-trending" *ngFor="let book of audiobooks">
+        <div class="images">
+          <!-- <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book" class="card-thumbnail"> -->
+          <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book">
+
+        </div>
+        <div class="card-details">
+          <h3 class="card-title-trending">{{ book.title }}</h3>
+          <p class="card-location-trending">{{ book.author || 'Unknown Author' }}</p>
+          <!-- <p class="card-cost">{{ book.price ? ('$' + book.price) : 'Free' }}</p> -->
+          <p class="card-cost">{{ book.genre}}</p>
+
+          <!-- <button class="view_more1">View More</button> -->
+
+          <a href="/user/view-audio-books">View More</a>
+
+        </div>
+        <!-- <button>View More</button> -->
+
+
+      </div>
+
+
+
+
+      <div class="card-trending">
+        <div class="card_chart">
+          <div class="rating-container">
+            <h2>Top 10 most listended audio books</h2>
+
+            <!-- Range Slider Input -->
+            <!-- <div *ngFor="let item of audiobookslists; let i = index" class="rating-item">
+                  <label>{{ item.title }}</label>
+                </div> -->
+
+            <div class="div_list">
+              <ol class="rating-list">
+                <li *ngFor="let item of audiobookslists; let i = index" class="rating-item">
+                  {{ i + 1 }}. {{ item.title }}
+                </li>
+              </ol>
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+
+    </div>
+
+    <div class="boxes">
+      <div class="small_boxes">
+        <div class="metrics-cards">
+          <div class="metric-card">
+            <div class="card-header">
+              <i class="bi bi-headphones"></i>
+
+              <!-- <span class="percentage positive">+4.2%</span> -->
+            </div>
+            <div class="card-body">
+              <h2>34,760</h2>
+              <p>Total Audio Books</p>
+            </div>
+            <!-- <p class="comparison">Total Books vs last month</p> -->
+          </div>
+
+          <!-- Card 1: Total Sales -->
+          <div class="metric-card">
+            <div class="card-header">
+              <!-- <img src="assets/icons/sales-icon.svg" alt="Sales Icon" /> -->
+
+              <i class="bi bi-journals"></i>
+              <!-- <span class="percentage positive">+2.4%</span> -->
+            </div>
+            <div class="card-body">
+              <h2>612,917</h2>
+              <p>Total E-Books</p>
+            </div>
+            <!-- <p class="comparison">Listened vs last month</p> -->
+          </div>
+
+          <!-- Card 2: Total Orders -->
+
+
+          <!-- Card 3: Visitors -->
+          <div class="metric-card">
+            <div class="card-header">
+              <i class="bi bi-book-half"></i>
+              <!-- <img src="assets/icons/visitors-icon.svg" alt="Visitors Icon" /> -->
+              <!-- <span class="percentage negative">-2.08%</span> -->
+            </div>
+            <div class="card-body">
+              <h2>14,987</h2>
+              <p>Total-Physcial Books</p>
+            </div>
+            <!-- <p class="comparison">Users vs last month</p> -->
+          </div>
+
+          <!-- Card 4: Total Sold Products -->
+          <div class="metric-card">
+            <div class="card-header">
+              <!-- <img src="assets/icons/products-icon.svg" alt="Products Icon" /> -->
+              <i class="bi bi-people-fill"></i>
+
+              <!-- <span class="percentage positive">+1.2%</span> -->
+            </div>
+            <div class="card-body">
+              <h2>12,987</h2>
+              <p>Total Users</p>
+            </div>
+            <!-- <p class="comparison">New Vistors vs last month</p> -->
+          </div>
+        </div>
+
+      </div>
+
+
+
+      <div class="top_things">
+        <div class="top_geners_t">
+          <h2>Popular Genres</h2>
+          <div class="grid_box">
+            <div class="mini_genre">
+              <h3>Romantic</h3>
+            </div>
+            <div class="mini_genre">
+              <h3>Thrilling</h3>
+            </div>
+            <div class="mini_genre">
+              <h3>Non-fiction</h3>
+            </div>
+            <div class="mini_genre">
+              <h3>Fiction</h3>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="top_users">
+          <h2>Top 10 Listeners</h2>
+          <div class="scrolable_div">
+            <div class="mini_uers" *ngFor="let user of users">
+              <img [src]="imgageBaseUrl + user.profileImage" alt="Popular Audio Book">
+              <h3>{{user.firstName}} {{user.lastName}} </h3>
+              <h4>hours</h4>
+            </div>
+
+
+
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- <div class="graph_section">
+          <div class="line_graphs">
+            <div class="Statics_div">
+              <div class="graph_div">
+                <div class="graph-section">
+                  <h3>Audio Book Usage</h3>
+                  <ngx-charts-line-chart [view]="[800, 400]" [scheme]="colorScheme" [results]="appointmentData"
+                    [gradient]="false" [xAxis]="true" [yAxis]="true" [legend]="true" [showXAxisLabel]="true"
+                    [showYAxisLabel]="true" [xAxisLabel]="'Month'" [yAxisLabel]="'Total Books'">
+                  </ngx-charts-line-chart>
+                </div>
+              </div>
+              .
+            </div>
+      
+          </div>
+          <div class="rounded"> -->
+
+    <!-- <div class="chart-container">
+              <h2>Percentage of Commonly Listened Books</h2>
+              <ngx-charts-pie-chart [view]="viewed" [scheme]="'vivid'" [results]="data" [gradient]="gradient"
+                [legend]="showLegend" [labels]="showLabels" [doughnut]="isDoughnut">
+              </ngx-charts-pie-chart>
+      
+              <div class="list-container">
+                <div class="hedingss">
+                  <p>Total Books: </p>
+                </div>
+      
+                <ul *ngFor="let item of data" class="list">
+                  <li class="list-item">{{ item.name }}: <span>{{ item.value }}%</span></li>
+                </ul>
+      
+              </div>
+            </div>
+      
+          </div>
+      
+        </div> -->
+
+
+
+  </div>
 </div>
