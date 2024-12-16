@@ -18,7 +18,7 @@ export class GetbooksService {
   private UserNormalBookUrl = `${this.baseurl}/Books/get-all-books`;
 
 
-  Categorize (genre: string, author: string, publishYear: number, currentPage: number, pageSize: number): Observable<any> {
+  Categorize (genre: string, author: string, publishYear: string, currentPage: number, pageSize: number): Observable<any> {
     const url = `${this.NormalBookUrl}Categorize?genre=${genre}&author=${author}&publishYear=${publishYear}&pageNumber=${currentPage}&pageSize=${pageSize}`;
     return this.http.get<any>(url);
   }

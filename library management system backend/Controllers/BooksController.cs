@@ -11,7 +11,7 @@ namespace library_management_system.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   
     public class BooksController : ControllerBase
     {
         private readonly BookService _bookService;
