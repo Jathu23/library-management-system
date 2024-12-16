@@ -1,4 +1,4 @@
-<h1>sdfghj</h1>
+
 
 <div class="container mt-4">
   <!-- Search Section -->
@@ -109,12 +109,9 @@
                 {{ userInfo.registrationDate | date : "medium" }}
               </li>
               <li class="list-group-item">
-                <strong>Status:</strong>
-                <span
-                  class="badge"
-                  [ngClass]="userInfo.isActive ? 'bg-success' : 'bg-secondary'"
-                >
-                  {{ userInfo.isActive ? "Active" : "Inactive" }}
+                <strong>Subscribed:</strong>
+                <span class="badge" [ngClass]="userInfo.isSubscribed ? 'bg-success' : 'bg-secondary'">
+                  {{ userInfo.isSubscribed ? 'Yes' : 'No' }}
                 </span>
               </li>
             </ul>

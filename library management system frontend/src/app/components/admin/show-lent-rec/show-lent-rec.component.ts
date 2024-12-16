@@ -131,6 +131,7 @@ export class ShowLentRecComponent implements OnInit {
         (response:any) => {
           if (response.success) {
             this.isLoading=false;
+            this.getallrentrecods();
             alert(response.message);
             this.searchQuery = "";
             this.bookId = "";

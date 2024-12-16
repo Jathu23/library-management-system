@@ -52,7 +52,7 @@
       (change)="applyFilters()"
       class="form-select select-style"
     >
-      <option value="">All Years</option>
+      <option value=''>All Years</option>
       <option *ngFor="let year of years" [value]="year">{{ year }}</option>
     </select>
   </div>
@@ -78,7 +78,7 @@
 <mat-paginator
   [length]="totalItems"
   [pageSize]="pageSize"
-  [pageSizeOptions]="[10, 25, 50, 100]"
+  [pageSizeOptions]="[2,5,10, 25, 50, 100]"
   showFirstLastButtons
   (page)="onPageChange($event)"
 ></mat-paginator>

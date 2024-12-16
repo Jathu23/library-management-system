@@ -49,12 +49,14 @@ namespace library_management_system.Services
         {
             var response = new ApiResponse<AuthResponse>();
             var exLoginData = await _loginRepository.GetByEmailOrNic(userRequestDto.Email);
-
-
+            var nicalreadyexists = await _loginRepository.IsNicAvailable(userRequestDto.UserNic);
+                
             try
             {
                 if (exLoginData != null)
                     throw new Exception("A user with this email already exists.");
+                if(nicalreadyexists)
+                    throw new Exception("A user with this Nic already exists.");
 
                 var profileImagePath = await SaveProfileImage(userRequestDto.ProfileImage);
 
@@ -468,8 +470,29 @@ namespace library_management_system.Services
                     response.Success = false;
                     response.Message = "User not found.";
                     return response;
-                }
+                }else
+                {
+                    if (existingUser.UserNic == userInfoUpdate.UserNic)
+                    {
 
+                    }
+                    else
+                    {
+                        // Check if the NIC is already in use
+                        var nicalreadyexists = await _loginRepository.IsNicAvailable(userInfoUpdate.UserNic);
+
+                        if (nicalreadyexists)
+                        {
+                            throw new Exception("A user with this Nic already exists.");
+                        }
+                        else
+                        {
+                            // If NIC is available, update the UserNic of the existing user
+                            existingUser.UserNic = userInfoUpdate.UserNic;
+                        }
+                    }
+
+                }
 
 
                 if (userInfoUpdate.ProfileImage != null)
@@ -481,16 +504,25 @@ namespace library_management_system.Services
 
                 existingUser.FirstName = userInfoUpdate.FirstName ?? existingUser.FirstName;
                 existingUser.LastName = userInfoUpdate.LastName ?? existingUser.FirstName;
-                existingUser.Email = userInfoUpdate.Email ?? existingUser.LastName;
+              
                 existingUser.PhoneNumber = userInfoUpdate.PhoneNumber ?? existingUser.PhoneNumber;
                 existingUser.Address = userInfoUpdate.Address ?? existingUser.Address;
                 existingUser.FullName = $"{existingUser.FirstName} {existingUser.LastName}";
 
                 var updatedUser = await _userRepo.UpdateUser(existingUser);
+                var updatelogindata = await _loginRepository.UpdateUserLoginData(existingUser.Email, userInfoUpdate.UserNic);
 
-                response.Success = true;
-                response.Message = "User updated successfully.";
-                response.Data = updatedUser;
+                    if (updatedUser && updatelogindata)
+                {
+                    response.Success = true;
+                    response.Message = "User updated successfully.";
+                    response.Data = updatedUser;
+                }
+                else
+                {
+                    throw new Exception("fail updating the user.");
+                }
+               
             }
             catch (Exception ex)
             {
@@ -755,7 +787,25 @@ namespace library_management_system.Services
 			}
 		}
 
-	}
+        public async Task<int> GetuserCountAsync()
+        {
+            try
+            {
+                return await _userRepo.GetActiveUserCountAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details (e.g., using a logging framework like Serilog or NLog)
+                Console.WriteLine($"An error occurred while counting audiobooks: {ex.Message}");
+
+                // Optionally rethrow the exception or return a default value
+                // throw;
+                return 0; // Returning 0 in case of an error
+            }
+        }
+
+
+    }
 
 }
 

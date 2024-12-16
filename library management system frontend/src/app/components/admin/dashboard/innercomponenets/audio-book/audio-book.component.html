@@ -4,37 +4,6 @@
   <div class="cards-wrapper-trending">
 
 
-    <!-- <div class="card-trending">
-        <img src="https://via.placeholder.com/300x180" alt="Popular Audio Book" class="card-thumbnail">
-        <div class="card-details">
-          <h3 class="card-title-trending">Mt. Merbabu</h3>
-          <p class="card-location-trending">Semarang, Indonesia</p>
-          <p class="card-cost">$450/day</p>
-        </div>
-      </div>
-
-    
-      <div class="card-trending">
-        <img src="https://via.placeholder.com/300x180" alt="Most Viewed Book" class="card-thumbnail">
-        <div class="card-details">
-          <h3 class="card-title-trending">Mt. Mandala</h3>
-          <p class="card-location-trending">Papua, Indonesia</p>
-          <p class="card-cost">$570/day</p>
-
-        </div>
-      </div>
-
-     
-      <div class="card-trending">
-        <img src="https://via.placeholder.com/300x180" alt="Trending Lending" class="card-thumbnail">
-        <div class="card-details">
-          <h3 class="card-title-trending">Mt. Semeru</h3>
-          <p class="card-location-trending">Malang, Indonesia</p>
-          <p class="card-cost">$690/day</p>
-
-        </div>
-      </div> -->
-
     <div class="card-trending" *ngFor="let book of audiobooks">
       <div class="images">
         <!-- <img [src]="imgageBaseUrl + book.coverImagePath" alt="Popular Audio Book" class="card-thumbnail"> -->
@@ -74,17 +43,7 @@
             </ol>
           </div>
 
-          <!-- Bar Chart -->
-          <!-- <ngx-charts-bar-vertical
-            [view]="view"
-            [results]="chartData"
-            [scheme]="colorScheme"
-            [xAxis]="true"
-            [yAxis]="true"
-            [barPadding]="10"
-            [roundEdges]="true"
-          >
-          </ngx-charts-bar-vertical> -->
+        
         </div>
 
       </div>
@@ -101,8 +60,7 @@
       <div class="metrics-cards">
         <div class="metric-card">
           <div class="card-header">
-            <!-- <img src="assets/icons/orders-icon.svg" alt="Orders Icon" /> -->
-            <!-- <i class="bi bi-node-plus"></i> -->
+
             <i class="bi bi-play-btn"></i>
 
             <span class="percentage positive">+4.2%</span>
@@ -162,32 +120,7 @@
 
     </div>
 
-    <!-- <div class="meter_graph">
-        <div class="topgenres">
-          <h2>Popular Genres</h2>
-          <div class="small_gen">
-            <div class="mini_gen">
-              <h3>Romantic</h3>
-              <h3>2000 <span>Audio</span></h3>
-            </div>
-          </div>
-        </div>
 
-        <div class="top_listners">
-          <h2>Top Listeners</h2>
-
-          <div class="top_lsit">
-            <div class="mini_top" *ngFor="let user of users">
-              <img [src]="imgageBaseUrl + user.profileImage" alt="Popular Audio Book" class="card-thumbnail">
-              <h3>{{user.firstName}} {{user.lastName}} </h3>
-              <h4>hours</h4>
-            </div>
-          </div>
-
-        </div>
-
-
-      </div> -->
 
     <div class="top_things">
       <div class="top_geners_t">
@@ -219,9 +152,7 @@
             <h4>hours</h4>
           </div>
           
-          <!-- <div class="top_names"  >
-            <h2>Name</h2>
-          </div> -->
+
           
 
         </div>

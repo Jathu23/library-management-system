@@ -38,11 +38,12 @@
         <td>{{ history.returnDate | date: 'yyyy-MM-dd' }}</td>
         <td>
           <span
-            class="badge"
-            [ngClass]="history.status === 'Returned' ? 'bg-success' : 'bg-danger'"
-          >
-            {{ history.status }}
-          </span>
+          class="badge"
+          [ngClass]="history.status == 'Closed' ? 'bg-success' : (history.statusValue < 0 ? 'bg-danger' : 'bg-warning')"
+        >
+          {{ history.status }}
+        </span>
+        
         </td>
       </tr>
     </tbody>

@@ -4,6 +4,7 @@ using library_management_system.DTOs;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
 using Microsoft.EntityFrameworkCore;
+using library_management_system.DTOs.Ebook;
 
 namespace library_management_system.Services
 {
@@ -11,57 +12,76 @@ namespace library_management_system.Services
     {
         private readonly AudioBookRepository _audioBookRepository;
         private readonly AudioBookFileService   _audioBookFileService;
+        private readonly BookRepository _bookRepository;
 
-        public AudioBookService(AudioBookRepository audioBookRepository, AudioBookFileService audioBookFileService)
+        public AudioBookService(AudioBookRepository audioBookRepository, AudioBookFileService audioBookFileService, BookRepository bookRepository)
         {
             _audioBookRepository = audioBookRepository;
             _audioBookFileService = audioBookFileService;
+            _bookRepository = bookRepository;
         }
 
         public async Task<ApiResponse<int>> AddAudiobook(AddAudiobookDto audiobookDto)
         {
-           
-            var filePath = await _audioBookFileService.SaveFileAsync(audiobookDto.AudioFile, "Audiobooks");
-            var coverImagePath = await _audioBookFileService.SaveFileAsync(audiobookDto.CoverImage, "AudiobookCovers");
+            try
 
-           
-            var audiobook = new Audiobook
             {
-                ISBN = audiobookDto.ISBN,
-                Title = audiobookDto.Title,
-                Author = audiobookDto.Author,
-                Genre = audiobookDto.Genre,
-                PublishYear = audiobookDto.PublishYear,
-                FilePath = filePath,
-                CoverImagePath = coverImagePath,
-                AddedDate = DateTime.Now,
-            };
+                var isbnexits = await _bookRepository.IsbnisAvailable(audiobookDto.ISBN);
+                if (isbnexits)
+                    throw new Exception("ISBN alredy Exits");
 
-           
-            var metadata = new AudiobookMetadata
+                var filePath = await _audioBookFileService.SaveFileAsync(audiobookDto.AudioFile, "Audiobooks");
+                var coverImagePath = await _audioBookFileService.SaveFileAsync(audiobookDto.CoverImage, "AudiobookCovers");
+
+
+                var audiobook = new Audiobook
+                {
+                    ISBN = audiobookDto.ISBN,
+                    Title = audiobookDto.Title,
+                    Author = audiobookDto.Author,
+                    Genre = audiobookDto.Genre,
+                    PublishYear = audiobookDto.PublishYear,
+                    FilePath = filePath,
+                    CoverImagePath = coverImagePath,
+                    AddedDate = DateTime.Now,
+                };
+
+
+                var metadata = new AudiobookMetadata
+                {
+                    FileFormat = audiobookDto.FileFormat,
+                    Language = audiobookDto.Language,
+                    Narrator = audiobookDto.Narrator,
+                    Publisher = audiobookDto.Publisher,
+                    Description = audiobookDto.Description,
+                    DigitalRights = audiobookDto.DigitalRights,
+                    DownloadCount = 0,
+                    PlayCount = 0,
+                    Click = 0,
+                    FileSize = 21,
+                    DurationInSeconds = 12
+                };
+
+
+                var audiobookId = await _audioBookRepository.AddAudiobook(audiobook, metadata);
+
+                return new ApiResponse<int>
+                {
+                    Success = true,
+                    Message = "Audiobook added successfully",
+                    Data = audiobookId
+                };
+            }
+            catch (Exception ex)
             {
-                FileFormat = audiobookDto.FileFormat,
-                Language = audiobookDto.Language,
-                Narrator = audiobookDto.Narrator,
-                Publisher = audiobookDto.Publisher,
-                Description = audiobookDto.Description,
-                DigitalRights = audiobookDto.DigitalRights,
-                DownloadCount= 0,
-                PlayCount =0,
-                Click =0,
-                FileSize =21,
-                DurationInSeconds = 12
-            };
+                return new ApiResponse<int>
+                {
+                    Success = false,
+                    Message = $"An error occurred: {ex.Message}",
+                   
+                };
+            }
 
-         
-            var audiobookId = await _audioBookRepository.AddAudiobook(audiobook, metadata);
-
-            return new ApiResponse<int>
-            {
-                Success = true,
-                Message = "Audiobook added successfully",
-                Data = audiobookId
-            };
         }
 
 
@@ -249,7 +269,24 @@ namespace library_management_system.Services
            
         }
 
+        public async Task<int> GetAudiobookCountAsync()
+        {
+            try
+            {
+                return await _audioBookRepository.GetAudiobookCountAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details (e.g., using a logging framework like Serilog or NLog)
+                Console.WriteLine($"An error occurred while counting audiobooks: {ex.Message}");
+
+                // Optionally rethrow the exception or return a default value
+                // throw;
+                return 0; // Returning 0 in case of an error
+            }
+        }
 
 
-	}
+
+    }
 }

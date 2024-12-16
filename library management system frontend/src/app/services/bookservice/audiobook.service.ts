@@ -19,4 +19,12 @@ export class AudiobookService {
   getTopAudiobooks(count: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${count}`);
   }
+
+  private mainapiUrl = 'https://localhost:7261/api/Audiobook'; // API Base URL
+
+
+
+  getAudiobookCount(): Observable<{ count: number }> {
+    return this.http.get<{ count: number }>(`${this.mainapiUrl}/audiobooks/count`);
+  }
 }

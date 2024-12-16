@@ -16,9 +16,9 @@ namespace library_management_system.Repositories
         public async Task<int> AddEbook(Ebook ebook, EbookMetadata metadata)
         {
             _context.Ebooks.Add(ebook);
-            await _context.SaveChangesAsync(); 
+            await _context.SaveChangesAsync();
 
-            metadata.EbookId = ebook.Id; 
+            metadata.EbookId = ebook.Id;
             _context.EbookMetadatas.Add(metadata);
             await _context.SaveChangesAsync();
             return ebook.Id;
@@ -41,7 +41,7 @@ namespace library_management_system.Repositories
             if (ebook == null)
                 return false;
 
-        
+
             var metadata = await _context.EbookMetadatas.FindAsync(ebookId);
             if (metadata != null)
                 _context.EbookMetadatas.Remove(metadata);
@@ -54,16 +54,16 @@ namespace library_management_system.Repositories
 
         public async Task UpdateEbook(Ebook ebook, EbookMetadata metadata)
         {
-           
+
             _context.Ebooks.Update(ebook);
 
-           
+
             if (metadata != null)
             {
                 _context.EbookMetadatas.Update(metadata);
             }
 
-            
+
             await _context.SaveChangesAsync();
         }
 
@@ -72,7 +72,7 @@ namespace library_management_system.Repositories
             int totalCount = await _context.Ebooks.Include(e => e.Metadata).CountAsync();
 
             var ebooks = await _context.Ebooks.Include(e => e.Metadata)
-                .OrderBy(e => e.Id) 
+                .OrderBy(e => e.Id)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -126,5 +126,25 @@ namespace library_management_system.Repositories
             }
         }
 
+        //functions for getting top datas
+        public async Task<List<Ebook>> GetTopEbooksAsync(int count)
+        {
+            return await _context.Ebooks
+                   .Where(u => u.Id>0)
+                   .OrderByDescending(u => u.PublishYear)
+                   .Take(count)
+                   .ToListAsync();
+
+
+        }
+
+        public async Task<int> GetEbooksCountAsync()
+        {
+            return await _context.Ebooks.CountAsync();
+        }
+
     }
+
 }
+
+

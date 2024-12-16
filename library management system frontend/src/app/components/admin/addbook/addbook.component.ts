@@ -78,7 +78,28 @@ export class AddbookComponent implements OnInit {
     this.fetchData()
   }
   addBookForm: FormGroup;
-  genresList: string[] = ['Fiction', 'Non-Fiction', 'Science', 'Biography', 'History'];
+  genresList: string[] = [
+    "Science Fiction",
+    "Fantasy",
+    "Mystery",
+    "Romance",
+    "Adventure",
+    "Action",
+    "Business",
+    "Finance",
+    "Cooking",
+    "Lifestyle",
+    "Economics",
+    "Non-fiction",
+    "Health",
+    "History",
+    "Linguistics",
+    "Philosophy",
+    "Self-help",
+    "Psychology",
+    "Technology",
+    "Writing"
+  ];
   imagePreviews: string[] = []; // Stores image previews
 
   constructor(private fb: FormBuilder, private bookService: BookService,private http: HttpClient) {

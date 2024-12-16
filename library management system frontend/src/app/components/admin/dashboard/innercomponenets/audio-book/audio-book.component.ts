@@ -1,10 +1,10 @@
 import { Component,Input,OnInit  } from '@angular/core';
 import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
-// import { UserService } from '../../.././../services/user-service/user.service';
+
 import { UserService } from '../../.././../../services/user-service/user.service';
 
 
-// import {AudiobookService} from '../../../services/bookservice/audiobook.service'
+
 import {AudiobookService} from '../../../../../services/bookservice/audiobook.service'
 
 
@@ -39,7 +39,7 @@ export class AudioBookComponent {
 
   imgageBaseUrl:string=`https://localhost:7261/`
 
-  // showing the top books
+  // showing the top books....
 
   audiobooks: any[] = []; 
   audiobookslists: any[] = []; 

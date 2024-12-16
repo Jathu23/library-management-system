@@ -14,7 +14,7 @@ export class UserprofileComponent implements OnInit {
   profileImage: File | null = null;  
 userbaseurl =environment.resourcBaseUrl
  
-  readonlyFields = ['id', 'isActive', 'isSubscribed', 'registrationDate'];
+  readonlyFields = ['id', 'isActive', 'isSubscribed', 'registrationDate','email'];
 
 
   userFields = [

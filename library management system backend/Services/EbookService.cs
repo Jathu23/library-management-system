@@ -4,6 +4,7 @@ using library_management_system.DTOs;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
 using static library_management_system.DTOs.Ebook.UpdateEbookDto;
+using Microsoft.EntityFrameworkCore;
 
 namespace library_management_system.Services
 {
@@ -11,12 +12,14 @@ namespace library_management_system.Services
     {
         private readonly EbookRepository _ebookRepository;
         private readonly EbookFileService _ebookFileService;
+        private readonly BookRepository _bookRepository;
         private readonly ImageService _imageService;
 
-        public EbookService(EbookRepository ebookRepository, EbookFileService ebookFileService, ImageService imageService)
+        public EbookService(EbookRepository ebookRepository, EbookFileService ebookFileService, BookRepository bookRepository, ImageService imageService)
         {
             _ebookRepository = ebookRepository;
             _ebookFileService = ebookFileService;
+            _bookRepository = bookRepository;
             _imageService = imageService;
         }
 
@@ -24,6 +27,10 @@ namespace library_management_system.Services
         {
             try
             {
+                var isbnexits = await _bookRepository.IsbnisAvailable(ebookDto.ISBN);
+                if (isbnexits)
+                    throw new Exception("ISBN alredy Exits");
+
                 if (ebookDto.EbookFile == null || ebookDto.EbookFile.Length == 0)
                 {
                     return new ApiResponse<int>
@@ -113,48 +120,60 @@ namespace library_management_system.Services
 
         public async Task<ApiResponse<bool>> UpdateEbook(EbookUpdateDto ebookDto)
         {
-            var existingEbook = await _ebookRepository.GetEbookById(ebookDto.Id);
-
-            if (existingEbook == null)
+            try
             {
-                return new ApiResponse<bool>
+                var existingEbook = await _ebookRepository.GetEbookById(ebookDto.Id);
+
+                if (existingEbook == null)
                 {
-                    Success = false,
-                    Message = "Ebook not found",
-                    Data = false
-                };
-            }
+                    return new ApiResponse<bool>
+                    {
+                        Success = false,
+                        Message = "Ebook not found",
+                        Data = false
+                    };
+                }
+                //else
+                //{
 
-            var existingMetadata = await _ebookRepository.GetEbookMetadataByEbookId(ebookDto.Id);
+                //    if (book.ISBN != bookDto.ISBN)
+                //    {
+                //        var isbnexits = await _bookRepository.IsbnisAvailable(bookDto.ISBN);
+                //        if (isbnexits)
+                //            throw new Exception("ISBN alredy Exits");
+                //    }
+                //}
 
-            
-            existingEbook.Title = ebookDto.Title ?? existingEbook.Title;
-            existingEbook.Author = ebookDto.Author ?? existingEbook.Author;
-            existingEbook.Genre = ebookDto.Genre ?? existingEbook.Genre;
-            existingEbook.PublishYear = ebookDto.PublishYear ?? existingEbook.PublishYear;
+                var existingMetadata = await _ebookRepository.GetEbookMetadataByEbookId(ebookDto.Id);
 
-           
-            if (ebookDto.EbookFile != null)
-            {
-                existingEbook.FilePath = await _ebookFileService.SaveEbookFile(ebookDto.EbookFile, "Ebooks");
-     
-                existingMetadata.FileSize = await _ebookFileService.GetFileSize(ebookDto.EbookFile);
-                existingMetadata.PageCount = await _ebookFileService.GetPageCount(ebookDto.EbookFile);
-            }
-                
+
+                existingEbook.Title = ebookDto.Title ?? existingEbook.Title;
+                existingEbook.Author = ebookDto.Author ?? existingEbook.Author;
+                existingEbook.Genre = ebookDto.Genre ?? existingEbook.Genre;
+                existingEbook.PublishYear = ebookDto.PublishYear ?? existingEbook.PublishYear;
+
+
+                if (ebookDto.EbookFile != null)
+                {
+                    existingEbook.FilePath = await _ebookFileService.SaveEbookFile(ebookDto.EbookFile, "Ebooks");
+
+                    existingMetadata.FileSize = await _ebookFileService.GetFileSize(ebookDto.EbookFile);
+                    existingMetadata.PageCount = await _ebookFileService.GetPageCount(ebookDto.EbookFile);
+                }
+
                 if (ebookDto.CoverImages != null)
                 {
-                   existingEbook.CoverImagePath = await SaveCoverImage(ebookDto.CoverImages);
+                    existingEbook.CoverImagePath = await SaveCoverImage(ebookDto.CoverImages);
 
-                 }
+                }
 
-           
-            existingMetadata.Language = ebookDto.Language ?? existingMetadata.Language;
+
+                existingMetadata.Language = ebookDto.Language ?? existingMetadata.Language;
                 existingMetadata.Publisher = ebookDto.Publisher ?? existingMetadata.Publisher;
                 existingMetadata.Description = ebookDto.Description ?? existingMetadata.Description;
                 existingMetadata.DigitalRights = ebookDto.DigitalRights ?? existingMetadata.DigitalRights;
 
-                
+
                 await _ebookRepository.UpdateEbook(existingEbook, existingMetadata);
 
                 return new ApiResponse<bool>
@@ -163,7 +182,17 @@ namespace library_management_system.Services
                     Message = "Ebook updated successfully",
                     Data = true
                 };
-            
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<bool>
+                {
+                    Success = false,
+                    Message = "An error occurred while adding the ebook",
+                    Errors = new List<string> { ex.Message }
+                };
+            }
+
 
         }
 
@@ -289,5 +318,38 @@ namespace library_management_system.Services
             return await _ebookRepository.AddClick(bookid);
 
         }
+
+        //DbFunctions for sorting top
+
+        public async Task<List<Ebook>> GetTopEbooksAsync(int count)
+        {
+            try
+            {
+                // Try to get the top eBooks from the repository
+                return await _ebookRepository.GetTopEbooksAsync(count);
+            }
+            catch (Exception ex)
+            {
+
+                throw new ApplicationException("An error occurred while fetching top eBooks.", ex);
+            }
+        }
+        public async Task<int> GetEbookCountAsync()
+        {
+            try
+            {
+                return await _ebookRepository.GetEbooksCountAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details (e.g., using a logging framework like Serilog or NLog)
+                Console.WriteLine($"An error occurred while counting audiobooks: {ex.Message}");
+
+                // Optionally rethrow the exception or return a default value
+                // throw;
+                return 0; // Returning 0 in case of an error
+            }
+        }
+
     }
 }

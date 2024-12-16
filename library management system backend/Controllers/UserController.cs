@@ -354,9 +354,17 @@ namespace library_management_system.Controllers
 			}
 		}
 
+        [HttpGet("Userbooks/count")]
+        public async Task<IActionResult> GetAudiobookCount()
+        {
+            int count = await _userService.GetuserCountAsync();
+            return Ok(new { Count = count });
+        }
 
-	}
-	
 
-	
+
+    }
+
+
+
 }

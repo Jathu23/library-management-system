@@ -32,6 +32,8 @@ import { AudioBookComponent } from './components/admin/dashboard/innercomponenet
 import { EBookComponent } from './components/admin/dashboard/innercomponenets/ebook/ebook.component';
 import { OverdueComponent } from './components/admin/overdue/overdue.component';
 import { ReportComponent } from './components/admin/report/report.component';
+import { UserreportComponent } from './components/user/userreport/userreport.component';
+import { ForgotPasswordComponent } from './components/landing/forgot-password/forgot-password.component';
 
 
 const routes: Routes = [
@@ -39,7 +41,9 @@ const routes: Routes = [
     path: '',
     component: LandingLayoutComponent,
     children: [
+      { path: 'ForgotPassword', component: ForgotPasswordComponent },
       { path: 'login', component: LoginComponent },
+      
     ]
   },
   {
@@ -79,6 +83,8 @@ const routes: Routes = [
     data:{roles:['user']},
     children: [
       { path: '', component: UserDashboardComponent },
+      { path: 'home', component: UserDashboardComponent },
+      { path: 'dashboard', component: UserDashboardComponent },
       { path: 'view-normal-books', component: ShowbooksComponent },
       { path: 'view-audio-books', component: ShowaudiobooksComponent },
       {path: 'view-e-books' , component:ShowebooksComponent },
@@ -86,9 +92,11 @@ const routes: Routes = [
       {path: 'view-lend-history' , component:ShowLendingHistoryComponent },
       {path:'user-profile',component:UserprofileComponent},
       {path:'subscription-u',component:SubscriptionComponent},
-      {path:'notification-u',component:NotificationComponent}
+      {path:'notification-u',component:NotificationComponent},
+      {path:'report-u',component:UserreportComponent},
     ]
-  }
+  },
+  { path: 'ForgotPassword', component: ForgotPasswordComponent },
 ];
 
 

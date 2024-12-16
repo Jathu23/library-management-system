@@ -163,9 +163,9 @@ export class ReportComponent {
       );
     }
 
-    else{
-      alert("select corect option");
-    }
+    // else{
+    //   alert("select corect option");
+    // }
   
   }
 

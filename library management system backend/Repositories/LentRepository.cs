@@ -223,16 +223,23 @@ namespace library_management_system.Repositories
 
         public async Task<int> GetBorrowedCountInLastNDaysAsync(int userId, int days)
         {
+            //var startDate = DateTime.UtcNow.AddDays(-days);
+            //return await _context.RentHistory
+            //    .Where(r => r.UserId == userId && r.LendDate >= startDate && r.ReturnDate == null)
+            //    .CountAsync();
             var startDate = DateTime.UtcNow.AddDays(-days);
             return await _context.RentHistory
-                .Where(r => r.UserId == userId && r.LendDate >= startDate && r.ReturnDate == null)
+                .Where(r => r.UserId == userId && r.LendDate >= startDate )
                 .CountAsync();
         }
 
         public async Task<int> GetBorrowedCountInDateRangeAsync(int userId, DateTime startDate, DateTime endDate)
         {
+            //return await _context.RentHistory
+            //    .Where(r => r.UserId == userId && r.LendDate >= startDate && r.LendDate <= endDate && r.ReturnDate == null)
+            //    .CountAsync();
             return await _context.RentHistory
-                .Where(r => r.UserId == userId && r.LendDate >= startDate && r.LendDate <= endDate && r.ReturnDate == null)
+                .Where(r => r.UserId == userId && r.LendDate >= startDate && r.LendDate <= endDate )
                 .CountAsync();
         }
 

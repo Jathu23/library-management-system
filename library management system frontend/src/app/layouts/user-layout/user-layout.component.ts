@@ -40,7 +40,7 @@ export class UserLayoutComponent implements OnInit {
   // Logout function to remove the token and navigate to login page
   logout() {
     localStorage.removeItem('token');
-    this.router.navigate(['/login']);
+    this.router.navigate(['']);
   }
 
   // Fetch user data from the API

@@ -3,6 +3,8 @@ using library_management_system.DTOs.LentRecord;
 using library_management_system.DTOs;
 using library_management_system.Repositories;
 using System.Diagnostics.Eventing.Reader;
+using Org.BouncyCastle.Ocsp;
+using PdfSharp.Charting;
 
 namespace library_management_system.Services
 {
@@ -534,7 +536,7 @@ namespace library_management_system.Services
 
                     var currentDateTime = DateTime.Now;
                     var statusValue = (int)(lentRecord.DueDate - currentDateTime).TotalMinutes;
-
+                   var maxvalue = (int)(lentRecord.DueDate - lentRecord.LentDate).TotalMinutes;
                     string status = statusValue > 0
                         ? $"{statusValue / 1440} days {(statusValue % 1440) / 60} hours remaining"
                         : $"{Math.Abs(statusValue) / 1440} days {Math.Abs(statusValue % 1440) / 60} hours overdue";
@@ -550,7 +552,8 @@ namespace library_management_system.Services
                         LentDate = lentRecord.LentDate,
                         DueDate = lentRecord.DueDate,
                         Status = status,
-                        StatusValue = statusValue
+                        StatusValue = statusValue,
+                        maxvalue = maxvalue
                     };
 
                     lentRecordDtos.Add(lentRecordDto);

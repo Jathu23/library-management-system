@@ -12,8 +12,8 @@ using library_management_system.Database;
 namespace library_management_system.Migrations
 {
     [DbContext(typeof(LibraryDbContext))]
-    [Migration("20241212032324_update database")]
-    partial class updatedatabase
+    [Migration("20241212172849_user update")]
+    partial class userupdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -310,6 +310,30 @@ namespace library_management_system.Migrations
                         .IsUnique();
 
                     b.ToTable("EbookMetadatas");
+                });
+
+            modelBuilder.Entity("library_management_system.Database.Entiy.ForgotPasswordToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TokenCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ForgotPasswordTokens");
                 });
 
             modelBuilder.Entity("library_management_system.Database.Entiy.GlobalSubscription", b =>

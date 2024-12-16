@@ -21,7 +21,7 @@ export class OverdueComponent implements OnInit {
   getAllRentRecords(): void {
     this.isLoading = true;
     this.errorMessage = '';
-    this.lentService.getallrentrecods().subscribe(
+    this.lentService.getallrentrecods(true).subscribe(
       (response) => {
         if (response && response.data) {
           this.overdues = response.data;  // Store overdue records in the array

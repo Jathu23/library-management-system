@@ -125,6 +125,9 @@ builder.Services.AddScoped<EbookFileService>();
 builder.Services.AddScoped<AudioBookFileService>();
 builder.Services.AddScoped<PdfGeneratorService>();
 
+builder.Services.AddScoped<ForgotPasswordRepository>();
+builder.Services.AddScoped<ForgotPasswordService>();
+
 // Register services
 builder.Services.AddScoped<sendmailService>();
 builder.Services.AddScoped<SendMailRepository>();

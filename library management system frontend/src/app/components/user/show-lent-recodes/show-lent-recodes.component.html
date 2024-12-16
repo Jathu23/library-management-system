@@ -35,9 +35,13 @@
         <td>{{ record.lentDate | date: 'yyyy-MM-dd' }}</td>
         <td>{{ record.dueDate | date: 'yyyy-MM-dd' }}</td>
         <td>
-          <span class="badge" [ngClass]="record.status === 'Returned' ? 'bg-success' : 'bg-warning'">
+          <span class="badge" [ngClass]="record.statusValue < 0 ? 'bg-danger' : 'bg-warning'">
             {{ record.status }}
           </span>
+          <progress
+          value="{{ record.statusValue }}"
+          max="{{ record.maxvalue }}"
+        ></progress>
         </td>
       </tr>
     </tbody>

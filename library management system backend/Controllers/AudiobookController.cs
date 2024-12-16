@@ -1,6 +1,7 @@
-﻿using library_management_system.DTOs.AudioBook;
+﻿ using library_management_system.DTOs.AudioBook;
 using library_management_system.Repositories;
 using library_management_system.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace library_management_system.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AudiobookController : ControllerBase
     {
         private readonly AudioBookService _audioBookService;
@@ -100,6 +102,14 @@ namespace library_management_system.Controllers
                 return BadRequest(result);
 
         }
+
+        [HttpGet("audiobooks/count")]
+        public async Task<IActionResult> GetAudiobookCount()
+        {
+            int count = await _audioBookService.GetAudiobookCountAsync();
+            return Ok(new { Count = count });
+        }
+
 
 
         //        [HttpPost("addsamle")]
