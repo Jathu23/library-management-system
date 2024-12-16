@@ -87,9 +87,9 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     this.userService.getLentReportByUserId(userId).subscribe({
       next: (data) => {
         this.totalLendings=data.totalRengings;
-        this.pendings=data.totalRengings;
-        this.ontime=data.totalRengings;
-        this.later=data.totalRengings;
+        this.pendings=data.pending;
+        this.ontime=data.onTime;
+        this.later=data.later;
 
 
         this.pendingLists=data.pendingLent;

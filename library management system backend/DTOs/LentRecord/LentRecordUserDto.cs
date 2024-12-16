@@ -13,5 +13,6 @@
         public DateTime DueDate { get; set; }
         public string Status { get; set; }
         public int StatusValue { get; set; }
+        public int maxvalue { get; set; }
     }
 }
