@@ -111,6 +111,8 @@ export class ShowLentHistoryComponent implements OnInit {
         (response: any) => {
           if (response.success) {
             this.isLoading = false;
+            this.loadrecods();
+            this.fetchPendingBooks(this.userInfo.id);
             alert(response.message);
           } else {
             this.isLoading = false;

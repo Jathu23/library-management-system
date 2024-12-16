@@ -140,8 +140,6 @@ resoursBase = environment.resourcBaseUrl;
       this.currentPage = pageIndex + 1;
     }
     this.pageSize = pageSize;
-  console.log("pagesizw",this.pageSize);
-  console.log("pagenum",this.currentPage);
   
     this.fetchBooks(); // Fetch based on context
   }

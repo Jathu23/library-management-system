@@ -214,7 +214,7 @@ fetchBooks(): void {
 
       // Set the new audio track and play it
       this.playingAudio = audiobook;
-      this.audio.src = `https://localhost:7261/${audiobook.filePath}`;
+      this.audio.src = `${this.resoursBase}+${audiobook.filePath}`;
       this.audio.play();
       this.isPlaying = true;
     } else {
