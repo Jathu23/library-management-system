@@ -182,3 +182,15 @@
     
   </div>
 </div>
+
+<!-- Modal for Subscription Warning -->
+<div class="modal" [class.show]="modelwindow">
+  <div class="modal-content">
+    
+    <div class="modal-body">
+      <h2>Please Subscribe to Continue</h2>
+      <p>You need to be subscribed to play this audiobook. Please subscribe to continue.</p>
+      <button class="btn btn-primary" (click)="closeModal1()" style="color: black;">Close</button>
+    </div>
+  </div>
+</div>
