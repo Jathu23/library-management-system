@@ -3,6 +3,8 @@ using BCrypt.Net;
 using library_management_system.Database.Entiy;
 using library_management_system.DTOs;
 using library_management_system.DTOs.User;
+using library_management_system.IRepository;
+using library_management_system.IService;
 using library_management_system.Repositories;
 using library_management_system.Utilities;
 using MailSend.Enums;
@@ -15,7 +17,7 @@ using System.Text.Json;
 
 namespace library_management_system.Services
 {
-    public class UserServices
+    public class UserServices 
     {
         private readonly UserRepo _userRepo;
         private readonly ImageService _imageService;

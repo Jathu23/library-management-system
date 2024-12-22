@@ -4,6 +4,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { LikeanddislikeService } from '../../../services/bookservice/likeanddislike.service';
 import { ReviewRequest, ReviewResponse, ReviewService } from '../../../services/bookservice/review.service';
 import { environment } from '../../../../environments/environment.testing';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-showebooks',
@@ -24,22 +25,26 @@ export class ShowebooksComponent implements OnInit {
   isThumbsDown = false;
   showCommentBox = false;
   reviewText = '';
-  reviews:any;
+  reviews:any[]=[];
   thumbsUpCount = 12;
   thumbsDownCount = 21;
   currentUserId: number;
   likeCount: any;
   dislikeCount: any;
   rating: number = 1;
+  IsSubscribed:boolean=false;
+  isLoding = false;
 
   constructor(
     private getbooksService: GetbooksService,
     private sanitizer: DomSanitizer,
     private likedislikeservice: LikeanddislikeService,
-    private reviewservice: ReviewService
+    private reviewservice: ReviewService,
+      private http:HttpClient
   ) {
     const tokendata = environment.getTokenData();
     this.currentUserId = Number(tokendata.ID);
+    this.fetchLoggedInUser();
   }
 
   ngOnInit(): void {
@@ -47,27 +52,39 @@ export class ShowebooksComponent implements OnInit {
   }
 
   loadEbooks(): void {
-    if (this.searchQuery.trim() !== '') {
-      this.searchForEbooks(); // Search ebooks if there is a search query
-    } else {
-      this.getbooksService.getebooks(this.currentPage, this.pageSize).subscribe(
-        (response) => {
-          console.log('API Response:', response);
-          if (response?.data?.items && Array.isArray(response.data.items)) {
-            this.ebooks = response.data.items;
-            this.totalItems = response.data.totalCount || 0; // Ensure totalItems is assigned
-          } else {
-            console.warn('No eBooks found or invalid data structure:', response);
-            this.ebooks = [];
-          }
-        },
-        (error) => {
-          console.error('Error fetching eBooks:', error);
+    if (this.isLoding) return;
+    this.isLoding = true;
+    this.getbooksService.getebooks(this.currentPage, this.pageSize).subscribe(
+      (response) => {
+        console.log('API Response:', response);
+        if (response?.data?.items && Array.isArray(response.data.items)) {
+          this.ebooks = response.data.items;
+          this.totalItems = response.data.totalCount ; // Ensure totalItems is assigned
+          this.isLoding = false;
+        } else {
+         
+          this.isLoding = false;
         }
-      );
-    }
+      },
+      (error) => {
+        console.error('Error fetching eBooks:', error);
+        this.isLoding = false;
+      }
+    );
   }
-
+  onPageChange(event: any): void {
+    const { pageIndex, pageSize } = event;
+    if (pageSize !== this.pageSize) {
+      this.currentPage = 1;
+    } else {
+      this.currentPage = pageIndex + 1;
+    }
+    this.pageSize = pageSize;
+  console.log("pagesizw",this.pageSize);
+  console.log("pagenum",this.currentPage);
+  
+  this.loadEbooks();
+  }
   // Handle ebook search functionality
   searchForEbooks(): void {
     this.getbooksService.searchEbooks(this.searchQuery, this.currentPage, this.pageSize).subscribe(
@@ -102,7 +119,7 @@ export class ShowebooksComponent implements OnInit {
     this.fetchDislikeAndLike(ebook.id, false);
 
     this.sanitizedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-      'https://localhost:7261/' + this.selectedEbook?.filePath
+      this.resoursBase + this.selectedEbook?.filePath
     );
   }
 
@@ -145,6 +162,18 @@ export class ShowebooksComponent implements OnInit {
   }
 
 
+  fetchLoggedInUser() {
+    environment.fetchUserDataById(this.http, this.currentUserId).then((userData) => {
+      if (userData) {
+        this.IsSubscribed=userData.data.isSubscribed// Store the logged-in user data
+        console.log('Logged-in user data:', this.IsSubscribed);
+      } else {
+        console.warn('Failed to fetch logged-in user data.');
+      }
+    }).catch((error) => {
+      console.error('Error fetching user data:', error);
+    });
+  }
 
 
   fetchEbookReviews(bookId: number): void {
@@ -278,17 +307,6 @@ export class ShowebooksComponent implements OnInit {
   }
 
   // Handle pagination changes
-  // Handle pagination changes
-  onPageChange(event: any): void {
-    const { pageIndex, pageSize } = event;
-    if (pageSize !== this.pageSize) {
-      this.currentPage = 1;
-    } else {
-      this.currentPage = pageIndex + 1;
-    }
-    this.pageSize = pageSize;
-    this.loadEbooks();
 
 
-  }
 }

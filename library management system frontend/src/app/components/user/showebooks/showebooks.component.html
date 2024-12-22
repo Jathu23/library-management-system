@@ -11,7 +11,7 @@
 <div class="grid-container scroll-container">
   <div class="grid-item" *ngFor="let ebook of ebooks" (click)="openEbookModal(ebook)">
     <img 
-      [src]="'https://localhost:7261/' + ebook.coverImagePath" 
+      [src]="resoursBase + ebook.coverImagePath" 
       alt="{{ ebook.title }}" 
       (error)="onImageError($event)" 
     />
@@ -24,6 +24,16 @@
 <div *ngIf="ebooks.length === 0" class="no-ebooks">
   <p>No eBooks available. Please check back later.</p>
 </div>
+
+<!-- Pagination -->
+<mat-paginator
+  [length]="totalItems"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[2,5,10, 25, 50, 100]"
+  showFirstLastButtons
+  (page)="onPageChange($event)"
+></mat-paginator>
+
 
 <!-- Modal eBook -->
 <div class="modal" [class.show]="isModalOpen" >
@@ -110,12 +120,5 @@
   </div>
   
 </div>
-<!-- Pagination -->
-<mat-paginator
-  [length]="totalItems"
-  [pageSize]="pageSize"
-  [pageSizeOptions]="[2,5,10, 15, 25, 50]"
-  showFirstLastButtons
-  (page)="onPageChange($event)"
-  [pageIndex]="currentPage - 1"
-></mat-paginator>
+
+

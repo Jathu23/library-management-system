@@ -6,6 +6,7 @@ import { GetbooksService } from '../../../services/bookservice/getbooks.service'
 
 import { UserService } from '../../../services/user-service/user.service';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
+import { environment } from '../../../../environments/environment.testing';
 
 
 
@@ -24,7 +25,7 @@ import { Color, ScaleType } from '@swimlane/ngx-charts';
 export class UserDashboardComponent implements OnInit, OnDestroy {
   errorMessage:string='';
   audiobookslists: any[]=[];
-
+  currentUserId:number=0;
   constructor(
     private audiobookService: AudiobookService,
     private EbookService: GetbooksService,
@@ -32,7 +33,8 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
 
 
   ) {
-
+    const tokendata = environment.getTokenData();
+    this.currentUserId= Number(tokendata.ID);
   }
 
 
@@ -83,13 +85,13 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
 
     // --
 
-    const userId = 1; // Replace with the desired user ID
-    this.userService.getLentReportByUserId(userId).subscribe({
+   
+    this.userService.getLentReportByUserId(this.currentUserId).subscribe({
       next: (data) => {
         this.totalLendings=data.totalRengings;
-        this.pendings=data.totalRengings;
-        this.ontime=data.totalRengings;
-        this.later=data.totalRengings;
+        this.pendings=data.pending;
+        this.ontime=data.onTime;
+        this.later=data.later;
 
 
         this.pendingLists=data.pendingLent;

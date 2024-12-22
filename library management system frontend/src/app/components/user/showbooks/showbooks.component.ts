@@ -47,7 +47,7 @@ resoursBase = environment.resourcBaseUrl;
 
   selectedGenre: string = '';
   selectedAuthor: string = '';
-  selectedYear: number = 0;
+  selectedYear: string = '';
 
   currentContext: 'all' | 'search' | 'filter' = 'all'; // Tracks the current operation
 
@@ -60,7 +60,8 @@ resoursBase = environment.resourcBaseUrl;
   
 
   ngOnInit(): void {
-    this.loadNormalBooks();
+    // this.loadNormalBooks();
+    this.fetchBooks()
     this.fetchoptionsdatas();
   }
 
@@ -70,13 +71,13 @@ resoursBase = environment.resourcBaseUrl;
 
   // Fetch all books (default view)
   loadNormalBooks(): void {
-    if (this.isLoading) return;
-    this.isLoading = true;
+  
     this.currentContext = 'all';
 
     this.getbookservice.getNoramlbooks(this.currentPage, this.pageSize).subscribe(
       (response) => {
         this.handleBookResponse(response);
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching normal books:', error);
@@ -127,6 +128,7 @@ resoursBase = environment.resourcBaseUrl;
           }
         );
     }
+    this.isLoading = false;
   }
 
   // Handle pagination changes
@@ -138,11 +140,13 @@ resoursBase = environment.resourcBaseUrl;
       this.currentPage = pageIndex + 1;
     }
     this.pageSize = pageSize;
+  
     this.fetchBooks(); // Fetch based on context
   }
 
   // Handle book response
   handleBookResponse(response: any): void {
+    
     if (response.success) {
       const result = response.data;
       this.Normalbooks = result.items.map((book: any) => ({
@@ -152,6 +156,7 @@ resoursBase = environment.resourcBaseUrl;
           : [this.resolveImagePath(book.coverImagePath)],
       }));
       this.totalItems = result.totalCount;
+      this.isLoading = false;
     }
     this.isLoading = false;
   }

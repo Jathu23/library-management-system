@@ -67,10 +67,12 @@ export class ShowLentHistoryComponent implements OnInit {
         if (response.success) {
 
           this.userInfo = response.data;
+          console.log(this.userInfo);
+          
           setTimeout(() => {
             this.fetchPendingBooks(this.userInfo.id);
             this.isLoading = false;
-          }, 1000)
+          }, 500)
 
         } else {
           this.isLoading = false;
@@ -109,6 +111,8 @@ export class ShowLentHistoryComponent implements OnInit {
         (response: any) => {
           if (response.success) {
             this.isLoading = false;
+            this.loadrecods();
+            this.fetchPendingBooks(this.userInfo.id);
             alert(response.message);
           } else {
             this.isLoading = false;

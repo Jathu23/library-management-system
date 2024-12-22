@@ -33,7 +33,7 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
   rating: number=1;
   likeCount:number=0;
   dislikeCount:number=0;
-  IsSubscribed:any;
+  IsSubscribed:boolean=false;
   resoursBase = environment.resourcBaseUrl;
   modelwindow=false;
   currentContext: 'all' | 'search' | 'filter' = 'all'; // Tracks the current operation
@@ -45,6 +45,7 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
     ) { 
     const tokendata = environment.getTokenData();
     this.currentUserId= Number(tokendata.ID);
+    this.fetchLoggedInUser();
   }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngOnInit() {
@@ -53,7 +54,7 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
     this.audio.addEventListener('loadedmetadata', () => {
       this.duration = this.formatTime(this.audio.duration);
 
-      this.fetchLoggedInUser();
+    
 
     });
     // Event listener for when audio time updates (for progress bar)
@@ -75,8 +76,7 @@ export class ShowaudiobooksComponent implements OnInit, OnDestroy {
   fetchLoggedInUser() {
     environment.fetchUserDataById(this.http, this.currentUserId).then((userData) => {
       if (userData) {
-        this.IsSubscribed = userData;  
-        this.IsSubscribed=this.IsSubscribed.data.isSubscribed// Store the logged-in user data
+        this.IsSubscribed=userData.data.isSubscribed// Store the logged-in user data
         console.log('Logged-in user data:', this.IsSubscribed);
       } else {
         console.warn('Failed to fetch logged-in user data.');
@@ -214,7 +214,7 @@ fetchBooks(): void {
 
       // Set the new audio track and play it
       this.playingAudio = audiobook;
-      this.audio.src = `https://localhost:7261/${audiobook.filePath}`;
+      this.audio.src = `${this.resoursBase}+${audiobook.filePath}`;
       this.audio.play();
       this.isPlaying = true;
     } else {
