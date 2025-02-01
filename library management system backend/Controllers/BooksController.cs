@@ -236,7 +236,7 @@ namespace library_management_system.Controllers
                 count += response.Data;
                 Thread.Sleep(200);
             }
-
+            await _bookRepository.UpdateCustomData();
 
             return count;
 

@@ -16,7 +16,7 @@ export class ShowebooksComponent implements OnInit {
   isModalOpen = false;
   selectedEbook: any | null = null;
   currentPage = 1;
-  pageSize = 10;
+  pageSize = 5;
   totalItems = 0;
   sanitizedUrl!: SafeResourceUrl;
   resoursBase = environment.resourcBaseUrl;

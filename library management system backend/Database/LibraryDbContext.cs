@@ -152,6 +152,16 @@
                 .OnDelete(DeleteBehavior.Cascade);
 
 
+            modelBuilder.Entity<Admin>().HasData(
+              new Admin { id = 1, AdminNic = "001v", FirstName = "John", LastName = "Doe", FullName = "John Doe", Email = "john.doe@example.com", IsMaster = true, ProfileImage = "AdminImages/admin1.jpg" },
+              new Admin { id = 2, AdminNic = "002v", FirstName = "William", LastName = "Garcia", FullName = "William Garcia", Email = "william.garcia@example.com", IsMaster = false, ProfileImage = "ProfileImages/admin5.jpg" }
+          );
+
+            modelBuilder.Entity<LoginT>().HasData(
+              new LoginT { Id = 1, Email = "john.doe@example.com", NIC = "NIC1001", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123"), Role = "admin", MemberId = 1 },
+              new LoginT { Id = 2, Email = "emma.smith@example.com", NIC = "NIC1002", PasswordHash = BCrypt.Net.BCrypt.HashPassword("123"), Role = "user", MemberId = 2 }
+              );
+
 
             base.OnModelCreating(modelBuilder);
         }
