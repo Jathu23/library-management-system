@@ -9,15 +9,20 @@ namespace library_management_system.Utilities
     {
         private readonly IConverter _converter;
 
-        public PdfGeneratorService()
+        public PdfGeneratorService(IConverter converter)
         {
-          
-
-            _converter = new SynchronizedConverter(new PdfTools());
+            _converter = converter;
         }
 
+        //public PdfGeneratorService()
+        //{
 
-public async Task<byte[]> GeneratePdfAsync(string htmlContent, string documentTitle = "Report")
+
+        //    _converter = new SynchronizedConverter(new PdfTools());
+        //}
+
+
+        public async Task<byte[]> GeneratePdfAsync(string htmlContent, string documentTitle = "Report")
 {
     try
     {
@@ -47,12 +52,22 @@ public async Task<byte[]> GeneratePdfAsync(string htmlContent, string documentTi
     }
 }
 
-
         public async Task<byte[]> GenerateLendReportPdfAsync(LendReportDto report)
         {
             string htmlContent = GenerateLendReportHtml(report);
             return await GeneratePdfAsync(htmlContent, "Lend Report");
         }
+        public async Task<byte[]> GenerateBookLendingReportPdfAsync(BookLendingReportsDto report)
+        {
+            // Generate HTML content for the report
+            string htmlContent = await Task.Run(() => GenerateBookLendingReportHtml(report));
+
+            return await GeneratePdfAsync(htmlContent, "Book Lending Report");
+            //return await Task.Run(() => _converter.Convert(pdfDoc));
+
+        }
+
+
 
         private string GenerateLendReportHtml(LendReportDto report)
         {
@@ -176,16 +191,7 @@ public async Task<byte[]> GeneratePdfAsync(string htmlContent, string documentTi
             return sb.ToString();
         }
 
-        public async Task<byte[]> GenerateBookLendingReportPdfAsync(BookLendingReportsDto report)
-        {
-            // Generate HTML content for the report
-            string htmlContent = await Task.Run(() => GenerateBookLendingReportHtml(report));
-
-            return await GeneratePdfAsync(htmlContent, "Book Lending Report");
-            //return await Task.Run(() => _converter.Convert(pdfDoc));
-
-        }
-
+      
         private string GenerateBookLendingReportHtml(BookLendingReportsDto report)
         {
             var sb = new StringBuilder();

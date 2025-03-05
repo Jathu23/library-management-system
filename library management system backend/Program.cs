@@ -15,12 +15,26 @@ using MailSend.Models;
 using MailSend.Repo;
 using MailSend.Service;
 using Microsoft.Extensions.Options;
+using System.Runtime.Loader;
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton<IConverter, SynchronizedConverter>(provider => new SynchronizedConverter(new PdfTools()));
+// Load unmanaged DLL (wkhtmltox) - Ensure correct DLL path
+string dllPath = Path.Combine(AppContext.BaseDirectory, "libwkhtmltox.dll");
+
+if (!File.Exists(dllPath))
+{
+    throw new FileNotFoundException($"libwkhtmltox.dll not found at: {dllPath}");
+}
+
+var context = new CustomAssemblyLoadContext();
+context.LoadUnmanagedLibrary(dllPath);
+
 
 builder.Services.AddDbContext<LibraryDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
 
 // Add services to the container.
 
@@ -164,3 +178,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+public class CustomAssemblyLoadContext : AssemblyLoadContext
+{
+    public IntPtr LoadUnmanagedLibrary(string absolutePath)
+    {
+        return LoadUnmanagedDllFromPath(absolutePath); // Fixed method
+    }
+}
